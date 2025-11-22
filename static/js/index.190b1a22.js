@@ -7525,7 +7525,7 @@
         }),
         a.default = void 0,
         n("bf0f");
-        var i = "https://api.2sigmasf.com";
+        var i = "https://api.";
         var t = {
             http: function(e) {
                 e.closeLoading && uni.showLoading({

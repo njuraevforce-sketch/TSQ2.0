@@ -5,10 +5,30 @@
         <meta http-equiv=X-UA-Compatible content="IE=edge">
         <title>TSQ</title>
         
-        <!-- Добавьте этот скрипт ПЕРВЫМ для исправления путей Webpack -->
+        <!-- АГРЕССИВНОЕ ИСПРАВЛЕНИЕ WEBPACK -->
         <script>
-        // Исправление путей для динамической загрузки чанков
+        // ГЛОБАЛЬНОЕ ИСПРАВЛЕНИЕ ПУТЕЙ
         window.__webpack_public_path__ = '/static/js/';
+        
+        // Перехват всех динамических импортов
+        var originalImport = import;
+        window.import = function(chunk) {
+            if (chunk.includes('static/js/static/')) {
+                chunk = chunk.replace('static/js/static/', 'static/');
+            }
+            return originalImport(chunk);
+        };
+
+        // Исправление для Webpack 4
+        if (typeof window.webpackJsonp === 'function') {
+            var originalPush = window.webpackJsonp.push;
+            window.webpackJsonp.push = function() {
+                if (typeof __webpack_require__ !== 'undefined') {
+                    __webpack_require__.p = '/static/js/';
+                }
+                return originalPush.apply(this, arguments);
+            };
+        }
         </script>
         
         <link rel=apple-touch-icon-precomposed sizes=144x144 href=./static/apple-touch-icon-precomposed-144*144.png>
@@ -28,7 +48,7 @@
             document.write('<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' + (coverSupport ? ', viewport-fit=cover' : '') + '" />')
         </script>
         
-        <!-- Исправленный путь к CSS -->
+        <!-- ПРАВИЛЬНЫЙ ПУТЬ К CSS -->
         <link rel=stylesheet href=./static/css/index.ed4a2d2b.css>
     </head>
     <body>
@@ -37,7 +57,7 @@
         </noscript>
         <div id=app></div>
         
-        <!-- Основные скрипты -->
+        <!-- ОСНОВНЫЕ СКРИПТЫ -->
         <script src=./static/js/chunk-vendors.d9d12323.js></script>
         <script src=./static/js/index.190b1a22.js></script>
         

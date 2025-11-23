@@ -1,34 +1,44 @@
 <!DOCTYPE html>
-<html lang=en-US>
-    <head>
-        <meta charset=utf-8>
-        <meta http-equiv=X-UA-Compatible content="IE=edge">
-        <title>TSQ</title>
-        <link rel=apple-touch-icon-precomposed sizes=144x144 href=./static/apple-touch-icon-precomposed-144*144.png>
-        <link rel=apple-touch-icon-precomposed sizes=120x120 href=./static/apple-touch-icon-precomposed-120*120.png>
-        <link rel=apple-touch-icon-precomposed sizes=72x72 href=./static/apple-touch-icon-precomposed-72*72.png>
-        <link rel=apple-touch-icon-precomposed href=./static/apple-touch-icon-precomposed-57*57.png>
-        <meta content=yes name=apple-touch-fullscreen>
-        <meta name=mobile-web-app-capable content=yes>
-        <meta content=white name=apple-mobile-web-app-status-bar-style>
-        <link id=J_desktopIcon sizes=114x114 rel=apple-touch-icon-precomposed href=./static/logo.png>
-        <meta data-rh=true property=og:site_name name=websiteTitle content=DIQT>
-        <meta data-rh=true property=og:url name=websiteUrl content="">
-        <meta property=og:title content="">
-        <meta property=og:description content="">
-        <script>
-            var coverSupport = 'CSS'in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a)') || CSS.supports('top: constant(a)'))
-            document.write('<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' + (coverSupport ? ', viewport-fit=cover' : '') + '" />')
-        </script>
-        <link rel=stylesheet href=./static/css/index.ed4a2d2b.css>
-    </head>
-    <body>
-        <noscript>
-            <strong>Please enable JavaScript to continue.</strong>
-        </noscript>
-        <div id=app></div>
-        <script src=./static/js/chunk-vendors.d9d12323.js></script>
-        <script src=./static/js/index.190b1a22.js></script>
-        <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"8fcd3f0ca75f43eb8acf21ce3def49e0","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-    </body>
+<html lang="en-US">
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>TSQ</title>
+    
+    <!-- Исправьте пути к иконкам (замените * на x) -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="./static/apple-touch-icon-precomposed-144x144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="./static/apple-touch-icon-precomposed-120x120.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="./static/apple-touch-icon-precomposed-72x72.png">
+    <link rel="apple-touch-icon-precomposed" href="./static/apple-touch-icon-precomposed-57x57.png">
+    
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta content="white" name="apple-mobile-web-app-status-bar-style">
+    <link id="J_desktopIcon" sizes="114x114" rel="apple-touch-icon-precomposed" href="./static/logo.png">
+    
+    <meta data-rh="true" property="og:site_name" name="websiteTitle" content="DIQT">
+    <meta data-rh="true" property="og:url" name="websiteUrl" content="">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
+    
+    <script>
+        var coverSupport = 'CSS' in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a)') || CSS.supports('top: constant(a)'));
+        document.write('<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' + (coverSupport ? ', viewport-fit=cover' : '') + '" />');
+    </script>
+    
+    <!-- ИСПРАВЛЕННЫЙ ПУТЬ К CSS -->
+    <link rel="stylesheet" href="./static/index.ed4a2d2b.css">
+</head>
+<body>
+    <noscript>
+        <strong>Please enable JavaScript to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    
+    <script src="./static/js/chunk-vendors.d9d12323.js"></script>
+    <script src="./static/js/index.190b1a22.js"></script>
+    
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"8fcd3f0ca75f43eb8acf21ce3def49e0","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
 </html>

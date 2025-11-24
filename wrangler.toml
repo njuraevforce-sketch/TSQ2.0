@@ -1,0 +1,9 @@
+name = "tsq-app"
+compatibility_date = "2024-11-20"
+
+[env.production]
+pages_build_output_dir = "."
+
+[[routes]]
+pattern = "/*"
+custom_domain = false

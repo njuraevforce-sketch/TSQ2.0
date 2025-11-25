@@ -5,7 +5,7 @@ export function render() {
                 <div class="balance-card">
                     <div class="balance-label">Общий баланс</div>
                     <div class="balance-amount">$1250.50</div>
-                    <div style="display: flex; justify-content: space-between;">
+                    <div class="balance-details" style="display: flex; justify-content: space-between;">
                         <div class="balance-item">
                             <div class="label">Доступно</div>
                             <div class="value">$850.50</div>
@@ -18,21 +18,21 @@ export function render() {
                 </div>
             </div>
 
-            <div class="daily-task" style="border-radius: 15px; padding: 20px; margin: 20px 0; background: rgba(0,0,0,0.25);">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                    <div style="font-size: 1.2em; font-weight: bold;">Ежедневный доход</div>
-                    <div style="color: #b2b2b2;">Следующее получение: 22:00</div>
+            <div class="daily-task" style="border-radius: 15px; padding: 20px; margin: 20px 0;">
+                <div class="task-header" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                    <div class="task-title" style="font-size: 1.2em; font-weight: bold;">Ежедневный доход</div>
+                    <div class="task-time" style="color: #b2b2b2;">Следующее получение: 22:00</div>
                 </div>
                 
-                <div class="action-btn" id="collect-income" style="border-radius: 25px; padding: 20px; text-align: center; cursor: pointer;">
-                    <div>
-                        <div style="font-size: 1.1em; font-weight: bold;">Получить доход</div>
-                        <div style="color: #e3e3e3;">+$15.80</div>
+                <div class="task-button" id="collect-income" style="border-radius: 25px; padding: 20px; text-align: center; cursor: pointer;">
+                    <div class="button-content">
+                        <div class="button-text" style="font-size: 1.1em; font-weight: bold;">Получить доход</div>
+                        <div class="button-amount" style="color: #e3e3e3;">+$15.80</div>
                     </div>
                 </div>
             </div>
 
-            <div style="display: flex; gap: 15px; margin: 20px 0;">
+            <div class="quick-stats" style="display: flex; gap: 15px; margin: 20px 0;">
                 <div class="stat-card" style="text-align: center; flex: 1;">
                     <div class="stat-value">$3250.75</div>
                     <div class="stat-label">Всего заработано</div>
@@ -63,5 +63,10 @@ export function init() {
         alert('Доход получен! +$15.80');
     });
     
-    updateActiveTab();
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.getAttribute('data-route') === window.location.pathname) {
+            tab.classList.add('active');
+        }
+    });
 }

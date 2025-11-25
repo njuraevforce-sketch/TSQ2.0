@@ -2,36 +2,30 @@
 export default {
     onLaunch: function() {
         console.log('App Launch');
-        // Проверка авторизации
-        this.checkAuth();
+        // Для демо пропускаем проверку авторизации
+        console.log('Auth check skipped for demo');
     },
     onShow: function() {
         console.log('App Show');
     },
     onHide: function() {
         console.log('App Hide');
-    },
-    methods: {
-        checkAuth() {
-            // Проверка токена авторизации
-            const token = uni.getStorageSync('userToken');
-            if (!token) {
-                uni.redirectTo({
-                    url: '/pages/login/login'
-                });
-            }
-        }
     }
 }
 </script>
 
 <style>
-/* Общие стили */
-page {
+/* Общие стили для всего приложения */
+page, body {
+    margin: 0;
+    padding: 0;
     background: linear-gradient(180deg, #4e7771, #4e7771, rgba(185,215,168,0.75));
     min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Импорт общих стилей из вашего CSS */
-@import url('./common/style.css');
+.container {
+    padding: 20rpx;
+    min-height: 100vh;
+}
 </style>

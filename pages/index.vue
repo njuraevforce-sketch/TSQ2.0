@@ -103,7 +103,6 @@ export default {
         collectDailyIncome() {
             if (!this.canCollect) return;
             
-            // Анимация получения дохода
             uni.showToast({
                 title: `+$${this.dailyIncome} получено!`,
                 icon: 'success'
@@ -113,10 +112,9 @@ export default {
             this.totalBalance += this.dailyIncome;
             this.availableBalance += this.dailyIncome;
             
-            // Блокируем до следующего дня 22:00
             setTimeout(() => {
                 this.canCollect = true;
-            }, 1000); // В реальном приложении будет 24 часа
+            }, 5000);
         },
         
         goToVip() {

@@ -6,12 +6,28 @@
     "versionCode": "100",
     "transformPx": false,
     "h5": {
+        "publicPath": "./",
         "router": {
             "mode": "hash"
         }
     },
-    "uniStatistics": {
-        "enable": false
+    "app-plus": {
+        "usingComponents": true,
+        "nvueStyleCompiler": "uni-app",
+        "compilerVersion": 3,
+        "splashscreen": {
+            "alwaysShowBeforeRender": true,
+            "waiting": true,
+            "autoclose": true,
+            "delay": 0
+        }
+    },
+    "mp-weixin": {
+        "appid": "wx1234567890",
+        "setting": {
+            "urlCheck": false
+        },
+        "usingComponents": true
     },
     "vueVersion": "3"
 }

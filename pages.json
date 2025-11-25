@@ -44,36 +44,6 @@
                 "navigationBarTitleText": "Регистрация", 
                 "navigationStyle": "custom"
             }
-        },
-        {
-            "path": "pages/recharge/recharge",
-            "style": {
-                "navigationBarTitleText": "Пополнение"
-            }
-        },
-        {
-            "path": "pages/withdraw/withdraw",
-            "style": {
-                "navigationBarTitleText": "Вывод"
-            }
-        },
-        {
-            "path": "pages/transactions/transactions",
-            "style": {
-                "navigationBarTitleText": "История операций"
-            }
-        },
-        {
-            "path": "pages/security/security",
-            "style": {
-                "navigationBarTitleText": "Безопасность"
-            }
-        },
-        {
-            "path": "pages/support/support",
-            "style": {
-                "navigationBarTitleText": "Поддержка"
-            }
         }
     ],
     "globalStyle": {

@@ -4,17 +4,28 @@
   "description": "Finance App",
   "main": "main.js",
   "scripts": {
-    "dev": "uni",
-    "build:h5": "uni build -p h5",
-    "build:app": "uni build -p app",
-    "build:mp-weixin": "uni build -p mp-weixin"
+    "dev": "cross-env NODE_ENV=development uni-cli serve",
+    "build:h5": "cross-env NODE_ENV=production uni-cli build",
+    "build:app": "cross-env NODE_ENV=production uni-cli build --platform app",
+    "build:mp-weixin": "cross-env NODE_ENV=production uni-cli build --platform mp-weixin"
   },
   "dependencies": {
-    "@dcloudio/uni-app": "^3.0.0",
-    "@dcloudio/uni-h5": "^3.0.0",
-    "@dcloudio/uni-mp-weixin": "^3.0.0"
+    "vue": "^3.3.0",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@dcloudio/uni-cli-shared": "^3.0.0"
-  }
+    "@dcloudio/uni-h5": "3.0.0-30720220214001",
+    "@dcloudio/uni-mp-weixin": "3.0.0-30720220214001",
+    "@dcloudio/uni-cli-shared": "3.0.0-30720220214001",
+    "@dcloudio/uni-app": "3.0.0-30720220214001",
+    "@vue/compiler-sfc": "^3.3.0",
+    "cross-env": "^7.0.3",
+    "sass": "^1.60.0",
+    "sass-loader": "^13.2.2"
+  },
+  "browserslist": [
+    "last 3 versions",
+    "Android >= 4.4",
+    "ios >= 9"
+  ]
 }

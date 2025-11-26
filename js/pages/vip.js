@@ -1,33 +1,46 @@
 export function render() {
     return `
-        <uni-view style="padding: 20px; min-height: 100vh; padding-bottom: 100px;">
-            <uni-view style="text-align: center; margin-bottom: 30px;">
-                <uni-text style="font-size: 1.8em; font-weight: bold; margin-bottom: 10px; display: block;">VIP пакеты</uni-text>
-                <uni-text style="color: var(--UI-FG-1); display: block;">Инвестируйте и получайте ежедневный доход</uni-text>
-            </uni-view>
-
-            <uni-view id="vip-packages"></uni-view>
-
-            <div class="uni-tabbar">
-                <div class="uni-tabbar__item" data-route="/">🏠 Главная</div>
-                <div class="uni-tabbar__item active" data-route="/vip">⭐ VIP</div>
-                <div class="uni-tabbar__item" data-route="/team">👥 Рефералы</div>
-                <div class="uni-tabbar__item" data-route="/fund">💰 Кошелек</div>
-                <div class="uni-tabbar__item" data-route="/mine">👤 Профиль</div>
+        <div style="padding: 20px; padding-bottom: 100px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="font-size: 1.8em; font-weight: bold; margin-bottom: 10px;">VIP пакеты</div>
+                <div style="color: var(--UI-FG-2);">Инвестируйте и получайте ежедневный доход</div>
             </div>
-        </uni-view>
+
+            <div id="vip-packages"></div>
+
+            <uni-tabbar class="uni-tabbar-bottom">
+                <uni-tabbar__item data-route="/">
+                    <div class="uni-tabbar__bd">
+                        <div class="uni-tabbar__icon">🏠</div>
+                    </div>
+                </uni-tabbar__item>
+                <uni-tabbar__item class="active" data-route="/vip">
+                    <div class="uni-tabbar__bd">
+                        <div class="uni-tabbar__icon">⭐</div>
+                    </div>
+                </uni-tabbar__item>
+                <uni-tabbar__item data-route="/team">
+                    <div class="uni-tabbar__bd">
+                        <div class="uni-tabbar__icon">👥</div>
+                    </div>
+                </uni-tabbar__item>
+                <uni-tabbar__item data-route="/fund">
+                    <div class="uni-tabbar__bd">
+                        <div class="uni-tabbar__icon">💰</div>
+                    </div>
+                </uni-tabbar__item>
+                <uni-tabbar__item data-route="/mine">
+                    <div class="uni-tabbar__bd">
+                        <div class="uni-tabbar__icon">👤</div>
+                    </div>
+                </uni-tabbar__item>
+            </uni-tabbar>
+        </div>
     `;
 }
 
 export function init() {
     loadVipPackages();
-    
-    document.querySelectorAll('.uni-tabbar__item').forEach(tab => {
-        tab.classList.remove('active');
-        if (tab.getAttribute('data-route') === window.location.pathname) {
-            tab.classList.add('active');
-        }
-    });
 }
 
 function loadVipPackages() {
@@ -42,19 +55,18 @@ function loadVipPackages() {
     
     const container = document.getElementById('vip-packages');
     container.innerHTML = packages.map(pkg => `
-        <uni-view class="uni-card" style="${pkg.owned ? 'border: 2px solid var(--UI-FG-0);' : ''}">
-            <uni-view style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                <uni-text style="font-size: 1.3em; font-weight: bold;">VIP ${pkg.level}</uni-text>
-                ${pkg.owned ? '<uni-text style="background: var(--UI-FG-0); color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">АКТИВЕН</uni-text>' : ''}
-            </uni-view>
-            <uni-text style="font-size: 1.5em; font-weight: bold; text-align: center; margin: 10px 0; display: block;">$${pkg.price}</uni-text>
-            <uni-text style="text-align: center; color: var(--UI-FG-0); margin: 10px 0; font-weight: bold; display: block;">$${pkg.dailyIncome}/день</uni-text>
-            <uni-text style="text-align: center; color: var(--UI-FG-1); margin: 10px 0; display: block;">${(pkg.dailyIncome/pkg.price*100).toFixed(1)}% в день</uni-text>
-            <uni-button onclick="buyVipPackage(${pkg.id})" 
-                style="${pkg.owned ? 'background: rgba(0, 122, 255, 0.3);' : ''}">
+        <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; margin-bottom: 15px; ${pkg.owned ? 'border: 2px solid #007aff;' : ''}">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                <div style="font-size: 1.3em; font-weight: bold;">VIP ${pkg.level}</div>
+                ${pkg.owned ? '<div style="background: #007aff; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">АКТИВЕН</div>' : ''}
+            </div>
+            <div style="font-size: 1.5em; font-weight: bold; text-align: center; margin: 10px 0;">$${pkg.price}</div>
+            <div style="text-align: center; color: #007aff; margin: 10px 0; font-weight: bold;">$${pkg.dailyIncome}/день</div>
+            <div style="text-align: center; color: var(--UI-FG-2); margin: 10px 0;">${(pkg.dailyIncome/pkg.price*100).toFixed(1)}% в день</div>
+            <uni-button type="${pkg.owned ? 'default' : 'primary'}" onclick="buyVipPackage(${pkg.id})" style="width: 100%;">
                 ${pkg.owned ? 'АКТИВЕН' : 'КУПИТЬ'}
             </uni-button>
-        </uni-view>
+        </uni-modal>
     `).join('');
 }
 

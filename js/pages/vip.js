@@ -1,30 +1,28 @@
 export function render() {
     return `
-        <div class="page">
-            <div class="vip-header" style="text-align: center; margin-bottom: 30px;">
-                <div class="vip-title" style="font-size: 1.8em; font-weight: bold; margin-bottom: 10px;">VIP пакеты</div>
-                <div class="vip-subtitle" style="color: #e3e3e3;">Инвестируйте и получайте ежедневный доход</div>
-            </div>
+        <uni-view style="padding: 20px; min-height: 100vh; padding-bottom: 100px;">
+            <uni-view style="text-align: center; margin-bottom: 30px;">
+                <uni-text style="font-size: 1.8em; font-weight: bold; margin-bottom: 10px; display: block;">VIP пакеты</uni-text>
+                <uni-text style="color: var(--UI-FG-1); display: block;">Инвестируйте и получайте ежедневный доход</uni-text>
+            </uni-view>
 
-            <div id="vip-packages">
-                <!-- VIP пакеты загружаются динамически -->
-            </div>
+            <uni-view id="vip-packages"></uni-view>
 
-            <nav class="tab-bar">
-                <div class="tab" data-route="/">🏠 Главная</div>
-                <div class="tab active" data-route="/vip">⭐ VIP</div>
-                <div class="tab" data-route="/team">👥 Рефералы</div>
-                <div class="tab" data-route="/fund">💰 Кошелек</div>
-                <div class="tab" data-route="/mine">👤 Профиль</div>
-            </nav>
-        </div>
+            <div class="uni-tabbar">
+                <div class="uni-tabbar__item" data-route="/">🏠 Главная</div>
+                <div class="uni-tabbar__item active" data-route="/vip">⭐ VIP</div>
+                <div class="uni-tabbar__item" data-route="/team">👥 Рефералы</div>
+                <div class="uni-tabbar__item" data-route="/fund">💰 Кошелек</div>
+                <div class="uni-tabbar__item" data-route="/mine">👤 Профиль</div>
+            </div>
+        </uni-view>
     `;
 }
 
 export function init() {
     loadVipPackages();
     
-    document.querySelectorAll('.tab').forEach(tab => {
+    document.querySelectorAll('.uni-tabbar__item').forEach(tab => {
         tab.classList.remove('active');
         if (tab.getAttribute('data-route') === window.location.pathname) {
             tab.classList.add('active');
@@ -44,19 +42,19 @@ function loadVipPackages() {
     
     const container = document.getElementById('vip-packages');
     container.innerHTML = packages.map(pkg => `
-        <div class="vip-package" style="${pkg.owned ? 'border: 2px solid #4e7771;' : ''}">
-            <div class="vip-package-header" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                <div class="vip-level" style="font-size: 1.3em; font-weight: bold;">VIP ${pkg.level}</div>
-                ${pkg.owned ? '<div style="background: #4e7771; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">АКТИВЕН</div>' : ''}
-            </div>
-            <div class="vip-price" style="font-size: 1.5em; font-weight: bold; text-align: center; margin: 10px 0;">$${pkg.price}</div>
-            <div class="vip-income" style="text-align: center; color: #4e7771; margin: 10px 0; font-weight: bold;">$${pkg.dailyIncome}/день</div>
-            <div style="text-align: center; color: #b2b2b2; margin: 10px 0;">${(pkg.dailyIncome/pkg.price*100).toFixed(1)}% в день</div>
-            <button class="vip-btn" onclick="buyVipPackage(${pkg.id})" 
-                style="${pkg.owned ? 'background: rgba(78, 119, 113, 0.3);' : ''}">
+        <uni-view class="uni-card" style="${pkg.owned ? 'border: 2px solid var(--UI-FG-0);' : ''}">
+            <uni-view style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                <uni-text style="font-size: 1.3em; font-weight: bold;">VIP ${pkg.level}</uni-text>
+                ${pkg.owned ? '<uni-text style="background: var(--UI-FG-0); color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">АКТИВЕН</uni-text>' : ''}
+            </uni-view>
+            <uni-text style="font-size: 1.5em; font-weight: bold; text-align: center; margin: 10px 0; display: block;">$${pkg.price}</uni-text>
+            <uni-text style="text-align: center; color: var(--UI-FG-0); margin: 10px 0; font-weight: bold; display: block;">$${pkg.dailyIncome}/день</uni-text>
+            <uni-text style="text-align: center; color: var(--UI-FG-1); margin: 10px 0; display: block;">${(pkg.dailyIncome/pkg.price*100).toFixed(1)}% в день</uni-text>
+            <uni-button onclick="buyVipPackage(${pkg.id})" 
+                style="${pkg.owned ? 'background: rgba(0, 122, 255, 0.3);' : ''}">
                 ${pkg.owned ? 'АКТИВЕН' : 'КУПИТЬ'}
-            </button>
-        </div>
+            </uni-button>
+        </uni-view>
     `).join('');
 }
 

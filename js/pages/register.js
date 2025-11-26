@@ -1,63 +1,63 @@
 export function render() {
     return `
-        <div class="page">
-            <div style="text-align: center; margin: 40px 0;">
-                <div style="font-size: 3em; margin-bottom: 20px;">💰</div>
-                <div style="font-size: 1.8em; font-weight: bold; margin-bottom: 10px;">Finance App</div>
-                <div style="color: #e3e3e3;">Начните зарабатывать сегодня</div>
-            </div>
+        <uni-view style="padding: 20px; min-height: 100vh;">
+            <uni-view style="text-align: center; margin: 40px 0;">
+                <uni-view style="font-size: 3em; margin-bottom: 20px;">💰</uni-view>
+                <uni-view style="font-size: 1.8em; font-weight: bold; margin-bottom: 10px;">Finance App</uni-view>
+                <uni-text style="color: var(--UI-FG-1);">Начните зарабатывать сегодня</uni-text>
+            </uni-view>
 
-            <div style="margin: 40px 0;">
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <div style="font-size: 1.5em; font-weight: bold; margin-bottom: 10px;">Регистрация</div>
-                    <div style="color: #b2b2b2;">Создайте новый аккаунт</div>
-                </div>
+            <uni-view style="margin: 40px 0;">
+                <uni-view style="text-align: center; margin-bottom: 30px;">
+                    <uni-view style="font-size: 1.5em; font-weight: bold; margin-bottom: 10px;">Регистрация</uni-view>
+                    <uni-text style="color: var(--UI-FG-1);">Создайте новый аккаунт</uni-text>
+                </uni-view>
 
-                <div style="margin-bottom: 15px;">
-                    <div style="margin-bottom: 8px;">Имя</div>
+                <uni-view style="margin-bottom: 15px;">
+                    <uni-text style="margin-bottom: 8px; display: block;">Имя</uni-text>
                     <input class="input-field" type="text" placeholder="Введите ваше имя" id="name">
-                </div>
+                </uni-view>
 
-                <div style="margin-bottom: 15px;">
-                    <div style="margin-bottom: 8px;">Email</div>
+                <uni-view style="margin-bottom: 15px;">
+                    <uni-text style="margin-bottom: 8px; display: block;">Email</uni-text>
                     <input class="input-field" type="email" placeholder="Введите email" id="email">
-                </div>
+                </uni-view>
 
-                <div style="margin-bottom: 15px;">
-                    <div style="margin-bottom: 8px;">Телефон</div>
+                <uni-view style="margin-bottom: 15px;">
+                    <uni-text style="margin-bottom: 8px; display: block;">Телефон</uni-text>
                     <input class="input-field" type="tel" placeholder="Введите телефон" id="phone">
-                </div>
+                </uni-view>
 
-                <div style="margin-bottom: 15px;">
-                    <div style="margin-bottom: 8px;">Пароль</div>
+                <uni-view style="margin-bottom: 15px;">
+                    <uni-text style="margin-bottom: 8px; display: block;">Пароль</uni-text>
                     <input class="input-field" type="password" placeholder="Создайте пароль" id="password">
-                </div>
+                </uni-view>
 
-                <div style="margin-bottom: 15px;">
-                    <div style="margin-bottom: 8px;">Подтвердите пароль</div>
+                <uni-view style="margin-bottom: 15px;">
+                    <uni-text style="margin-bottom: 8px; display: block;">Подтвердите пароль</uni-text>
                     <input class="input-field" type="password" placeholder="Повторите пароль" id="confirmPassword">
-                </div>
+                </uni-view>
 
-                <div style="margin-bottom: 20px;">
-                    <div style="margin-bottom: 8px;">Реферальный код (необязательно)</div>
+                <uni-view style="margin-bottom: 20px;">
+                    <uni-text style="margin-bottom: 8px; display: block;">Реферальный код (необязательно)</uni-text>
                     <input class="input-field" type="text" placeholder="Введите код приглашения" id="refCode">
-                </div>
+                </uni-view>
 
-                <div style="margin-bottom: 30px;">
-                    <label style="display: flex; align-items: flex-start;">
+                <uni-view style="margin-bottom: 30px;">
+                    <uni-label style="align-items: flex-start;">
                         <input type="checkbox" id="agreeTerms" style="margin-right: 8px; margin-top: 3px;">
-                        <span>Я согласен с <span class="link-text">условиями использования</span> и <span class="link-text">политикой конфиденциальности</span></span>
-                    </label>
-                </div>
+                        <uni-text>Я согласен с <uni-text style="color: var(--UI-FG-0); cursor: pointer;">условиями использования</uni-text> и <uni-text style="color: var(--UI-FG-0); cursor: pointer;">политикой конфиденциальности</uni-text></uni-text>
+                    </uni-label>
+                </uni-view>
 
-                <button class="register-button" id="register-btn">Зарегистрироваться</button>
+                <uni-button id="register-btn">Зарегистрироваться</uni-button>
 
-                <div style="text-align: center; margin-top: 30px;">
-                    <span>Уже есть аккаунт? </span>
-                    <span class="link-text" data-route="/login">Войти</span>
-                </div>
-            </div>
-        </div>
+                <uni-view style="text-align: center; margin-top: 30px;">
+                    <uni-text>Уже есть аккаунт? </uni-text>
+                    <uni-text style="color: var(--UI-FG-0); cursor: pointer;" data-route="/login">Войти</uni-text>
+                </uni-view>
+            </uni-view>
+        </uni-view>
     `;
 }
 

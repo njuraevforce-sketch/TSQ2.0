@@ -1,97 +1,84 @@
 export function render() {
     return `
-        <div class="page">
-            <div class="fund-header">
-                <div class="balance-card" style="background: rgba(0,0,0,0.25); border-radius: 15px; padding: 20px; margin-bottom: 15px;">
-                    <div class="balance-label">Общий баланс</div>
-                    <div class="balance-amount" style="font-size: 2.5em; font-weight: bold; margin: 10px 0;">$1250.50</div>
-                    <div class="balance-details" style="display: flex; justify-content: space-between;">
-                        <div class="balance-item">
-                            <div class="label">Доступно</div>
-                            <div class="value">$850.50</div>
-                        </div>
-                        <div class="balance-item">
-                            <div class="label">Заморожено</div>
-                            <div class="value">$400.00</div>
-                        </div>
+        <div style="padding: 20px; padding-bottom: 100px;">
+            <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; margin-bottom: 15px;">
+                <div style="font-size: 14px; color: var(--UI-FG-1);">Общий баланс</div>
+                <div style="font-size: 2em; font-weight: bold; margin: 10px 0;">$1250.50</div>
+                <div style="display: flex; justify-content: space-between;">
+                    <div>
+                        <div style="font-size: 12px; color: var(--UI-FG-1);">Доступно</div>
+                        <div style="font-size: 16px; font-weight: bold;">$850.50</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; color: var(--UI-FG-1);">Заморожено</div>
+                        <div style="font-size: 16px; font-weight: bold;">$400.00</div>
                     </div>
                 </div>
-            </div>
+            </uni-modal>
 
-            <div class="quick-actions" style="margin: 20px 0;">
-                <div class="action-buttons" style="display: flex; gap: 15px;">
-                    <div class="action-btn" id="recharge-btn" style="flex: 1; text-align: center; background: #4e7771; border-radius: 25px; padding: 15px; cursor: pointer;">
-                        <div style="font-size: 1.5em; margin-bottom: 8px;">+</div>
+            <div style="margin-bottom: 15px;">
+                <div style="display: flex; gap: 15px;">
+                    <uni-button type="default" id="recharge-btn" style="flex: 1; padding: 15px;">
+                        <div style="font-size: 1.5em;">+</div>
                         <div>Пополнить</div>
-                    </div>
-                    <div class="action-btn" id="withdraw-btn" style="flex: 1; text-align: center; background: #4e7771; border-radius: 25px; padding: 15px; cursor: pointer;">
-                        <div style="font-size: 1.5em; margin-bottom: 8px;">→</div>
+                    </uni-button>
+                    <uni-button type="default" id="withdraw-btn" style="flex: 1; padding: 15px;">
+                        <div style="font-size: 1.5em;">→</div>
                         <div>Вывести</div>
-                    </div>
+                    </uni-button>
                 </div>
             </div>
 
-            <div class="transaction-history">
-                <div class="section-header" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                    <div class="section-title" style="font-size: 1.2em; font-weight: bold;">История операций</div>
-                    <div class="section-link" style="color: #4e7771; cursor: pointer;">Все операции →</div>
+            <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                    <div style="font-size: 1.2em; font-weight: bold;">История операций</div>
+                    <div style="color: var(--UI-FG-1); cursor: pointer;">Все операции →</div>
                 </div>
 
-                <div id="transactions-list">
-                    <!-- Транзакции загружаются динамически -->
-                </div>
+                <div id="transactions-list"></div>
+            </uni-modal>
+
+            <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; flex: 1; text-align: center;">
+                    <div style="font-size: 1.5em; font-weight: bold;">$2000.00</div>
+                    <div style="font-size: 12px; color: var(--UI-FG-1);">Всего пополнено</div>
+                </uni-modal>
+                <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; flex: 1; text-align: center;">
+                    <div style="font-size: 1.5em; font-weight: bold;">$750.00</div>
+                    <div style="font-size: 12px; color: var(--UI-FG-1);">Всего выведено</div>
+                </uni-modal>
+                <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; flex: 1; text-align: center;">
+                    <div style="font-size: 1.5em; font-weight: bold;">$3250.75</div>
+                    <div style="font-size: 12px; color: var(--UI-FG-1);">Всего заработано</div>
+                </uni-modal>
             </div>
 
-            <div class="stats-section" style="margin-top: 20px;">
-                <div class="stats-grid" style="display: flex; justify-content: space-around; gap: 15px; margin: 15px 0;">
-                    <div class="stat-card" style="text-align: center; flex: 1; background: rgba(0,0,0,0.25); border-radius: 15px; padding: 20px;">
-                        <div class="stat-value" style="font-size: 1.5em; font-weight: bold;">$2000.00</div>
-                        <div class="stat-label" style="font-size: 0.9em; color: #b2b2b2;">Всего пополнено</div>
+            <uni-tabbar class="uni-tabbar-bottom">
+                <uni-tabbar__item data-route="/">
+                    <div class="uni-tabbar__bd">
+                        <div class="uni-tabbar__icon">🏠</div>
                     </div>
-                    <div class="stat-card" style="text-align: center; flex: 1; background: rgba(0,0,0,0.25); border-radius: 15px; padding: 20px;">
-                        <div class="stat-value" style="font-size: 1.5em; font-weight: bold;">$750.00</div>
-                        <div class="stat-label" style="font-size: 0.9em; color: #b2b2b2;">Всего выведено</div>
+                </uni-tabbar__item>
+                <uni-tabbar__item data-route="/vip">
+                    <div class="uni-tabbar__bd">
+                        <div class="uni-tabbar__icon">⭐</div>
                     </div>
-                    <div class="stat-card" style="text-align: center; flex: 1; background: rgba(0,0,0,0.25); border-radius: 15px; padding: 20px;">
-                        <div class="stat-value" style="font-size: 1.5em; font-weight: bold;">$3250.75</div>
-                        <div class="stat-label" style="font-size: 0.9em; color: #b2b2b2;">Всего заработано</div>
+                </uni-tabbar__item>
+                <uni-tabbar__item data-route="/team">
+                    <div class="uni-tabbar__bd">
+                        <div class="uni-tabbar__icon">👥</div>
                     </div>
-                </div>
-            </div>
-
-            <uni-tabbar class="uni-tabbar uni-tabbar-bottom">
-                <div class="uni-tabbar">
-                    <div class="uni-tabbar__item" data-route="/">
-                        <div class="uni-tabbar__bd">
-                            <div class="uni-tabbar__icon">🏠</div>
-                            <div class="uni-tabbar__label">Главная</div>
-                        </div>
+                </uni-tabbar__item>
+                <uni-tabbar__item class="active" data-route="/fund">
+                    <div class="uni-tabbar__bd">
+                        <div class="uni-tabbar__icon">💰</div>
                     </div>
-                    <div class="uni-tabbar__item" data-route="/vip">
-                        <div class="uni-tabbar__bd">
-                            <div class="uni-tabbar__icon">⭐</div>
-                            <div class="uni-tabbar__label">VIP</div>
-                        </div>
+                </uni-tabbar__item>
+                <uni-tabbar__item data-route="/mine">
+                    <div class="uni-tabbar__bd">
+                        <div class="uni-tabbar__icon">👤</div>
                     </div>
-                    <div class="uni-tabbar__item" data-route="/team">
-                        <div class="uni-tabbar__bd">
-                            <div class="uni-tabbar__icon">👥</div>
-                            <div class="uni-tabbar__label">Рефералы</div>
-                        </div>
-                    </div>
-                    <div class="uni-tabbar__item active" data-route="/fund">
-                        <div class="uni-tabbar__bd">
-                            <div class="uni-tabbar__icon">💰</div>
-                            <div class="uni-tabbar__label">Кошелек</div>
-                        </div>
-                    </div>
-                    <div class="uni-tabbar__item" data-route="/mine">
-                        <div class="uni-tabbar__bd">
-                            <div class="uni-tabbar__icon">👤</div>
-                            <div class="uni-tabbar__label">Профиль</div>
-                        </div>
-                    </div>
-                </div>
+                </uni-tabbar__item>
             </uni-tabbar>
         </div>
     `;
@@ -107,13 +94,6 @@ export function init() {
     });
     
     loadTransactions();
-    
-    document.querySelectorAll('.uni-tabbar__item').forEach(tab => {
-        tab.classList.remove('active');
-        if (tab.getAttribute('data-route') === window.location.pathname) {
-            tab.classList.add('active');
-        }
-    });
 }
 
 function loadTransactions() {
@@ -127,16 +107,14 @@ function loadTransactions() {
     const container = document.getElementById('transactions-list');
     
     container.innerHTML = transactions.map(transaction => `
-        <div class="transaction-item" style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.25); border-radius: 15px; padding: 20px; margin-bottom: 15px;">
-            <div class="transaction-info" style="flex: 1;">
-                <div class="transaction-type" style="font-weight: bold; display: block;">${transaction.type}</div>
-                <div class="transaction-date" style="font-size: 0.9em; color: #b2b2b2;">${transaction.date}</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--UI-BG-1);">
+            <div style="flex: 1;">
+                <div style="font-weight: bold;">${transaction.type}</div>
+                <div style="font-size: 0.9em; color: var(--UI-FG-2);">${transaction.date}</div>
             </div>
             <div style="text-align: right;">
-                <div class="${transaction.amount.startsWith('+') ? 'amount-positive' : 'amount-negative'}" style="font-weight: bold; ${transaction.amount.startsWith('+') ? 'color: #4e7771;' : 'color: #e64340;'}">
-                    ${transaction.amount}
-                </div>
-                <div style="font-size: 0.9em; color: #b2b2b2;">${transaction.status}</div>
+                <div style="font-weight: bold; color: ${transaction.amount.startsWith('+') ? 'var(--UI-FG-0)' : '#e64340'};">${transaction.amount}</div>
+                <div style="font-size: 0.9em; color: var(--UI-FG-2);">${transaction.status}</div>
             </div>
         </div>
     `).join('');

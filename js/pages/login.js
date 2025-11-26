@@ -1,44 +1,44 @@
 export function render() {
     return `
-        <div class="page">
-            <div style="text-align: center; margin: 40px 0;">
-                <div style="font-size: 3em; margin-bottom: 20px;">💰</div>
-                <div style="font-size: 1.8em; font-weight: bold; margin-bottom: 10px;">Finance App</div>
-                <div style="color: #e3e3e3;">Инвестируй и зарабатывай</div>
-            </div>
+        <uni-view style="padding: 20px; min-height: 100vh;">
+            <uni-view style="text-align: center; margin: 40px 0;">
+                <uni-view style="font-size: 3em; margin-bottom: 20px;">💰</uni-view>
+                <uni-view style="font-size: 1.8em; font-weight: bold; margin-bottom: 10px;">Finance App</uni-view>
+                <uni-text style="color: var(--UI-FG-1);">Инвестируй и зарабатывай</uni-text>
+            </uni-view>
 
-            <div style="margin: 40px 0;">
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <div style="font-size: 1.5em; font-weight: bold; margin-bottom: 10px;">Вход в аккаунт</div>
-                    <div style="color: #b2b2b2;">Введите ваши данные для входа</div>
-                </div>
+            <uni-view style="margin: 40px 0;">
+                <uni-view style="text-align: center; margin-bottom: 30px;">
+                    <uni-view style="font-size: 1.5em; font-weight: bold; margin-bottom: 10px;">Вход в аккаунт</uni-view>
+                    <uni-text style="color: var(--UI-FG-1);">Введите ваши данные для входа</uni-text>
+                </uni-view>
 
-                <div style="margin-bottom: 20px;">
-                    <div style="margin-bottom: 8px;">Email или телефон</div>
+                <uni-view style="margin-bottom: 20px;">
+                    <uni-text style="margin-bottom: 8px; display: block;">Email или телефон</uni-text>
                     <input class="input-field" type="text" placeholder="Введите email или телефон" id="username">
-                </div>
+                </uni-view>
 
-                <div style="margin-bottom: 20px;">
-                    <div style="margin-bottom: 8px;">Пароль</div>
+                <uni-view style="margin-bottom: 20px;">
+                    <uni-text style="margin-bottom: 8px; display: block;">Пароль</uni-text>
                     <input class="input-field" type="password" placeholder="Введите пароль" id="password">
-                </div>
+                </uni-view>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                    <label style="display: flex; align-items: center;">
+                <uni-view style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                    <uni-label>
                         <input type="checkbox" id="remember" style="margin-right: 8px;">
-                        <span>Запомнить меня</span>
-                    </label>
-                    <div style="color: #4e7771; cursor: pointer;">Забыли пароль?</div>
-                </div>
+                        <uni-text>Запомнить меня</uni-text>
+                    </uni-label>
+                    <uni-text style="color: var(--UI-FG-0); cursor: pointer;">Забыли пароль?</uni-text>
+                </uni-view>
 
-                <button class="login-button" id="login-btn">Войти</button>
+                <uni-button id="login-btn">Войти</uni-button>
 
-                <div style="text-align: center; margin-top: 30px;">
-                    <span>Нет аккаунта? </span>
-                    <span class="link-text" data-route="/register">Зарегистрироваться</span>
-                </div>
-            </div>
-        </div>
+                <uni-view style="text-align: center; margin-top: 30px;">
+                    <uni-text>Нет аккаунта? </uni-text>
+                    <uni-text style="color: var(--UI-FG-0); cursor: pointer;" data-route="/register">Зарегистрироваться</uni-text>
+                </uni-view>
+            </uni-view>
+        </uni-view>
     `;
 }
 

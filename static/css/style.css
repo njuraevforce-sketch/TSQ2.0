@@ -1,27 +1,35 @@
 /* Основные стили как в вашем приложении */
-uni-page-body {
-    min-height: 100vh;
-    background-image: linear-gradient(180deg,#4e7771,#4e7771,rgba(185,215,168,.75));
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    background-image: linear-gradient(180deg,#4e7771,#4e7771,rgba(185,215,168,.75));
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(180deg, #4e7771, #4e7771, rgba(185, 215, 168, 0.75));
+    min-height: 100vh;
+    color: #333;
 }
 
-.topNull {
-    height: 300rpx;
-    background: #4e7771;
-    border-radius: 0 0 80rpx 80rpx;
+uni-page-body {
+    min-height: 100vh;
+    background-image: linear-gradient(180deg, #4e7771, #4e7771, rgba(185, 215, 168, 0.75));
 }
 
-.conWrap {
-    width: 690rpx;
-    margin: -250rpx auto 0;
+.page {
+    min-height: 100vh;
+    padding-bottom: 50px;
 }
 
-/* Стили навбара */
+.page-content {
+    padding: 15px;
+}
+
+/* Навбар стили */
 .u-navbar {
     position: relative;
+    width: 100%;
 }
 
 .u-navbar--fixed {
@@ -32,22 +40,27 @@ body {
     z-index: 1000;
 }
 
+.u-navbar__placeholder {
+    height: 44px;
+}
+
 .u-navbar__content {
     display: flex;
     align-items: center;
     height: 44px;
     padding: 0 15px;
+    background-color: #4e7771;
     position: relative;
 }
 
 .u-navbar__content__left,
 .u-navbar__content__right {
-    padding: 0 13px;
     position: absolute;
     top: 0;
     bottom: 0;
     display: flex;
     align-items: center;
+    padding: 0 13px;
 }
 
 .u-navbar__content__left {
@@ -62,29 +75,84 @@ body {
     text-align: center;
     font-size: 16px;
     color: #FFF;
+    font-weight: bold;
     flex: 1;
 }
 
-/* Стили карточек */
+.u-navbar__content__left__text {
+    font-size: 15px;
+    margin-left: 3px;
+}
+
+/* Иконки */
+.u-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* TopNull и контейнеры */
+.topNull {
+    height: 150px;
+    background: #4e7771;
+    border-radius: 0 0 40px 40px;
+}
+
+.conWrap {
+    width: 90%;
+    max-width: 345px;
+    margin: -125px auto 0;
+}
+
+/* Карточки */
 .card {
-    background: rgba(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    padding: 15px;
     margin-bottom: 15px;
 }
 
 .box-black {
-    background: rgba(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .radius {
     border-radius: 10px;
 }
 
+/* Отступы */
 .padding {
     padding: 15px;
 }
 
+.padding-lr {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.padding-tb {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.padding-top {
+    padding-top: 15px;
+}
+
+.padding-bottom {
+    padding-bottom: 15px;
+}
+
+.padding-top-sm {
+    padding-top: 10px;
+}
+
+/* Маргины */
 .margin-top {
     margin-top: 15px;
 }
@@ -103,6 +171,10 @@ body {
 
 .margin-top-xl {
     margin-top: 30px;
+}
+
+.margin-left-xs {
+    margin-left: 5px;
 }
 
 /* Flex стили */
@@ -180,6 +252,11 @@ body {
     gap: 1px;
 }
 
+.pd {
+    padding: 15px;
+    box-sizing: border-box;
+}
+
 /* Кнопки */
 .pro-btn {
     background: #4e7771;
@@ -188,11 +265,33 @@ body {
     text-align: center;
     margin-top: 15px;
     cursor: pointer;
+    color: white;
+    font-weight: bold;
 }
 
 .pro-btn-none {
     opacity: 0.5;
     pointer-events: none;
+}
+
+.btn .fc {
+    padding: 10px;
+    border: 1px solid #e3e3e3;
+    background-color: transparent;
+    color: #e3e3e3;
+}
+
+.navWrap > div {
+    color: #e3e3e3;
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 1px solid #e3e3e3;
+    border-left: 0;
+    border-bottom: 0;
+    padding: 10px 0;
+}
+
+.navWrap > div:nth-child(2) {
+    border-right: 0;
 }
 
 /* Loading */
@@ -212,6 +311,11 @@ body {
     margin-right: 8px;
 }
 
+.u-loading-icon__text {
+    font-size: 14px;
+    color: #fff;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -226,6 +330,7 @@ body {
     height: 50px;
     background: white;
     border-top: 1px solid #eee;
+    z-index: 1000;
 }
 
 .uni-tabbar__bd {
@@ -241,6 +346,7 @@ body {
     justify-content: center;
     font-size: 12px;
     color: #999;
+    cursor: pointer;
 }
 
 .uni-tabbar__item--active {
@@ -252,10 +358,15 @@ body {
     margin-bottom: 2px;
 }
 
+.uni-tabbar__label {
+    font-size: 10px;
+}
+
 /* Swiper */
 .u-swiper {
     position: relative;
     overflow: hidden;
+    border-radius: 10px;
 }
 
 .u-swiper__wrapper {
@@ -268,23 +379,260 @@ body {
     width: 100%;
 }
 
+.banner-img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Уведомления */
+.notice-section {
+    margin: 15px 0;
+}
+
+.notice-bar {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: #f9ae3d;
+}
+
+.notice-text {
+    font-size: 14px;
+}
+
+/* Монеты */
+.coin-section {
+    margin: 15px 0;
+}
+
+.coin-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.coin-item {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.coin-name {
+    color: #fff;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.coin-price {
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.price-up {
+    color: #52c41a;
+}
+
+.price-down {
+    color: #ff4d4f;
+}
+
+.coin-change {
+    font-size: 12px;
+}
+
+.change-up {
+    color: #52c41a;
+}
+
+.change-down {
+    color: #ff4d4f;
+}
+
+/* Баланс */
+.balance-section {
+    margin: 15px 0;
+}
+
+.balance-card {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+}
+
+.balance-title {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.balance-amount {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.balance-profit {
+    font-size: 12px;
+    color: #ccc;
+}
+
+/* Действия */
+.action-section {
+    margin: 15px 0;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.action-item {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px 5px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+}
+
+.action-icon {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.action-text {
+    font-size: 12px;
+}
+
+/* Попап */
+.pop-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.pop-content {
+    background: white;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 300px;
+    overflow: hidden;
+}
+
+.pop-header {
+    padding: 15px;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+}
+
+.pop-body {
+    padding: 15px;
+}
+
+.pop-footer {
+    padding: 15px;
+    border-top: 1px solid #eee;
+    text-align: right;
+}
+
+.pop-footer button {
+    background: #4e7771;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Границы */
+.border-bottom {
+    border-bottom: 1px solid #545c66;
+}
+
+/* Специфичные стили для страниц */
+.clock-date-time {
+    margin-left: 10px;
+    font-size: 16px;
+    color: #fff;
+}
+
+.swiper-itemWrap {
+    height: 125px;
+    position: relative;
+    padding: 15px;
+    background-size: 100% 100% !important;
+}
+
+.swiperPo {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.vipInfoWrap {
+    margin-top: 15px;
+}
+
+.vipInfo {
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
 /* Адаптация */
-@media (max-width: 750px) {
+@media (max-width: 375px) {
     .conWrap {
-        width: 90%;
-        margin: -200px auto 0;
+        width: 95%;
+        margin: -100px auto 0;
     }
     
     .topNull {
-        height: 200px;
+        height: 120px;
+    }
+    
+    .coin-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .action-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-.page {
-    padding-bottom: 50px;
-    min-height: 100vh;
+@media (min-width: 768px) {
+    .conWrap {
+        max-width: 400px;
+        margin: -150px auto 0;
+    }
+    
+    .topNull {
+        height: 180px;
+    }
 }
 
-.page-content {
-    padding: 15px;
+/* Утилиты */
+.u-line-1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Скрытие элементов */
+[hidden] {
+    display: none !important;
 }

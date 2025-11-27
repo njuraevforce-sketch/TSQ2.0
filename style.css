@@ -1,0 +1,290 @@
+/* Основные стили как в вашем приложении */
+uni-page-body {
+    min-height: 100vh;
+    background-image: linear-gradient(180deg,#4e7771,#4e7771,rgba(185,215,168,.75));
+}
+
+body {
+    background-image: linear-gradient(180deg,#4e7771,#4e7771,rgba(185,215,168,.75));
+}
+
+.topNull {
+    height: 300rpx;
+    background: #4e7771;
+    border-radius: 0 0 80rpx 80rpx;
+}
+
+.conWrap {
+    width: 690rpx;
+    margin: -250rpx auto 0;
+}
+
+/* Стили навбара */
+.u-navbar {
+    position: relative;
+}
+
+.u-navbar--fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.u-navbar__content {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 15px;
+    position: relative;
+}
+
+.u-navbar__content__left,
+.u-navbar__content__right {
+    padding: 0 13px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+}
+
+.u-navbar__content__left {
+    left: 0;
+}
+
+.u-navbar__content__right {
+    right: 0;
+}
+
+.u-navbar__content__title {
+    text-align: center;
+    font-size: 16px;
+    color: #FFF;
+    flex: 1;
+}
+
+/* Стили карточек */
+.card {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.box-black {
+    background: rgba(0,0,0,0.2);
+}
+
+.radius {
+    border-radius: 10px;
+}
+
+.padding {
+    padding: 15px;
+}
+
+.margin-top {
+    margin-top: 15px;
+}
+
+.margin-bottom {
+    margin-bottom: 15px;
+}
+
+.margin-top-sm {
+    margin-top: 10px;
+}
+
+.margin-top-xs {
+    margin-top: 5px;
+}
+
+.margin-top-xl {
+    margin-top: 30px;
+}
+
+/* Flex стили */
+.flex {
+    display: flex;
+}
+
+.flex1 {
+    flex: 1;
+}
+
+.flex-direction {
+    flex-direction: column;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.fc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Текст стили */
+.text-center {
+    text-align: center;
+}
+
+.text-white {
+    color: #fff;
+}
+
+.text-gray {
+    color: #ccc;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.text-xl {
+    font-size: 18px;
+}
+
+.text-xxl {
+    font-size: 24px;
+}
+
+.color-de {
+    color: #dedede;
+}
+
+.color-up {
+    color: #52c41a;
+}
+
+.color-down {
+    color: #ff4d4f;
+}
+
+/* Grid */
+.grid.col-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+}
+
+/* Кнопки */
+.pro-btn {
+    background: #4e7771;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.pro-btn-none {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Loading */
+.u-loading-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.u-loading-icon__spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Tabbar */
+.uni-tabbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background: white;
+    border-top: 1px solid #eee;
+}
+
+.uni-tabbar__bd {
+    display: flex;
+    height: 100%;
+}
+
+.uni-tabbar__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #999;
+}
+
+.uni-tabbar__item--active {
+    color: #4e7771;
+}
+
+.uni-tabbar__icon {
+    font-size: 20px;
+    margin-bottom: 2px;
+}
+
+/* Swiper */
+.u-swiper {
+    position: relative;
+    overflow: hidden;
+}
+
+.u-swiper__wrapper {
+    display: flex;
+    transition: transform 0.3s ease;
+}
+
+.u-swiper-item {
+    flex-shrink: 0;
+    width: 100%;
+}
+
+/* Адаптация */
+@media (max-width: 750px) {
+    .conWrap {
+        width: 90%;
+        margin: -200px auto 0;
+    }
+    
+    .topNull {
+        height: 200px;
+    }
+}
+
+.page {
+    padding-bottom: 50px;
+    min-height: 100vh;
+}
+
+.page-content {
+    padding: 15px;
+}

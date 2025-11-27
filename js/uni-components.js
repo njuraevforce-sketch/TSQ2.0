@@ -1,93 +1,129 @@
-// Регистрируем все uni-компоненты как кастомные элементы
-class UniButton extends HTMLElement {
-    connectedCallback() {
-        const type = this.getAttribute('type') || 'default';
-        const size = this.getAttribute('size') || '';
-        const disabled = this.hasAttribute('disabled');
-        const loading = this.hasAttribute('loading');
-        
-        this.className = `uni-button ${type} ${size} ${disabled ? 'disabled' : ''} ${loading ? 'loading' : ''}`;
-        
-        this.addEventListener('click', (e) => {
-            if (disabled) {
-                e.preventDefault();
-                e.stopPropagation();
-                return;
+// Компоненты как в вашем приложении
+const UniComponents = {
+    install(Vue) {
+        // Навбар компонент
+        Vue.component('u-navbar', {
+            props: ['title', 'bgColor', 'leftIcon', 'titleStyle', 'placeholder', 'autoBack'],
+            template: `
+                <div class="u-navbar">
+                    <div v-if="placeholder" class="u-navbar__placeholder"></div>
+                    <div class="u-navbar--fixed">
+                        <div class="u-navbar__content" :style="{ backgroundColor: bgColor }">
+                            <div class="u-navbar__content__left" @click="leftClick">
+                                <slot name="left">
+                                    <u-icon v-if="leftIcon" :name="leftIcon" :color="leftIconColor" :size="leftIconSize"></u-icon>
+                                    <span v-if="leftText" class="u-navbar__content__left__text">{{ leftText }}</span>
+                                </slot>
+                            </div>
+                            <div class="u-navbar__content__title" :style="titleStyle">{{ title }}</div>
+                            <div class="u-navbar__content__right" @click="rightClick">
+                                <slot name="right"></slot>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            methods: {
+                leftClick() {
+                    if (this.autoBack) history.back();
+                    this.$emit('leftClick');
+                },
+                rightClick() {
+                    this.$emit('rightClick');
+                }
             }
-            this.classList.add('button-hover');
-            setTimeout(() => this.classList.remove('button-hover'), 150);
+        });
+
+        // Иконка компонент
+        Vue.component('u-icon', {
+            props: ['name', 'color', 'size'],
+            template: `<i class="u-icon" :style="{ color: color, fontSize: size + 'px' }">{{ getIconChar(name) }}</i>`,
+            methods: {
+                getIconChar(name) {
+                    const icons = {
+                        'order': '📋',
+                        'clock-fill': '⏰',
+                        'lock-opened-fill': '🔓',
+                        'lock-fill': '🔒'
+                    };
+                    return icons[name] || '●';
+                }
+            }
+        });
+
+        // Loading компонент
+        Vue.component('u-loading-icon', {
+            props: ['textSize', 'color'],
+            template: `
+                <div class="u-loading-icon">
+                    <div class="u-loading-icon__spinner" :style="{ borderTopColor: color }"></div>
+                    <span class="u-loading-icon__text" :style="{ fontSize: textSize + 'px', color: color }">
+                        <slot>加载中...</slot>
+                    </span>
+                </div>
+            `
+        });
+
+        // Swiper компонент
+        Vue.component('u-swiper', {
+            props: ['current', 'vertical', 'autoplay', 'nextMargin'],
+            template: `
+                <div class="u-swiper">
+                    <div class="u-swiper__wrapper">
+                        <slot></slot>
+                    </div>
+                </div>
+            `
+        });
+
+        Vue.component('u-swiper-item', {
+            template: `<div class="u-swiper-item"><slot></slot></div>`
+        });
+
+        // Tabbar компонент
+        Vue.component('tabbar', {
+            props: ['thisPage'],
+            template: `
+                <div class="uni-tabbar">
+                    <div class="uni-tabbar__bd">
+                        <div v-for="tab in tabs" :key="tab.page" 
+                             :class="['uni-tabbar__item', { 'uni-tabbar__item--active': thisPage === tab.page }]"
+                             @click="$emit('change', tab.page)">
+                            <div class="uni-tabbar__icon">
+                                <i :class="tab.icon"></i>
+                            </div>
+                            <div class="uni-tabbar__label">{{ tab.text }}</div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    tabs: [
+                        { page: 't1', text: '首页', icon: 'icon-home' },
+                        { page: 't2', text: 'VIP', icon: 'icon-vip' },
+                        { page: 't3', text: '赚钱', icon: 'icon-money' },
+                        { page: 't4', text: '资金', icon: 'icon-fund' },
+                        { page: 't5', text: '我的', icon: 'icon-mine' }
+                    ]
+                }
+            }
+        });
+
+        // Popup компонент
+        Vue.component('pop', {
+            props: ['obj'],
+            template: `
+                <div v-if="obj && obj.show" class="pop-overlay">
+                    <div class="pop-content">
+                        <div class="pop-header">{{ obj.title }}</div>
+                        <div class="pop-body">{{ obj.content }}</div>
+                        <div class="pop-footer">
+                            <button @click="$emit('close')">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            `
         });
     }
-}
-
-class UniTabbar extends HTMLElement {
-    connectedCallback() {
-        this.className = 'uni-tabbar';
-        const position = this.getAttribute('position') || 'bottom';
-        this.classList.add(`uni-tabbar-${position}`);
-    }
-}
-
-class UniTabbarItem extends HTMLElement {
-    connectedCallback() {
-        this.className = 'uni-tabbar__item';
-        
-        this.addEventListener('click', () => {
-            const route = this.getAttribute('data-route');
-            if (route) {
-                window.history.pushState({}, '', route);
-                window.dispatchEvent(new PopStateEvent('popstate'));
-            }
-            
-            this.parentElement.querySelectorAll('.uni-tabbar__item').forEach(item => {
-                item.classList.remove('active');
-            });
-            this.classList.add('active');
-        });
-    }
-}
-
-class UniInput extends HTMLElement {
-    connectedCallback() {
-        this.className = 'uni-input-wrapper';
-        
-        const placeholder = this.getAttribute('placeholder') || '';
-        const value = this.getAttribute('value') || '';
-        const type = this.getAttribute('type') || 'text';
-        
-        this.innerHTML = `
-            <input class="uni-input-input" type="${type}" placeholder="${placeholder}" value="${value}">
-            ${placeholder ? `<div class="uni-input-placeholder">${placeholder}</div>` : ''}
-        `;
-        
-        const input = this.querySelector('input');
-        const placeholderEl = this.querySelector('.uni-input-placeholder');
-        
-        if (placeholderEl) {
-            input.addEventListener('input', () => {
-                placeholderEl.style.display = input.value ? 'none' : 'block';
-            });
-            placeholderEl.style.display = input.value ? 'none' : 'block';
-        }
-    }
-}
-
-class UniModal extends HTMLElement {
-    connectedCallback() {
-        this.className = 'uni-modal';
-    }
-}
-
-class UniActionsheet extends HTMLElement {
-    connectedCallback() {
-        this.className = 'uni-actionsheet';
-    }
-}
-
-// Регистрируем все компоненты
-customElements.define('uni-button', UniButton);
-customElements.define('uni-tabbar', UniTabbar);
-customElements.define('uni-tabbar__item', UniTabbarItem);
-customElements.define('uni-input', UniInput);
-customElements.define('uni-modal', UniModal);
-customElements.define('uni-actionsheet', UniActionsheet);
+};

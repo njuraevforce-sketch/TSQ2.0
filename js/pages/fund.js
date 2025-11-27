@@ -1,121 +1,130 @@
-export function render() {
-    return `
-        <div style="padding: 20px; padding-bottom: 100px;">
-            <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; margin-bottom: 15px;">
-                <div style="font-size: 14px; color: var(--UI-FG-1);">Общий баланс</div>
-                <div style="font-size: 2em; font-weight: bold; margin: 10px 0;">$1250.50</div>
-                <div style="display: flex; justify-content: space-between;">
-                    <div>
-                        <div style="font-size: 12px; color: var(--UI-FG-1);">Доступно</div>
-                        <div style="font-size: 16px; font-weight: bold;">$850.50</div>
-                    </div>
-                    <div>
-                        <div style="font-size: 12px; color: var(--UI-FG-1);">Заморожено</div>
-                        <div style="font-size: 16px; font-weight: bold;">$400.00</div>
-                    </div>
-                </div>
-            </uni-modal>
+const FundPage = {
+    data() {
+        return {
+            info: {
+                money: "0.00",
+                balance: "0.00", 
+                freeze_money: "0.00"
+            },
+            moneyLog: []
+        }
+    },
+    template: `
+        <div class="page fund-page">
+            <u-navbar title="资金管理" bgColor="#4e7771" :autoBack="false">
+                <template #left>
+                    <img src="./static/img/logo.png" class="logo" />
+                </template>
+                <template #right>
+                    <u-icon name="order" color="#fff" size="20" @click="goToRecord"></u-icon>
+                </template>
+            </u-navbar>
 
-            <div style="margin-bottom: 15px;">
-                <div style="display: flex; gap: 15px;">
-                    <uni-button type="default" id="recharge-btn" style="flex: 1; padding: 15px;">
-                        <div style="font-size: 1.5em;">+</div>
-                        <div>Пополнить</div>
-                    </uni-button>
-                    <uni-button type="default" id="withdraw-btn" style="flex: 1; padding: 15px;">
-                        <div style="font-size: 1.5em;">→</div>
-                        <div>Вывести</div>
-                    </uni-button>
+            <div class="page-content">
+                <div class="topNull"></div>
+                <div class="conWrap">
+                    <!-- Карта баланса -->
+                    <div class="card box-black radius margin-top">
+                        <div class="padding">
+                            <div class="flex align-center justify-between">
+                                <div>总资产</div>
+                            </div>
+                            <div class="balance-amount color-de text-bold text-xxl margin-top">
+                                ¥{{ numFormatter(info.money) }}
+                            </div>
+                            <div class="margin-top flex justify-between">
+                                <div class="flex1 fc flex-direction">
+                                    <div class="text-center">可用余额</div>
+                                    <div class="text-white text-bold margin-top-xs">
+                                        ¥{{ numFormatter(info.balance) }}
+                                    </div>
+                                </div>
+                                <div class="flex1 fc flex-direction">
+                                    <div class="text-center">冻结金额</div>
+                                    <div class="text-white text-bold margin-top-xs">
+                                        ¥{{ numFormatter(info.freeze_money) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Кнопки действий -->
+                        <div class="margin-top flex navWrap btn">
+                            <div class="flex1 fc" @click="goToRecharge">
+                                <div class="margin-left-xs">充值</div>
+                            </div>
+                            <div class="flex1 fc" @click="goToWithdraw">
+                                <div class="margin-left-xs">提现</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- История операций -->
+                    <div class="padding-tb flex align-center justify-between text-bold">
+                        <div class="text-white">资金明细</div>
+                        <div class="color-de" @click="goToRecord">查看全部</div>
+                    </div>
+
+                    <div v-for="log in moneyLog" :key="log.id" class="card box-black radius margin-bottom" @click="goDetail(log)">
+                        <div class="flex align-center justify-between padding-bottom border-bottom">
+                            <div>{{ log.kind_name }}</div>
+                            <div>{{ log.create_time }}</div>
+                        </div>
+                        <div class="flex align-center justify-between padding-top">
+                            <div>金额</div>
+                            <div class="color-up">¥{{ numFormatter(log.money) }}</div>
+                        </div>
+                    </div>
+
+                    <div v-if="moneyLog.length === 0" class="fc margin-top text-white">
+                        暂无数据...
+                    </div>
                 </div>
             </div>
 
-            <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; margin-bottom: 15px;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                    <div style="font-size: 1.2em; font-weight: bold;">История операций</div>
-                    <div style="color: var(--UI-FG-1); cursor: pointer;">Все операции →</div>
-                </div>
-
-                <div id="transactions-list"></div>
-            </uni-modal>
-
-            <div style="display: flex; gap: 15px; margin-bottom: 15px;">
-                <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; flex: 1; text-align: center;">
-                    <div style="font-size: 1.5em; font-weight: bold;">$2000.00</div>
-                    <div style="font-size: 12px; color: var(--UI-FG-1);">Всего пополнено</div>
-                </uni-modal>
-                <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; flex: 1; text-align: center;">
-                    <div style="font-size: 1.5em; font-weight: bold;">$750.00</div>
-                    <div style="font-size: 12px; color: var(--UI-FG-1);">Всего выведено</div>
-                </uni-modal>
-                <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; flex: 1; text-align: center;">
-                    <div style="font-size: 1.5em; font-weight: bold;">$3250.75</div>
-                    <div style="font-size: 12px; color: var(--UI-FG-1);">Всего заработано</div>
-                </uni-modal>
-            </div>
-
-            <uni-tabbar class="uni-tabbar-bottom">
-                <uni-tabbar__item data-route="/">
-                    <div class="uni-tabbar__bd">
-                        <div class="uni-tabbar__icon">🏠</div>
-                    </div>
-                </uni-tabbar__item>
-                <uni-tabbar__item data-route="/vip">
-                    <div class="uni-tabbar__bd">
-                        <div class="uni-tabbar__icon">⭐</div>
-                    </div>
-                </uni-tabbar__item>
-                <uni-tabbar__item data-route="/team">
-                    <div class="uni-tabbar__bd">
-                        <div class="uni-tabbar__icon">👥</div>
-                    </div>
-                </uni-tabbar__item>
-                <uni-tabbar__item class="active" data-route="/fund">
-                    <div class="uni-tabbar__bd">
-                        <div class="uni-tabbar__icon">💰</div>
-                    </div>
-                </uni-tabbar__item>
-                <uni-tabbar__item data-route="/mine">
-                    <div class="uni-tabbar__bd">
-                        <div class="uni-tabbar__icon">👤</div>
-                    </div>
-                </uni-tabbar__item>
-            </uni-tabbar>
+            <tabbar thisPage="t4" @change="onTabChange"></tabbar>
         </div>
-    `;
-}
-
-export function init() {
-    document.getElementById('recharge-btn').addEventListener('click', () => {
-        alert('Переход к пополнению');
-    });
-    
-    document.getElementById('withdraw-btn').addEventListener('click', () => {
-        alert('Переход к выводу');
-    });
-    
-    loadTransactions();
-}
-
-function loadTransactions() {
-    const transactions = [
-        { id: 1, type: "Ежедневный доход", date: "07.01.2024 14:30", amount: "+$15.80", status: "Завершено" },
-        { id: 2, type: "Покупка VIP 3", date: "06.01.2024 16:45", amount: "-$300.00", status: "Завершено" },
-        { id: 3, type: "Реферальный бонус", date: "05.01.2024 09:15", amount: "+$24.50", status: "Завершено" },
-        { id: 4, type: "Вывод средств", date: "04.01.2024 11:20", amount: "-$100.00", status: "В обработке" }
-    ];
-    
-    const container = document.getElementById('transactions-list');
-    
-    container.innerHTML = transactions.map(transaction => `
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--UI-BG-1);">
-            <div style="flex: 1;">
-                <div style="font-weight: bold;">${transaction.type}</div>
-                <div style="font-size: 0.9em; color: var(--UI-FG-2);">${transaction.date}</div>
-            </div>
-            <div style="text-align: right;">
-                <div style="font-weight: bold; color: ${transaction.amount.startsWith('+') ? 'var(--UI-FG-0)' : '#e64340'};">${transaction.amount}</div>
-                <div style="font-size: 0.9em; color: var(--UI-FG-2);">${transaction.status}</div>
-            </div>
-        </div>
-    `).join('');
-}
+    `,
+    methods: {
+        numFormatter(num, digits = 2) {
+            return Number(num).toFixed(digits);
+        },
+        onTabChange(page) {
+            const pageMap = {
+                't1': '/pages/index/index',
+                't2': '/pages/vip/vip',
+                't3': '/pages/get/index', 
+                't4': '/pages/fund/index',
+                't5': '/pages/mine/index'
+            };
+            router.navigateTo(pageMap[page]);
+        },
+        goToRecord() {
+            router.navigateTo('/pages/fund/record');
+        },
+        goToRecharge() {
+            router.navigateTo('/pages/recharge/index');
+        },
+        goToWithdraw() {
+            router.navigateTo('/pages/withdraw/index');
+        },
+        goDetail(log) {
+            router.navigateTo('/pages/fund/recordDetail?info=' + JSON.stringify(log));
+        },
+        getInfo() {
+            this.$request({
+                url: '/api/account/index',
+                method: 'POST',
+                data: { type: 'today' }
+            }).then(res => {
+                if (res.code === 1) {
+                    this.info = res.data;
+                    this.moneyLog = res.data.moneyLog || [];
+                }
+            });
+        }
+    },
+    mounted() {
+        this.getInfo();
+    }
+};

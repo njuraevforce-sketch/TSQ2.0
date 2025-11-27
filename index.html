@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="./static/css/style.css">
 </head>
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <component :is="currentPage"></component>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="./js/uni-components.js"></script>
@@ -23,11 +25,11 @@
     <script src="./js/pages/vip.js"></script>
 
     <script>
-        // Глобальные методы как в вашем приложении
+        // Глобальные методы
         Vue.prototype.$request = function(options) {
-            return new Promise((resolve) => {
+            return new Promise(function(resolve) {
                 // Заглушка для API запросов
-                setTimeout(() => {
+                setTimeout(function() {
                     resolve({
                         code: 1,
                         data: {},
@@ -37,7 +39,8 @@
             });
         };
 
-        Vue.prototype.numFormatter = function(num, digits = 2, showZero = true) {
+        Vue.prototype.numFormatter = function(num, digits, showZero) {
+            digits = digits || 2;
             if (!num && !showZero) return '0';
             return Number(num).toFixed(digits);
         };
@@ -48,17 +51,27 @@
         new Vue({
             el: '#app',
             data: {
-                currentPage: 'index'
+                currentPage: 'IndexPage'
             },
-            template: '<IndexPage />',
             components: {
-                IndexPage
+                IndexPage: IndexPage,
+                FundPage: FundPage,
+                LoginPage: LoginPage,
+                MinePage: MinePage,
+                RegisterPage: RegisterPage,
+                TeamPage: TeamPage,
+                VipPage: VipPage
             }
         });
 
         // Начальный маршрут
-        router.addRoute('/pages/index/index', IndexPage);
-        router.addRoute('/pages/fund/index', FundPage);
+        router.addRoute('/pages/index/index', 'IndexPage');
+        router.addRoute('/pages/fund/index', 'FundPage');
+        router.addRoute('/pages/login/index', 'LoginPage');
+        router.addRoute('/pages/mine/index', 'MinePage');
+        router.addRoute('/pages/register/index', 'RegisterPage');
+        router.addRoute('/pages/team/index', 'TeamPage');
+        router.addRoute('/pages/vip/vip', 'VipPage');
         router.navigateTo('/pages/index/index');
     </script>
 </body>

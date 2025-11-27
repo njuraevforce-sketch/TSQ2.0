@@ -1,81 +1,154 @@
-export function render() {
-    return `
-        <div style="padding: 20px; padding-bottom: 100px;">
-            <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; margin-bottom: 15px;">
-                <div style="font-size: 14px; color: var(--UI-FG-1);">Общий баланс</div>
-                <div style="font-size: 2em; font-weight: bold; margin: 10px 0;">$1250.50</div>
-                <div style="display: flex; justify-content: space-between;">
-                    <div>
-                        <div style="font-size: 12px; color: var(--UI-FG-1);">Доступно</div>
-                        <div style="font-size: 16px; font-weight: bold;">$850.50</div>
-                    </div>
-                    <div>
-                        <div style="font-size: 12px; color: var(--UI-FG-1);">Заморожено</div>
-                        <div style="font-size: 16px; font-weight: bold;">$400.00</div>
+const IndexPage = {
+    data() {
+        return {
+            bannerList: [],
+            notice: "",
+            coinList: [],
+            userMoney: "0.00",
+            userProfitMoney: "0.00",
+            inviteCode: "",
+            isH5: true,
+            siteInfo: {},
+            downLoadUrl: "#",
+            pop: {},
+            showFirst: false
+        }
+    },
+    template: `
+        <div class="page index-page">
+            <u-navbar title="首页" bgColor="#4e7771" :autoBack="false">
+                <template #left>
+                    <img src="./static/img/logo.png" class="logo" />
+                </template>
+                <template #right>
+                    <u-icon name="order" color="#fff" size="20" @click="goToRecord"></u-icon>
+                </template>
+            </u-navbar>
+
+            <div class="page-content">
+                <!-- Баннеры -->
+                <div class="banner-section">
+                    <u-swiper :autoplay="true" :current="0">
+                        <u-swiper-item v-for="(banner, index) in bannerList" :key="index">
+                            <img :src="banner.image" class="banner-img" />
+                        </u-swiper-item>
+                    </u-swiper>
+                </div>
+
+                <!-- Уведомления -->
+                <div class="notice-section" v-if="notice">
+                    <div class="notice-bar">
+                        <span class="notice-text">{{ notice }}</span>
                     </div>
                 </div>
-            </uni-modal>
 
-            <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; margin-bottom: 15px;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                    <div style="font-size: 1.2em; font-weight: bold;">Ежедневный доход</div>
-                    <div style="color: var(--UI-FG-2);">Следующее получение: 22:00</div>
+                <!-- Статистика монет -->
+                <div class="coin-section">
+                    <div class="coin-grid">
+                        <div v-for="coin in coinList" :key="coin.symbol" class="coin-item">
+                            <div class="coin-name">{{ coin.symbol }}</div>
+                            <div class="coin-price" :class="{ 'price-up': coin.change > 0, 'price-down': coin.change < 0 }">
+                                ${{ formatNumber(coin.price) }}
+                            </div>
+                            <div class="coin-change" :class="{ 'change-up': coin.change > 0, 'change-down': coin.change < 0 }">
+                                {{ coin.change > 0 ? '+' : '' }}{{ coin.change }}%
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <uni-button type="primary" id="collect-income" style="width: 100%; padding: 15px;">
-                    <div style="font-size: 1.1em; font-weight: bold;">Получить доход</div>
-                    <div style="color: var(--UI-FG-2);">+$15.80</div>
-                </uni-button>
-            </uni-modal>
 
-            <div style="display: flex; gap: 15px; margin-bottom: 15px;">
-                <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; flex: 1; text-align: center;">
-                    <div style="font-size: 1.5em; font-weight: bold;">$3250.75</div>
-                    <div style="font-size: 12px; color: var(--UI-FG-1);">Всего заработано</div>
-                </uni-modal>
-                <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; flex: 1; text-align: center;">
-                    <div style="font-size: 1.5em; font-weight: bold;">12</div>
-                    <div style="font-size: 12px; color: var(--UI-FG-1);">Рефералов</div>
-                </uni-modal>
-                <uni-modal style="background: var(--UI-BG-2); border-radius: 5px; padding: 20px; flex: 1; text-align: center;">
-                    <div style="font-size: 1.5em; font-weight: bold;">3</div>
-                    <div style="font-size: 12px; color: var(--UI-FG-1);">Активных пакетов</div>
-                </uni-modal>
+                <!-- Баланс пользователя -->
+                <div class="balance-section">
+                    <div class="balance-card">
+                        <div class="balance-title">我的资产</div>
+                        <div class="balance-amount">¥{{ userMoney }}</div>
+                        <div class="balance-profit">累计收益: ¥{{ userProfitMoney }}</div>
+                    </div>
+                </div>
+
+                <!-- Быстрые действия -->
+                <div class="action-section">
+                    <div class="action-grid">
+                        <div class="action-item" @click="goToPage('fund')">
+                            <div class="action-icon">💰</div>
+                            <div class="action-text">资金管理</div>
+                        </div>
+                        <div class="action-item" @click="goToPage('team')">
+                            <div class="action-icon">👥</div>
+                            <div class="action-text">我的团队</div>
+                        </div>
+                        <div class="action-item" @click="goToPage('vip')">
+                            <div class="action-icon">⭐</div>
+                            <div class="action-text">VIP等级</div>
+                        </div>
+                        <div class="action-item" @click="goToPage('mine')">
+                            <div class="action-icon">👤</div>
+                            <div class="action-text">个人中心</div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <uni-tabbar class="uni-tabbar-bottom">
-                <uni-tabbar__item class="active" data-route="/">
-                    <div class="uni-tabbar__bd">
-                        <div class="uni-tabbar__icon">🏠</div>
-                    </div>
-                </uni-tabbar__item>
-                <uni-tabbar__item data-route="/vip">
-                    <div class="uni-tabbar__bd">
-                        <div class="uni-tabbar__icon">⭐</div>
-                    </div>
-                </uni-tabbar__item>
-                <uni-tabbar__item data-route="/team">
-                    <div class="uni-tabbar__bd">
-                        <div class="uni-tabbar__icon">👥</div>
-                    </div>
-                </uni-tabbar__item>
-                <uni-tabbar__item data-route="/fund">
-                    <div class="uni-tabbar__bd">
-                        <div class="uni-tabbar__icon">💰</div>
-                    </div>
-                </uni-tabbar__item>
-                <uni-tabbar__item data-route="/mine">
-                    <div class="uni-tabbar__bd">
-                        <div class="uni-tabbar__icon">👤</div>
-                    </div>
-                </uni-tabbar__item>
-            </uni-tabbar>
+            <tabbar thisPage="t1" @change="onTabChange"></tabbar>
+            <pop :obj="pop" @close="showFirst = false"></pop>
         </div>
-    `;
-}
-
-export function init() {
-    document.getElementById('collect-income').addEventListener('click', () => {
-        alert('Доход получен! +$15.80');
-    });
-}
+    `,
+    methods: {
+        onTabChange(page) {
+            const pageMap = {
+                't1': '/pages/index/index',
+                't2': '/pages/vip/vip', 
+                't3': '/pages/get/index',
+                't4': '/pages/fund/index',
+                't5': '/pages/mine/index'
+            };
+            if (pageMap[page]) {
+                router.navigateTo(pageMap[page]);
+            }
+        },
+        goToRecord() {
+            router.navigateTo('/pages/get/record');
+        },
+        goToPage(page) {
+            router.navigateTo(`/pages/${page}/index`);
+        },
+        formatNumber(num) {
+            return Number(num).toFixed(2);
+        },
+        getInfo() {
+            // API запрос для получения данных
+            this.$request({
+                url: '/api/index/index',
+                method: 'POST'
+            }).then(res => {
+                if (res.code === 1) {
+                    this.bannerList = res.data.banner || [];
+                    this.notice = res.data.scroll?.content || '';
+                    this.pop = res.data.pop || {};
+                    if (this.pop.show) {
+                        this.showFirst = true;
+                    }
+                }
+            });
+        },
+        getCoinList() {
+            this.$request({
+                url: '/api/index/currency',
+                method: 'GET'
+            }).then(res => {
+                if (res.code === 1) {
+                    this.coinList = res.data || [];
+                }
+            });
+        }
+    },
+    mounted() {
+        this.getInfo();
+        this.getCoinList();
+        
+        // Обновление курсов каждые 3 секунды
+        setInterval(() => {
+            this.getCoinList();
+        }, 3000);
+    }
+};

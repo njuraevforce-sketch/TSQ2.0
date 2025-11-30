@@ -13,18 +13,16 @@ export default function renderLogin() {
                 <p style="color: #ccc;">Добро пожаловать в QCF</p>
             </div>
             
-            <div style="margin-bottom: 25px;">
-                <input type="text" id="username" placeholder="Имя пользователя" class="auth-input">
+            <div class="input-container">
+                <input type="text" id="username" placeholder="Имя пользователя" class="input-line">
             </div>
             
-            <div style="margin-bottom: 25px; position: relative;">
-                <input type="password" id="password" placeholder="Пароль" class="auth-input">
-                <i class="fas fa-eye" id="toggle-password" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: #4e7771; cursor: pointer; padding: 12px;"></i>
+            <div class="input-container">
+                <input type="password" id="password" placeholder="Пароль" class="input-line">
+                <i class="fas fa-eye" id="toggle-password" class="password-toggle"></i>
             </div>
             
-            <button id="login-btn" class="auth-btn">
-                Авторизация
-            </button>
+            <button id="login-btn" class="pro-btn" style="width: 100%; background: #4e7771; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 30px;">Авторизация</button>
             
             <div style="text-align: center; margin-top: 20px;">
                 <p style="color: #ccc;">Ещё нет аккаунта? <a href="#" id="go-to-register" style="color: #4e7771;">Зарегистрируйтесь сейчас!</a></p>

@@ -214,6 +214,10 @@ uni-page-body {
     font-size: 24px;
 }
 
+.text-cyan {
+    color: #4e7771;
+}
+
 .color-de {
     color: #dedede;
 }
@@ -230,6 +234,12 @@ uni-page-body {
 .grid.col-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.grid.col-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
 }
 
@@ -797,7 +807,9 @@ uni-page-body {
     overflow: hidden;
     height: 180px;
     border-radius: 10px;
-    touch-action: pan-y;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 }
 
 .vip-card {
@@ -811,8 +823,8 @@ uni-page-body {
     text-align: center;
     color: white;
     transition: transform 0.3s ease;
-    cursor: pointer;
     display: none;
+    scroll-snap-align: start;
 }
 
 .vip-card.active {
@@ -823,7 +835,7 @@ uni-page-body {
 
 .vip-carousel-controls {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     margin-top: 10px;
 }
@@ -986,8 +998,14 @@ uni-page-body {
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 16px;
-    background: transparent !important;
+    font-size: 14px;
+    overflow: hidden;
+}
+
+.crypto-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .crypto-name {
@@ -1206,26 +1224,42 @@ uni-page-body {
     margin-bottom: 15px;
 }
 
-/* Стили для инпутов */
-input[type="text"],
-input[type="password"],
-input[type="number"],
-input[type="email"] {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-top: 5px;
+/* Стили для инпутов с линией */
+.input-line {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #4e7771;
+    border-radius: 0;
+    padding: 12px 0;
+    color: white;
     font-size: 16px;
-    background: rgba(255,255,255,0.9);
+    width: 100%;
+    outline: none;
+    margin-bottom: 20px;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="number"]:focus,
-input[type="email"]:focus {
-    outline: none;
-    border-color: #4e7771;
+.input-line::placeholder {
+    color: #ccc;
+}
+
+.input-line:focus {
+    border-bottom-color: #52c41a;
+}
+
+.input-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+    color: #4e7771;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 18px;
 }
 
 /* Стили для ошибок */
@@ -1317,18 +1351,6 @@ input[type="email"]:focus {
     box-shadow: 0 0 0 3px rgba(78, 119, 113, 0.1);
 }
 
-.password-toggle {
-    position: absolute;
-    right: 15px;
-    top: 45px;
-    transform: translateY(-50%);
-    color: #4e7771;
-    cursor: pointer;
-    background: none;
-    border: none;
-    font-size: 18px;
-}
-
 .auth-button {
     width: 100%;
     background: #4e7771;
@@ -1413,6 +1435,152 @@ input[type="email"]:focus {
     color: #ccc;
 }
 
+/* Стили для новых страниц */
+/* Company page */
+.company-content {
+    color: white;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.company-content h2 {
+    color: #4e7771;
+    margin: 20px 0 10px;
+    font-size: 18px;
+}
+
+.company-content p {
+    margin-bottom: 10px;
+}
+
+.company-logo {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.company-logo img {
+    width: 100px;
+    height: 100px;
+    border-radius: 20px;
+}
+
+/* Invite page */
+.qr-code {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 20px;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.qr-code img {
+    width: 100%;
+    height: 100%;
+}
+
+/* Team page */
+.chart-container {
+    width: 100%;
+    height: 250px;
+    margin: 20px 0;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.team-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.team-stat {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.team-stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4e7771;
+    margin-bottom: 5px;
+}
+
+.team-stat-label {
+    font-size: 12px;
+    color: #ccc;
+}
+
+.referral-list {
+    margin-top: 20px;
+}
+
+.referral-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.referral-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.referral-id {
+    color: white;
+    font-size: 14px;
+}
+
+.referral-email {
+    color: #ccc;
+    font-size: 12px;
+}
+
+.referral-balance {
+    color: #4e7771;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Rules page */
+.rules-content {
+    color: white;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.rules-section {
+    margin-bottom: 20px;
+}
+
+.rules-section h3 {
+    color: #4e7771;
+    margin-bottom: 10px;
+}
+
+.rules-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.rules-list li {
+    margin-bottom: 8px;
+    padding-left: 15px;
+    position: relative;
+}
+
+.rules-list li:before {
+    content: '•';
+    color: #4e7771;
+    position: absolute;
+    left: 0;
+}
+
 /* Адаптация для мобильных экранов */
 @media (max-width: 480px) {
     .conWrap {
@@ -1485,6 +1653,11 @@ input[type="email"]:focus {
         padding: 14px;
         font-size: 16px;
     }
+    
+    .qr-code {
+        width: 150px;
+        height: 150px;
+    }
 }
 
 @media (max-width: 375px) {
@@ -1541,6 +1714,11 @@ body.auth-page .uni-tabbar {
     display: none !important;
 }
 
+/* Страницы быстрого доступа без таббара */
+body.no-tabbar .uni-tabbar {
+    display: none !important;
+}
+
 /* Улучшаем отображение иконок в навигации */
 .nav-icon img,
 .wallet-icon img {
@@ -1565,361 +1743,4 @@ body.auth-page .uni-tabbar {
 /* Скрытие элементов */
 [hidden] {
     display: none !important;
-}
-
-/* Позиционирование для иконок глазка */
-.password-toggle {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #4e7771;
-    cursor: pointer;
-}
-
-/* НОВЫЕ СТИЛИ ДЛЯ ОБНОВЛЕННОГО ДИЗАЙНА */
-
-/* Стили для новых полей ввода */
-.auth-input {
-    width: 100%;
-    padding: 12px 0;
-    border: none;
-    border-bottom: 2px solid #4e7771;
-    background: transparent;
-    color: white;
-    font-size: 16px;
-    outline: none;
-    transition: border-color 0.3s ease;
-}
-
-.auth-input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.auth-input:focus {
-    border-bottom-color: #3d615c;
-}
-
-.auth-btn {
-    width: 100%;
-    background: #4e7771;
-    color: white;
-    border: none;
-    padding: 15px;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.auth-btn:hover {
-    background: #3d615c;
-}
-
-/* Стили для иконок криптовалют */
-.crypto-icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 16px;
-    background: transparent !important;
-}
-
-/* Стили для страницы приглашений */
-.qr-section {
-    text-align: center;
-}
-
-.qr-code-container {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    display: inline-block;
-    margin: 0 auto;
-}
-
-/* Стили для страницы команды */
-.chart-section {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
-
-.team-stats {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.team-stat-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 0;
-}
-
-.team-stat-level {
-    color: white;
-    font-size: 14px;
-    width: 80px;
-}
-
-.team-stat-bar {
-    flex: 1;
-    height: 8px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-    margin: 0 15px;
-    overflow: hidden;
-}
-
-.team-stat-fill {
-    height: 100%;
-    background: #4e7771;
-    border-radius: 4px;
-    transition: width 0.3s ease;
-}
-
-.team-stat-count {
-    color: #4e7771;
-    font-weight: bold;
-    width: 80px;
-    text-align: right;
-}
-
-.view-all-btn {
-    width: 100%;
-    background: transparent;
-    color: #4e7771;
-    border: 2px solid #4e7771;
-    padding: 12px;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.view-all-btn:hover {
-    background: #4e7771;
-    color: white;
-}
-
-/* Стили для списка рефералов */
-.referrals-list {
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.referral-level-section {
-    margin-bottom: 20px;
-}
-
-.referral-level-section h4 {
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #eee;
-}
-
-.referral-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background: #f9f9f9;
-    border-radius: 5px;
-    margin-bottom: 8px;
-}
-
-.referral-info {
-    flex: 1;
-}
-
-.referral-id {
-    font-weight: bold;
-    color: #333;
-    font-size: 14px;
-}
-
-.referral-email {
-    color: #666;
-    font-size: 12px;
-}
-
-.referral-balance {
-    color: #4e7771;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-/* Стили для страницы правил */
-.rules-content {
-    line-height: 1.6;
-}
-
-.rule-section {
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.rule-section h3 {
-    margin-bottom: 15px;
-    font-size: 16px;
-}
-
-.rule-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.rule-label {
-    color: #ccc;
-    font-size: 14px;
-}
-
-.rule-value {
-    color: #4e7771;
-    font-weight: bold;
-}
-
-.vip-levels {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.vip-level {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 12px;
-    border-radius: 5px;
-    border-left: 3px solid #4e7771;
-    font-size: 14px;
-    color: #ccc;
-}
-
-.rule-note {
-    background: rgba(78, 119, 113, 0.2);
-    padding: 15px;
-    border-radius: 5px;
-    margin-top: 20px;
-    border-left: 3px solid #4e7771;
-}
-
-.rule-note p {
-    margin-bottom: 8px;
-    font-size: 14px;
-    color: #ccc;
-}
-
-/* Улучшенные стили для VIP карусели */
-.vip-carousel {
-    display: flex;
-    overflow: hidden;
-    height: 180px;
-    border-radius: 10px;
-    touch-action: pan-y;
-}
-
-.vip-card {
-    min-width: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    color: white;
-    transition: transform 0.3s ease;
-    cursor: pointer;
-    display: none;
-}
-
-.vip-card.active {
-    display: flex;
-    background: rgba(78, 119, 113, 0.3);
-    border: 2px solid #4e7771;
-}
-
-.vip-carousel-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.text-cyan {
-    color: #4e7771 !important;
-}
-
-/* Стили для страницы компании */
-.company-content {
-    line-height: 1.6;
-}
-
-.company-section {
-    background: rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 3px solid #4e7771;
-    margin-bottom: 15px;
-}
-
-.company-section h3 {
-    font-size: 18px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding-bottom: 8px;
-}
-
-.certificate-container {
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
-
-.certificate-image {
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-
-/* Адаптация для мобильных */
-@media (max-width: 480px) {
-    .auth-input {
-        padding: 10px 0;
-        font-size: 14px;
-    }
-    
-    .auth-btn {
-        padding: 12px;
-        font-size: 14px;
-    }
-    
-    .team-stat-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-    
-    .team-stat-bar {
-        width: 100%;
-        margin: 0;
-    }
-    
-    .rule-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-    
-    .company-section {
-        padding: 12px;
-    }
 }

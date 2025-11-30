@@ -7,24 +7,24 @@ export default function renderLogin() {
         </div>
 
         <!-- Форма входа -->
-        <div class="card padding" style="margin-top: 20px;">
+        <div class="card padding" style="margin-top: 20px; background: transparent; box-shadow: none;">
             <div style="text-align: center; margin-bottom: 30px;">
                 <h2 style="color: white; margin-bottom: 10px;">Привет</h2>
                 <p style="color: #ccc;">Добро пожаловать в QCF</p>
             </div>
             
-            <div style="margin-bottom: 15px;">
-                <input type="text" id="username" placeholder="Имя пользователя" 
-                       style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: rgba(255,255,255,0.9);">
+            <div style="margin-bottom: 25px;">
+                <input type="text" id="username" placeholder="Имя пользователя" class="auth-input">
             </div>
             
-            <div style="margin-bottom: 15px; position: relative;">
-                <input type="password" id="password" placeholder="Пароль" 
-                       style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: rgba(255,255,255,0.9);">
-                <i class="fas fa-eye" id="toggle-password" style="position: absolute; right: 10px; top: 12px; color: #4e7771; cursor: pointer;"></i>
+            <div style="margin-bottom: 25px; position: relative;">
+                <input type="password" id="password" placeholder="Пароль" class="auth-input">
+                <i class="fas fa-eye" id="toggle-password" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: #4e7771; cursor: pointer; padding: 12px;"></i>
             </div>
             
-            <button id="login-btn" class="pro-btn" style="width: 100%; background: #4e7771; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px; cursor: pointer;">Авторизация</button>
+            <button id="login-btn" class="auth-btn">
+                Авторизация
+            </button>
             
             <div style="text-align: center; margin-top: 20px;">
                 <p style="color: #ccc;">Ещё нет аккаунта? <a href="#" id="go-to-register" style="color: #4e7771;">Зарегистрируйтесь сейчас!</a></p>

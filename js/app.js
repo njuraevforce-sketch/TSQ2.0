@@ -2,7 +2,7 @@
 class QuantumFarmApp {
     constructor() {
         this.currentSection = null;
-        this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register'];
+        this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register', 'company', 'invite', 'team', 'rules'];
         this.init();
     }
 

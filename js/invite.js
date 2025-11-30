@@ -96,7 +96,7 @@ export function init() {
             QuantumFarm.copyToClipboard(inviteCode).then(() => {
                 const originalText = copyInviteCodeBtn.innerHTML;
                 copyInviteCodeBtn.innerHTML = '<i class="fas fa-check"></i> СКОПИРОВАНО';
-                setTimeout(function() {
+                setTimeout(() => {
                     copyInviteCodeBtn.innerHTML = originalText;
                 }, 2000);
             });

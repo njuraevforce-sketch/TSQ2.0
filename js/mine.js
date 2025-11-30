@@ -1,22 +1,23 @@
 // Mine section
 export default function renderMine() {
     return `
-        <!-- Профиль с фоном и аватаркой -->
-        <div class="profile-banner">
-            <img src="assets/vip.png" alt="VIP Background" class="profile-bg">
-            <div class="profile-info">
-                <div class="profile-avatar-container">
-                    <div class="profile-avatar">👤</div>
-                </div>
-                <div class="profile-name">Quantum Trader</div>
-                <div class="profile-id">ID: QCF123456</div>
-                <div class="profile-vip">VIP 3</div>
-            </div>
-        </div>
-
-        <!-- Статистика профиля -->
+        <!-- Профиль с аватаркой в левом верхнем углу -->
         <div class="card padding">
-            <div class="grid col-2 margin-top">
+            <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                <div class="profile-avatar" style="margin-right: 15px;">👤</div>
+                <div style="flex: 1;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;">
+                        <div class="profile-vip" id="user-vip-level">VIP 3</div>
+                        <button class="copy-btn" id="copy-user-id" style="padding: 4px 8px; font-size: 10px;">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <div class="profile-id" id="user-id">ID: QCF123456</div>
+                </div>
+            </div>
+
+            <!-- Статистика профиля -->
+            <div class="grid col-2">
                 <div class="referral-stat">
                     <div class="text-gray">Total Earned</div>
                     <div class="text-white text-bold">2,456.89 USDT</div>
@@ -187,6 +188,9 @@ export function init() {
     document.getElementById('change-password-setting').addEventListener('click', showPasswordPopup);
     document.getElementById('logout-btn').addEventListener('click', logout);
 
+    // Обработчик для копирования ID пользователя
+    document.getElementById('copy-user-id').addEventListener('click', copyUserId);
+
     // Обработчики для попапов
     document.getElementById('close-address').addEventListener('click', hideAddressPopup);
     document.getElementById('save-address').addEventListener('click', saveWithdrawalAddress);
@@ -281,6 +285,18 @@ function changeLanguage() {
     alert(`Language changed to ${languages[nextIndex]}`);
 }
 
+function copyUserId() {
+    const userId = document.getElementById('user-id').textContent.replace('ID: ', '');
+    QuantumFarm.copyToClipboard(userId).then(() => {
+        const copyBtn = document.getElementById('copy-user-id');
+        const originalHtml = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+        setTimeout(() => {
+            copyBtn.innerHTML = originalHtml;
+        }, 2000);
+    });
+}
+
 function copyTelegram() {
     QuantumFarm.copyToClipboard('@QuantumFarmSupport').then(() => {
         const copyBtn = document.getElementById('copy-telegram');
@@ -307,7 +323,7 @@ function logout() {
     if (confirm('Are you sure you want to logout?')) {
         // Здесь будет логика выхода
         alert('You have been logged out successfully');
-        // В реальном приложении здесь будет редирект на страницу логина
+        window.showSection('login');
     }
 }
 

@@ -4,15 +4,19 @@ export default function renderMine() {
         <!-- Профиль с аватаркой в левом верхнем углу -->
         <div class="card padding">
             <div style="display: flex; align-items: center; margin-bottom: 20px;">
-                <div class="profile-avatar" style="margin-right: 15px;">👤</div>
+                <div class="profile-avatar-small">
+                    👤
+                </div>
                 <div style="flex: 1;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;">
-                        <div class="profile-vip" id="user-vip-level">VIP 3</div>
-                        <button class="copy-btn" id="copy-user-id" style="padding: 4px 8px; font-size: 10px;">
+                        <div class="profile-vip-badge" id="user-vip-level">VIP 3</div>
+                        <button class="copy-id-btn" id="copy-user-id">
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
-                    <div class="profile-id" id="user-id">ID: QCF123456</div>
+                    <div class="profile-id-copy">
+                        <span class="profile-id" id="user-id">ID: QCF123456</span>
+                    </div>
                 </div>
             </div>
 
@@ -345,9 +349,8 @@ function loadProfileData() {
     };
     
     // Обновление данных на странице
-    document.querySelector('.profile-name').textContent = profileData.name;
-    document.querySelector('.profile-id').textContent = `ID: ${profileData.userId}`;
-    document.querySelector('.profile-vip').textContent = profileData.vipLevel;
+    document.getElementById('user-vip-level').textContent = profileData.vipLevel;
+    document.getElementById('user-id').textContent = `ID: ${profileData.userId}`;
     
     // Обновление статистики
     const stats = document.querySelectorAll('.referral-stat');

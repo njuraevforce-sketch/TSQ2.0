@@ -31,6 +31,16 @@ class QuantumFarmApp {
         window.showSection = (sectionId) => {
             this.showSection(sectionId);
         };
+
+        // Глобальная функция для установки заголовка
+        window.setNavbarTitle = (title) => {
+            this.setNavbarTitle(title);
+        };
+
+        // Глобальная функция для показа кнопки назад
+        window.showBackButton = (show = true) => {
+            this.showBackButton(show);
+        };
     }
 
     async showSection(sectionId) {
@@ -55,12 +65,19 @@ class QuantumFarmApp {
             sectionId === 'company' || sectionId === 'invite' || 
             sectionId === 'team' || sectionId === 'rules') {
             this.hideTabbar();
-            this.hideNavbar();
+            this.showNavbar();
             document.body.classList.add('no-tabbar');
+            
+            // Устанавливаем заголовок для страниц быстрого доступа
+            if (sectionId === 'company') this.setNavbarTitle('Company', true);
+            else if (sectionId === 'invite') this.setNavbarTitle('Invite', true);
+            else if (sectionId === 'team') this.setNavbarTitle('Team', true);
+            else if (sectionId === 'rules') this.setNavbarTitle('Rules', true);
         } else {
             this.showTabbar();
             this.showNavbar();
             document.body.classList.remove('no-tabbar');
+            this.setNavbarTitle('Quantum Crypto Farm', false);
             document.querySelector(`[data-section="${sectionId}"]`).classList.add('uni-tabbar__item--active');
         }
 
@@ -125,6 +142,36 @@ class QuantumFarmApp {
         const navbarPlaceholder = document.querySelector('.u-navbar__placeholder');
         if (navbarPlaceholder) {
             navbarPlaceholder.style.display = 'block';
+        }
+    }
+
+    setNavbarTitle(title, showBackButton = false) {
+        const navbarContent = document.querySelector('.u-navbar__content');
+        if (navbarContent) {
+            if (showBackButton) {
+                navbarContent.innerHTML = `
+                    <div class="u-navbar__content__back" id="navbar-back-btn">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <div class="u-navbar__content__title">${title}</div>
+                `;
+                
+                // Добавляем обработчик для кнопки назад
+                document.getElementById('navbar-back-btn').addEventListener('click', () => {
+                    window.showSection('home');
+                });
+            } else {
+                navbarContent.innerHTML = `
+                    <div class="u-navbar__content__title">${title}</div>
+                `;
+            }
+        }
+    }
+
+    showBackButton(show = true) {
+        const backBtn = document.querySelector('.u-navbar__content__back');
+        if (backBtn) {
+            backBtn.style.display = show ? 'block' : 'none';
         }
     }
 }

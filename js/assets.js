@@ -12,13 +12,13 @@ export default function renderAssets() {
             <div class="wallet-actions">
                 <div class="wallet-action" id="deposit-btn">
                     <div class="wallet-icon">
-                        <i class="fas fa-plus-circle"></i>
+                        <img src="assets/deposit.png" alt="Deposit">
                     </div>
                     <div class="wallet-text">Deposit</div>
                 </div>
                 <div class="wallet-action" id="withdraw-btn">
                     <div class="wallet-icon">
-                        <i class="fas fa-minus-circle"></i>
+                        <img src="assets/withdraw.png" alt="Withdraw">
                     </div>
                     <div class="wallet-text">Withdraw</div>
                 </div>

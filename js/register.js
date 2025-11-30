@@ -1,0 +1,115 @@
+// Register section
+export default function renderRegister() {
+    return `
+        <!-- Логотип -->
+        <div class="padding" style="padding-top: 30px; padding-bottom: 0;">
+            <img src="assets/logo.png" alt="Logo" style="width: 60px; height: 60px; border-radius: 10px;">
+        </div>
+
+        <!-- Форма регистрации -->
+        <div class="card padding" style="margin-top: 20px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h2 style="color: white; margin-bottom: 10px;">Привет</h2>
+                <p style="color: #ccc;">Добро пожаловать в QCF</p>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <input type="text" id="reg-username" placeholder="Имя пользователя" 
+                       style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: rgba(255,255,255,0.9);">
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <input type="email" id="email" placeholder="Почта" 
+                       style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: rgba(255,255,255,0.9);">
+            </div>
+            
+            <div style="margin-bottom: 15px; position: relative;">
+                <input type="password" id="reg-password" placeholder="Пароль" 
+                       style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: rgba(255,255,255,0.9);">
+                <i class="fas fa-eye" id="toggle-reg-password" style="position: absolute; right: 10px; top: 12px; color: #4e7771; cursor: pointer;"></i>
+            </div>
+            
+            <div style="margin-bottom: 15px; position: relative;">
+                <input type="password" id="confirm-password" placeholder="Подтвердить пароль" 
+                       style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: rgba(255,255,255,0.9);">
+                <i class="fas fa-eye" id="toggle-confirm-password" style="position: absolute; right: 10px; top: 12px; color: #4e7771; cursor: pointer;"></i>
+            </div>
+            
+            <div style="margin-bottom: 15px; position: relative;">
+                <input type="password" id="payment-password" placeholder="Пароль платежа" 
+                       style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: rgba(255,255,255,0.9);">
+                <i class="fas fa-eye" id="toggle-payment-password" style="position: absolute; right: 10px; top: 12px; color: #4e7771; cursor: pointer;"></i>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <input type="text" id="invite-code" placeholder="Пригласительный код" 
+                       style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: rgba(255,255,255,0.9);">
+            </div>
+            
+            <button id="register-btn" class="pro-btn" style="width: 100%; background: #4e7771; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px; cursor: pointer;">Зарегистрироваться</button>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <p style="color: #ccc;">Уже есть аккаунт? <a href="#" id="go-to-login" style="color: #4e7771;">Войдите сейчас!</a></p>
+            </div>
+        </div>
+    `;
+}
+
+export function init() {
+    // Обработчики для переключения видимости паролей
+    document.getElementById('toggle-reg-password').addEventListener('click', function() {
+        const passwordInput = document.getElementById('reg-password');
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+    });
+
+    document.getElementById('toggle-confirm-password').addEventListener('click', function() {
+        const passwordInput = document.getElementById('confirm-password');
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+    });
+
+    document.getElementById('toggle-payment-password').addEventListener('click', function() {
+        const passwordInput = document.getElementById('payment-password');
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+    });
+
+    // Обработчик для кнопки регистрации
+    document.getElementById('register-btn').addEventListener('click', function() {
+        const username = document.getElementById('reg-username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('reg-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+        const paymentPassword = document.getElementById('payment-password').value;
+        const inviteCode = document.getElementById('invite-code').value;
+        
+        if (!username || !email || !password || !confirmPassword || !paymentPassword) {
+            alert('Пожалуйста, заполните все обязательные поля');
+            return;
+        }
+        
+        if (password !== confirmPassword) {
+            alert('Пароли не совпадают');
+            return;
+        }
+        
+        if (password.length < 6) {
+            alert('Пароль должен быть не менее 6 символов');
+            return;
+        }
+        
+        // Здесь будет логика регистрации
+        alert('Регистрация успешна!');
+        window.showSection('login');
+    });
+
+    // Обработчик для перехода на вход
+    document.getElementById('go-to-login').addEventListener('click', function(e) {
+        e.preventDefault();
+        window.showSection('login');
+    });
+}

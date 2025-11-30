@@ -40,6 +40,6 @@ export default function renderCompany() {
 }
 
 export function init() {
-    // Инициализация страницы компании
     document.body.classList.add('no-tabbar');
+    // Кнопка назад уже настроена в app.js через setNavbarTitle
 }

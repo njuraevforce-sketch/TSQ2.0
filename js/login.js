@@ -1,39 +1,33 @@
 // Login section
 export default function renderLogin() {
     return `
-        <div class="login-section">
-            <div class="auth-container">
-                <!-- Логотип -->
-                <div class="auth-logo">
-                    <img src="assets/logo.png" alt="Logo">
-                </div>
+        <!-- Логотип -->
+        <div class="padding" style="padding-top: 30px; padding-bottom: 0;">
+            <img src="assets/logo.png" alt="Logo" style="width: 60px; height: 60px; border-radius: 10px;">
+        </div>
 
-                <!-- Форма входа -->
-                <div class="auth-form">
-                    <div class="auth-title">
-                        <h1>Привет</h1>
-                        <p>Добро пожаловать в QCF</p>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="username">Имя пользователя</label>
-                        <input type="text" id="username" placeholder="Введите имя пользователя">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="password">Пароль</label>
-                        <input type="password" id="password" placeholder="Введите пароль">
-                        <button class="password-toggle" id="toggle-password" type="button">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                    
-                    <button id="login-btn" class="auth-button">Авторизация</button>
-                    
-                    <div class="auth-link">
-                        <p>Ещё нет аккаунта? <a href="#" id="go-to-register">Зарегистрируйтесь сейчас!</a></p>
-                    </div>
-                </div>
+        <!-- Форма входа -->
+        <div class="card padding" style="margin-top: 20px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h2 style="color: white; margin-bottom: 10px;">Привет</h2>
+                <p style="color: #ccc;">Добро пожаловать в QCF</p>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <input type="text" id="username" placeholder="Имя пользователя" 
+                       style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: rgba(255,255,255,0.9);">
+            </div>
+            
+            <div style="margin-bottom: 15px; position: relative;">
+                <input type="password" id="password" placeholder="Пароль" 
+                       style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: rgba(255,255,255,0.9);">
+                <i class="fas fa-eye" id="toggle-password" style="position: absolute; right: 10px; top: 12px; color: #4e7771; cursor: pointer;"></i>
+            </div>
+            
+            <button id="login-btn" class="pro-btn" style="width: 100%; background: #4e7771; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px; cursor: pointer;">Авторизация</button>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <p style="color: #ccc;">Ещё нет аккаунта? <a href="#" id="go-to-register" style="color: #4e7771;">Зарегистрируйтесь сейчас!</a></p>
             </div>
         </div>
     `;
@@ -46,11 +40,9 @@ export function init() {
     // Обработчик для переключения видимости пароля
     document.getElementById('toggle-password').addEventListener('click', function() {
         const passwordInput = document.getElementById('password');
-        const icon = this.querySelector('i');
         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
         passwordInput.setAttribute('type', type);
-        icon.classList.toggle('fa-eye');
-        icon.classList.toggle('fa-eye-slash');
+        this.classList.toggle('fa-eye-slash');
     });
 
     // Обработчик для кнопки входа

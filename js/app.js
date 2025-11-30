@@ -39,7 +39,9 @@ class QuantumFarmApp {
         // Скрыть текущую секцию
         if (this.currentSection) {
             document.getElementById(this.currentSection).classList.remove('active');
-            if (this.currentSection !== 'login' && this.currentSection !== 'register') {
+            if (this.currentSection !== 'login' && this.currentSection !== 'register' && 
+                this.currentSection !== 'company' && this.currentSection !== 'invite' && 
+                this.currentSection !== 'team' && this.currentSection !== 'rules') {
                 document.querySelector(`[data-section="${this.currentSection}"]`).classList.remove('uni-tabbar__item--active');
             }
         }
@@ -49,12 +51,16 @@ class QuantumFarmApp {
         document.getElementById(sectionId).classList.add('active');
         
         // Управление видимостью таббара и навбара
-        if (sectionId === 'login' || sectionId === 'register') {
+        if (sectionId === 'login' || sectionId === 'register' || 
+            sectionId === 'company' || sectionId === 'invite' || 
+            sectionId === 'team' || sectionId === 'rules') {
             this.hideTabbar();
             this.hideNavbar();
+            document.body.classList.add('no-tabbar');
         } else {
             this.showTabbar();
             this.showNavbar();
+            document.body.classList.remove('no-tabbar');
             document.querySelector(`[data-section="${sectionId}"]`).classList.add('uni-tabbar__item--active');
         }
 

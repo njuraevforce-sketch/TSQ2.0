@@ -55,12 +55,25 @@ uni-page-body {
     position: relative;
 }
 
+/* Стили для кнопки назад в навбаре */
+.u-navbar__content__back {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10;
+}
+
 .u-navbar__content__title {
     text-align: center;
     font-size: 16px;
     color: #FFF;
     font-weight: bold;
     flex: 1;
+    padding: 0 40px; /* Добавляем отступы для кнопки назад */
 }
 
 /* Иконки */
@@ -1228,7 +1241,7 @@ uni-page-body {
 .input-line {
     background: transparent;
     border: none;
-    border-bottom: 1px solid #4e7771;
+    border-bottom: 2px solid #52c41a; /* Яркая зеленая линия всегда */
     border-radius: 0;
     padding: 12px 0;
     color: white;
@@ -1236,6 +1249,7 @@ uni-page-body {
     width: 100%;
     outline: none;
     margin-bottom: 20px;
+    transition: border-color 0.3s ease;
 }
 
 .input-line::placeholder {
@@ -1243,7 +1257,8 @@ uni-page-body {
 }
 
 .input-line:focus {
-    border-bottom-color: #52c41a;
+    border-bottom-color: #52c41a; /* Оставляем тот же цвет при фокусе */
+    border-bottom-width: 3px; /* Немного толще при фокусе */
 }
 
 .input-container {
@@ -1255,11 +1270,12 @@ uni-page-body {
     position: absolute;
     right: 10px;
     top: 12px;
-    color: #4e7771;
+    color: #52c41a; /* Зеленый цвет иконки */
     cursor: pointer;
     background: none;
     border: none;
     font-size: 18px;
+    z-index: 2;
 }
 
 /* Стили для ошибок */

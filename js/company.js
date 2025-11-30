@@ -2,64 +2,37 @@
 export default function renderCompany() {
     return `
         <div class="card padding">
-            <div class="text-center margin-bottom">
-                <h2 class="text-white">Quantum Crypto Farm</h2>
-                <p class="text-gray">Leading Quantum Investment Platform</p>
-            </div>
-
             <div class="company-content">
-                <div class="text-white margin-bottom">
-                    <p>Thanks to the continuous development of quantum computing and artificial intelligence technologies, more and more fields are beginning to apply quantum algorithms to improve efficiency and accuracy. As a leading company in quantum technology, QCF is committed to creating an innovative digital financial trading ecosystem through quantum trading algorithms and blockchain technology.</p>
+                <div class="company-logo">
+                    <img src="assets/logo.png" alt="QCF Logo">
                 </div>
+                
+                <h2>О компании Quantum Crypto Farm (QCF)</h2>
+                <p>Благодаря постоянному развитию технологий искусственного интеллекта (ИИ) всё больше областей начинают применять алгоритмы ИИ для повышения эффективности и точности. Будучи ведущей компанией в области технологий ИИ, QCF стремится создать инновационную экосистему цифровой финансовой торговли с помощью количественных торговых алгоритмов и технологии блокчейн.</p>
+                
+                <h2>Основание и история</h2>
+                <p>Компания QCF (Quantum Crypto Farm) была основана в 2020 году группой учёных и инженеров в области машинного обучения и ИИ, получивших дипломы престижных университетов, таких как Стэнфордский университет, Массачусетский технологический институт и Калифорнийский университет в Беркли. Компания получила поддержку от известных инвесторов. QCF обладает обширным техническим опытом в области обработки изображений, распознавания лиц, автономного вождения, дополненной реальности, глубоких нейронных сетей и машинного глубокого обучения, а также получила патенты на технологию аналитики облачных вычислений на основе ИИ. Компания стремится создать систему торговли криптовалютой, подходящую для различных торговых сценариев и отвечающую потребностям индивидуальных и институциональных инвесторов.</p>
+                
+                <h2>Технологические преимущества QCF</h2>
+                <p>QCF обладает обширным опытом в области алгоритмов, обработки данных и технологий ускорения вычислений. С момента своего основания QCF активно содействует исследованиям и разработкам в области искусственного интеллекта и финансов, добившись значительных успехов, особенно в секторе торговли криптовалютами. QCF сочетает анализ ИИ с математическими моделями, что приводит к точным и эффективным результатам. Услуги компании по управлению финансами и активами приносят значительный доход, а также компания установила обширные партнерские отношения в сфере данных и стратегического партнерства с известными криптовалютными торговыми платформами. В настоящее время количественная торговая платформа QCF насчитывает более полумиллиона пользователей и зарекомендовала себя как ведущая глобальная платформа для торговли криптовалютами.</p>
+                
+                <h2>Применение QCF в торговле криптовалютами</h2>
+                <p>QCF обладает обширным техническим и практическим опытом в сфере торговли криптовалютами. Её количественная торговая платформа использует алгоритмы искусственного интеллекта и математические модели для точного анализа и прогнозирования рыночных тенденций, предлагая эффективные торговые стратегии. Благодаря количественной торговой платформе QCF пользователи могут торговать криптовалютами проще и получать более качественные торговые возможности. Платформа предлагает множество функций, включая мгновенный обмен, кредитные деривативы, торговлю фьючерсами, одноранговую торговлю, майнинг, пулы ликвидности.</p>
+                
+                <h2>Партнёрство QCF</h2>
+                <p>QCF официально заключила партнёрство с ведущими криптобиржами с целью создания новой экосистемы искусственного интеллекта и финансов. Это партнёрство будет способствовать дальнейшему развитию инноваций QCF в сфере торговли криптовалютами.</p>
+                
+                <h2>Количественная торговая платформа QCF</h2>
+                <p>Количественная торговая платформа QCF — один из основных продуктов QCF. Она использует алгоритмы искусственного интеллекта для интеллектуального анализа и принятия решений, помогая пользователям в торговле криптовалютой. Платформа предоставляет мощные функции анализа данных и торговли, поддерживая различные торговые стратегии и типы. Пользователи могут выбирать различные режимы и инструменты торговли в соответствии со своими потребностями для персонализированного торгового опыта.</p>
+                
+                <h2>Перспективы развития QCF</h2>
+                <p>QCF придерживается инновационной философии финтеха и стремится создать экосистему цифровой финансовой торговли, объединяющую искусственный интеллект, технологию блокчейн и количественную торговлю. В будущем QCF продолжит интегрировать многомерные ресурсы для создания первой в мире цифровой финансовой торговой экосистемы и содействия широкому применению количественной торговли на основе ИИ в цифровой экономике и даже в традиционном управлении активами.</p>
+                
+                <h2>Инновации в области количественной торговой алгоритмов QCF</h2>
+                <p>Количественный торговый алгоритм QCF — одна из основных инновационных технологий QCF. Этот алгоритм, основанный на технологиях блокчейна и искусственного интеллекта, объединяет факторы данных, предоставляемые каждым узлом блокчейна, а также данные, связанные с криптовалютами, в библиотеку факторов принятия торговых решений. Благодаря многоуровневому и многоаспектному анализу данных торговых узлов алгоритм обеспечивает более безопасное, прозрачное, децентрализованное и эффективное управление активами.</p>
 
-                <div class="company-section margin-bottom">
-                    <h3 class="text-white margin-bottom">Company Background</h3>
-                    <p class="text-gray">Quantum Crypto Farm (QCF) was founded in 2020 by a group of quantum computing scientists and AI engineers who graduated from prestigious universities including Stanford University, MIT, and University of California, Berkeley. The company has received support from renowned investors in the quantum technology field.</p>
-                </div>
-
-                <div class="company-section margin-bottom">
-                    <h3 class="text-white margin-bottom">Technological Advantages</h3>
-                    <p class="text-gray">QCF has extensive experience in quantum algorithms, data processing, and computational acceleration technologies. Since its foundation, QCF has actively promoted research and development in quantum computing and finance, achieving significant success, particularly in the cryptocurrency trading sector. QCF combines quantum analysis with mathematical models, leading to precise and efficient results.</p>
-                </div>
-
-                <div class="company-section margin-bottom">
-                    <h3 class="text-white margin-bottom">Partnerships</h3>
-                    <p class="text-gray">The company's asset management services generate significant returns, and QCF has established extensive data partnerships and strategic alliances with renowned cryptocurrency trading platforms including Coinbase, Binance, Bitfinex, and Gemini. Currently, QCF's quantum trading platform serves over half a million users and has established itself as a leading global cryptocurrency trading platform.</p>
-                </div>
-
-                <div class="company-section margin-bottom">
-                    <h3 class="text-white margin-bottom">QCF in Cryptocurrency Trading</h3>
-                    <p class="text-gray">QCF has extensive technical and practical experience in cryptocurrency trading. Its quantum trading platform uses quantum AI algorithms and mathematical models for precise market analysis and trend prediction, offering efficient trading strategies. Through QCF's quantum trading platform, users can trade cryptocurrencies more easily and access better trading opportunities.</p>
-                </div>
-
-                <div class="company-section margin-bottom">
-                    <h3 class="text-white margin-bottom">Strategic Partnerships</h3>
-                    <p class="text-gray">QCF officially entered into partnerships with leading crypto exchanges in 2022 with the goal of creating a new quantum AI and finance ecosystem. These partnerships represent the perfect combination of quantum computing and financial technologies.</p>
-                </div>
-
-                <div class="company-section margin-bottom">
-                    <h3 class="text-white margin-bottom">Quantum Trading Platform</h3>
-                    <p class="text-gray">QCF's quantum trading platform is one of the company's flagship products. It uses quantum AI algorithms for intelligent analysis and decision-making, assisting users in cryptocurrency trading. The platform provides powerful data analysis and trading features, supporting various trading strategies and types.</p>
-                </div>
-
-                <div class="company-section margin-bottom">
-                    <h3 class="text-white margin-bottom">Development Prospects</h3>
-                    <p class="text-gray">QCF adheres to innovative fintech philosophy and aims to create a digital financial trading ecosystem integrating quantum computing, blockchain technology, and quantitative trading. In the future, QCF will continue to integrate multidimensional resources to build the world's first quantum-powered digital financial trading ecosystem.</p>
-                </div>
-
-                <div class="company-section margin-bottom">
-                    <h3 class="text-white margin-bottom">Quantum Trading Algorithm Innovations</h3>
-                    <p class="text-gray">QCF's quantum trading algorithm is one of the company's core innovative technologies. This algorithm, based on blockchain and quantum AI technologies, integrates data factors from blockchain nodes and cryptocurrency-related data into a trading decision library. Through multi-level and multi-dimensional analysis of trading node data, the algorithm ensures more secure, transparent, decentralized, and efficient asset management.</p>
-                </div>
-
-                <!-- Certificate Section -->
-                <div class="company-section">
-                    <h3 class="text-white margin-bottom">Company Certification</h3>
-                    <div class="certificate-container text-center">
-                        <img src="assets/doc.png" alt="QCF Certification" class="certificate-image" 
-                             style="max-width: 100%; border-radius: 10px; border: 2px solid #4e7771;">
-                        <p class="text-gray margin-top">Quantum Crypto Farm Official Certification</p>
-                    </div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <img src="assets/doc.png" alt="Сертификат" style="max-width: 100%; border-radius: 10px;">
                 </div>
             </div>
         </div>
@@ -67,35 +40,6 @@ export default function renderCompany() {
 }
 
 export function init() {
-    // Добавляем дополнительные стили для страницы компании
-    const style = document.createElement('style');
-    style.textContent = `
-        .company-content {
-            line-height: 1.6;
-        }
-        
-        .company-section {
-            background: rgba(0, 0, 0, 0.1);
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 3px solid #4e7771;
-        }
-        
-        .company-section h3 {
-            font-size: 18px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 8px;
-        }
-        
-        .certificate-container {
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-        
-        .certificate-image {
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-    `;
-    document.head.appendChild(style);
+    // Инициализация страницы компании
+    document.body.classList.add('no-tabbar');
 }

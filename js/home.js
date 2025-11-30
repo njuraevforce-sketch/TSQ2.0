@@ -16,37 +16,37 @@ export default function renderHome() {
             <div class="nav-grid">
                 <a href="#" class="nav-item">
                     <div class="nav-icon">
-                        <i class="fas fa-building"></i>
+                        <img src="assets/company.png" alt="Company">
                     </div>
                     <div class="nav-text">Company</div>
                 </a>
                 <a href="#" class="nav-item">
                     <div class="nav-icon">
-                        <i class="fas fa-plus-circle"></i>
+                        <img src="assets/deposit.png" alt="Deposit">
                     </div>
                     <div class="nav-text">Deposit</div>
                 </a>
                 <a href="#" class="nav-item">
                     <div class="nav-icon">
-                        <i class="fas fa-minus-circle"></i>
+                        <img src="assets/withdraw.png" alt="Withdraw">
                     </div>
                     <div class="nav-text">Withdraw</div>
                 </a>
                 <a href="#" class="nav-item">
                     <div class="nav-icon">
-                        <i class="fas fa-user-plus"></i>
+                        <img src="assets/invite.png" alt="Invite">
                     </div>
                     <div class="nav-text">Invite</div>
                 </a>
                 <a href="#" class="nav-item">
                     <div class="nav-icon">
-                        <i class="fas fa-users"></i>
+                        <img src="assets/team.png" alt="Team">
                     </div>
                     <div class="nav-text">Team</div>
                 </a>
                 <a href="#" class="nav-item">
                     <div class="nav-icon">
-                        <i class="fas fa-book"></i>
+                        <img src="assets/rules.png" alt="Rules">
                     </div>
                     <div class="nav-text">Rules</div>
                 </a>

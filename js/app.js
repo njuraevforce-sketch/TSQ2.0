@@ -1,14 +1,17 @@
 // Основной модуль приложения
 class QuantumFarmApp {
     constructor() {
-        this.currentSection = 'login';
+        this.currentSection = null;
         this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register'];
         this.init();
     }
 
     async init() {
+        // Скрываем таббар по умолчанию
+        this.hideTabbar();
+        
         // Загружаем начальную секцию
-        await this.loadSection('login');
+        await this.showSection('login');
         this.setupEventListeners();
         this.setupNavigation();
     }
@@ -34,22 +37,24 @@ class QuantumFarmApp {
         if (this.currentSection === sectionId) return;
 
         // Скрыть текущую секцию
-        document.getElementById(this.currentSection).classList.remove('active');
-        if (this.currentSection !== 'login' && this.currentSection !== 'register') {
-            document.querySelector(`[data-section="${this.currentSection}"]`).classList.remove('uni-tabbar__item--active');
+        if (this.currentSection) {
+            document.getElementById(this.currentSection).classList.remove('active');
+            if (this.currentSection !== 'login' && this.currentSection !== 'register') {
+                document.querySelector(`[data-section="${this.currentSection}"]`).classList.remove('uni-tabbar__item--active');
+            }
         }
 
         // Показать новую секцию
         await this.loadSection(sectionId);
         document.getElementById(sectionId).classList.add('active');
         
-        // Показывать/скрывать таббар в зависимости от страницы
+        // Управление видимостью таббара и навбара
         if (sectionId === 'login' || sectionId === 'register') {
-            document.querySelector('.uni-tabbar').style.display = 'none';
-            document.querySelector('.u-navbar').style.display = 'none';
+            this.hideTabbar();
+            this.hideNavbar();
         } else {
-            document.querySelector('.uni-tabbar').style.display = 'flex';
-            document.querySelector('.u-navbar').style.display = 'block';
+            this.showTabbar();
+            this.showNavbar();
             document.querySelector(`[data-section="${sectionId}"]`).classList.add('uni-tabbar__item--active');
         }
 
@@ -78,6 +83,42 @@ class QuantumFarmApp {
         } catch (error) {
             console.error(`Error loading section ${sectionId}:`, error);
             sectionElement.innerHTML = `<div class="error">Error loading ${sectionId} section</div>`;
+        }
+    }
+
+    hideTabbar() {
+        const tabbar = document.querySelector('.uni-tabbar');
+        if (tabbar) {
+            tabbar.style.display = 'none';
+        }
+    }
+
+    showTabbar() {
+        const tabbar = document.querySelector('.uni-tabbar');
+        if (tabbar) {
+            tabbar.style.display = 'flex';
+        }
+    }
+
+    hideNavbar() {
+        const navbar = document.querySelector('.u-navbar');
+        if (navbar) {
+            navbar.style.display = 'none';
+        }
+        const navbarPlaceholder = document.querySelector('.u-navbar__placeholder');
+        if (navbarPlaceholder) {
+            navbarPlaceholder.style.display = 'none';
+        }
+    }
+
+    showNavbar() {
+        const navbar = document.querySelector('.u-navbar');
+        if (navbar) {
+            navbar.style.display = 'block';
+        }
+        const navbarPlaceholder = document.querySelector('.u-navbar__placeholder');
+        if (navbarPlaceholder) {
+            navbarPlaceholder.style.display = 'block';
         }
     }
 }

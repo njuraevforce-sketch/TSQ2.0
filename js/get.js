@@ -23,65 +23,60 @@ export default function renderGet() {
                 </button>
             </div>
 
-            <!-- Процесс квантования -->
+            <!-- Процесс квантования без иконок -->
             <div class="quantum-process" id="quantum-process">
                 <div class="process-step" id="step-1">
-                    <div class="process-icon">
-                        <i class="fas fa-search"></i>
-                    </div>
                     <div class="process-text">Analyzing market conditions...</div>
                 </div>
                 <div class="process-step" id="step-2">
-                    <div class="process-icon">
-                        <i class="fas fa-cogs"></i>
-                    </div>
                     <div class="process-text">Calculating quantum probabilities...</div>
                 </div>
                 <div class="process-step" id="step-3">
-                    <div class="process-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
                     <div class="process-text">Executing quantum trades...</div>
                 </div>
                 <div class="process-step" id="step-4">
-                    <div class="process-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
                     <div class="process-text">Quantum quantification complete!</div>
                 </div>
                 <div class="process-step" id="profit-result" style="display: none;">
-                    <div class="process-icon" style="color: #52c41a;">
-                        <i class="fas fa-dollar-sign"></i>
-                    </div>
-                    <div class="process-text" style="font-weight: bold;">Profit: +43.59 USDT</div>
+                    <div class="process-text" style="font-weight: bold; color: #52c41a;">Profit: +43.59 USDT</div>
                 </div>
             </div>
 
-            <!-- VIP карточки с вертикальным свайпом -->
+            <!-- VIP карточки с улучшенной каруселью -->
             <div class="vip-section">
                 <div class="section-title">VIP Levels</div>
-                <div class="vip-swiper-container" id="vip-swiper">
-                    <div class="vip-swiper-wrapper">
-                        <div class="vip-swiper-slide active">
+                <div class="vip-carousel-container">
+                    <div class="vip-carousel" id="vip-carousel">
+                        <div class="vip-card active" data-level="1">
                             <div class="vip-level-name">VIP 1</div>
                             <div class="vip-level-percent">2.6%</div>
                             <div class="vip-level-requirement">20 USDT</div>
                         </div>
-                        <div class="vip-swiper-slide">
+                        <div class="vip-card" data-level="2">
                             <div class="vip-level-name">VIP 2</div>
                             <div class="vip-level-percent">3.1%</div>
                             <div class="vip-level-requirement">100 USDT + 2 ref</div>
                         </div>
-                        <div class="vip-swiper-slide">
+                        <div class="vip-card" data-level="3">
                             <div class="vip-level-name">VIP 3</div>
                             <div class="vip-level-percent">3.5%</div>
                             <div class="vip-level-requirement">5 ref</div>
                         </div>
-                        <div class="vip-swiper-slide">
+                        <div class="vip-card" data-level="4">
                             <div class="vip-level-name">VIP 4</div>
                             <div class="vip-level-percent">4.0%</div>
                             <div class="vip-level-requirement">7 ref</div>
                         </div>
+                    </div>
+                    <div class="vip-carousel-controls">
+                        <button class="vip-carousel-prev">‹</button>
+                        <div class="vip-carousel-dots">
+                            <span class="vip-dot active" data-index="0"></span>
+                            <span class="vip-dot" data-index="1"></span>
+                            <span class="vip-dot" data-index="2"></span>
+                            <span class="vip-dot" data-index="3"></span>
+                        </div>
+                        <button class="vip-carousel-next">›</button>
                     </div>
                 </div>
                 <div class="vip-description" id="vip-description">
@@ -93,8 +88,8 @@ export default function renderGet() {
 }
 
 export function init() {
-    // Инициализация VIP свайпера
-    initVipSwiper();
+    // Инициализация VIP карусели
+    initVipCarousel();
     
     // Обновление времени UTC
     updateUTCTime();
@@ -102,6 +97,88 @@ export function init() {
     
     // Обработчик кнопки квантования
     document.getElementById('quant-btn').addEventListener('click', startQuantification);
+}
+
+function initVipCarousel() {
+    const carousel = document.getElementById('vip-carousel');
+    const cards = document.querySelectorAll('.vip-card');
+    const dots = document.querySelectorAll('.vip-dot');
+    const prevBtn = document.querySelector('.vip-carousel-prev');
+    const nextBtn = document.querySelector('.vip-carousel-next');
+    const description = document.getElementById('vip-description');
+    
+    let currentIndex = 0;
+    
+    const vipDescriptions = [
+        "Basic level with standard returns. Invest 20 USDT to start earning 2.6% daily profit.",
+        "Enhanced returns with referral requirements. Invest 100 USDT and invite 2 friends to earn 3.1% daily.",
+        "Premium level with team building. Invite 5 friends to unlock 3.5% daily profit without investment.",
+        "Advanced level with maximum benefits. Build a team of 7 referrals to earn 4.0% daily profit."
+    ];
+    
+    function updateCarousel() {
+        cards.forEach((card, index) => {
+            card.classList.remove('active');
+            if (index === currentIndex) {
+                card.classList.add('active');
+            }
+        });
+        
+        dots.forEach((dot, index) => {
+            dot.classList.remove('active');
+            if (index === currentIndex) {
+                dot.classList.add('active');
+            }
+        });
+        
+        description.textContent = vipDescriptions[currentIndex];
+    }
+    
+    prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+        updateCarousel();
+    });
+    
+    nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % cards.length;
+        updateCarousel();
+    });
+    
+    dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            currentIndex = parseInt(dot.getAttribute('data-index'));
+            updateCarousel();
+        });
+    });
+    
+    // Добавляем свайп для мобильных устройств
+    let startX = 0;
+    let endX = 0;
+    
+    carousel.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+    });
+    
+    carousel.addEventListener('touchend', (e) => {
+        endX = e.changedTouches[0].clientX;
+        handleSwipe();
+    });
+    
+    function handleSwipe() {
+        const diffX = startX - endX;
+        const threshold = 50;
+        
+        if (Math.abs(diffX) > threshold) {
+            if (diffX > 0) {
+                // Свайп влево
+                currentIndex = (currentIndex + 1) % cards.length;
+            } else {
+                // Свайп вправо
+                currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+            }
+            updateCarousel();
+        }
+    }
 }
 
 function startQuantification() {
@@ -178,104 +255,6 @@ function runQuantificationProcess() {
     
     // Запускаем первый шаг
     runStep();
-}
-
-function initVipSwiper() {
-    const swiperWrapper = document.querySelector('.vip-swiper-wrapper');
-    const slides = document.querySelectorAll('.vip-swiper-slide');
-    const description = document.getElementById('vip-description');
-    const slideHeight = 180;
-    let currentSlide = 0;
-    
-    const vipDescriptions = [
-        "Basic level with standard returns. Invest 20 USDT to start earning 2.6% daily profit.",
-        "Enhanced returns with referral requirements. Invest 100 USDT and invite 2 friends to earn 3.1% daily.",
-        "Premium level with team building. Invite 5 friends to unlock 3.5% daily profit without investment.",
-        "Advanced level with maximum benefits. Build a team of 7 referrals to earn 4.0% daily profit."
-    ];
-    
-    // Обработчик свайпа
-    let startY = 0;
-    let currentY = 0;
-    let isSwiping = false;
-    
-    swiperWrapper.addEventListener('touchstart', (e) => {
-        startY = e.touches[0].clientY;
-        isSwiping = true;
-        e.preventDefault();
-    });
-    
-    swiperWrapper.addEventListener('touchmove', (e) => {
-        if (!isSwiping) return;
-        currentY = e.touches[0].clientY;
-        e.preventDefault();
-    });
-    
-    swiperWrapper.addEventListener('touchend', () => {
-        if (!isSwiping) return;
-        
-        const diffY = startY - currentY;
-        const threshold = 50;
-        
-        if (Math.abs(diffY) > threshold) {
-            if (diffY > 0 && currentSlide < slides.length - 1) {
-                currentSlide++;
-            } else if (diffY < 0 && currentSlide > 0) {
-                currentSlide--;
-            }
-            
-            updateSwiper();
-        }
-        
-        isSwiping = false;
-    });
-    
-    // Для тестирования на ПК
-    swiperWrapper.addEventListener('mousedown', (e) => {
-        startY = e.clientY;
-        isSwiping = true;
-        e.preventDefault();
-    });
-    
-    swiperWrapper.addEventListener('mousemove', (e) => {
-        if (!isSwiping) return;
-        currentY = e.clientY;
-        e.preventDefault();
-    });
-    
-    swiperWrapper.addEventListener('mouseup', () => {
-        if (!isSwiping) return;
-        
-        const diffY = startY - currentY;
-        const threshold = 50;
-        
-        if (Math.abs(diffY) > threshold) {
-            if (diffY > 0 && currentSlide < slides.length - 1) {
-                currentSlide++;
-            } else if (diffY < 0 && currentSlide > 0) {
-                currentSlide--;
-            }
-            
-            updateSwiper();
-        }
-        
-        isSwiping = false;
-    });
-    
-    function updateSwiper() {
-        const translateY = -currentSlide * slideHeight;
-        swiperWrapper.style.transform = `translateY(${translateY}px)`;
-        
-        slides.forEach((slide, index) => {
-            if (index === currentSlide) {
-                slide.classList.add('active');
-            } else {
-                slide.classList.remove('active');
-            }
-        });
-        
-        description.textContent = vipDescriptions[currentSlide];
-    }
 }
 
 function updateUTCTime() {

@@ -1,78 +1,57 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TSQ2.0</title>
-    <link rel="stylesheet" href="./static/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Crypto Farm</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div id="app">
-        <component :is="currentPage"></component>
+    <!-- Навбар -->
+    <div class="u-navbar u-navbar--fixed">
+        <div class="u-navbar__content">
+            <div class="u-navbar__content__title">Quantum Farm</div>
+        </div>
+    </div>
+    <div class="u-navbar__placeholder"></div>
+
+    <!-- Основной контент -->
+    <div class="page">
+        <div class="topNull"></div>
+        
+        <div class="conWrap">
+            <!-- Контейнеры для динамически загружаемого контента -->
+            <div id="home" class="section active"></div>
+            <div id="get" class="section"></div>
+            <div id="assets" class="section"></div>
+            <div id="mine" class="section"></div>
+        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <script src="./js/uni-components.js"></script>
-    <script src="./js/router.js"></script>
-    
-    <!-- Страницы -->
-    <script src="./js/pages/index.js"></script>
-    <script src="./js/pages/fund.js"></script>
-    <script src="./js/pages/login.js"></script>
-    <script src="./js/pages/mine.js"></script>
-    <script src="./js/pages/register.js"></script>
-    <script src="./js/pages/team.js"></script>
-    <script src="./js/pages/vip.js"></script>
+    <!-- Нижняя навигация -->
+    <div class="uni-tabbar">
+        <div class="uni-tabbar__bd">
+            <div class="uni-tabbar__item uni-tabbar__item--active" data-section="home">
+                <div class="uni-tabbar__icon">🏠</div>
+                <div class="uni-tabbar__label">Home</div>
+            </div>
+            <div class="uni-tabbar__item" data-section="get">
+                <div class="uni-tabbar__icon">🎁</div>
+                <div class="uni-tabbar__label">Get</div>
+            </div>
+            <div class="uni-tabbar__item" data-section="assets">
+                <div class="uni-tabbar__icon">💼</div>
+                <div class="uni-tabbar__label">Assets</div>
+            </div>
+            <div class="uni-tabbar__item" data-section="mine">
+                <div class="uni-tabbar__icon">👤</div>
+                <div class="uni-tabbar__label">Mine</div>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        // Глобальные методы
-        Vue.prototype.$request = function(options) {
-            return new Promise(function(resolve) {
-                // Заглушка для API запросов
-                setTimeout(function() {
-                    resolve({
-                        code: 1,
-                        data: {},
-                        msg: 'success'
-                    });
-                }, 500);
-            });
-        };
-
-        Vue.prototype.numFormatter = function(num, digits, showZero) {
-            digits = digits || 2;
-            if (!num && !showZero) return '0';
-            return Number(num).toFixed(digits);
-        };
-
-        // Инициализация приложения
-        Vue.use(UniComponents);
-        
-        new Vue({
-            el: '#app',
-            data: {
-                currentPage: 'IndexPage'
-            },
-            components: {
-                IndexPage: IndexPage,
-                FundPage: FundPage,
-                LoginPage: LoginPage,
-                MinePage: MinePage,
-                RegisterPage: RegisterPage,
-                TeamPage: TeamPage,
-                VipPage: VipPage
-            }
-        });
-
-        // Начальный маршрут
-        router.addRoute('/pages/index/index', 'IndexPage');
-        router.addRoute('/pages/fund/index', 'FundPage');
-        router.addRoute('/pages/login/index', 'LoginPage');
-        router.addRoute('/pages/mine/index', 'MinePage');
-        router.addRoute('/pages/register/index', 'RegisterPage');
-        router.addRoute('/pages/team/index', 'TeamPage');
-        router.addRoute('/pages/vip/vip', 'VipPage');
-        router.navigateTo('/pages/index/index');
-    </script>
+    <!-- Загрузка скриптов -->
+    <script src="js/app.js" type="module"></script>
 </body>
 </html>

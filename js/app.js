@@ -1,14 +1,14 @@
 // Основной модуль приложения
 class QuantumFarmApp {
     constructor() {
-        this.currentSection = 'home';
-        this.sections = ['home', 'get', 'assets', 'mine'];
+        this.currentSection = 'login';
+        this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register'];
         this.init();
     }
 
     async init() {
         // Загружаем начальную секцию
-        await this.loadSection('home');
+        await this.loadSection('login');
         this.setupEventListeners();
         this.setupNavigation();
     }
@@ -24,7 +24,7 @@ class QuantumFarmApp {
     }
 
     setupNavigation() {
-        // Глобальная функция для навигации (для обратной совместимости)
+        // Глобальная функция для навигации
         window.showSection = (sectionId) => {
             this.showSection(sectionId);
         };
@@ -35,12 +35,23 @@ class QuantumFarmApp {
 
         // Скрыть текущую секцию
         document.getElementById(this.currentSection).classList.remove('active');
-        document.querySelector(`[data-section="${this.currentSection}"]`).classList.remove('uni-tabbar__item--active');
+        if (this.currentSection !== 'login' && this.currentSection !== 'register') {
+            document.querySelector(`[data-section="${this.currentSection}"]`).classList.remove('uni-tabbar__item--active');
+        }
 
         // Показать новую секцию
         await this.loadSection(sectionId);
         document.getElementById(sectionId).classList.add('active');
-        document.querySelector(`[data-section="${sectionId}"]`).classList.add('uni-tabbar__item--active');
+        
+        // Показывать/скрывать таббар в зависимости от страницы
+        if (sectionId === 'login' || sectionId === 'register') {
+            document.querySelector('.uni-tabbar').style.display = 'none';
+            document.querySelector('.u-navbar').style.display = 'none';
+        } else {
+            document.querySelector('.uni-tabbar').style.display = 'flex';
+            document.querySelector('.u-navbar').style.display = 'block';
+            document.querySelector(`[data-section="${sectionId}"]`).classList.add('uni-tabbar__item--active');
+        }
 
         this.currentSection = sectionId;
     }

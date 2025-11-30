@@ -69,12 +69,14 @@ export default function renderGet() {
                         </div>
                     </div>
                     <div class="vip-carousel-controls">
+                        <button class="vip-carousel-prev">‹</button>
                         <div class="vip-carousel-dots">
                             <span class="vip-dot active" data-index="0"></span>
                             <span class="vip-dot" data-index="1"></span>
                             <span class="vip-dot" data-index="2"></span>
                             <span class="vip-dot" data-index="3"></span>
                         </div>
+                        <button class="vip-carousel-next">›</button>
                     </div>
                 </div>
                 <div class="vip-description" id="vip-description">
@@ -101,11 +103,13 @@ function initVipCarousel() {
     const carousel = document.getElementById('vip-carousel');
     const cards = document.querySelectorAll('.vip-card');
     const dots = document.querySelectorAll('.vip-dot');
+    const prevBtn = document.querySelector('.vip-carousel-prev');
+    const nextBtn = document.querySelector('.vip-carousel-next');
     const description = document.getElementById('vip-description');
     
     let currentIndex = 0;
     let startX = 0;
-    let endX = 0;
+    let isDragging = false;
     
     const vipDescriptions = [
         "Basic level with standard returns. Invest 20 USDT to start earning 2.6% daily profit.",
@@ -130,7 +134,23 @@ function initVipCarousel() {
         });
         
         description.textContent = vipDescriptions[currentIndex];
+        
+        // Прокрутка карусели
+        carousel.scrollTo({
+            left: currentIndex * carousel.offsetWidth,
+            behavior: 'smooth'
+        });
     }
+    
+    prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+        updateCarousel();
+    });
+    
+    nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % cards.length;
+        updateCarousel();
+    });
     
     dots.forEach(dot => {
         dot.addEventListener('click', () => {
@@ -139,37 +159,64 @@ function initVipCarousel() {
         });
     });
     
-    // Свайп для мобильных устройств
-    carousel.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
+    // Обработчики для свайпа
+    carousel.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.pageX - carousel.offsetLeft;
+        carousel.style.cursor = 'grabbing';
     });
     
-    carousel.addEventListener('touchmove', (e) => {
-        endX = e.touches[0].clientX;
+    carousel.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
     });
     
-    carousel.addEventListener('touchend', () => {
+    carousel.addEventListener('mouseup', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        carousel.style.cursor = 'grab';
+        
+        const endX = e.pageX - carousel.offsetLeft;
         const diffX = startX - endX;
         const threshold = 50;
         
         if (Math.abs(diffX) > threshold) {
             if (diffX > 0) {
-                // Свайп влево - следующий
+                // Свайп влево
                 currentIndex = (currentIndex + 1) % cards.length;
             } else {
-                // Свайп вправо - предыдущий
+                // Свайп вправо
                 currentIndex = (currentIndex - 1 + cards.length) % cards.length;
             }
             updateCarousel();
         }
     });
     
-    // Клик по карточке для переключения
-    cards.forEach((card, index) => {
-        card.addEventListener('click', () => {
-            currentIndex = index;
+    carousel.addEventListener('mouseleave', () => {
+        isDragging = false;
+        carousel.style.cursor = 'grab';
+    });
+    
+    // Touch events для мобильных устройств
+    carousel.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+    });
+    
+    carousel.addEventListener('touchend', (e) => {
+        const endX = e.changedTouches[0].clientX;
+        const diffX = startX - endX;
+        const threshold = 50;
+        
+        if (Math.abs(diffX) > threshold) {
+            if (diffX > 0) {
+                // Свайп влево
+                currentIndex = (currentIndex + 1) % cards.length;
+            } else {
+                // Свайп вправо
+                currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+            }
             updateCarousel();
-        });
+        }
     });
 }
 

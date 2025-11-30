@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Quantum Crypto Farm</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -11,7 +11,7 @@
     <!-- Навбар -->
     <div class="u-navbar u-navbar--fixed">
         <div class="u-navbar__content">
-            <div class="u-navbar__content__title">Quantum Farm</div>
+            <div class="u-navbar__content__title"></div>
         </div>
     </div>
     <div class="u-navbar__placeholder"></div>
@@ -22,7 +22,9 @@
         
         <div class="conWrap">
             <!-- Контейнеры для динамически загружаемого контента -->
-            <div id="home" class="section active"></div>
+            <div id="login" class="section active"></div>
+            <div id="register" class="section"></div>
+            <div id="home" class="section"></div>
             <div id="get" class="section"></div>
             <div id="assets" class="section"></div>
             <div id="mine" class="section"></div>
@@ -32,20 +34,28 @@
     <!-- Нижняя навигация -->
     <div class="uni-tabbar">
         <div class="uni-tabbar__bd">
-            <div class="uni-tabbar__item uni-tabbar__item--active" data-section="home">
-                <div class="uni-tabbar__icon">🏠</div>
+            <div class="uni-tabbar__item" data-section="home">
+                <div class="uni-tabbar__icon">
+                    <img src="assets/home.png" alt="Home" style="width: 24px; height: 24px;">
+                </div>
                 <div class="uni-tabbar__label">Home</div>
             </div>
             <div class="uni-tabbar__item" data-section="get">
-                <div class="uni-tabbar__icon">🎁</div>
+                <div class="uni-tabbar__icon">
+                    <img src="assets/get.png" alt="Get" style="width: 24px; height: 24px;">
+                </div>
                 <div class="uni-tabbar__label">Get</div>
             </div>
             <div class="uni-tabbar__item" data-section="assets">
-                <div class="uni-tabbar__icon">💼</div>
+                <div class="uni-tabbar__icon">
+                    <img src="assets/assets.png" alt="Assets" style="width: 24px; height: 24px;">
+                </div>
                 <div class="uni-tabbar__label">Assets</div>
             </div>
             <div class="uni-tabbar__item" data-section="mine">
-                <div class="uni-tabbar__icon">👤</div>
+                <div class="uni-tabbar__icon">
+                    <img src="assets/mine.png" alt="Mine" style="width: 24px; height: 24px;">
+                </div>
                 <div class="uni-tabbar__label">Mine</div>
             </div>
         </div>

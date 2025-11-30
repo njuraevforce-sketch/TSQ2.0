@@ -13,36 +13,34 @@ export default function renderRegister() {
                 <p style="color: #ccc;">Добро пожаловать в QCF</p>
             </div>
             
-            <div style="margin-bottom: 25px;">
-                <input type="text" id="reg-username" placeholder="Имя пользователя" class="auth-input">
+            <div class="input-container">
+                <input type="text" id="reg-username" placeholder="Имя пользователя" class="input-line">
             </div>
             
-            <div style="margin-bottom: 25px;">
-                <input type="email" id="email" placeholder="Почта" class="auth-input">
+            <div class="input-container">
+                <input type="email" id="email" placeholder="Почта" class="input-line">
             </div>
             
-            <div style="margin-bottom: 25px; position: relative;">
-                <input type="password" id="reg-password" placeholder="Пароль" class="auth-input">
-                <i class="fas fa-eye" id="toggle-reg-password" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: #4e7771; cursor: pointer; padding: 12px;"></i>
+            <div class="input-container">
+                <input type="password" id="reg-password" placeholder="Пароль" class="input-line">
+                <i class="fas fa-eye" id="toggle-reg-password" class="password-toggle"></i>
             </div>
             
-            <div style="margin-bottom: 25px; position: relative;">
-                <input type="password" id="confirm-password" placeholder="Подтвердить пароль" class="auth-input">
-                <i class="fas fa-eye" id="toggle-confirm-password" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: #4e7771; cursor: pointer; padding: 12px;"></i>
+            <div class="input-container">
+                <input type="password" id="confirm-password" placeholder="Подтвердить пароль" class="input-line">
+                <i class="fas fa-eye" id="toggle-confirm-password" class="password-toggle"></i>
             </div>
             
-            <div style="margin-bottom: 25px; position: relative;">
-                <input type="password" id="payment-password" placeholder="Пароль платежа" class="auth-input">
-                <i class="fas fa-eye" id="toggle-payment-password" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: #4e7771; cursor: pointer; padding: 12px;"></i>
+            <div class="input-container">
+                <input type="password" id="payment-password" placeholder="Пароль платежа" class="input-line">
+                <i class="fas fa-eye" id="toggle-payment-password" class="password-toggle"></i>
             </div>
             
-            <div style="margin-bottom: 25px;">
-                <input type="text" id="invite-code" placeholder="Пригласительный код" class="auth-input">
+            <div class="input-container">
+                <input type="text" id="invite-code" placeholder="Пригласительный код" class="input-line">
             </div>
             
-            <button id="register-btn" class="auth-btn">
-                Зарегистрироваться
-            </button>
+            <button id="register-btn" class="pro-btn" style="width: 100%; background: #4e7771; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 30px;">Зарегистрироваться</button>
             
             <div style="text-align: center; margin-top: 20px;">
                 <p style="color: #ccc;">Уже есть аккаунт? <a href="#" id="go-to-login" style="color: #4e7771;">Войдите сейчас!</a></p>

@@ -3,9 +3,12 @@ export default function renderRegister() {
     return `
         <!-- Форма регистрации -->
         <div class="card padding" style="margin-top: 20px; background: transparent; box-shadow: none;">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <h2 style="color: white; margin-bottom: 10px;">Привет</h2>
-                <p style="color: #ccc;">Добро пожаловать в GLY</p>
+            <div style="text-align: left; margin-bottom: 30px; display: flex; align-items: center;">
+                <img src="assets/logo.png" alt="GLY Logo" style="width: 80px; height: 80px; border-radius: 20px; margin-right: 20px;">
+                <div>
+                    <h2 style="color: white; margin-bottom: 5px; font-size: 28px;">Привет</h2>
+                    <p style="color: #ccc; font-size: 16px;">Добро пожаловать в GLY</p>
+                </div>
             </div>
             
             <div class="input-container">
@@ -48,6 +51,15 @@ export default function renderRegister() {
 
 export function init() {
     document.body.classList.add('auth-page');
+    
+    // Извлекаем invite код из URL
+    const hash = window.location.hash;
+    if (hash.includes('?ref=')) {
+        const refCode = hash.split('?ref=')[1];
+        if (refCode) {
+            document.getElementById('invite-code').value = refCode;
+        }
+    }
     
     // Обработчики для переключения видимости паролей
     document.getElementById('toggle-reg-password').addEventListener('click', function() {

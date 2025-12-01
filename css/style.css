@@ -1237,13 +1237,13 @@ uni-page-body {
     margin-bottom: 15px;
 }
 
-/* Стили для инпутов с линией */
+/* Стили для инпутов с линией - ИСПРАВЛЕННЫЕ */
 .input-line {
     background: transparent;
     border: none;
     border-bottom: 2px solid #52c41a; /* Яркая зеленая линия всегда */
     border-radius: 0;
-    padding: 12px 0;
+    padding: 12px 40px 12px 0; /* Добавляем правый отступ для иконки */
     color: white;
     font-size: 16px;
     width: 100%;
@@ -1266,16 +1266,29 @@ uni-page-body {
     margin-bottom: 20px;
 }
 
+/* Стили для иконок глазка - ИСПРАВЛЕННЫЕ */
 .password-toggle {
     position: absolute;
     right: 10px;
-    top: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     color: #52c41a; /* Зеленый цвет иконки */
     cursor: pointer;
     background: none;
     border: none;
     font-size: 18px;
-    z-index: 2;
+    z-index: 10;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Убедимся, что Font Awesome иконки правильно отображаются */
+.password-toggle i {
+    display: block;
+    line-height: 1;
 }
 
 /* Стили для ошибок */

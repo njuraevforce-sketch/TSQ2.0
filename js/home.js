@@ -23,7 +23,7 @@ export default function renderHome() {
             </div>
         </div>
 
-        <!-- Навигационные иконки -->
+        <!-- Навигационные иконки БЕЗ ФОНА И СТИЛЕЙ -->
         <div class="nav-section">
             <div class="nav-grid">
                 <a href="#" class="nav-item" data-section="company">

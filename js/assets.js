@@ -139,36 +139,85 @@ export default function renderAssets() {
 }
 
 export async function init() {
-    // Загрузка данных пользователя
-    await loadUserData();
-    
-    // Загрузка истории транзакций
-    await loadTransactionHistory();
-    
-    // Обработчики для кнопок депозита и вывода
-    document.getElementById('deposit-btn').addEventListener('click', showDepositPopup);
-    document.getElementById('withdraw-btn').addEventListener('click', showWithdrawPopup);
-    
-    // Обработчики для попапов
-    document.getElementById('close-deposit').addEventListener('click', hideDepositPopup);
-    document.getElementById('close-withdraw').addEventListener('click', hideWithdrawPopup);
-    document.getElementById('confirm-deposit').addEventListener('click', processDeposit);
-    document.getElementById('confirm-withdraw').addEventListener('click', processWithdrawal);
-    document.getElementById('close-deposit-success').addEventListener('click', hideDepositSuccessPopup);
-    
-    // Копирование адреса депозита
-    document.getElementById('copy-deposit-btn').addEventListener('click', copyDepositAddress);
+    try {
+        // Используем задержку для гарантии загрузки DOM
+        setTimeout(async () => {
+            // Загрузка данных пользователя
+            await loadUserData();
+            
+            // Загрузка истории транзакций
+            await loadTransactionHistory();
+            
+            // Настройка обработчиков событий
+            setupEventListeners();
+        }, 100);
+    } catch (error) {
+        console.error('Error initializing assets:', error);
+    }
+}
+
+function setupEventListeners() {
+    try {
+        // Обработчики для кнопок депозита и вывода
+        const depositBtn = document.getElementById('deposit-btn');
+        const withdrawBtn = document.getElementById('withdraw-btn');
+        
+        if (depositBtn) {
+            depositBtn.addEventListener('click', showDepositPopup);
+        }
+        if (withdrawBtn) {
+            withdrawBtn.addEventListener('click', showWithdrawPopup);
+        }
+        
+        // Обработчики для попапов (добавляем с задержкой)
+        setTimeout(() => {
+            const closeDepositBtn = document.getElementById('close-deposit');
+            const closeWithdrawBtn = document.getElementById('close-withdraw');
+            const confirmDepositBtn = document.getElementById('confirm-deposit');
+            const confirmWithdrawBtn = document.getElementById('confirm-withdraw');
+            const closeDepositSuccessBtn = document.getElementById('close-deposit-success');
+            const copyDepositBtn = document.getElementById('copy-deposit-btn');
+            
+            if (closeDepositBtn) {
+                closeDepositBtn.addEventListener('click', hideDepositPopup);
+            }
+            if (closeWithdrawBtn) {
+                closeWithdrawBtn.addEventListener('click', hideWithdrawPopup);
+            }
+            if (confirmDepositBtn) {
+                confirmDepositBtn.addEventListener('click', processDeposit);
+            }
+            if (confirmWithdrawBtn) {
+                confirmWithdrawBtn.addEventListener('click', processWithdrawal);
+            }
+            if (closeDepositSuccessBtn) {
+                closeDepositSuccessBtn.addEventListener('click', hideDepositSuccessPopup);
+            }
+            if (copyDepositBtn) {
+                copyDepositBtn.addEventListener('click', copyDepositAddress);
+            }
+        }, 200);
+    } catch (error) {
+        console.error('Error setting up event listeners:', error);
+    }
 }
 
 async function loadUserData() {
-    const user = window.getCurrentUser();
-    if (!user) {
-        window.showSection('login');
-        return;
+    try {
+        const user = window.getCurrentUser();
+        if (!user) {
+            window.showSection('login');
+            return;
+        }
+        
+        // Обновляем баланс
+        const balanceElement = document.getElementById('total-balance');
+        if (balanceElement) {
+            balanceElement.textContent = `${user.balance.toFixed(2)} USDT`;
+        }
+    } catch (error) {
+        console.error('Error loading user data:', error);
     }
-    
-    // Обновляем баланс
-    document.getElementById('total-balance').textContent = `${user.balance.toFixed(2)} USDT`;
 }
 
 async function loadTransactionHistory() {
@@ -193,6 +242,8 @@ async function loadTransactionHistory() {
         let referralIncome = 0;
         
         const transactionList = document.getElementById('transaction-list');
+        if (!transactionList) return;
+        
         let html = '';
         
         if (transactions && transactions.length > 0) {
@@ -230,10 +281,15 @@ async function loadTransactionHistory() {
         transactionList.innerHTML = html;
         
         // Обновляем статистику
-        document.getElementById('total-earned').textContent = `${totalEarned.toFixed(2)} USDT`;
-        document.getElementById('total-deposits').textContent = `${totalDeposits.toFixed(2)} USDT`;
-        document.getElementById('total-withdrawals').textContent = `${totalWithdrawals.toFixed(2)} USDT`;
-        document.getElementById('referral-income').textContent = `${referralIncome.toFixed(2)} USDT`;
+        const totalEarnedElement = document.getElementById('total-earned');
+        const totalDepositsElement = document.getElementById('total-deposits');
+        const totalWithdrawalsElement = document.getElementById('total-withdrawals');
+        const referralIncomeElement = document.getElementById('referral-income');
+        
+        if (totalEarnedElement) totalEarnedElement.textContent = `${totalEarned.toFixed(2)} USDT`;
+        if (totalDepositsElement) totalDepositsElement.textContent = `${totalDeposits.toFixed(2)} USDT`;
+        if (totalWithdrawalsElement) totalWithdrawalsElement.textContent = `${totalWithdrawals.toFixed(2)} USDT`;
+        if (referralIncomeElement) referralIncomeElement.textContent = `${referralIncome.toFixed(2)} USDT`;
         
     } catch (error) {
         console.error('Error loading transaction history:', error);
@@ -252,57 +308,90 @@ function getTransactionType(type) {
 }
 
 function showDepositPopup() {
-    document.getElementById('deposit-popup').style.display = 'flex';
+    const popup = document.getElementById('deposit-popup');
+    if (popup) {
+        popup.style.display = 'flex';
+    }
 }
 
 function hideDepositPopup() {
-    document.getElementById('deposit-popup').style.display = 'none';
-    document.getElementById('deposit-amount').value = '';
+    const popup = document.getElementById('deposit-popup');
+    if (popup) {
+        popup.style.display = 'none';
+    }
+    const amountInput = document.getElementById('deposit-amount');
+    if (amountInput) {
+        amountInput.value = '';
+    }
 }
 
 function showWithdrawPopup() {
-    document.getElementById('withdraw-popup').style.display = 'flex';
+    const popup = document.getElementById('withdraw-popup');
+    if (popup) {
+        popup.style.display = 'flex';
+    }
 }
 
 function hideWithdrawPopup() {
-    document.getElementById('withdraw-popup').style.display = 'none';
-    document.getElementById('withdraw-amount').value = '';
-    document.getElementById('withdraw-password').value = '';
+    const popup = document.getElementById('withdraw-popup');
+    if (popup) {
+        popup.style.display = 'none';
+    }
+    const amountInput = document.getElementById('withdraw-amount');
+    const passwordInput = document.getElementById('withdraw-password');
+    if (amountInput) amountInput.value = '';
+    if (passwordInput) passwordInput.value = '';
 }
 
 function hideDepositSuccessPopup() {
-    document.getElementById('deposit-success-popup').style.display = 'none';
+    const popup = document.getElementById('deposit-success-popup');
+    if (popup) {
+        popup.style.display = 'none';
+    }
 }
 
 function copyDepositAddress() {
-    const depositAddress = document.getElementById('deposit-address').textContent;
-    window.GLY.copyToClipboard(depositAddress).then(() => {
+    const depositAddress = document.getElementById('deposit-address');
+    if (!depositAddress) return;
+    
+    const address = depositAddress.textContent;
+    window.GLY.copyToClipboard(address).then(() => {
         const copyBtn = document.getElementById('copy-deposit-btn');
-        const originalText = copyBtn.innerHTML;
-        copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
-        setTimeout(() => {
-            copyBtn.innerHTML = originalText;
-        }, 2000);
+        if (copyBtn) {
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
+            setTimeout(() => {
+                copyBtn.innerHTML = originalText;
+            }, 2000);
+        }
     });
 }
 
 async function processDeposit() {
-    const amount = parseFloat(document.getElementById('deposit-amount').value);
-    const user = window.getCurrentUser();
-    
-    if (!amount || amount < 17) {
-        alert('Minimum deposit amount is 17 USDT');
-        return;
-    }
-    
-    if (!user) {
-        alert('User not found');
-        return;
-    }
-    
     try {
+        const amountInput = document.getElementById('deposit-amount');
+        if (!amountInput) return;
+        
+        const amount = parseFloat(amountInput.value);
+        const user = window.getCurrentUser();
+        
+        if (!amount || amount < 17) {
+            alert('Minimum deposit amount is 17 USDT');
+            return;
+        }
+        
+        if (!user) {
+            alert('User not found');
+            return;
+        }
+        
+        if (!window.supabase) {
+            alert('Database connection error');
+            return;
+        }
+        
         // Создаем запись о депозите
-        const { error } = await supabase
+        const { error } = await window.supabase
             .from('transactions')
             .insert([{
                 user_id: user.id,
@@ -316,7 +405,10 @@ async function processDeposit() {
         
         // Показываем попап успеха
         hideDepositPopup();
-        document.getElementById('deposit-success-popup').style.display = 'flex';
+        const successPopup = document.getElementById('deposit-success-popup');
+        if (successPopup) {
+            successPopup.style.display = 'flex';
+        }
         
         // Обновляем историю транзакций
         setTimeout(() => {
@@ -324,57 +416,63 @@ async function processDeposit() {
         }, 1000);
         
     } catch (error) {
+        console.error('Error processing deposit:', error);
         alert('Error processing deposit: ' + error.message);
     }
 }
 
 async function processWithdrawal() {
-    const amount = parseFloat(document.getElementById('withdraw-amount').value);
-    const password = document.getElementById('withdraw-password').value;
-    const user = window.getCurrentUser();
-    
-    if (!user) {
-        alert('User not found');
-        return;
-    }
-    
-    if (!amount || amount < 20) {
-        alert('Minimum withdrawal amount is 20 USDT');
-        return;
-    }
-    
-    if (amount > user.balance) {
-        alert('Insufficient balance');
-        return;
-    }
-    
-    if (!password) {
-        alert('Please enter transaction password');
-        return;
-    }
-    
-    // Проверяем платежный пароль
-    if (user.payment_password !== password) {
-        alert('Invalid transaction password');
-        return;
-    }
-    
-    // Проверяем наличие адреса вывода
-    if (!user.withdrawal_address) {
-        alert('Please set withdrawal address first in Settings');
-        return;
-    }
-    
-    // Рассчитываем комиссию в зависимости от VIP уровня
-    const feePercent = getWithdrawalFee(user.vip_level);
-    const fee = (amount * feePercent) / 100;
-    const netAmount = amount - fee;
-    
-    if (confirm(`Withdrawal amount: ${amount} USDT\nFee (${feePercent}%): ${fee.toFixed(2)} USDT\nYou will receive: ${netAmount.toFixed(2)} USDT\nConfirm withdrawal?`)) {
-        try {
+    try {
+        const amountInput = document.getElementById('withdraw-amount');
+        const passwordInput = document.getElementById('withdraw-password');
+        
+        if (!amountInput || !passwordInput) return;
+        
+        const amount = parseFloat(amountInput.value);
+        const password = passwordInput.value;
+        const user = window.getCurrentUser();
+        
+        if (!user) {
+            alert('User not found');
+            return;
+        }
+        
+        if (!amount || amount < 20) {
+            alert('Minimum withdrawal amount is 20 USDT');
+            return;
+        }
+        
+        if (amount > user.balance) {
+            alert('Insufficient balance');
+            return;
+        }
+        
+        if (!password) {
+            alert('Please enter transaction password');
+            return;
+        }
+        
+        // Проверяем платежный пароль
+        if (user.payment_password !== password) {
+            alert('Invalid transaction password');
+            return;
+        }
+        
+        // Проверяем наличие адреса вывода
+        if (!user.withdrawal_address) {
+            alert('Please set withdrawal address first in Settings');
+            return;
+        }
+        
+        // Рассчитываем комиссию в зависимости от VIP уровня
+        const feePercent = getWithdrawalFee(user.vip_level);
+        const fee = (amount * feePercent) / 100;
+        const netAmount = amount - fee;
+        
+        if (confirm(`Withdrawal amount: ${amount} USDT\nFee (${feePercent}%): ${fee.toFixed(2)} USDT\nYou will receive: ${netAmount.toFixed(2)} USDT\nConfirm withdrawal?`)) {
             // Обновляем баланс пользователя
             const newBalance = user.balance - amount;
-            const { error: updateError } = await supabase
+            const { error: updateError } = await window.supabase
                 .from('users')
                 .update({ balance: newBalance })
                 .eq('id', user.id);
@@ -382,7 +480,7 @@ async function processWithdrawal() {
             if (updateError) throw updateError;
             
             // Создаем транзакцию вывода
-            const { error: txError } = await supabase
+            const { error: txError } = await window.supabase
                 .from('transactions')
                 .insert([{
                     user_id: user.id,
@@ -406,10 +504,10 @@ async function processWithdrawal() {
             setTimeout(() => {
                 loadTransactionHistory();
             }, 1000);
-            
-        } catch (error) {
-            alert('Error processing withdrawal: ' + error.message);
         }
+    } catch (error) {
+        console.error('Error processing withdrawal:', error);
+        alert('Error processing withdrawal: ' + error.message);
     }
 }
 

@@ -55,6 +55,21 @@ uni-page-body {
     position: relative;
 }
 
+/* Логотип в навбаре */
+.u-navbar__content__logo {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.u-navbar__content__logo img {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+}
+
 /* Стили для кнопки назад в навбаре */
 .u-navbar__content__back {
     position: absolute;
@@ -73,7 +88,7 @@ uni-page-body {
     color: #FFF;
     font-weight: bold;
     flex: 1;
-    padding: 0 40px; /* Добавляем отступы для кнопки назад */
+    padding: 0 40px;
 }
 
 /* Иконки */
@@ -566,9 +581,9 @@ uni-page-body {
 .nav-section {
     background-color: rgba(0, 0, 0, 0.2);
     padding: 15px 20px 25px;
-    border-radius: 0 0 0 40px;
+    border-radius: 0;
     overflow: hidden;
-    margin-top: -40px;
+    margin-top: 0;
 }
 
 .nav-grid {
@@ -818,7 +833,7 @@ uni-page-body {
 .vip-carousel {
     display: flex;
     overflow: hidden;
-    height: 180px;
+    height: 220px;
     border-radius: 10px;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
@@ -829,7 +844,7 @@ uni-page-body {
     min-width: 100%;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
-    padding: 20px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -883,13 +898,13 @@ uni-page-body {
 }
 
 .vip-level-name {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .vip-level-percent {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: bold;
     color: #4e7771;
     margin-bottom: 5px;
@@ -982,7 +997,7 @@ uni-page-body {
 .crypto-grid {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 2px;
     margin-top: 10px;
 }
 
@@ -992,7 +1007,7 @@ uni-page-body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 5px 0;
+    margin: 2px 0;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 8px;
 }
@@ -1241,9 +1256,9 @@ uni-page-body {
 .input-line {
     background: transparent;
     border: none;
-    border-bottom: 2px solid #52c41a; /* Яркая зеленая линия всегда */
+    border-bottom: 2px solid #52c41a;
     border-radius: 0;
-    padding: 12px 40px 12px 0; /* Добавляем правый отступ для иконки */
+    padding: 12px 40px 12px 0;
     color: white;
     font-size: 16px;
     width: 100%;
@@ -1257,8 +1272,8 @@ uni-page-body {
 }
 
 .input-line:focus {
-    border-bottom-color: #52c41a; /* Оставляем тот же цвет при фокусе */
-    border-bottom-width: 3px; /* Немного толще при фокусе */
+    border-bottom-color: #52c41a;
+    border-bottom-width: 3px;
 }
 
 .input-container {
@@ -1272,7 +1287,7 @@ uni-page-body {
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    color: #52c41a; /* Зеленый цвет иконки */
+    color: #52c41a;
     cursor: pointer;
     background: none;
     border: none;
@@ -1285,7 +1300,6 @@ uni-page-body {
     justify-content: center;
 }
 
-/* Убедимся, что Font Awesome иконки правильно отображаются */
 .password-toggle i {
     display: block;
     line-height: 1;
@@ -1649,16 +1663,16 @@ uni-page-body {
     }
     
     .vip-card {
-        height: 160px;
-        padding: 15px;
+        height: 200px;
+        padding: 12px;
     }
     
     .vip-level-name {
-        font-size: 20px;
+        font-size: 18px;
     }
     
     .vip-level-percent {
-        font-size: 28px;
+        font-size: 24px;
     }
     
     .pop-content {

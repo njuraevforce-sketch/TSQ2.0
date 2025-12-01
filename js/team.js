@@ -238,7 +238,7 @@ async function fillReferralLevel(containerId, referrals) {
                 .from('users')
                 .select('username, email, balance, created_at')
                 .eq('id', ref.referred_id)
-                .single();
+                .maybeSingle();  // Используем maybeSingle
                 
             if (user) {
                 const date = new Date(user.created_at).toLocaleDateString();

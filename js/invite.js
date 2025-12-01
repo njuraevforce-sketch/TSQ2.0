@@ -153,7 +153,7 @@ async function loadReferralStats() {
         const totalReferrals = referrals?.length || 0;
         document.getElementById('total-referrals').textContent = totalReferrals;
         
-        // Считаем активных рефералов (у которых есть баланс > 0)
+        // Считаем активных рефералов (у которых баланс ≥ 20 USDT)
         let activeReferrals = 0;
         let referralEarnings = 0;
         
@@ -165,7 +165,7 @@ async function loadReferralStats() {
                     .eq('id', referral.referred_id)
                     .single();
                     
-                if (referredUser && referredUser.balance > 0) {
+                if (referredUser && referredUser.balance >= 20) {
                     activeReferrals++;
                 }
             }

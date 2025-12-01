@@ -17,13 +17,13 @@ export default function renderHome() {
                 <div class="notice-icon">🚀</div>
                 <div class="notice-content">
                     <div class="notice-text">
-                        QCF - Quantum Investment Platform │ Advanced AI Algorithms │ Daily Returns 2.6%-5.5% │ 6 VIP Levels │ Multi-Level Referral System │ Secure & Transparent
+                        GLY - Quantum Investment Platform │ Advanced AI Algorithms │ Daily Returns 2.6%-5.5% │ 6 VIP Levels │ Multi-Level Referral System │ Secure & Transparent
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Навигационные иконки БЕЗ ФОНА И СТИЛЕЙ -->
+        <!-- Навигационные иконки -->
         <div class="nav-section">
             <div class="nav-grid">
                 <a href="#" class="nav-item" data-section="company">
@@ -65,20 +65,20 @@ export default function renderHome() {
             </div>
         </div>
 
-        <!-- Криптовалютные цены -->
+        <!-- Криптовалютные цены БЕЗ ОТСТУПОВ -->
         <div class="quantum-section">
             <div class="quantum-header">
                 <div class="quantum-title">Live Crypto Prices</div>
             </div>
-            <div class="crypto-grid" id="crypto-prices">
+            <div class="crypto-grid-no-gap" id="crypto-prices">
                 <!-- Цены криптовалют будут загружены через API -->
             </div>
         </div>
 
-        <!-- Блок партнеров -->
-        <div class="partners-section">
+        <!-- Блок партнеров на всю ширину -->
+        <div class="partners-section-fullwidth">
             <div class="section-title">Our Partners</div>
-            <img src="assets/partners.png" alt="Our Partners" class="partners-image">
+            <img src="assets/partners.png" alt="Our Partners" class="partners-image-fullwidth">
         </div>
     `;
 }

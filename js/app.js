@@ -73,6 +73,8 @@ class QuantumFarmApp {
             else if (sectionId === 'invite') this.setNavbarTitle('Invite', true);
             else if (sectionId === 'team') this.setNavbarTitle('Team', true);
             else if (sectionId === 'rules') this.setNavbarTitle('Rules', true);
+            else if (sectionId === 'login') this.setNavbarTitle('Login', false);
+            else if (sectionId === 'register') this.setNavbarTitle('Register', false);
         } else {
             this.showTabbar();
             this.showNavbar();
@@ -160,9 +162,12 @@ class QuantumFarmApp {
                 `;
                 
                 // Добавляем обработчик для кнопки назад
-                document.getElementById('navbar-back-btn').addEventListener('click', () => {
-                    window.showSection('home');
-                });
+                const backButton = document.getElementById('navbar-back-btn');
+                if (backButton) {
+                    backButton.addEventListener('click', () => {
+                        window.showSection('home');
+                    });
+                }
             } else {
                 navbarContent.innerHTML = `
                     <div class="u-navbar__content__logo">
@@ -177,7 +182,7 @@ class QuantumFarmApp {
     showBackButton(show = true) {
         const backBtn = document.querySelector('.u-navbar__content__back');
         if (backBtn) {
-            backBtn.style.display = show ? 'block' : 'none';
+            backBtn.style.display = show ? 'flex' : 'none';
         }
     }
 }

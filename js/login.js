@@ -1,33 +1,29 @@
 // Login section
 export default function renderLogin() {
     return `
-        <div class="auth-container">
-            <div class="auth-logo">
-                <img src="assets/logo.png" alt="GLY Logo">
+        <!-- Форма входа -->
+        <div class="card padding" style="margin-top: 20px; background: transparent; box-shadow: none;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h2 style="color: white; margin-bottom: 10px;">Привет</h2>
+                <p style="color: #ccc;">Добро пожаловать в GLY</p>
             </div>
             
-            <div class="auth-title">
-                <h1>Welcome to GLY</h1>
-                <p>Quantum Investment Platform</p>
+            <div class="input-container">
+                <input type="text" id="username" placeholder="Имя пользователя" class="input-line">
             </div>
             
-            <div class="auth-form">
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" id="username" placeholder="Enter your username">
-                </div>
-                
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="password" placeholder="Enter your password">
-                </div>
-                
-                <button id="login-btn" class="auth-button">Login</button>
-                
-                <div class="auth-link">
-                    <p>Don't have an account? <a href="#" id="go-to-register">Register now</a></p>
-                </div>
+            <div class="input-container" style="position: relative;">
+                <input type="password" id="password" placeholder="Пароль" class="input-line" style="padding-right: 40px;">
+                <i class="fas fa-eye password-toggle" id="toggle-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #52c41a; cursor: pointer; z-index: 10;"></i>
             </div>
+            
+            <button id="login-btn" class="pro-btn" style="width: 100%; background: #4e7771; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 30px;">Авторизация</button>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <p style="color: #ccc;">Ещё нет аккаунта? <a href="#" id="go-to-register" style="color: #52c41a;">Зарегистрируйтесь сейчас!</a></p>
+            </div>
+            
+            <div id="login-error" class="error" style="display: none;"></div>
         </div>
     `;
 }
@@ -35,33 +31,72 @@ export default function renderLogin() {
 export function init() {
     document.body.classList.add('auth-page');
     
+    // Обработчик для переключения видимости пароля
+    document.getElementById('toggle-password').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+    });
+
+    // Обработчик для кнопки входа
     document.getElementById('login-btn').addEventListener('click', async function() {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
+        const errorDiv = document.getElementById('login-error');
         
         if (!username || !password) {
-            alert('Please fill in all fields');
+            errorDiv.textContent = 'Пожалуйста, заполните все поля';
+            errorDiv.style.display = 'block';
             return;
         }
         
+        // Показываем загрузку
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Загрузка...';
+        this.disabled = true;
+        
         try {
-            const user = await GLY.loginUser(username, password);
-            await app.login(user);
+            // Поиск пользователя в базе
+            const { data, error } = await supabase
+                .from('users')
+                .select('*')
+                .eq('username', username)
+                .single();
+            
+            if (error || !data) {
+                errorDiv.textContent = 'Неверное имя пользователя или пароль';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            // Проверка пароля (в реальном приложении нужно использовать хэширование)
+            if (data.password !== password) {
+                errorDiv.textContent = 'Неверное имя пользователя или пароль';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            // Сохраняем пользователя
+            localStorage.setItem('gly_user', JSON.stringify(data));
+            
+            // Обновляем приложение
+            document.body.classList.remove('auth-page');
+            window.showSection('home');
+            
         } catch (error) {
-            alert('Login failed: ' + error.message);
+            errorDiv.textContent = 'Ошибка при входе. Попробуйте позже.';
+            errorDiv.style.display = 'block';
+        } finally {
+            // Восстанавливаем кнопку
+            this.innerHTML = originalText;
+            this.disabled = false;
         }
     });
 
+    // Обработчик для перехода на регистрацию
     document.getElementById('go-to-register').addEventListener('click', function(e) {
         e.preventDefault();
-        // Получаем реферальный код из URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const refCode = urlParams.get('ref');
-        
-        if (refCode) {
-            localStorage.setItem('referral_code', refCode);
-        }
-        
         window.showSection('register');
     });
 }

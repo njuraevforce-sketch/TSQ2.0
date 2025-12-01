@@ -19,45 +19,6 @@ export default function renderMine() {
                     </div>
                 </div>
             </div>
-
-            <!-- Статистика профиля -->
-            <div class="grid col-2">
-                <div class="referral-stat">
-                    <div class="text-gray">Total Earned</div>
-                    <div class="text-white text-bold">2,456.89 USDT</div>
-                </div>
-                <div class="referral-stat">
-                    <div class="text-gray">Total Withdrawn</div>
-                    <div class="text-white text-bold">1,200.00 USDT</div>
-                </div>
-                <div class="referral-stat">
-                    <div class="text-gray">Team Members</div>
-                    <div class="text-white text-bold">15</div>
-                </div>
-                <div class="referral-stat">
-                    <div class="text-gray">Days Active</div>
-                    <div class="text-white text-bold">45</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Реферальная статистика -->
-        <div class="card padding margin-top">
-            <div class="text-white text-bold text-center">Referral Statistics</div>
-            <div class="referral-stats">
-                <div class="referral-stat">
-                    <div class="text-gray">Level 1</div>
-                    <div class="text-white text-bold">8</div>
-                </div>
-                <div class="referral-stat">
-                    <div class="text-gray">Level 2</div>
-                    <div class="text-white text-bold">5</div>
-                </div>
-                <div class="referral-stat">
-                    <div class="text-gray">Level 3</div>
-                    <div class="text-white text-bold">2</div>
-                </div>
-            </div>
         </div>
 
         <!-- Настройки -->
@@ -336,32 +297,10 @@ function loadProfileData() {
     const profileData = {
         name: 'Quantum Trader',
         userId: 'QCF123456',
-        vipLevel: 'VIP 3',
-        totalEarned: '2,456.89',
-        totalWithdrawn: '1,200.00',
-        teamMembers: 15,
-        daysActive: 45,
-        referralStats: {
-            level1: 8,
-            level2: 5,
-            level3: 2
-        }
+        vipLevel: 'VIP 3'
     };
     
     // Обновление данных на странице
     document.getElementById('user-vip-level').textContent = profileData.vipLevel;
     document.getElementById('user-id').textContent = `ID: ${profileData.userId}`;
-    
-    // Обновление статистики
-    const stats = document.querySelectorAll('.referral-stat');
-    stats[0].querySelector('.text-white').textContent = `${profileData.totalEarned} USDT`;
-    stats[1].querySelector('.text-white').textContent = `${profileData.totalWithdrawn} USDT`;
-    stats[2].querySelector('.text-white').textContent = profileData.teamMembers;
-    stats[3].querySelector('.text-white').textContent = profileData.daysActive;
-    
-    // Обновление реферальной статистики
-    const referralStats = document.querySelectorAll('.referral-stats .referral-stat');
-    referralStats[0].querySelector('.text-white').textContent = profileData.referralStats.level1;
-    referralStats[1].querySelector('.text-white').textContent = profileData.referralStats.level2;
-    referralStats[2].querySelector('.text-white').textContent = profileData.referralStats.level3;
 }

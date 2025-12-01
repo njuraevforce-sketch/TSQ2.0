@@ -146,8 +146,8 @@ export function init() {
             }
             
             // Генерируем уникальные ID и код
-            const userId = window.generateUserId();
-            const userInviteCode = window.generateInviteCode();
+            const userId = window.GLY.generateUserId();
+            const userInviteCode = window.GLY.generateInviteCode();
             
             // Создаем пользователя
             const newUser = {

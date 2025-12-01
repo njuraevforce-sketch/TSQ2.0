@@ -345,7 +345,7 @@ uni-page-body {
     100% { transform: rotate(360deg); }
 }
 
-/* Tabbar - ИСПРАВЛЕННЫЙ */
+/* Tabbar - ИСПРАВЛЕННЫЙ ДЛЯ РАВНОМЕРНОГО РАСПРЕДЕЛЕНИЯ */
 .uni-tabbar {
     position: fixed;
     bottom: 0;
@@ -356,14 +356,15 @@ uni-page-body {
     border-top: 1px solid #eee;
     z-index: 1000;
     display: none;
+    width: 100%;
 }
 
 .uni-tabbar__bd {
     display: flex;
     height: 100%;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
+    width: 100%;
+    padding: 0;
 }
 
 .uni-tabbar__item {
@@ -378,6 +379,7 @@ uni-page-body {
     height: 100%;
     padding: 5px 0;
     min-width: 0;
+    width: 25%;
 }
 
 .uni-tabbar__item--active {

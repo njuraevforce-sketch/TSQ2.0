@@ -124,7 +124,7 @@ export function init() {
                 .from('users')
                 .select('id')
                 .eq('username', username)
-                .single();
+                .maybeSingle();  // Используем maybeSingle вместо single
                 
             if (existingUser) {
                 errorDiv.textContent = 'Пользователь с таким именем уже существует';
@@ -137,7 +137,7 @@ export function init() {
                 .from('users')
                 .select('id, invite_code')
                 .eq('invite_code', inviteCode)
-                .single();
+                .maybeSingle();  // Используем maybeSingle
                 
             if (!referrer) {
                 errorDiv.textContent = 'Неверный пригласительный код';
@@ -232,7 +232,7 @@ async function createReferralRecords(referrerId, userId) {
             .select('referrer_id')
             .eq('referred_id', referrerId)
             .eq('level', 1)
-            .single();
+            .maybeSingle();  // Используем maybeSingle
             
         if (level2Referrer) {
             // Уровень 2
@@ -250,7 +250,7 @@ async function createReferralRecords(referrerId, userId) {
                 .select('referrer_id')
                 .eq('referred_id', level2Referrer.referrer_id)
                 .eq('level', 1)
-                .single();
+                .maybeSingle();  // Используем maybeSingle
                 
             if (level3Referrer) {
                 // Уровень 3

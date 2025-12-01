@@ -92,9 +92,15 @@ export function init() {
             // Сохраняем пользователя
             localStorage.setItem('gly_user', JSON.stringify(data));
             
-            // Обновляем приложение
-            document.body.classList.remove('auth-page');
-            window.showSection('home');
+            // Важно: обновляем текущего пользователя в приложении
+            if (window.glyApp) {
+                window.glyApp.currentUser = data;
+            }
+            
+            // Перезагружаем приложение для корректного перенаправления
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
             
         } catch (error) {
             console.error('Login error:', error);

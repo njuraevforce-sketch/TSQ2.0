@@ -137,15 +137,19 @@ class GLYApp {
     async showSection(sectionId) {
         if (this.currentSection === sectionId) return;
 
+        // Проверяем авторизацию для защищенных страниц
+        const protectedSections = ['home', 'get', 'assets', 'mine', 'invite', 'team', 'rules'];
+        if (protectedSections.includes(sectionId) && !this.currentUser) {
+            await this.showSection('login');
+            return;
+        }
+
         // Скрыть текущую секцию
         if (this.currentSection) {
             document.getElementById(this.currentSection).classList.remove('active');
             if (this.currentSection !== 'login' && this.currentSection !== 'register' && 
                 this.currentSection !== 'company' && this.currentSection !== 'invite' && 
                 this.currentSection !== 'team' && this.currentSection !== 'rules') {
-                document.querySelectorAll('.uni-tabbar__item').forEach(item => {
-                    item.classList.remove('uni-tabbar__item--active');
-                });
                 const activeTab = document.querySelector(`[data-section="${this.currentSection}"]`);
                 if (activeTab) {
                     activeTab.classList.remove('uni-tabbar__item--active');

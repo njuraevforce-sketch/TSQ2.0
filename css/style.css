@@ -55,10 +55,26 @@ uni-page-body {
     position: relative;
 }
 
-/* Логотип в навбаре */
-.u-navbar__content__logo {
+/* Исправленные стили для навбара с кнопкой назад */
+.u-navbar__content__back {
     position: absolute;
     left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.u-navbar__content__logo {
+    position: absolute;
+    left: 50px;
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
@@ -70,25 +86,13 @@ uni-page-body {
     border-radius: 5px;
 }
 
-/* Стили для кнопки назад в навбаре */
-.u-navbar__content__back {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    z-index: 10;
-}
-
 .u-navbar__content__title {
     text-align: center;
     font-size: 16px;
     color: #FFF;
     font-weight: bold;
     flex: 1;
-    padding: 0 40px;
+    padding: 0 80px;
 }
 
 /* Иконки */
@@ -341,7 +345,7 @@ uni-page-body {
     100% { transform: rotate(360deg); }
 }
 
-/* Tabbar */
+/* Tabbar - ИСПРАВЛЕННЫЙ */
 .uni-tabbar {
     position: fixed;
     bottom: 0;
@@ -358,7 +362,8 @@ uni-page-body {
     display: flex;
     height: 100%;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 0 10px;
 }
 
 .uni-tabbar__item {
@@ -372,6 +377,7 @@ uni-page-body {
     cursor: pointer;
     height: 100%;
     padding: 5px 0;
+    min-width: 0;
 }
 
 .uni-tabbar__item--active {
@@ -396,6 +402,7 @@ uni-page-body {
 .uni-tabbar__label {
     font-size: 10px;
     font-weight: 500;
+    white-space: nowrap;
 }
 
 /* Уведомления */
@@ -577,7 +584,7 @@ uni-page-body {
     object-fit: cover;
 }
 
-/* Навигационные иконки */
+/* Навигационные иконки - ИСПРАВЛЕННЫЕ (БЕЗ ФОНА И СТИЛЕЙ) */
 .nav-section {
     background-color: rgba(0, 0, 0, 0.2);
     padding: 15px 20px 25px;
@@ -607,18 +614,20 @@ uni-page-body {
     width: 50px;
     height: 50px;
     margin-bottom: 5px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 12px;
+    background: transparent;
+    border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: none;
+    box-shadow: none;
 }
 
 .nav-icon img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    border-radius: 12px;
+    border-radius: 0;
 }
 
 .nav-text {
@@ -1252,7 +1261,7 @@ uni-page-body {
     margin-bottom: 15px;
 }
 
-/* Стили для инпутов с линией - ИСПРАВЛЕННЫЕ */
+/* Стили для инпутов с линией */
 .input-line {
     background: transparent;
     border: none;
@@ -1281,7 +1290,7 @@ uni-page-body {
     margin-bottom: 20px;
 }
 
-/* Стили для иконок глазка - ИСПРАВЛЕННЫЕ */
+/* Стили для иконок глазка */
 .password-toggle {
     position: absolute;
     right: 10px;

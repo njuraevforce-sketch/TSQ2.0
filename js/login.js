@@ -57,22 +57,29 @@ export function init() {
         this.disabled = true;
         
         try {
-            // Поиск пользователя в базе
+            // Исправленный запрос к Supabase
             const { data, error } = await supabase
                 .from('users')
                 .select('*')
                 .eq('username', username)
-                .single();
-            
-            if (error || !data) {
-                errorDiv.textContent = 'Неверное имя пользователя или пароль';
+                .maybeSingle();  // Используем maybeSingle вместо single
+                
+            if (error) {
+                console.error('Supabase error:', error);
+                errorDiv.textContent = 'Ошибка подключения к базе данных';
                 errorDiv.style.display = 'block';
                 return;
             }
             
-            // Проверка пароля (в реальном приложении нужно использовать хэширование)
+            if (!data) {
+                errorDiv.textContent = 'Пользователь не найден';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            // Проверка пароля
             if (data.password !== password) {
-                errorDiv.textContent = 'Неверное имя пользователя или пароль';
+                errorDiv.textContent = 'Неверный пароль';
                 errorDiv.style.display = 'block';
                 return;
             }
@@ -85,6 +92,7 @@ export function init() {
             window.showSection('home');
             
         } catch (error) {
+            console.error('Login error:', error);
             errorDiv.textContent = 'Ошибка при входе. Попробуйте позже.';
             errorDiv.style.display = 'block';
         } finally {

@@ -139,9 +139,19 @@ class GLYApp {
 
         // Проверяем авторизацию для защищенных страниц
         const protectedSections = ['home', 'get', 'assets', 'mine', 'invite', 'team', 'rules'];
-        if (protectedSections.includes(sectionId) && !this.currentUser) {
-            await this.showSection('login');
-            return;
+        if (protectedSections.includes(sectionId)) {
+            const user = this.currentUser || JSON.parse(localStorage.getItem('gly_user'));
+            if (!user) {
+                console.log('No user found, redirecting to login');
+                await this.loadSection('login');
+                document.getElementById('login').classList.add('active');
+                document.getElementById(sectionId).classList.remove('active');
+                this.currentSection = 'login';
+                this.hideTabbar();
+                this.hideNavbar();
+                document.body.classList.add('auth-page');
+                return;
+            }
         }
 
         // Скрыть текущую секцию

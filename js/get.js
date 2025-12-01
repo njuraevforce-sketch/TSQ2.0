@@ -14,7 +14,7 @@ export default function renderGet() {
                     <div class="signal"></div>
                     <div class="signal"></div>
                 </div>
-                <div style="text-align: center; color: #ccc; font-size: 14px; margin-bottom: 15px;">
+                <div style="text-align: center; color: #ccc; font-size: 14px; margin-bottom: 15px;" id="signals-text">
                     3 Quantum Signals Available
                 </div>
                 
@@ -23,95 +23,21 @@ export default function renderGet() {
                 </button>
             </div>
 
-            <!-- Процесс квантования без иконок -->
-            <div class="quantum-process" id="quantum-process">
-                <div class="process-step" id="step-1">
-                    <div class="process-text">Analyzing market conditions...</div>
-                </div>
-                <div class="process-step" id="step-2">
-                    <div class="process-text">Calculating quantum probabilities...</div>
-                </div>
-                <div class="process-step" id="step-3">
-                    <div class="process-text">Executing quantum trades...</div>
-                </div>
-                <div class="process-step" id="step-4">
-                    <div class="process-text">Quantum quantification complete!</div>
-                </div>
-                <div class="process-step" id="profit-result" style="display: none;">
-                    <div class="process-text" style="font-weight: bold; color: #52c41a;">Profit: +43.59 USDT</div>
-                </div>
+            <!-- Процесс квантования - УПРОЩЕННЫЙ ВИД -->
+            <div class="quantum-process-simple" id="quantum-process" style="display: none; text-align: center; color: white; margin: 20px 0;">
+                <div id="process-text" style="font-size: 16px;"></div>
             </div>
 
-            <!-- VIP карточки с улучшенной каруселью -->
+            <!-- VIP карточки с процентами сверху -->
             <div class="vip-section">
                 <div class="section-title">VIP Levels</div>
                 <div class="vip-carousel-container">
                     <div class="vip-carousel" id="vip-carousel">
-                        <div class="vip-card active" data-level="1">
-                            <div style="text-align: center; margin-bottom: 10px;">
-                                <img src="assets/vipicon1.png" alt="VIP 1" style="width: 40px; height: 40px;">
-                            </div>
-                            <img src="assets/vip1.png" alt="VIP 1" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
-                            <div class="vip-level-name">VIP 1</div>
-                            <div class="vip-level-percent">2.6%</div>
-                            <div class="vip-level-requirement">20 USDT</div>
-                        </div>
-                        <div class="vip-card" data-level="2">
-                            <div style="text-align: center; margin-bottom: 10px;">
-                                <img src="assets/vipicon2.png" alt="VIP 2" style="width: 40px; height: 40px;">
-                            </div>
-                            <img src="assets/vip2.png" alt="VIP 2" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
-                            <div class="vip-level-name">VIP 2</div>
-                            <div class="vip-level-percent">3.1%</div>
-                            <div class="vip-level-requirement">100 USDT + 2 ref</div>
-                        </div>
-                        <div class="vip-card" data-level="3">
-                            <div style="text-align: center; margin-bottom: 10px;">
-                                <img src="assets/vipicon3.png" alt="VIP 3" style="width: 40px; height: 40px;">
-                            </div>
-                            <img src="assets/vip3.png" alt="VIP 3" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
-                            <div class="vip-level-name">VIP 3</div>
-                            <div class="vip-level-percent">3.5%</div>
-                            <div class="vip-level-requirement">5 ref</div>
-                        </div>
-                        <div class="vip-card" data-level="4">
-                            <div style="text-align: center; margin-bottom: 10px;">
-                                <img src="assets/vipicon4.png" alt="VIP 4" style="width: 40px; height: 40px;">
-                            </div>
-                            <img src="assets/vip4.png" alt="VIP 4" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
-                            <div class="vip-level-name">VIP 4</div>
-                            <div class="vip-level-percent">4.0%</div>
-                            <div class="vip-level-requirement">7 ref</div>
-                        </div>
-                        <div class="vip-card" data-level="5">
-                            <div style="text-align: center; margin-bottom: 10px;">
-                                <img src="assets/vipicon5.png" alt="VIP 5" style="width: 40px; height: 40px;">
-                            </div>
-                            <img src="assets/vip5.png" alt="VIP 5" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
-                            <div class="vip-level-name">VIP 5</div>
-                            <div class="vip-level-percent">4.5%</div>
-                            <div class="vip-level-requirement">15 ref</div>
-                        </div>
-                        <div class="vip-card" data-level="6">
-                            <div style="text-align: center; margin-bottom: 10px;">
-                                <img src="assets/vipicon6.png" alt="VIP 6" style="width: 40px; height: 40px;">
-                            </div>
-                            <img src="assets/vip6.png" alt="VIP 6" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
-                            <div class="vip-level-name">VIP 6</div>
-                            <div class="vip-level-percent">5.5%</div>
-                            <div class="vip-level-requirement">25 ref</div>
-                        </div>
+                        ${renderVipCards()}
                     </div>
                     <div class="vip-carousel-controls">
                         <button class="vip-carousel-prev">‹</button>
-                        <div class="vip-carousel-dots">
-                            <span class="vip-dot active" data-index="0"></span>
-                            <span class="vip-dot" data-index="1"></span>
-                            <span class="vip-dot" data-index="2"></span>
-                            <span class="vip-dot" data-index="3"></span>
-                            <span class="vip-dot" data-index="4"></span>
-                            <span class="vip-dot" data-index="5"></span>
-                        </div>
+                        <div class="vip-carousel-dots" id="vip-dots"></div>
                         <button class="vip-carousel-next">›</button>
                     </div>
                 </div>
@@ -123,29 +49,236 @@ export default function renderGet() {
     `;
 }
 
-export function init() {
-    // Инициализация VIP карусели
-    initVipCarousel();
+function renderVipCards() {
+    const vipLevels = [
+        { level: 1, percent: '2.6%', requirement: '20 USDT', desc: 'Basic level with standard returns' },
+        { level: 2, percent: '3.1%', requirement: '100 USDT + 2 ref', desc: 'Enhanced returns with referral requirements' },
+        { level: 3, percent: '3.5%', requirement: '5 ref', desc: 'Premium level with team building' },
+        { level: 4, percent: '4.0%', requirement: '7 ref', desc: 'Advanced level with maximum benefits' },
+        { level: 5, percent: '4.5%', requirement: '15 ref', desc: 'Professional level for serious investors' },
+        { level: 6, percent: '5.5%', requirement: '25 ref', desc: 'Elite level with maximum returns' }
+    ];
     
-    // Обновление времени UTC
+    return vipLevels.map((vip, index) => `
+        <div class="vip-card ${index === 0 ? 'active' : ''}" data-level="${vip.level}">
+            <div class="vip-percent-top">${vip.percent}</div>
+            <div style="text-align: center; margin: 10px 0;">
+                <img src="assets/vipicon${vip.level}.png" alt="VIP ${vip.level}" style="width: 40px; height: 40px;">
+            </div>
+            <img src="assets/vip${vip.level}.png" alt="VIP ${vip.level}" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+            <div class="vip-level-name">VIP ${vip.level}</div>
+            <div class="vip-level-requirement">${vip.requirement}</div>
+        </div>
+    `).join('');
+}
+
+export function init() {
+    checkAndResetSignals();
+    initVipCarousel();
     updateUTCTime();
     setInterval(updateUTCTime, 1000);
     
-    // Обработчик кнопки квантования
     document.getElementById('quant-btn').addEventListener('click', startQuantification);
+    
+    // Обновляем отображение сигналов при загрузке
+    if (app.currentUser) {
+        updateSignalsDisplay(app.currentUser.id);
+    }
 }
 
+function checkAndResetSignals() {
+    if (!app.currentUser) return;
+    
+    const now = new Date();
+    const currentUTCHours = now.getUTCHours();
+    const lastReset = localStorage.getItem(`lastSignalReset_${app.currentUser.id}`);
+    const today = now.toISOString().split('T')[0];
+    
+    // Если сейчас 18:00 UTC или позже, и последний сброс был не сегодня
+    if (currentUTCHours >= 18) {
+        if (lastReset !== today) {
+            // Сбрасываем счетчик сигналов
+            localStorage.setItem(`quant_${app.currentUser.id}_${today}`, '0');
+            localStorage.setItem(`lastSignalReset_${app.currentUser.id}`, today);
+            updateSignalsDisplay(app.currentUser.id);
+        }
+    }
+}
+
+async function startQuantification() {
+    if (!app.currentUser) {
+        alert('Please login first');
+        return;
+    }
+    
+    const user = app.currentUser;
+    
+    // Проверяем доступные сигналы (3 в день)
+    const today = new Date().toISOString().split('T')[0];
+    const lastQuantification = localStorage.getItem(`quant_${user.id}_${today}`);
+    const usedCount = parseInt(lastQuantification || '0');
+    
+    if (usedCount >= 3) {
+        alert('No quantum signals available for today!');
+        return;
+    }
+    
+    // Проверяем и обновляем VIP уровень
+    await GLY.checkAndUpdateVIPLevel(user.id);
+    
+    // Получаем текущий уровень VIP и расчет прибыли
+    const profit = await calculateProfit(user);
+    
+    const quantBtn = document.getElementById('quant-btn');
+    const processDiv = document.getElementById('quantum-process');
+    const processText = document.getElementById('process-text');
+    
+    quantBtn.disabled = true;
+    quantBtn.style.opacity = '0.5';
+    processDiv.style.display = 'block';
+    
+    // Процесс квантования - УПРОЩЕННЫЙ
+    const steps = [
+        { text: 'Analyzing market conditions...', duration: 2000 },
+        { text: 'Calculating quantum probabilities...', duration: 2500 },
+        { text: 'Executing quantum trades...', duration: 3000 },
+        { text: `Quantum quantification complete! Profit: +${profit.toFixed(2)} USDT`, duration: 2000 }
+    ];
+    
+    let currentStep = 0;
+    
+    function runStep() {
+        if (currentStep < steps.length) {
+            processText.textContent = steps[currentStep].text;
+            setTimeout(runStep, steps[currentStep].duration);
+            currentStep++;
+        } else {
+            // Завершаем процесс
+            finishQuantification(profit, user);
+        }
+    }
+    
+    runStep();
+}
+
+async function calculateProfit(user) {
+    // Расчет прибыли на основе уровня VIP
+    const vipRates = {
+        1: 0.026, // 2.6%
+        2: 0.031, // 3.1%
+        3: 0.035, // 3.5%
+        4: 0.040, // 4.0%
+        5: 0.045, // 4.5%
+        6: 0.055  // 5.5%
+    };
+    
+    const rate = vipRates[user.vip_level] || vipRates[1];
+    // Делим на 3 так как 3 раза в день
+    const profit = (user.balance * rate) / 3;
+    
+    return Math.max(profit, 0.01); // Минимальная прибыль
+}
+
+async function finishQuantification(profit, user) {
+    // Обновляем баланс пользователя
+    const newBalance = parseFloat(user.balance) + profit;
+    await GLY.updateUserBalance(user.id, newBalance);
+    
+    // Добавляем запись о квантовании
+    await GLY.addTransaction({
+        user_id: user.id,
+        type: 'quantification',
+        amount: profit
+    });
+    
+    // Обновляем реферальные начисления
+    await updateReferralEarnings(user.id, profit);
+    
+    // Обновляем данные пользователя
+    app.currentUser.balance = newBalance;
+    localStorage.setItem('gly_user', JSON.stringify(app.currentUser));
+    
+    // Обновляем счетчик квантований за сегодня
+    const today = new Date().toISOString().split('T')[0];
+    const currentCount = parseInt(localStorage.getItem(`quant_${user.id}_${today}`) || '0');
+    localStorage.setItem(`quant_${user.id}_${today}`, (currentCount + 1).toString());
+    
+    // Обновляем сигналы
+    updateSignalsDisplay(user.id);
+    
+    // Включаем кнопку обратно
+    const quantBtn = document.getElementById('quant-btn');
+    quantBtn.disabled = false;
+    quantBtn.style.opacity = '1';
+}
+
+async function updateReferralEarnings(userId, profit) {
+    const supabase = GLY.initSupabase();
+    
+    // Находим реферальные связи
+    const { data: referrals } = await supabase
+        .from('referrals')
+        .select('referrer_id, level')
+        .eq('referred_id', userId);
+    
+    if (!referrals) return;
+    
+    // Проценты для каждого уровня
+    const referralRates = { 1: 0.12, 2: 0.05, 3: 0.03 };
+    
+    for (const ref of referrals) {
+        const referralProfit = profit * referralRates[ref.level];
+        
+        // Обновляем баланс реферера
+        const { data: referrer } = await supabase
+            .from('users')
+            .select('balance')
+            .eq('id', ref.referrer_id)
+            .single();
+            
+        if (referrer) {
+            const newBalance = parseFloat(referrer.balance) + referralProfit;
+            await GLY.updateUserBalance(ref.referrer_id, newBalance);
+            
+            // Добавляем транзакцию
+            await GLY.addTransaction({
+                user_id: ref.referrer_id,
+                type: `referral_level_${ref.level}`,
+                amount: referralProfit
+            });
+        }
+    }
+}
+
+function updateSignalsDisplay(userId) {
+    const today = new Date().toISOString().split('T')[0];
+    const usedCount = parseInt(localStorage.getItem(`quant_${userId}_${today}`) || '0');
+    const signals = document.querySelectorAll('.signal');
+    
+    signals.forEach((signal, index) => {
+        if (index < usedCount) {
+            signal.classList.add('used');
+        } else {
+            signal.classList.remove('used');
+        }
+    });
+    
+    const signalsText = document.getElementById('signals-text');
+    if (signalsText) {
+        signalsText.textContent = `${3 - usedCount} Quantum Signals Available`;
+    }
+}
+
+// Инициализация VIP карусели
 function initVipCarousel() {
     const carousel = document.getElementById('vip-carousel');
     const cards = document.querySelectorAll('.vip-card');
-    const dots = document.querySelectorAll('.vip-dot');
+    const dotsContainer = document.getElementById('vip-dots');
     const prevBtn = document.querySelector('.vip-carousel-prev');
     const nextBtn = document.querySelector('.vip-carousel-next');
     const description = document.getElementById('vip-description');
     
     let currentIndex = 0;
-    let startX = 0;
-    let isDragging = false;
     
     const vipDescriptions = [
         "Basic level with standard returns. Invest 20 USDT to start earning 2.6% daily profit.",
@@ -155,6 +288,16 @@ function initVipCarousel() {
         "Professional level for serious investors. Build a team of 15 referrals to earn 4.5% daily profit.",
         "Elite level with maximum returns. Build a team of 25 referrals to earn 5.5% daily profit."
     ];
+    
+    // Создаем точки
+    cards.forEach((_, index) => {
+        const dot = document.createElement('span');
+        dot.className = `vip-dot ${index === 0 ? 'active' : ''}`;
+        dot.setAttribute('data-index', index);
+        dotsContainer.appendChild(dot);
+    });
+    
+    const dots = document.querySelectorAll('.vip-dot');
     
     function updateCarousel() {
         cards.forEach((card, index) => {
@@ -198,6 +341,9 @@ function initVipCarousel() {
     });
     
     // Обработчики для свайпа
+    let startX = 0;
+    let isDragging = false;
+    
     carousel.addEventListener('mousedown', (e) => {
         isDragging = true;
         startX = e.pageX - carousel.offsetLeft;
@@ -256,82 +402,6 @@ function initVipCarousel() {
             updateCarousel();
         }
     });
-}
-
-function startQuantification() {
-    const signals = document.querySelectorAll('.signal');
-    let availableSignals = 0;
-    
-    // Проверяем доступные сигналы
-    signals.forEach(signal => {
-        if (!signal.classList.contains('used')) {
-            availableSignals++;
-        }
-    });
-    
-    if (availableSignals > 0) {
-        // Используем один сигнал
-        for (let i = 0; i < signals.length; i++) {
-            if (!signals[i].classList.contains('used')) {
-                signals[i].classList.add('used');
-                break;
-            }
-        }
-        
-        // Показываем процесс квантования
-        const process = document.getElementById('quantum-process');
-        const quantBtn = document.getElementById('quant-btn');
-        
-        quantBtn.disabled = true;
-        quantBtn.style.opacity = '0.5';
-        process.style.display = 'block';
-        
-        // Запускаем этапы процесса
-        runQuantificationProcess();
-        
-    } else {
-        alert('No quantum signals available! Please wait for daily refresh.');
-    }
-}
-
-function runQuantificationProcess() {
-    const steps = [
-        { id: 'step-1', duration: 2000 },
-        { id: 'step-2', duration: 2500 },
-        { id: 'step-3', duration: 3000 },
-        { id: 'step-4', duration: 1500 }
-    ];
-    
-    let currentStep = 0;
-    
-    function runStep() {
-        if (currentStep > 0) {
-            // Убираем активный класс с предыдущего шага
-            document.getElementById(steps[currentStep-1].id).classList.remove('active');
-        }
-        
-        if (currentStep < steps.length) {
-            // Активируем текущий шаг
-            document.getElementById(steps[currentStep].id).classList.add('active');
-            
-            // Переходим к следующему шагу после задержки
-            setTimeout(runStep, steps[currentStep].duration);
-            currentStep++;
-        } else {
-            // Показываем результат
-            document.getElementById('profit-result').style.display = 'block';
-            
-            // Включаем кнопку обратно через 3 секунды
-            setTimeout(function() {
-                const quantBtn = document.getElementById('quant-btn');
-                quantBtn.disabled = false;
-                quantBtn.style.opacity = '1';
-            }, 3000);
-        }
-    }
-    
-    // Запускаем первый шаг
-    runStep();
 }
 
 function updateUTCTime() {

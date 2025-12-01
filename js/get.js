@@ -14,8 +14,8 @@ export default function renderGet() {
                     <div class="signal"></div>
                     <div class="signal"></div>
                 </div>
-                <div style="text-align: center; color: #ccc; font-size: 14px; margin-bottom: 15px;">
-                    3 Quantum Signals Available
+                <div style="text-align: center; color: #ccc; font-size: 14px; margin-bottom: 15px;" id="signals-text">
+                    Loading signals...
                 </div>
                 
                 <button class="quant-btn" id="quant-btn">
@@ -45,7 +45,7 @@ export default function renderGet() {
                             </div>
                             <img src="assets/vip1.png" alt="VIP 1" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
                             <div class="vip-level-name">0-299 USDT</div>
-                            <div class="vip-level-requirement">1.4% daily, 3 orders</div>
+                            <div class="vip-level-requirement">2.2% daily, 3 signals</div>
                         </div>
                         <div class="vip-card" data-level="2">
                             <div class="vip-percent-left">2.8%</div>
@@ -55,7 +55,7 @@ export default function renderGet() {
                             </div>
                             <img src="assets/vip2.png" alt="VIP 2" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
                             <div class="vip-level-name">300-1000 USDT</div>
-                            <div class="vip-level-requirement">1.8% daily, 3 orders, 2 refs</div>
+                            <div class="vip-level-requirement">2.8% daily, 3 signals, 2 refs</div>
                         </div>
                         <div class="vip-card" data-level="3">
                             <div class="vip-percent-left">3.5%</div>
@@ -65,7 +65,7 @@ export default function renderGet() {
                             </div>
                             <img src="assets/vip3.png" alt="VIP 3" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
                             <div class="vip-level-name">1000-3500 USDT</div>
-                            <div class="vip-level-requirement">2.2% daily, 3 orders, 5 refs</div>
+                            <div class="vip-level-requirement">3.5% daily, 3 signals, 5 refs</div>
                         </div>
                         <div class="vip-card" data-level="4">
                             <div class="vip-percent-left">4.0%</div>
@@ -75,7 +75,7 @@ export default function renderGet() {
                             </div>
                             <img src="assets/vip4.png" alt="VIP 4" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
                             <div class="vip-level-name">3500-6000 USDT</div>
-                            <div class="vip-level-requirement">2.6% daily, 6 orders, 8 refs</div>
+                            <div class="vip-level-requirement">4.0% daily, 3 signals, 8 refs</div>
                         </div>
                         <div class="vip-card" data-level="5">
                             <div class="vip-percent-left">5.0%</div>
@@ -85,7 +85,7 @@ export default function renderGet() {
                             </div>
                             <img src="assets/vip5.png" alt="VIP 5" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
                             <div class="vip-level-name">6000-12000 USDT</div>
-                            <div class="vip-level-requirement">3.0% daily, 6 orders, 15 refs</div>
+                            <div class="vip-level-requirement">5.0% daily, 3 signals, 15 refs</div>
                         </div>
                         <div class="vip-card" data-level="6">
                             <div class="vip-percent-left">6.0%</div>
@@ -95,7 +95,7 @@ export default function renderGet() {
                             </div>
                             <img src="assets/vip6.png" alt="VIP 6" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
                             <div class="vip-level-name">12000-20000 USDT</div>
-                            <div class="vip-level-requirement">3.4% daily, 6 orders, 25 refs</div>
+                            <div class="vip-level-requirement">6.0% daily, 3 signals, 25 refs</div>
                         </div>
                     </div>
                     <div class="vip-carousel-controls">
@@ -263,7 +263,7 @@ async function loadUserData() {
 
 function updateSignalsDisplay(signalsAvailable) {
     const signals = document.querySelectorAll('.signal');
-    const signalsText = document.querySelector('.quantum-action div:nth-child(2)');
+    const signalsText = document.getElementById('signals-text');
     
     // Обновляем текст
     if (signalsText) {

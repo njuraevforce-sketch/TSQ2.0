@@ -68,7 +68,7 @@ class QuantumFarmApp {
             this.showNavbar();
             document.body.classList.add('no-tabbar');
             
-            // Устанавливаем заголовок для страниц быстрого доступа
+            // Устанавливаем заголовок для страниц быстрого доступа с кнопкой назад
             if (sectionId === 'company') this.setNavbarTitle('Company', true);
             else if (sectionId === 'invite') this.setNavbarTitle('Invite', true);
             else if (sectionId === 'team') this.setNavbarTitle('Team', true);

@@ -454,16 +454,23 @@ class GLYApp {
         if (!this.currentUser) return;
         
         try {
-            // Получаем количество активных рефералов 1 уровня
-            const { data: referrals } = await this.supabase
+            // Получаем количество АКТИВНЫХ рефералов 1 уровня (баланс ≥ 20 USDT)
+            const { data: activeReferrals, error: refError } = await this.supabase
                 .from('referrals')
-                .select('referred_id')
+                .select(`
+                    referred:users!referred_id (
+                        balance
+                    )
+                `)
                 .eq('referrer_id', this.currentUser.id)
-                .eq('level', 1);
+                .eq('level', 1)
+                .gte('referred.balance', 20);
                 
-            const activeRefs = referrals?.length || 0;
+            if (refError) throw refError;
             
-            // Определяем новый VIP уровень на основе баланса и рефералов
+            const activeRefs = activeReferrals?.length || 0;
+            
+            // Определяем новый VIP уровень на основе баланса и АКТИВНЫХ рефералов
             let newVipLevel = 1;
             
             if (this.currentUser.balance >= 300 && activeRefs >= 2) newVipLevel = 2;

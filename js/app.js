@@ -33,10 +33,25 @@ class GLYApp {
     }
 
     async initSupabase() {
-        // Создаем Supabase клиент
+        // Создаем Supabase клиент с правильными заголовками
         this.supabase = supabase.createClient(
             'https://jxyazsguwkbklavamzyj.supabase.co',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI'
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI',
+                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI`
+                },
+                db: {
+                    schema: 'public'
+                },
+                auth: {
+                    persistSession: true,
+                    autoRefreshToken: true
+                }
+            }
         );
         
         window.supabase = this.supabase;
@@ -47,16 +62,27 @@ class GLYApp {
         if (storedUser) {
             this.currentUser = JSON.parse(storedUser);
             
-            // Обновляем данные пользователя из базы
-            const { data, error } = await this.supabase
-                .from('users')
-                .select('*')
-                .eq('id', this.currentUser.id)
-                .single();
+            // Пытаемся обновить данные пользователя из базы
+            try {
+                const { data, error } = await this.supabase
+                    .from('users')
+                    .select('*')
+                    .eq('id', this.currentUser.id)
+                    .maybeSingle();  // Используем maybeSingle
+                    
+                if (error) {
+                    console.warn('Could not fetch user data:', error);
+                    // Используем сохраненные данные
+                    return;
+                }
                 
-            if (!error && data) {
-                this.currentUser = data;
-                localStorage.setItem('gly_user', JSON.stringify(data));
+                if (data) {
+                    this.currentUser = data;
+                    localStorage.setItem('gly_user', JSON.stringify(data));
+                }
+            } catch (error) {
+                console.warn('Auth check error:', error);
+                // Продолжаем с сохраненными данными
             }
         }
     }
@@ -337,11 +363,33 @@ class GLYApp {
                     const percent = levelPercents[level];
                     const referralProfit = (profit * percent) / 100;
                     
-                    // Обновляем баланс реферера
-                    await this.supabase.rpc('increment_balance', {
-                        user_id: referrerId,
-                        amount: referralProfit
-                    });
+                    // Используем rpc с правильными параметрами
+                    try {
+                        const { error: rpcError } = await this.supabase.rpc('increment_balance', {
+                            p_user_id: referrerId,
+                            p_amount: referralProfit
+                        });
+                        
+                        if (rpcError) {
+                            console.error('RPC error:', rpcError);
+                            // Альтернативный способ обновления баланса
+                            const { data: userData } = await this.supabase
+                                .from('users')
+                                .select('balance')
+                                .eq('id', referrerId)
+                                .maybeSingle();
+                            
+                            if (userData) {
+                                const newBalance = userData.balance + referralProfit;
+                                await this.supabase
+                                    .from('users')
+                                    .update({ balance: newBalance })
+                                    .eq('id', referrerId);
+                            }
+                        }
+                    } catch (rpcErr) {
+                        console.error('RPC call failed:', rpcErr);
+                    }
                     
                     // Создаем транзакцию
                     await this.supabase
@@ -370,7 +418,7 @@ class GLYApp {
                 .select('referrer_id')
                 .eq('referred_id', userId)
                 .eq('level', 1)
-                .single();
+                .maybeSingle();
                 
             if (level1) {
                 chain[1] = level1.referrer_id;
@@ -381,7 +429,7 @@ class GLYApp {
                     .select('referrer_id')
                     .eq('referred_id', level1.referrer_id)
                     .eq('level', 1)
-                    .single();
+                    .maybeSingle();
                     
                 if (level2) {
                     chain[2] = level2.referrer_id;
@@ -392,7 +440,7 @@ class GLYApp {
                         .select('referrer_id')
                         .eq('referred_id', level2.referrer_id)
                         .eq('level', 1)
-                        .single();
+                        .maybeSingle();
                         
                     if (level3) {
                         chain[3] = level3.referrer_id;

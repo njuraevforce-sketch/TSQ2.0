@@ -48,24 +48,58 @@ export default function renderGet() {
                 <div class="vip-carousel-container">
                     <div class="vip-carousel" id="vip-carousel">
                         <div class="vip-card active" data-level="1">
+                            <div style="text-align: center; margin-bottom: 10px;">
+                                <img src="assets/vipicon1.png" alt="VIP 1" style="width: 40px; height: 40px;">
+                            </div>
+                            <img src="assets/vip1.png" alt="VIP 1" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
                             <div class="vip-level-name">VIP 1</div>
                             <div class="vip-level-percent">2.6%</div>
                             <div class="vip-level-requirement">20 USDT</div>
                         </div>
                         <div class="vip-card" data-level="2">
+                            <div style="text-align: center; margin-bottom: 10px;">
+                                <img src="assets/vipicon2.png" alt="VIP 2" style="width: 40px; height: 40px;">
+                            </div>
+                            <img src="assets/vip2.png" alt="VIP 2" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
                             <div class="vip-level-name">VIP 2</div>
                             <div class="vip-level-percent">3.1%</div>
                             <div class="vip-level-requirement">100 USDT + 2 ref</div>
                         </div>
                         <div class="vip-card" data-level="3">
+                            <div style="text-align: center; margin-bottom: 10px;">
+                                <img src="assets/vipicon3.png" alt="VIP 3" style="width: 40px; height: 40px;">
+                            </div>
+                            <img src="assets/vip3.png" alt="VIP 3" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
                             <div class="vip-level-name">VIP 3</div>
                             <div class="vip-level-percent">3.5%</div>
                             <div class="vip-level-requirement">5 ref</div>
                         </div>
                         <div class="vip-card" data-level="4">
+                            <div style="text-align: center; margin-bottom: 10px;">
+                                <img src="assets/vipicon4.png" alt="VIP 4" style="width: 40px; height: 40px;">
+                            </div>
+                            <img src="assets/vip4.png" alt="VIP 4" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
                             <div class="vip-level-name">VIP 4</div>
                             <div class="vip-level-percent">4.0%</div>
                             <div class="vip-level-requirement">7 ref</div>
+                        </div>
+                        <div class="vip-card" data-level="5">
+                            <div style="text-align: center; margin-bottom: 10px;">
+                                <img src="assets/vipicon5.png" alt="VIP 5" style="width: 40px; height: 40px;">
+                            </div>
+                            <img src="assets/vip5.png" alt="VIP 5" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+                            <div class="vip-level-name">VIP 5</div>
+                            <div class="vip-level-percent">4.5%</div>
+                            <div class="vip-level-requirement">15 ref</div>
+                        </div>
+                        <div class="vip-card" data-level="6">
+                            <div style="text-align: center; margin-bottom: 10px;">
+                                <img src="assets/vipicon6.png" alt="VIP 6" style="width: 40px; height: 40px;">
+                            </div>
+                            <img src="assets/vip6.png" alt="VIP 6" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+                            <div class="vip-level-name">VIP 6</div>
+                            <div class="vip-level-percent">5.5%</div>
+                            <div class="vip-level-requirement">25 ref</div>
                         </div>
                     </div>
                     <div class="vip-carousel-controls">
@@ -75,6 +109,8 @@ export default function renderGet() {
                             <span class="vip-dot" data-index="1"></span>
                             <span class="vip-dot" data-index="2"></span>
                             <span class="vip-dot" data-index="3"></span>
+                            <span class="vip-dot" data-index="4"></span>
+                            <span class="vip-dot" data-index="5"></span>
                         </div>
                         <button class="vip-carousel-next">›</button>
                     </div>
@@ -115,7 +151,9 @@ function initVipCarousel() {
         "Basic level with standard returns. Invest 20 USDT to start earning 2.6% daily profit.",
         "Enhanced returns with referral requirements. Invest 100 USDT and invite 2 friends to earn 3.1% daily.",
         "Premium level with team building. Invite 5 friends to unlock 3.5% daily profit without investment.",
-        "Advanced level with maximum benefits. Build a team of 7 referrals to earn 4.0% daily profit."
+        "Advanced level with maximum benefits. Build a team of 7 referrals to earn 4.0% daily profit.",
+        "Professional level for serious investors. Build a team of 15 referrals to earn 4.5% daily profit.",
+        "Elite level with maximum returns. Build a team of 25 referrals to earn 5.5% daily profit."
     ];
     
     function updateCarousel() {

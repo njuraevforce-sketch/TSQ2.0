@@ -132,7 +132,7 @@ export function init() {
                 return;
             }
             
-            // Проверяем пригласительный код
+            // Проверяем пригласительный код (простая проверка существования)
             const { data: referrer } = await supabase
                 .from('users')
                 .select('id, invite_code')
@@ -154,8 +154,8 @@ export function init() {
                 id: userId,
                 username: username,
                 email: email,
-                password: password, // В реальном приложении нужно хэшировать
-                payment_password: paymentPassword, // И это тоже
+                password: password,
+                payment_password: paymentPassword,
                 invite_code: userInviteCode,
                 referred_by: inviteCode,
                 balance: 3.00, // Бонус за регистрацию

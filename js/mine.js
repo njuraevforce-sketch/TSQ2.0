@@ -1,21 +1,21 @@
 // Mine section
 export default function renderMine() {
     return `
-        <!-- Профиль с аватаркой в левом верхнем углу -->
-        <div class="card padding">
+        <!-- Профиль с фоновым изображением -->
+        <div class="card padding profile-card-with-bg">
             <div style="display: flex; align-items: center; margin-bottom: 20px;">
                 <div class="profile-avatar-small">
                     👤
                 </div>
                 <div style="flex: 1;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;">
-                        <div class="profile-vip-badge" id="user-vip-level">VIP 3</div>
+                        <div class="profile-vip-badge" id="user-vip-level">VIP 1</div>
                         <button class="copy-id-btn" id="copy-user-id">
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
                     <div class="profile-id-copy">
-                        <span class="profile-id" id="user-id">ID: QCF123456</span>
+                        <span class="profile-id" id="user-id">ID: Loading...</span>
                     </div>
                 </div>
             </div>
@@ -114,7 +114,7 @@ export default function renderMine() {
                             <div class="referral-info">
                                 <div class="referral-text">
                                     <h4>Telegram</h4>
-                                    <p>@QuantumFarmSupport</p>
+                                    <p>@GLYSupport</p>
                                 </div>
                             </div>
                             <button class="copy-btn" id="copy-telegram">
@@ -127,7 +127,7 @@ export default function renderMine() {
                             <div class="referral-info">
                                 <div class="referral-text">
                                     <h4>Email</h4>
-                                    <p>support@quantumfarm.io</p>
+                                    <p>support@gly.io</p>
                                 </div>
                             </div>
                             <button class="copy-btn" id="copy-email">
@@ -145,6 +145,9 @@ export default function renderMine() {
 }
 
 export function init() {
+    // Загружаем данные пользователя
+    loadUserData();
+    
     // Обработчики для настроек
     document.getElementById('withdrawal-address-setting').addEventListener('click', showAddressPopup);
     document.getElementById('transaction-password-setting').addEventListener('click', showPasswordPopup);
@@ -166,9 +169,29 @@ export function init() {
     // Копирование контактов поддержки
     document.getElementById('copy-telegram').addEventListener('click', copyTelegram);
     document.getElementById('copy-email').addEventListener('click', copyEmail);
+}
 
-    // Загрузка данных профиля
-    loadProfileData();
+async function loadUserData() {
+    if (!app.currentUser) return;
+    
+    const user = app.currentUser;
+    
+    // Обновляем данные на странице
+    document.getElementById('user-vip-level').textContent = `VIP ${user.vip_level}`;
+    document.getElementById('user-id').textContent = `ID: ${user.invite_code}`;
+    
+    // Загружаем актуальный баланс
+    const supabase = GLY.initSupabase();
+    const { data: currentUser } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+        
+    if (currentUser) {
+        app.currentUser = currentUser;
+        localStorage.setItem('gly_user', JSON.stringify(currentUser));
+    }
 }
 
 function showAddressPopup() {
@@ -252,7 +275,7 @@ function changeLanguage() {
 
 function copyUserId() {
     const userId = document.getElementById('user-id').textContent.replace('ID: ', '');
-    QuantumFarm.copyToClipboard(userId).then(() => {
+    GLY.copyToClipboard(userId).then(() => {
         const copyBtn = document.getElementById('copy-user-id');
         const originalHtml = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i class="fas fa-check"></i>';
@@ -263,7 +286,7 @@ function copyUserId() {
 }
 
 function copyTelegram() {
-    QuantumFarm.copyToClipboard('@QuantumFarmSupport').then(() => {
+    GLY.copyToClipboard('@GLYSupport').then(() => {
         const copyBtn = document.getElementById('copy-telegram');
         const originalText = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
@@ -274,7 +297,7 @@ function copyTelegram() {
 }
 
 function copyEmail() {
-    QuantumFarm.copyToClipboard('support@quantumfarm.io').then(() => {
+    GLY.copyToClipboard('support@gly.io').then(() => {
         const copyBtn = document.getElementById('copy-email');
         const originalText = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
@@ -286,21 +309,6 @@ function copyEmail() {
 
 function logout() {
     if (confirm('Are you sure you want to logout?')) {
-        // Здесь будет логика выхода
-        alert('You have been logged out successfully');
-        window.showSection('login');
+        app.logout();
     }
-}
-
-function loadProfileData() {
-    // В реальном приложении здесь будет API запрос для загрузки данных профиля
-    const profileData = {
-        name: 'Quantum Trader',
-        userId: 'QCF123456',
-        vipLevel: 'VIP 3'
-    };
-    
-    // Обновление данных на странице
-    document.getElementById('user-vip-level').textContent = profileData.vipLevel;
-    document.getElementById('user-id').textContent = `ID: ${profileData.userId}`;
 }

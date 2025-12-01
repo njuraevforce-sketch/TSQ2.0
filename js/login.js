@@ -17,9 +17,9 @@ export default function renderLogin() {
                 <input type="text" id="username" placeholder="Имя пользователя" class="input-line">
             </div>
             
-            <div class="input-container">
-                <input type="password" id="password" placeholder="Пароль" class="input-line">
-                <i class="fas fa-eye" id="toggle-password" class="password-toggle"></i>
+            <div class="input-container" style="position: relative;">
+                <input type="password" id="password" placeholder="Пароль" class="input-line" style="padding-right: 40px;">
+                <i class="fas fa-eye password-toggle" id="toggle-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #52c41a; cursor: pointer; z-index: 10;"></i>
             </div>
             
             <button id="login-btn" class="pro-btn" style="width: 100%; background: #4e7771; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 30px;">Авторизация</button>

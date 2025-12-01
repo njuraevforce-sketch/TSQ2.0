@@ -68,7 +68,7 @@ class QuantumFarmApp {
             this.showNavbar();
             document.body.classList.add('no-tabbar');
             
-            // Устанавливаем заголовок для страниц быстрого доступа с кнопкой назад
+            // Устанавливаем заголовок для страниц быстрого доступа с кнопкой назад БЕЗ ЛОГОТИПА
             if (sectionId === 'company') this.setNavbarTitle('Company', true);
             else if (sectionId === 'invite') this.setNavbarTitle('Invite', true);
             else if (sectionId === 'team') this.setNavbarTitle('Team', true);
@@ -151,12 +151,10 @@ class QuantumFarmApp {
         const navbarContent = document.querySelector('.u-navbar__content');
         if (navbarContent) {
             if (showBackButton) {
+                // ТОЛЬКО стрелка назад и заголовок (без логотипа)
                 navbarContent.innerHTML = `
                     <div class="u-navbar__content__back" id="navbar-back-btn">
                         <i class="fas fa-arrow-left"></i>
-                    </div>
-                    <div class="u-navbar__content__logo">
-                        <img src="assets/logo.png" alt="Logo">
                     </div>
                     <div class="u-navbar__content__title">${title}</div>
                 `;
@@ -169,6 +167,7 @@ class QuantumFarmApp {
                     });
                 }
             } else {
+                // Для главных страниц - только логотип и заголовок
                 navbarContent.innerHTML = `
                     <div class="u-navbar__content__logo">
                         <img src="assets/logo.png" alt="Logo">

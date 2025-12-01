@@ -438,7 +438,6 @@ async function processWithdrawal() {
             setTimeout(() => {
                 loadTransactionHistory();
             }, 1000);
-            
         } catch (error) {
             alert('Error processing withdrawal: ' + error.message);
         }

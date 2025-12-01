@@ -2,11 +2,8 @@
 export default function renderMine() {
     return `
         <!-- Профиль с фоновым изображением -->
-        <div class="card padding profile-card-with-bg">
+        <div class="card padding profile-bg">
             <div style="display: flex; align-items: center; margin-bottom: 20px;">
-                <div class="profile-avatar-small">
-                    👤
-                </div>
                 <div style="flex: 1;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;">
                         <div class="profile-vip-badge" id="user-vip-level">VIP 1</div>
@@ -16,6 +13,9 @@ export default function renderMine() {
                     </div>
                     <div class="profile-id-copy">
                         <span class="profile-id" id="user-id">ID: Loading...</span>
+                    </div>
+                    <div style="margin-top: 10px; color: white; font-size: 16px;">
+                        Баланс: <span id="user-balance">0.00</span> USDT
                     </div>
                 </div>
             </div>
@@ -145,8 +145,8 @@ export default function renderMine() {
 }
 
 export function init() {
-    // Загружаем данные пользователя
-    loadUserData();
+    // Загрузка данных профиля
+    loadProfileData();
     
     // Обработчики для настроек
     document.getElementById('withdrawal-address-setting').addEventListener('click', showAddressPopup);
@@ -160,37 +160,41 @@ export function init() {
     document.getElementById('copy-user-id').addEventListener('click', copyUserId);
 
     // Обработчики для попапов
-    document.getElementById('close-address').addEventListener('click', hideAddressPopup);
-    document.getElementById('save-address').addEventListener('click', saveWithdrawalAddress);
-    document.getElementById('close-password').addEventListener('click', hidePasswordPopup);
-    document.getElementById('save-password').addEventListener('click', changePassword);
-    document.getElementById('close-support').addEventListener('click', hideSupportPopup);
+    const closeAddressBtn = document.getElementById('close-address');
+    const saveAddressBtn = document.getElementById('save-address');
+    const closePasswordBtn = document.getElementById('close-password');
+    const savePasswordBtn = document.getElementById('save-password');
+    const closeSupportBtn = document.getElementById('close-support');
+    
+    if (closeAddressBtn) closeAddressBtn.addEventListener('click', hideAddressPopup);
+    if (saveAddressBtn) saveAddressBtn.addEventListener('click', saveWithdrawalAddress);
+    if (closePasswordBtn) closePasswordBtn.addEventListener('click', hidePasswordPopup);
+    if (savePasswordBtn) savePasswordBtn.addEventListener('click', changePassword);
+    if (closeSupportBtn) closeSupportBtn.addEventListener('click', hideSupportPopup);
     
     // Копирование контактов поддержки
-    document.getElementById('copy-telegram').addEventListener('click', copyTelegram);
-    document.getElementById('copy-email').addEventListener('click', copyEmail);
+    const copyTelegramBtn = document.getElementById('copy-telegram');
+    const copyEmailBtn = document.getElementById('copy-email');
+    
+    if (copyTelegramBtn) copyTelegramBtn.addEventListener('click', copyTelegram);
+    if (copyEmailBtn) copyEmailBtn.addEventListener('click', copyEmail);
 }
 
-async function loadUserData() {
-    if (!app.currentUser) return;
-    
-    const user = app.currentUser;
+async function loadProfileData() {
+    const user = window.getCurrentUser();
+    if (!user) {
+        window.showSection('login');
+        return;
+    }
     
     // Обновляем данные на странице
     document.getElementById('user-vip-level').textContent = `VIP ${user.vip_level}`;
-    document.getElementById('user-id').textContent = `ID: ${user.invite_code}`;
+    document.getElementById('user-id').textContent = `ID: ${user.id}`;
+    document.getElementById('user-balance').textContent = user.balance.toFixed(2);
     
-    // Загружаем актуальный баланс
-    const supabase = GLY.initSupabase();
-    const { data: currentUser } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-        
-    if (currentUser) {
-        app.currentUser = currentUser;
-        localStorage.setItem('gly_user', JSON.stringify(currentUser));
+    // Обновляем отображение адреса вывода
+    if (user.withdrawal_address) {
+        document.querySelector('#withdrawal-address-setting .setting-value').textContent = 'Configured';
     }
 }
 
@@ -208,7 +212,6 @@ function showPasswordPopup() {
 
 function hidePasswordPopup() {
     document.getElementById('password-popup').style.display = 'none';
-    // Очистка полей
     document.getElementById('current-password').value = '';
     document.getElementById('new-password').value = '';
     document.getElementById('confirm-password').value = '';
@@ -222,26 +225,53 @@ function hideSupportPopup() {
     document.getElementById('support-popup').style.display = 'none';
 }
 
-function saveWithdrawalAddress() {
+async function saveWithdrawalAddress() {
     const address = document.getElementById('withdrawal-address-input').value.trim();
+    const user = window.getCurrentUser();
     
     if (!address) {
         alert('Please enter a valid wallet address');
         return;
     }
     
-    // Здесь будет логика сохранения адреса
-    alert('Withdrawal address has been saved successfully!');
-    hideAddressPopup();
+    if (!user) {
+        alert('User not found');
+        return;
+    }
     
-    // Обновление отображения
-    document.querySelector('#withdrawal-address-setting .setting-value').textContent = 'Configured';
+    try {
+        // Сохраняем адрес в базе
+        const { error } = await supabase
+            .from('users')
+            .update({ withdrawal_address: address })
+            .eq('id', user.id);
+            
+        if (error) throw error;
+        
+        // Обновляем пользователя в localStorage
+        user.withdrawal_address = address;
+        localStorage.setItem('gly_user', JSON.stringify(user));
+        
+        alert('Withdrawal address has been saved successfully!');
+        hideAddressPopup();
+        
+        // Обновление отображения
+        document.querySelector('#withdrawal-address-setting .setting-value').textContent = 'Configured';
+    } catch (error) {
+        alert('Error saving address: ' + error.message);
+    }
 }
 
-function changePassword() {
+async function changePassword() {
     const currentPassword = document.getElementById('current-password').value;
     const newPassword = document.getElementById('new-password').value;
     const confirmPassword = document.getElementById('confirm-password').value;
+    const user = window.getCurrentUser();
+    
+    if (!user) {
+        alert('User not found');
+        return;
+    }
     
     if (!currentPassword || !newPassword || !confirmPassword) {
         alert('Please fill in all fields');
@@ -258,9 +288,30 @@ function changePassword() {
         return;
     }
     
-    // Здесь будет логика смены пароля
-    alert('Password has been changed successfully!');
-    hidePasswordPopup();
+    // Проверяем текущий пароль
+    if (user.password !== currentPassword) {
+        alert('Current password is incorrect');
+        return;
+    }
+    
+    try {
+        // Обновляем пароль в базе
+        const { error } = await supabase
+            .from('users')
+            .update({ password: newPassword })
+            .eq('id', user.id);
+            
+        if (error) throw error;
+        
+        // Обновляем пользователя в localStorage
+        user.password = newPassword;
+        localStorage.setItem('gly_user', JSON.stringify(user));
+        
+        alert('Password has been changed successfully!');
+        hidePasswordPopup();
+    } catch (error) {
+        alert('Error changing password: ' + error.message);
+    }
 }
 
 function changeLanguage() {
@@ -275,7 +326,7 @@ function changeLanguage() {
 
 function copyUserId() {
     const userId = document.getElementById('user-id').textContent.replace('ID: ', '');
-    GLY.copyToClipboard(userId).then(() => {
+    window.GLY.copyToClipboard(userId).then(() => {
         const copyBtn = document.getElementById('copy-user-id');
         const originalHtml = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i class="fas fa-check"></i>';
@@ -286,7 +337,7 @@ function copyUserId() {
 }
 
 function copyTelegram() {
-    GLY.copyToClipboard('@GLYSupport').then(() => {
+    window.GLY.copyToClipboard('@GLYSupport').then(() => {
         const copyBtn = document.getElementById('copy-telegram');
         const originalText = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
@@ -297,7 +348,7 @@ function copyTelegram() {
 }
 
 function copyEmail() {
-    GLY.copyToClipboard('support@gly.io').then(() => {
+    window.GLY.copyToClipboard('support@gly.io').then(() => {
         const copyBtn = document.getElementById('copy-email');
         const originalText = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
@@ -309,6 +360,6 @@ function copyEmail() {
 
 function logout() {
     if (confirm('Are you sure you want to logout?')) {
-        app.logout();
+        window.logout();
     }
 }

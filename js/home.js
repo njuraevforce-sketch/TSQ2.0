@@ -69,9 +69,15 @@ export default function renderHome() {
         <div class="quantum-section">
             <div class="quantum-header">
                 <div class="quantum-title">Live Crypto Prices</div>
+                <div class="text-gray" style="font-size: 12px; font-weight: normal;" id="last-updated">
+                    Updating...
+                </div>
             </div>
             <div class="crypto-grid" id="crypto-prices">
                 <!-- Цены криптовалют будут загружены через API -->
+                <div style="color: #ccc; text-align: center; padding: 20px;">
+                    Loading live prices...
+                </div>
             </div>
         </div>
 
@@ -95,47 +101,191 @@ export function init() {
 
     // Загрузка цен криптовалют
     loadCryptoPrices();
+    // Обновлять каждые 30 секунд (безопасный лимит для CoinGecko)
     setInterval(loadCryptoPrices, 30000);
 }
 
-function loadCryptoPrices() {
+async function loadCryptoPrices() {
     const cryptoContainer = document.getElementById('crypto-prices');
+    const lastUpdatedElement = document.getElementById('last-updated');
+    
     if (!cryptoContainer) return;
 
-    const cryptoData = [
-        { symbol: 'BTC', name: 'Bitcoin', price: 88405.00, change: -2.74, icon: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png' },
-        { symbol: 'ETH', name: 'Ethereum', price: 2897.01, change: -3.33, icon: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' },
-        { symbol: 'BNB', name: 'Binance Coin', price: 850.67, change: -2.78, icon: 'https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png' },
-        { symbol: 'XRP', name: 'Ripple', price: 2.11, change: -4.28, icon: 'https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png' },
-        { symbol: 'ADA', name: 'Cardano', price: 0.40, change: -4.21, icon: 'https://assets.coingecko.com/coins/images/975/small/cardano.png' },
-        { symbol: 'SOL', name: 'Solana', price: 130.18, change: -4.43, icon: 'https://assets.coingecko.com/coins/images/4128/small/solana.png' },
-        { symbol: 'DOT', name: 'Polkadot', price: 2.12, change: -6.50, icon: 'https://assets.coingecko.com/coins/images/12171/small/polkadot.png' },
-        { symbol: 'DOGE', name: 'Dogecoin', price: 0.15, change: -3.21, icon: 'https://assets.coingecko.com/coins/images/5/small/dogecoin.png' }
-    ];
-    
-    let html = '';
-    cryptoData.forEach(crypto => {
-        const changeClass = crypto.change >= 0 ? 'change-positive' : 'change-negative';
-        const changeSign = crypto.change >= 0 ? '+' : '';
+    // Проверка интернета
+    if (!navigator.onLine) {
+        cryptoContainer.innerHTML = '<div style="color: #ccc; text-align: center; padding: 20px;">No internet connection</div>';
+        if (lastUpdatedElement) {
+            lastUpdatedElement.textContent = 'Offline';
+        }
+        return;
+    }
+
+    try {
+        // Обновляем статус
+        if (lastUpdatedElement) {
+            lastUpdatedElement.textContent = 'Updating...';
+        }
+
+        // Используем CoinGecko API (бесплатно, до 50 запросов в минуту)
+        const response = await fetch(
+            'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,ripple,cardano,solana,polkadot,dogecoin&vs_currencies=usd&include_24hr_change=true'
+        );
         
-        html += `
-            <div class="crypto-item">
-                <div class="crypto-info">
-                    <div class="crypto-icon">
-                        <img src="${crypto.icon}" alt="${crypto.name}">
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Массив криптовалют с их данными
+        const cryptoData = [
+            { 
+                id: 'bitcoin', 
+                symbol: 'BTC', 
+                name: 'Bitcoin', 
+                icon: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png' 
+            },
+            { 
+                id: 'ethereum', 
+                symbol: 'ETH', 
+                name: 'Ethereum', 
+                icon: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' 
+            },
+            { 
+                id: 'binancecoin', 
+                symbol: 'BNB', 
+                name: 'Binance Coin', 
+                icon: 'https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png' 
+            },
+            { 
+                id: 'ripple', 
+                symbol: 'XRP', 
+                name: 'Ripple', 
+                icon: 'https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png' 
+            },
+            { 
+                id: 'cardano', 
+                symbol: 'ADA', 
+                name: 'Cardano', 
+                icon: 'https://assets.coingecko.com/coins/images/975/small/cardano.png' 
+            },
+            { 
+                id: 'solana', 
+                symbol: 'SOL', 
+                name: 'Solana', 
+                icon: 'https://assets.coingecko.com/coins/images/4128/small/solana.png' 
+            },
+            { 
+                id: 'polkadot', 
+                symbol: 'DOT', 
+                name: 'Polkadot', 
+                icon: 'https://assets.coingecko.com/coins/images/12171/small/polkadot.png' 
+            },
+            { 
+                id: 'dogecoin', 
+                symbol: 'DOGE', 
+                name: 'Dogecoin', 
+                icon: 'https://assets.coingecko.com/coins/images/5/small/dogecoin.png' 
+            }
+        ];
+        
+        let html = '';
+        
+        cryptoData.forEach(crypto => {
+            const cryptoInfo = data[crypto.id];
+            if (cryptoInfo && cryptoInfo.usd && cryptoInfo.usd_24h_change !== undefined) {
+                const price = cryptoInfo.usd;
+                const change = cryptoInfo.usd_24h_change;
+                const changeClass = change >= 0 ? 'change-positive' : 'change-negative';
+                const changeSign = change >= 0 ? '+' : '';
+                const formattedPrice = price > 1 ? 
+                    price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) :
+                    price.toLocaleString('en-US', {minimumFractionDigits: 4, maximumFractionDigits: 4});
+                
+                html += `
+                    <div class="crypto-item">
+                        <div class="crypto-info">
+                            <div class="crypto-icon">
+                                <img src="${crypto.icon}" alt="${crypto.name}" onerror="this.src='assets/crypto/placeholder.png'">
+                            </div>
+                            <div>
+                                <span class="crypto-name">${crypto.name}</span>
+                                <span class="crypto-pair">/USDT</span>
+                            </div>
+                        </div>
+                        <div class="flex align-center">
+                            <div class="crypto-price">$${formattedPrice}</div>
+                            <div class="crypto-change ${changeClass}">${changeSign}${change.toFixed(2)}%</div>
+                        </div>
                     </div>
-                    <div>
-                        <span class="crypto-name">${crypto.symbol}</span>
-                        <span class="crypto-pair">/USDT</span>
+                `;
+            }
+        });
+        
+        if (html === '') {
+            throw new Error('No data received from API');
+        }
+        
+        cryptoContainer.innerHTML = html;
+        
+        // Обновляем время последнего обновления
+        if (lastUpdatedElement) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            lastUpdatedElement.textContent = `Updated: ${timeString}`;
+        }
+        
+    } catch (error) {
+        console.error('Error loading crypto prices:', error);
+        
+        // Fallback: показываем статические данные с сообщением об ошибке
+        const fallbackData = [
+            { symbol: 'BTC', name: 'Bitcoin', price: 88405.00, change: -2.74, icon: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png' },
+            { symbol: 'ETH', name: 'Ethereum', price: 2897.01, change: -3.33, icon: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' },
+            { symbol: 'BNB', name: 'Binance Coin', price: 850.67, change: -2.78, icon: 'https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png' },
+            { symbol: 'XRP', name: 'Ripple', price: 2.11, change: -4.28, icon: 'https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png' },
+            { symbol: 'ADA', name: 'Cardano', price: 0.40, change: -4.21, icon: 'https://assets.coingecko.com/coins/images/975/small/cardano.png' },
+            { symbol: 'SOL', name: 'Solana', price: 130.18, change: -4.43, icon: 'https://assets.coingecko.com/coins/images/4128/small/solana.png' },
+            { symbol: 'DOT', name: 'Polkadot', price: 2.12, change: -6.50, icon: 'https://assets.coingecko.com/coins/images/12171/small/polkadot.png' },
+            { symbol: 'DOGE', name: 'Dogecoin', price: 0.15, change: -3.21, icon: 'https://assets.coingecko.com/coins/images/5/small/dogecoin.png' }
+        ];
+        
+        let fallbackHtml = '';
+        fallbackData.forEach(crypto => {
+            const changeClass = crypto.change >= 0 ? 'change-positive' : 'change-negative';
+            const changeSign = crypto.change >= 0 ? '+' : '';
+            const formattedPrice = crypto.price > 1 ? 
+                crypto.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) :
+                crypto.price.toLocaleString('en-US', {minimumFractionDigits: 4, maximumFractionDigits: 4});
+            
+            fallbackHtml += `
+                <div class="crypto-item">
+                    <div class="crypto-info">
+                        <div class="crypto-icon">
+                            <img src="${crypto.icon}" alt="${crypto.name}" onerror="this.src='assets/crypto/placeholder.png'">
+                        </div>
+                        <div>
+                            <span class="crypto-name">${crypto.name}</span>
+                            <span class="crypto-pair">/USDT</span>
+                        </div>
+                    </div>
+                    <div class="flex align-center">
+                        <div class="crypto-price">$${formattedPrice}</div>
+                        <div class="crypto-change ${changeClass}">${changeSign}${crypto.change}%</div>
                     </div>
                 </div>
-                <div class="flex align-center">
-                    <div class="crypto-price">$${crypto.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-                    <div class="crypto-change ${changeClass}">${changeSign}${crypto.change}%</div>
-                </div>
+            `;
+        });
+        
+        cryptoContainer.innerHTML = `
+            <div style="margin-bottom: 10px; color: #f9ae3d; font-size: 12px; text-align: center;">
+                Using cached data. Live updates temporarily unavailable.
             </div>
+            ${fallbackHtml}
         `;
-    });
-    
-    cryptoContainer.innerHTML = html;
+        
+        if (lastUpdatedElement) {
+            lastUpdatedElement.textContent = 'Cached data';
+        }
+    }
 }

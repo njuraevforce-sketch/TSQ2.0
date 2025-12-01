@@ -1,82 +1,63 @@
 // Register section
 export default function renderRegister() {
+    const refCode = localStorage.getItem('referral_code') || '';
+    
     return `
-        <!-- Логотип -->
-        <div class="padding" style="padding-top: 30px; padding-bottom: 0;">
-            <img src="assets/logo.png" alt="Logo" style="width: 60px; height: 60px; border-radius: 10px;">
-        </div>
-
-        <!-- Форма регистрации -->
-        <div class="card padding" style="margin-top: 20px; background: transparent; box-shadow: none;">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <h2 style="color: white; margin-bottom: 10px;">Привет</h2>
-                <p style="color: #ccc;">Добро пожаловать в QCF</p>
+        <div class="auth-container">
+            <div class="auth-logo">
+                <img src="assets/logo.png" alt="GLY Logo">
             </div>
             
-            <div class="input-container">
-                <input type="text" id="reg-username" placeholder="Имя пользователя" class="input-line">
+            <div class="auth-title">
+                <h1>Join GLY</h1>
+                <p>Start your quantum journey</p>
             </div>
             
-            <div class="input-container">
-                <input type="email" id="email" placeholder="Почта" class="input-line">
-            </div>
-            
-            <div class="input-container" style="position: relative;">
-                <input type="password" id="reg-password" placeholder="Пароль" class="input-line" style="padding-right: 40px;">
-                <i class="fas fa-eye password-toggle" id="toggle-reg-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #52c41a; cursor: pointer; z-index: 10;"></i>
-            </div>
-            
-            <div class="input-container" style="position: relative;">
-                <input type="password" id="confirm-password" placeholder="Подтвердить пароль" class="input-line" style="padding-right: 40px;">
-                <i class="fas fa-eye password-toggle" id="toggle-confirm-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #52c41a; cursor: pointer; z-index: 10;"></i>
-            </div>
-            
-            <div class="input-container" style="position: relative;">
-                <input type="password" id="payment-password" placeholder="Пароль платежа" class="input-line" style="padding-right: 40px;">
-                <i class="fas fa-eye password-toggle" id="toggle-payment-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #52c41a; cursor: pointer; z-index: 10;"></i>
-            </div>
-            
-            <div class="input-container">
-                <input type="text" id="invite-code" placeholder="Пригласительный код" class="input-line">
-            </div>
-            
-            <button id="register-btn" class="pro-btn" style="width: 100%; background: #4e7771; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 30px;">Зарегистрироваться</button>
-            
-            <div style="text-align: center; margin-top: 20px;">
-                <p style="color: #ccc;">Уже есть аккаунт? <a href="#" id="go-to-login" style="color: #52c41a;">Войдите сейчас!</a></p>
+            <div class="auth-form">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="reg-username" placeholder="Choose username">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="Enter your email">
+                </div>
+                
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="reg-password" placeholder="Create password">
+                </div>
+                
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="confirm-password" placeholder="Confirm password">
+                </div>
+                
+                <div class="form-group">
+                    <label>Payment Password</label>
+                    <input type="password" id="payment-password" placeholder="Payment password">
+                </div>
+                
+                <div class="form-group">
+                    <label>Referral Code</label>
+                    <input type="text" id="invite-code" placeholder="Enter referral code" value="${refCode}" ${refCode ? 'readonly' : ''}>
+                </div>
+                
+                <button id="register-btn" class="auth-button">Register</button>
+                
+                <div class="auth-link">
+                    <p>Already have an account? <a href="#" id="go-to-login">Login now</a></p>
+                </div>
             </div>
         </div>
     `;
 }
 
 export function init() {
-    // Добавляем класс к body для auth страниц
     document.body.classList.add('auth-page');
     
-    // Обработчики для переключения видимости паролей
-    document.getElementById('toggle-reg-password').addEventListener('click', function() {
-        const passwordInput = document.getElementById('reg-password');
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        this.classList.toggle('fa-eye-slash');
-    });
-
-    document.getElementById('toggle-confirm-password').addEventListener('click', function() {
-        const passwordInput = document.getElementById('confirm-password');
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        this.classList.toggle('fa-eye-slash');
-    });
-
-    document.getElementById('toggle-payment-password').addEventListener('click', function() {
-        const passwordInput = document.getElementById('payment-password');
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        this.classList.toggle('fa-eye-slash');
-    });
-
-    // Обработчик для кнопки регистрации
-    document.getElementById('register-btn').addEventListener('click', function() {
+    document.getElementById('register-btn').addEventListener('click', async function() {
         const username = document.getElementById('reg-username').value;
         const email = document.getElementById('email').value;
         const password = document.getElementById('reg-password').value;
@@ -84,31 +65,121 @@ export function init() {
         const paymentPassword = document.getElementById('payment-password').value;
         const inviteCode = document.getElementById('invite-code').value;
         
+        // Валидация
         if (!username || !email || !password || !confirmPassword || !paymentPassword) {
-            alert('Пожалуйста, заполните все обязательные поля');
+            alert('Please fill in all fields');
+            return;
+        }
+        
+        if (!inviteCode) {
+            alert('Referral code is required');
             return;
         }
         
         if (password !== confirmPassword) {
-            alert('Пароли не совпадают');
+            alert('Passwords do not match');
             return;
         }
         
         if (password.length < 6) {
-            alert('Пароль должен быть не менее 6 символов');
+            alert('Password must be at least 6 characters');
             return;
         }
         
-        // Здесь будет логика регистрации
-        alert('Регистрация успешна!');
-        document.body.classList.remove('auth-page');
-        window.showSection('login');
+        try {
+            // Генерируем уникальный инвайт код для нового пользователя
+            const userInviteCode = 'GLY' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            
+            const userData = {
+                username,
+                email,
+                password,
+                payment_password: paymentPassword,
+                invite_code: userInviteCode,
+                referred_by: inviteCode,
+                balance: 3.00, // Бонус за регистрацию
+                vip_level: 1
+            };
+            
+            const newUser = await GLY.registerUser(userData);
+            
+            // Добавляем реферальные связи если есть пригласивший
+            if (inviteCode) {
+                await processReferralHierarchy(inviteCode, newUser.id);
+            }
+            
+            // Добавляем транзакцию бонуса
+            await GLY.addTransaction({
+                user_id: newUser.id,
+                type: 'registration_bonus',
+                amount: 3.00
+            });
+            
+            alert('Registration successful! Welcome bonus: $3');
+            localStorage.removeItem('referral_code');
+            await app.login(newUser);
+            
+        } catch (error) {
+            alert('Registration failed: ' + error.message);
+        }
     });
 
-    // Обработчик для перехода на вход
     document.getElementById('go-to-login').addEventListener('click', function(e) {
         e.preventDefault();
-        document.body.classList.remove('auth-page');
         window.showSection('login');
     });
+}
+
+async function processReferralHierarchy(inviteCode, newUserId) {
+    const supabase = GLY.initSupabase();
+    
+    // Находим пользователя который пригласил
+    const { data: referrer } = await supabase
+        .from('users')
+        .select('id')
+        .eq('invite_code', inviteCode)
+        .single();
+    
+    if (!referrer) return;
+    
+    // Добавляем реферала 1 уровня
+    await GLY.addReferral(referrer.id, newUserId, 1);
+    
+    // Находим реферера 2 уровня (кто пригласил того кто пригласил)
+    const { data: level2Referrer } = await supabase
+        .from('users')
+        .select('id, referred_by')
+        .eq('id', referrer.id)
+        .single();
+    
+    if (level2Referrer && level2Referrer.referred_by) {
+        const { data: level2User } = await supabase
+            .from('users')
+            .select('id')
+            .eq('invite_code', level2Referrer.referred_by)
+            .single();
+            
+        if (level2User) {
+            await GLY.addReferral(level2User.id, newUserId, 2);
+            
+            // Находим реферера 3 уровня
+            const { data: level3Referrer } = await supabase
+                .from('users')
+                .select('id, referred_by')
+                .eq('id', level2User.id)
+                .single();
+                
+            if (level3Referrer && level3Referrer.referred_by) {
+                const { data: level3User } = await supabase
+                    .from('users')
+                    .select('id')
+                    .eq('invite_code', level3Referrer.referred_by)
+                    .single();
+                    
+                if (level3User) {
+                    await GLY.addReferral(level3User.id, newUserId, 3);
+                }
+            }
+        }
+    }
 }

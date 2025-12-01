@@ -163,7 +163,7 @@ async function loadReferralStats() {
                     .from('users')
                     .select('balance')
                     .eq('id', referral.referred_id)
-                    .single();
+                    .maybeSingle();  // Используем maybeSingle
                     
                 if (referredUser && referredUser.balance >= 20) {
                     activeReferrals++;

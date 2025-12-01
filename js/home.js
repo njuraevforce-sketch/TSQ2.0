@@ -17,7 +17,7 @@ export default function renderHome() {
                 <div class="notice-icon">🚀</div>
                 <div class="notice-content">
                     <div class="notice-text">
-                        GLY - Quantum Investment Platform │ Advanced AI Algorithms │ Daily Returns 2.6%-5.5% │ 6 VIP Levels │ Multi-Level Referral System │ Secure & Transparent
+                        GLY - Quantum Investment Platform │ Advanced AI Algorithms │ Daily Returns 2.2%-6% │ 6 VIP Levels │ Multi-Level Referral System │ Secure & Transparent
                     </div>
                 </div>
             </div>
@@ -65,20 +65,20 @@ export default function renderHome() {
             </div>
         </div>
 
-        <!-- Криптовалютные цены БЕЗ ОТСТУПОВ -->
+        <!-- Криптовалютные цены -->
         <div class="quantum-section">
             <div class="quantum-header">
                 <div class="quantum-title">Live Crypto Prices</div>
             </div>
-            <div class="crypto-grid-no-gap" id="crypto-prices">
+            <div class="crypto-grid" id="crypto-prices">
                 <!-- Цены криптовалют будут загружены через API -->
             </div>
         </div>
 
-        <!-- Блок партнеров на всю ширину -->
-        <div class="partners-section-fullwidth">
+        <!-- Блок партнеров -->
+        <div class="partners-section">
             <div class="section-title">Our Partners</div>
-            <img src="assets/partners.png" alt="Our Partners" class="partners-image-fullwidth">
+            <img src="assets/partners.png" alt="Our Partners" style="width: 100%; border-radius: 10px;">
         </div>
     `;
 }
@@ -102,7 +102,6 @@ function loadCryptoPrices() {
     const cryptoContainer = document.getElementById('crypto-prices');
     if (!cryptoContainer) return;
 
-    // Статические данные с нужными ценами
     const cryptoData = [
         { symbol: 'BTC', name: 'Bitcoin', price: 88405.00, change: -2.74, icon: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png' },
         { symbol: 'ETH', name: 'Ethereum', price: 2897.01, change: -3.33, icon: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' },

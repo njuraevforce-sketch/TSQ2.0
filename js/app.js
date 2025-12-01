@@ -60,29 +60,35 @@ class GLYApp {
     async checkAuth() {
         const storedUser = localStorage.getItem('gly_user');
         if (storedUser) {
-            this.currentUser = JSON.parse(storedUser);
-            
-            // Пытаемся обновить данные пользователя из базы
             try {
-                const { data, error } = await this.supabase
-                    .from('users')
-                    .select('*')
-                    .eq('id', this.currentUser.id)
-                    .maybeSingle();  // Используем maybeSingle
-                    
-                if (error) {
-                    console.warn('Could not fetch user data:', error);
-                    // Используем сохраненные данные
-                    return;
-                }
+                this.currentUser = JSON.parse(storedUser);
                 
-                if (data) {
-                    this.currentUser = data;
-                    localStorage.setItem('gly_user', JSON.stringify(data));
+                // Пытаемся обновить данные пользователя из базы
+                try {
+                    const { data, error } = await this.supabase
+                        .from('users')
+                        .select('*')
+                        .eq('id', this.currentUser.id)
+                        .maybeSingle();  // Используем maybeSingle
+                        
+                    if (error) {
+                        console.warn('Could not fetch user data:', error);
+                        // Используем сохраненные данные
+                        return;
+                    }
+                    
+                    if (data) {
+                        this.currentUser = data;
+                        localStorage.setItem('gly_user', JSON.stringify(data));
+                    }
+                } catch (error) {
+                    console.warn('Auth check error:', error);
+                    // Продолжаем с сохраненными данными
                 }
-            } catch (error) {
-                console.warn('Auth check error:', error);
-                // Продолжаем с сохраненными данными
+            } catch (e) {
+                console.error('Error parsing stored user:', e);
+                localStorage.removeItem('gly_user');
+                this.currentUser = null;
             }
         }
     }
@@ -137,7 +143,13 @@ class GLYApp {
             if (this.currentSection !== 'login' && this.currentSection !== 'register' && 
                 this.currentSection !== 'company' && this.currentSection !== 'invite' && 
                 this.currentSection !== 'team' && this.currentSection !== 'rules') {
-                document.querySelector(`[data-section="${this.currentSection}"]`).classList.remove('uni-tabbar__item--active');
+                document.querySelectorAll('.uni-tabbar__item').forEach(item => {
+                    item.classList.remove('uni-tabbar__item--active');
+                });
+                const activeTab = document.querySelector(`[data-section="${this.currentSection}"]`);
+                if (activeTab) {
+                    activeTab.classList.remove('uni-tabbar__item--active');
+                }
             }
         }
 
@@ -165,7 +177,15 @@ class GLYApp {
             this.showNavbar();
             document.body.classList.remove('no-tabbar');
             this.setNavbarTitle('', false);
-            document.querySelector(`[data-section="${sectionId}"]`).classList.add('uni-tabbar__item--active');
+            
+            // Устанавливаем активный таб
+            document.querySelectorAll('.uni-tabbar__item').forEach(item => {
+                item.classList.remove('uni-tabbar__item--active');
+            });
+            const currentTabItem = document.querySelector(`[data-section="${sectionId}"]`);
+            if (currentTabItem) {
+                currentTabItem.classList.add('uni-tabbar__item--active');
+            }
         }
 
         this.currentSection = sectionId;
@@ -363,32 +383,19 @@ class GLYApp {
                     const percent = levelPercents[level];
                     const referralProfit = (profit * percent) / 100;
                     
-                    // Используем rpc с правильными параметрами
-                    try {
-                        const { error: rpcError } = await this.supabase.rpc('increment_balance', {
-                            p_user_id: referrerId,
-                            p_amount: referralProfit
-                        });
-                        
-                        if (rpcError) {
-                            console.error('RPC error:', rpcError);
-                            // Альтернативный способ обновления баланса
-                            const { data: userData } = await this.supabase
-                                .from('users')
-                                .select('balance')
-                                .eq('id', referrerId)
-                                .maybeSingle();
-                            
-                            if (userData) {
-                                const newBalance = userData.balance + referralProfit;
-                                await this.supabase
-                                    .from('users')
-                                    .update({ balance: newBalance })
-                                    .eq('id', referrerId);
-                            }
-                        }
-                    } catch (rpcErr) {
-                        console.error('RPC call failed:', rpcErr);
+                    // Обновляем баланс реферера напрямую
+                    const { data: userData } = await this.supabase
+                        .from('users')
+                        .select('balance')
+                        .eq('id', referrerId)
+                        .maybeSingle();
+                    
+                    if (userData) {
+                        const newBalance = userData.balance + referralProfit;
+                        await this.supabase
+                            .from('users')
+                            .update({ balance: newBalance })
+                            .eq('id', referrerId);
                     }
                     
                     // Создаем транзакцию

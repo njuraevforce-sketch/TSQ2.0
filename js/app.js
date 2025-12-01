@@ -77,7 +77,7 @@ class QuantumFarmApp {
             this.showTabbar();
             this.showNavbar();
             document.body.classList.remove('no-tabbar');
-            this.setNavbarTitle('Quantum Crypto Farm', false);
+            this.setNavbarTitle('', false);
             document.querySelector(`[data-section="${sectionId}"]`).classList.add('uni-tabbar__item--active');
         }
 
@@ -153,6 +153,9 @@ class QuantumFarmApp {
                     <div class="u-navbar__content__back" id="navbar-back-btn">
                         <i class="fas fa-arrow-left"></i>
                     </div>
+                    <div class="u-navbar__content__logo">
+                        <img src="assets/logo.png" alt="Logo">
+                    </div>
                     <div class="u-navbar__content__title">${title}</div>
                 `;
                 
@@ -162,6 +165,9 @@ class QuantumFarmApp {
                 });
             } else {
                 navbarContent.innerHTML = `
+                    <div class="u-navbar__content__logo">
+                        <img src="assets/logo.png" alt="Logo">
+                    </div>
                     <div class="u-navbar__content__title">${title}</div>
                 `;
             }

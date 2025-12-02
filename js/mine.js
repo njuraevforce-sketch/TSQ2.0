@@ -1,7 +1,7 @@
 // Mine section
 export default function renderMine() {
     return `
-        <!-- Профиль с фоновым изображением -->
+        <!-- Profile with background image -->
         <div class="card padding profile-bg">
             <div style="display: flex; align-items: center; margin-bottom: 20px;">
                 <div style="flex: 1;">
@@ -15,13 +15,13 @@ export default function renderMine() {
                         <span class="profile-id" id="user-id">ID: Loading...</span>
                     </div>
                     <div style="margin-top: 10px; color: white; font-size: 16px;">
-                        Баланс: <span id="user-balance">0.00</span> USDT
+                        Balance: <span id="user-balance">0.00</span> USDT
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Настройки -->
+        <!-- Settings -->
         <div class="card padding margin-top">
             <div class="text-white text-bold">Settings</div>
             <div class="settings-list">
@@ -49,7 +49,7 @@ export default function renderMine() {
             </div>
         </div>
 
-        <!-- Попап для настройки адреса вывода -->
+        <!-- Popup for withdrawal address setting -->
         <div class="pop-overlay" id="address-popup" style="display: none;">
             <div class="pop-content">
                 <form id="address-form" onsubmit="return false;">
@@ -72,7 +72,7 @@ export default function renderMine() {
             </div>
         </div>
 
-        <!-- Попап для смены пароля -->
+        <!-- Popup for password change -->
         <div class="pop-overlay" id="password-popup" style="display: none;">
             <div class="pop-content">
                 <form id="password-change-form" onsubmit="return false;">
@@ -102,7 +102,7 @@ export default function renderMine() {
             </div>
         </div>
 
-        <!-- Попап для службы поддержки -->
+        <!-- Popup for customer service -->
         <div class="pop-overlay" id="support-popup" style="display: none;">
             <div class="pop-content">
                 <div class="pop-header">Customer Service</div>
@@ -149,19 +149,19 @@ export default function renderMine() {
 }
 
 export function init() {
-    // Используем задержку для гарантии, что DOM полностью загружен
+    // Use delay to ensure DOM is fully loaded
     setTimeout(() => {
-        // Загрузка данных профиля
+        // Load profile data
         loadProfileData();
         
-        // Настройка обработчиков событий
+        // Setup event handlers
         setupEventListeners();
     }, 100);
 }
 
 function setupEventListeners() {
     try {
-        // Обработчики для настроек
+        // Handlers for settings
         document.getElementById('withdrawal-address-setting').addEventListener('click', showAddressPopup);
         document.getElementById('transaction-password-setting').addEventListener('click', showPasswordPopup);
         document.getElementById('customer-service-setting').addEventListener('click', showSupportPopup);
@@ -170,7 +170,7 @@ function setupEventListeners() {
         document.getElementById('logout-btn').addEventListener('click', logout);
         document.getElementById('copy-user-id').addEventListener('click', copyUserId);
 
-        // Обработчики для попапов
+        // Handlers for popups
         document.getElementById('close-address').addEventListener('click', hideAddressPopup);
         document.getElementById('save-address').addEventListener('click', (e) => {
             e.preventDefault();
@@ -183,13 +183,13 @@ function setupEventListeners() {
         });
         document.getElementById('close-support').addEventListener('click', hideSupportPopup);
         
-        // Копирование контактов поддержки
+        // Copy support contacts
         document.getElementById('copy-telegram').addEventListener('click', copyTelegram);
         document.getElementById('copy-email').addEventListener('click', copyEmail);
         
     } catch (error) {
         console.error('Error setting up event listeners in mine:', error);
-        // Повторяем попытку через 500мс
+        // Retry after 500ms
         setTimeout(setupEventListeners, 500);
     }
 }
@@ -202,12 +202,12 @@ async function loadProfileData() {
             return;
         }
         
-        // Обновляем данные на странице
+        // Update page data
         document.getElementById('user-vip-level').textContent = `VIP ${user.vip_level}`;
         document.getElementById('user-id').textContent = `ID: ${user.id}`;
         document.getElementById('user-balance').textContent = user.balance.toFixed(2);
         
-        // Обновляем отображение адреса вывода
+        // Update withdrawal address display
         if (user.withdrawal_address) {
             document.querySelector('#withdrawal-address-setting .setting-value').textContent = 'Configured';
         }
@@ -249,17 +249,17 @@ async function saveWithdrawalAddress() {
     const user = window.getCurrentUser();
     
     if (!address) {
-        alert('Please enter a valid wallet address');
+        window.GLYNotifications.error('Please enter a valid wallet address');
         return;
     }
     
     if (!user) {
-        alert('User not found');
+        window.GLYNotifications.error('User not found');
         return;
     }
     
     try {
-        // Сохраняем адрес в базе
+        // Save address to database
         const { error } = await window.supabase
             .from('users')
             .update({ withdrawal_address: address })
@@ -267,17 +267,17 @@ async function saveWithdrawalAddress() {
             
         if (error) throw error;
         
-        // Обновляем пользователя в localStorage
+        // Update user in localStorage
         user.withdrawal_address = address;
         localStorage.setItem('gly_user', JSON.stringify(user));
         
-        alert('Withdrawal address has been saved successfully!');
+        window.GLYNotifications.success('Withdrawal address has been saved successfully!');
         hideAddressPopup();
         
-        // Обновление отображения
+        // Update display
         document.querySelector('#withdrawal-address-setting .setting-value').textContent = 'Configured';
     } catch (error) {
-        alert('Error saving address: ' + error.message);
+        window.GLYNotifications.error('Error saving address: ' + error.message);
     }
 }
 
@@ -288,33 +288,33 @@ async function changePassword() {
     const user = window.getCurrentUser();
     
     if (!user) {
-        alert('User not found');
+        window.GLYNotifications.error('User not found');
         return;
     }
     
     if (!currentPassword || !newPassword || !confirmPassword) {
-        alert('Please fill in all fields');
+        window.GLYNotifications.error('Please fill in all fields');
         return;
     }
     
     if (newPassword !== confirmPassword) {
-        alert('New passwords do not match');
+        window.GLYNotifications.error('New passwords do not match');
         return;
     }
     
     if (newPassword.length < 6) {
-        alert('Password must be at least 6 characters long');
+        window.GLYNotifications.error('Password must be at least 6 characters long');
         return;
     }
     
-    // Проверяем текущий пароль
+    // Check current password
     if (user.password !== currentPassword) {
-        alert('Current password is incorrect');
+        window.GLYNotifications.error('Current password is incorrect');
         return;
     }
     
     try {
-        // Обновляем пароль в базе
+        // Update password in database
         const { error } = await window.supabase
             .from('users')
             .update({ password: newPassword })
@@ -322,14 +322,14 @@ async function changePassword() {
             
         if (error) throw error;
         
-        // Обновляем пользователя в localStorage
+        // Update user in localStorage
         user.password = newPassword;
         localStorage.setItem('gly_user', JSON.stringify(user));
         
-        alert('Password has been changed successfully!');
+        window.GLYNotifications.success('Password has been changed successfully!');
         hidePasswordPopup();
     } catch (error) {
-        alert('Error changing password: ' + error.message);
+        window.GLYNotifications.error('Error changing password: ' + error.message);
     }
 }
 
@@ -340,7 +340,7 @@ function changeLanguage() {
     const nextIndex = (currentIndex + 1) % languages.length;
     
     document.querySelector('#language-setting .setting-value').textContent = languages[nextIndex];
-    alert(`Language changed to ${languages[nextIndex]}`);
+    window.GLYNotifications.info(`Language changed to ${languages[nextIndex]}`);
 }
 
 function copyUserId() {
@@ -352,6 +352,7 @@ function copyUserId() {
         setTimeout(() => {
             copyBtn.innerHTML = originalHtml;
         }, 2000);
+        window.GLYNotifications.success('User ID copied to clipboard');
     });
 }
 
@@ -363,6 +364,7 @@ function copyTelegram() {
         setTimeout(() => {
             copyBtn.innerHTML = originalText;
         }, 2000);
+        window.GLYNotifications.success('Telegram contact copied');
     });
 }
 
@@ -374,11 +376,14 @@ function copyEmail() {
         setTimeout(() => {
             copyBtn.innerHTML = originalText;
         }, 2000);
+        window.GLYNotifications.success('Email copied');
     });
 }
 
 function logout() {
-    if (confirm('Are you sure you want to logout?')) {
-        window.logout();
-    }
+    window.GLYNotifications.confirm('Are you sure you want to logout?', 'Confirm Logout').then((result) => {
+        if (result) {
+            window.logout();
+        }
+    });
 }

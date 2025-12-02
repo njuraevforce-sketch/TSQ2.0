@@ -1,29 +1,29 @@
 // Home section
 export default function renderHome() {
     return `
-        <!-- Banner with video -->
+        <!-- Баннер с видео -->
         <div class="banner-section">
-            <div class="banner" style="overflow: hidden; border-radius: 0 0 40px 40px;">
-                <video class="banner-video" playsinline muted loop style="width: 100%; height: 100%; object-fit: cover;">
+            <div class="banner">
+                <video class="banner-video" controls playsinline preload="metadata" poster="assets/video-poster.jpg">
                     <source src="assets/company.MP4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
         </div>
         
-        <!-- Running line -->
+        <!-- Бегущая строка -->
         <div class="notice-section">
             <div class="notice-bar">
                 <div class="notice-icon">🚀</div>
                 <div class="notice-content">
                     <div class="notice-text">
-                        GLY - Quantum Investment Platform │ Advanced AI Algorithms │ Daily Returns 2.2%-6% │ 6 VIP Levels │ Multi-Level Referral System │ Secure & Transparent
+                        TSQ - Two Sigma Quantitative Platform │ Advanced AI Algorithms │ Daily Returns 2.2%-6% │ 6 VIP Levels │ Multi-Level Referral System │ Secure & Transparent
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Navigation icons -->
+        <!-- Навигационные иконки -->
         <div class="nav-section">
             <div class="nav-grid">
                 <a href="#" class="nav-item" data-section="company">
@@ -65,7 +65,7 @@ export default function renderHome() {
             </div>
         </div>
 
-        <!-- Crypto prices -->
+        <!-- Криптовалютные цены -->
         <div class="quantum-section">
             <div class="quantum-header">
                 <div class="quantum-title">Live Crypto Prices</div>
@@ -74,14 +74,14 @@ export default function renderHome() {
                 </div>
             </div>
             <div class="crypto-grid" id="crypto-prices">
-                <!-- Crypto prices will be loaded via API -->
+                <!-- Цены криптовалют будут загружены через API -->
                 <div style="color: #ccc; text-align: center; padding: 20px;">
                     Loading live prices...
                 </div>
             </div>
         </div>
 
-        <!-- Partners block -->
+        <!-- Блок партнеров -->
         <div class="partners-section">
             <div class="section-title">Our Partners</div>
             <img src="assets/partners.png" alt="Our Partners" style="width: 100%; border-radius: 10px;">
@@ -90,7 +90,7 @@ export default function renderHome() {
 }
 
 export function init() {
-    // Handlers for navigation icons
+    // Обработчики для навигационных иконок
     document.querySelectorAll('.nav-item[data-section]').forEach(item => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
@@ -99,50 +99,10 @@ export function init() {
         });
     });
 
-    // Show welcome banner on first load
-    if (!localStorage.getItem('welcomeBannerShown')) {
-        setTimeout(() => {
-            showWelcomeBanner();
-            localStorage.setItem('welcomeBannerShown', 'true');
-        }, 1000);
-    }
-
-    // Load crypto prices
+    // Загрузка цен криптовалют
     loadCryptoPrices();
-    // Update every 30 seconds (safe limit for CoinGecko)
+    // Обновлять каждые 30 секунд (безопасный лимит для CoinGecko)
     setInterval(loadCryptoPrices, 30000);
-}
-
-function showWelcomeBanner() {
-    const bannerHTML = `
-        <div class="pop-overlay" id="welcome-banner" style="display: flex;">
-            <div class="pop-content">
-                <div class="pop-header" style="text-align: center;">Welcome to GLY Investment Platform</div>
-                <div class="pop-body">
-                    <p style="text-align: center;">We strive to bring science to the financial world.</p>
-                    <p style="text-align: center; margin-top: 15px;">
-                        <strong>First deposit bonuses for new users (credited automatically):</strong>
-                    </p>
-                    <div style="margin-top: 10px; font-size: 14px;">
-                        <p>• First deposit $50: $2 USDT (Referral bonus $5 USDT)</p>
-                        <p>• First deposit $100: $5 USDT (Referral bonus $10 USDT)</p>
-                        <p>• First deposit $300: $10 USDT (Referral bonus $15 USDT)</p>
-                        <p>• First deposit $500: $20 USDT (Referral bonus $30 USDT)</p>
-                        <p>• First deposit $800: $30 USDT (Referral bonus $50 USDT)</p>
-                    </div>
-                </div>
-                <div class="pop-footer">
-                    <button id="close-welcome-banner" style="margin: 0 auto; background: #4e7771; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer;">Confirm</button>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    document.body.insertAdjacentHTML('beforeend', bannerHTML);
-    
-    document.getElementById('close-welcome-banner').addEventListener('click', () => {
-        document.getElementById('welcome-banner').style.display = 'none';
-    });
 }
 
 async function loadCryptoPrices() {
@@ -151,7 +111,7 @@ async function loadCryptoPrices() {
     
     if (!cryptoContainer) return;
 
-    // Check internet connection
+    // Проверка интернета
     if (!navigator.onLine) {
         cryptoContainer.innerHTML = '<div style="color: #ccc; text-align: center; padding: 20px;">No internet connection</div>';
         if (lastUpdatedElement) {
@@ -161,12 +121,12 @@ async function loadCryptoPrices() {
     }
 
     try {
-        // Update status
+        // Обновляем статус
         if (lastUpdatedElement) {
             lastUpdatedElement.textContent = 'Updating...';
         }
 
-        // Use CoinGecko API (free, up to 50 requests per minute)
+        // Используем CoinGecko API
         const response = await fetch(
             'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,ripple,cardano,solana,polkadot,dogecoin&vs_currencies=usd&include_24hr_change=true'
         );
@@ -177,7 +137,7 @@ async function loadCryptoPrices() {
         
         const data = await response.json();
         
-        // Array of cryptocurrencies with their data
+        // Массив криптовалют с их данными
         const cryptoData = [
             { 
                 id: 'bitcoin', 
@@ -268,7 +228,7 @@ async function loadCryptoPrices() {
         
         cryptoContainer.innerHTML = html;
         
-        // Update last updated time
+        // Обновляем время последнего обновления
         if (lastUpdatedElement) {
             const now = new Date();
             const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -278,7 +238,7 @@ async function loadCryptoPrices() {
     } catch (error) {
         console.error('Error loading crypto prices:', error);
         
-        // Fallback: show static data with error message
+        // Fallback данные
         const fallbackData = [
             { symbol: 'BTC', name: 'Bitcoin', price: 88405.00, change: -2.74, icon: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png' },
             { symbol: 'ETH', name: 'Ethereum', price: 2897.01, change: -3.33, icon: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' },

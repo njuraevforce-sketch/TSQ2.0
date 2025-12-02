@@ -68,9 +68,9 @@ export default function renderInvite() {
             <div class="card padding margin-top">
                 <div class="text-white text-bold text-center">Referral Bonuses</div>
                 <div style="color: #ccc; font-size: 14px; text-align: center; margin-top: 10px;">
-                    <p>Level 1: 12% from referral earnings</p>
-                    <p>Level 2: 5% from referral earnings</p>
-                    <p>Level 3: 3% from referral earnings</p>
+                    <p>Level 1: 12% of referral earnings</p>
+                    <p>Level 2: 5% of referral earnings</p>
+                    <p>Level 3: 3% of referral earnings</p>
                 </div>
             </div>
         </div>
@@ -83,7 +83,7 @@ export async function init() {
     // Load user data
     await loadUserData();
     
-    // Load referral statistics
+    // Load statistics
     await loadReferralStats();
 
     // Copy referral link
@@ -92,12 +92,12 @@ export async function init() {
         copyReferralBtn.addEventListener('click', function() {
             const referralLink = document.getElementById('referral-link').textContent;
             window.GLY.copyToClipboard(referralLink).then(() => {
+                window.Notify.show('Referral link copied to clipboard', 'success');
                 const originalText = copyReferralBtn.innerHTML;
                 copyReferralBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
                 setTimeout(function() {
                     copyReferralBtn.innerHTML = originalText;
                 }, 2000);
-                window.GLYNotifications.success('Referral link copied');
             });
         });
     }
@@ -108,12 +108,12 @@ export async function init() {
         copyInviteCodeBtn.addEventListener('click', function() {
             const inviteCode = document.getElementById('invite-code').textContent;
             window.GLY.copyToClipboard(inviteCode).then(() => {
+                window.Notify.show('Invitation code copied to clipboard', 'success');
                 const originalText = copyInviteCodeBtn.innerHTML;
                 copyInviteCodeBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
                 setTimeout(() => {
                     copyInviteCodeBtn.innerHTML = originalText;
                 }, 2000);
-                window.GLYNotifications.success('Invitation code copied');
             });
         });
     }
@@ -143,7 +143,7 @@ async function loadReferralStats() {
     if (!user) return;
     
     try {
-        // Get number of referrals
+        // Get referral count
         const { data: referrals, error } = await supabase
             .from('referrals')
             .select('referred_id, level')

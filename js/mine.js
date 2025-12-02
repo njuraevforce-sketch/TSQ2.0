@@ -49,7 +49,7 @@ export default function renderMine() {
             </div>
         </div>
 
-        <!-- Withdrawal address popup -->
+        <!-- Popup for withdrawal address -->
         <div class="pop-overlay" id="address-popup" style="display: none;">
             <div class="pop-content">
                 <form id="address-form" onsubmit="return false;">
@@ -72,7 +72,7 @@ export default function renderMine() {
             </div>
         </div>
 
-        <!-- Change password popup -->
+        <!-- Popup for password change -->
         <div class="pop-overlay" id="password-popup" style="display: none;">
             <div class="pop-content">
                 <form id="password-change-form" onsubmit="return false;">
@@ -102,7 +102,7 @@ export default function renderMine() {
             </div>
         </div>
 
-        <!-- Customer service popup -->
+        <!-- Popup for customer service -->
         <div class="pop-overlay" id="support-popup" style="display: none;">
             <div class="pop-content">
                 <div class="pop-header">Customer Service</div>
@@ -161,7 +161,7 @@ export function init() {
 
 function setupEventListeners() {
     try {
-        // Handlers for settings
+        // Settings handlers
         document.getElementById('withdrawal-address-setting').addEventListener('click', showAddressPopup);
         document.getElementById('transaction-password-setting').addEventListener('click', showPasswordPopup);
         document.getElementById('customer-service-setting').addEventListener('click', showSupportPopup);
@@ -170,7 +170,7 @@ function setupEventListeners() {
         document.getElementById('logout-btn').addEventListener('click', logout);
         document.getElementById('copy-user-id').addEventListener('click', copyUserId);
 
-        // Handlers for popups
+        // Popup handlers
         document.getElementById('close-address').addEventListener('click', hideAddressPopup);
         document.getElementById('save-address').addEventListener('click', (e) => {
             e.preventDefault();
@@ -202,7 +202,7 @@ async function loadProfileData() {
             return;
         }
         
-        // Update data on page
+        // Update page data
         document.getElementById('user-vip-level').textContent = `VIP ${user.vip_level}`;
         document.getElementById('user-id').textContent = `ID: ${user.id}`;
         document.getElementById('user-balance').textContent = user.balance.toFixed(2);
@@ -249,17 +249,17 @@ async function saveWithdrawalAddress() {
     const user = window.getCurrentUser();
     
     if (!address) {
-        window.Notify.alert('Please enter a valid wallet address');
+        window.showCustomAlert('Please enter a valid wallet address');
         return;
     }
     
     if (!user) {
-        window.Notify.alert('User not found');
+        window.showCustomAlert('User not found');
         return;
     }
     
     try {
-        // Save address to database
+        // Save address in database
         const { error } = await window.supabase
             .from('users')
             .update({ withdrawal_address: address })
@@ -271,13 +271,13 @@ async function saveWithdrawalAddress() {
         user.withdrawal_address = address;
         localStorage.setItem('gly_user', JSON.stringify(user));
         
-        window.Notify.show('Withdrawal address has been saved successfully!', 'success');
+        window.showCustomAlert('Withdrawal address has been saved successfully!');
         hideAddressPopup();
         
         // Update display
         document.querySelector('#withdrawal-address-setting .setting-value').textContent = 'Configured';
     } catch (error) {
-        window.Notify.alert('Error saving address: ' + error.message);
+        window.showCustomAlert('Error saving address: ' + error.message);
     }
 }
 
@@ -288,28 +288,28 @@ async function changePassword() {
     const user = window.getCurrentUser();
     
     if (!user) {
-        window.Notify.alert('User not found');
+        window.showCustomAlert('User not found');
         return;
     }
     
     if (!currentPassword || !newPassword || !confirmPassword) {
-        window.Notify.alert('Please fill in all fields');
+        window.showCustomAlert('Please fill in all fields');
         return;
     }
     
     if (newPassword !== confirmPassword) {
-        window.Notify.alert('New passwords do not match');
+        window.showCustomAlert('New passwords do not match');
         return;
     }
     
     if (newPassword.length < 6) {
-        window.Notify.alert('Password must be at least 6 characters long');
+        window.showCustomAlert('Password must be at least 6 characters long');
         return;
     }
     
     // Check current password
     if (user.password !== currentPassword) {
-        window.Notify.alert('Current password is incorrect');
+        window.showCustomAlert('Current password is incorrect');
         return;
     }
     
@@ -326,10 +326,10 @@ async function changePassword() {
         user.password = newPassword;
         localStorage.setItem('gly_user', JSON.stringify(user));
         
-        window.Notify.show('Password has been changed successfully!', 'success');
+        window.showCustomAlert('Password has been changed successfully!');
         hidePasswordPopup();
     } catch (error) {
-        window.Notify.alert('Error changing password: ' + error.message);
+        window.showCustomAlert('Error changing password: ' + error.message);
     }
 }
 
@@ -340,13 +340,12 @@ function changeLanguage() {
     const nextIndex = (currentIndex + 1) % languages.length;
     
     document.querySelector('#language-setting .setting-value').textContent = languages[nextIndex];
-    window.Notify.show(`Language changed to ${languages[nextIndex]}`, 'info');
+    window.showCustomAlert(`Language changed to ${languages[nextIndex]}`);
 }
 
 function copyUserId() {
     const userId = document.getElementById('user-id').textContent.replace('ID: ', '');
     window.GLY.copyToClipboard(userId).then(() => {
-        window.Notify.show('User ID copied to clipboard', 'success');
         const copyBtn = document.getElementById('copy-user-id');
         const originalHtml = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i class="fas fa-check"></i>';
@@ -358,7 +357,6 @@ function copyUserId() {
 
 function copyTelegram() {
     window.GLY.copyToClipboard('@GLYSupport').then(() => {
-        window.Notify.show('Telegram copied to clipboard', 'success');
         const copyBtn = document.getElementById('copy-telegram');
         const originalText = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
@@ -370,7 +368,6 @@ function copyTelegram() {
 
 function copyEmail() {
     window.GLY.copyToClipboard('support@gly.io').then(() => {
-        window.Notify.show('Email copied to clipboard', 'success');
         const copyBtn = document.getElementById('copy-email');
         const originalText = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
@@ -381,9 +378,7 @@ function copyEmail() {
 }
 
 function logout() {
-    window.Notify.confirm('Are you sure you want to logout?', 'Logout').then((confirmed) => {
-        if (confirmed) {
-            window.logout();
-        }
+    window.showCustomModal('Confirm Logout', 'Are you sure you want to logout?', () => {
+        window.logout();
     });
 }

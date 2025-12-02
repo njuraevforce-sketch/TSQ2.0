@@ -1,12 +1,11 @@
 // Main application module
-import './notifications.js';
-
 class GLYApp {
     constructor() {
         this.currentSection = null;
         this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register', 'company', 'invite', 'team', 'rules'];
         this.currentUser = null;
         this.supabase = null;
+        this.deferredPrompt = null;
         this.init();
     }
 
@@ -20,6 +19,9 @@ class GLYApp {
         // Hide tabbar by default
         this.hideTabbar();
         
+        // Setup PWA installation
+        this.setupPWAInstall();
+        
         // Load initial section
         if (this.currentUser) {
             await this.showSection('home');
@@ -29,7 +31,6 @@ class GLYApp {
         
         this.setupEventListeners();
         this.setupNavigation();
-        this.setupPWA();
         
         // Start signal update check
         this.startSignalUpdateCheck();
@@ -60,40 +61,54 @@ class GLYApp {
         window.supabase = this.supabase;
     }
 
-    setupPWA() {
-        let deferredPrompt;
+    setupPWAInstall() {
+        // Handle install button
         const installBtn = document.getElementById('install-btn');
         
+        // Listen for beforeinstallprompt event
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
-            deferredPrompt = e;
+            this.deferredPrompt = e;
             
-            // Show button only on Android
-            const isAndroid = /android/i.test(navigator.userAgent);
-            if (isAndroid && installBtn) {
+            // Show install button
+            if (installBtn) {
                 installBtn.style.display = 'flex';
             }
         });
-
+        
+        // Install button click handler
         if (installBtn) {
             installBtn.addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
+                if (this.deferredPrompt) {
+                    this.deferredPrompt.prompt();
+                    const { outcome } = await this.deferredPrompt.userChoice;
+                    
                     if (outcome === 'accepted') {
+                        console.log('PWA installed');
                         installBtn.style.display = 'none';
                     }
-                    deferredPrompt = null;
+                    
+                    this.deferredPrompt = null;
                 }
             });
         }
-
+        
+        // Hide install button if already installed
         window.addEventListener('appinstalled', () => {
+            console.log('PWA installed successfully');
             if (installBtn) {
                 installBtn.style.display = 'none';
             }
-            deferredPrompt = null;
+            this.deferredPrompt = null;
         });
+        
+        // Check if running as PWA
+        if (window.matchMedia('(display-mode: standalone)').matches || 
+            window.navigator.standalone === true) {
+            if (installBtn) {
+                installBtn.style.display = 'none';
+            }
+        }
     }
 
     async checkAuth() {
@@ -108,11 +123,10 @@ class GLYApp {
                         .from('users')
                         .select('*')
                         .eq('id', this.currentUser.id)
-                        .maybeSingle();  // Use maybeSingle
+                        .maybeSingle();
                         
                     if (error) {
                         console.warn('Could not fetch user data:', error);
-                        // Use saved data
                         return;
                     }
                     
@@ -122,7 +136,6 @@ class GLYApp {
                     }
                 } catch (error) {
                     console.warn('Auth check error:', error);
-                    // Continue with saved data
                 }
             } catch (e) {
                 console.error('Error parsing stored user:', e);
@@ -425,10 +438,10 @@ class GLYApp {
         if (!this.currentUser) return;
         
         try {
-            // Find referrers 3 levels
+            // Find 3-level referrers
             const referrals = await this.getReferralChain(this.currentUser.id);
             
-            // Percent for each level
+            // Percentages for each level
             const levelPercents = { 1: 12, 2: 5, 3: 3 };
             
             for (const [level, referrerId] of Object.entries(referrals)) {
@@ -436,7 +449,7 @@ class GLYApp {
                     const percent = levelPercents[level];
                     const referralProfit = (profit * percent) / 100;
                     
-                    // Update referrer balance directly
+                    // Update referrer's balance directly
                     const { data: userData } = await this.supabase
                         .from('users')
                         .select('balance')
@@ -515,7 +528,7 @@ class GLYApp {
     }
 
     startSignalUpdateCheck() {
-        // Check every minute if signals need update
+        // Check every minute if signals need to be updated
         setInterval(() => {
             this.checkAndUpdateSignals();
         }, 60000);
@@ -605,13 +618,9 @@ class GLYApp {
     }
 
     logout() {
-        window.Notify.confirm('Are you sure you want to logout?', 'Logout').then((confirmed) => {
-            if (confirmed) {
-                localStorage.removeItem('gly_user');
-                this.currentUser = null;
-                window.showSection('login');
-            }
-        });
+        localStorage.removeItem('gly_user');
+        this.currentUser = null;
+        window.showSection('login');
     }
 }
 
@@ -651,4 +660,53 @@ window.GLY = {
     generateInviteCode: () => {
         return Math.random().toString(36).substr(2, 8).toUpperCase();
     }
+};
+
+// Global functions for custom modals and loading
+window.showCustomAlert = (message) => {
+    const modal = document.getElementById('custom-modal');
+    const modalBody = document.getElementById('modal-body');
+    const modalHeader = document.getElementById('modal-header');
+    const modalOk = document.getElementById('modal-ok');
+    
+    modalHeader.textContent = 'Notification';
+    modalBody.innerHTML = `<p style="text-align: center;">${message}</p>`;
+    
+    modal.style.display = 'flex';
+    
+    modalOk.onclick = () => {
+        modal.style.display = 'none';
+    };
+};
+
+window.showCustomModal = (title, content, onConfirm = null) => {
+    const modal = document.getElementById('custom-modal');
+    const modalBody = document.getElementById('modal-body');
+    const modalHeader = document.getElementById('modal-header');
+    const modalOk = document.getElementById('modal-ok');
+    
+    modalHeader.textContent = title;
+    modalBody.innerHTML = content;
+    
+    modal.style.display = 'flex';
+    
+    modalOk.onclick = () => {
+        modal.style.display = 'none';
+        if (onConfirm && typeof onConfirm === 'function') {
+            onConfirm();
+        }
+    };
+};
+
+window.showLoading = (message = 'Loading...') => {
+    const loading = document.getElementById('loading-overlay');
+    const loadingText = document.getElementById('loading-text');
+    
+    loadingText.textContent = message;
+    loading.style.display = 'flex';
+};
+
+window.hideLoading = () => {
+    const loading = document.getElementById('loading-overlay');
+    loading.style.display = 'none';
 };

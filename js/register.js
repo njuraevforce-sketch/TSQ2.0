@@ -1,7 +1,7 @@
 // Register section
 export default function renderRegister() {
     return `
-        <!-- Registration Form -->
+        <!-- Registration form -->
         <div class="card padding" style="margin-top: 20px; background: transparent; box-shadow: none;">
             <div style="text-align: left; margin-bottom: 30px; display: flex; align-items: center;">
                 <img src="assets/logo.png" alt="GLY Logo" style="width: 80px; height: 80px; border-radius: 20px; margin-right: 20px;">
@@ -31,7 +31,7 @@ export default function renderRegister() {
                 </div>
                 
                 <div class="input-container" style="position: relative;">
-                    <input type="password" id="payment-password" placeholder="Transaction Password" class="input-line" style="padding-right: 40px;">
+                    <input type="password" id="payment-password" placeholder="Payment Password" class="input-line" style="padding-right: 40px;">
                     <i class="fas fa-eye password-toggle" id="toggle-payment-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #52c41a; cursor: pointer; z-index: 10;"></i>
                 </div>
                 
@@ -63,7 +63,7 @@ export function init() {
         }
     }
     
-    // Handlers for password visibility toggle
+    // Password toggle handlers
     document.getElementById('toggle-reg-password').addEventListener('click', function() {
         const passwordInput = document.getElementById('reg-password');
         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -85,7 +85,7 @@ export function init() {
         this.classList.toggle('fa-eye-slash');
     });
 
-    // Handler for register button
+    // Register button handler
     document.getElementById('register-btn').addEventListener('click', async function() {
         const username = document.getElementById('reg-username').value.trim();
         const email = document.getElementById('email').value.trim();
@@ -109,13 +109,13 @@ export function init() {
         }
         
         if (password.length < 6) {
-            errorDiv.textContent = 'Password must be at least 6 characters';
+            errorDiv.textContent = 'Password must be at least 6 characters long';
             errorDiv.style.display = 'block';
             return;
         }
         
         if (paymentPassword.length < 6) {
-            errorDiv.textContent = 'Transaction password must be at least 6 characters';
+            errorDiv.textContent = 'Payment password must be at least 6 characters long';
             errorDiv.style.display = 'block';
             return;
         }
@@ -133,12 +133,12 @@ export function init() {
         this.disabled = true;
         
         try {
-            // Check if user with such username exists
+            // Check if username exists
             const { data: existingUser } = await supabase
                 .from('users')
                 .select('id')
                 .eq('username', username)
-                .maybeSingle();  // Use maybeSingle instead of single
+                .maybeSingle();
                 
             if (existingUser) {
                 errorDiv.textContent = 'User with this username already exists';
@@ -146,12 +146,12 @@ export function init() {
                 return;
             }
             
-            // Check invitation code (simple existence check)
+            // Check invitation code
             const { data: referrer } = await supabase
                 .from('users')
                 .select('id, invite_code')
                 .eq('invite_code', inviteCode)
-                .maybeSingle();  // Use maybeSingle
+                .maybeSingle();
                 
             if (!referrer) {
                 errorDiv.textContent = 'Invalid invitation code';
@@ -159,7 +159,7 @@ export function init() {
                 return;
             }
             
-            // Generate unique IDs and code
+            // Generate unique ID and code
             const userId = window.GLY.generateUserId();
             const userInviteCode = window.GLY.generateInviteCode();
             
@@ -185,7 +185,7 @@ export function init() {
                 .insert([newUser]);
                 
             if (userError) {
-                errorDiv.textContent = 'Registration error. Please try again later.';
+                errorDiv.textContent = 'Error during registration. Please try again later.';
                 errorDiv.style.display = 'block';
                 return;
             }
@@ -212,11 +212,6 @@ export function init() {
                 window.glyApp.currentUser = newUser;
             }
             
-            // Show welcome banner
-            setTimeout(() => {
-                showWelcomeBanner();
-            }, 500);
-            
             // Reload app for correct redirection
             setTimeout(() => {
                 window.location.reload();
@@ -224,7 +219,7 @@ export function init() {
             
         } catch (error) {
             console.error('Registration error:', error);
-            errorDiv.textContent = 'Registration error. Please try again later.';
+            errorDiv.textContent = 'Error during registration. Please try again later.';
             errorDiv.style.display = 'block';
         } finally {
             // Restore button
@@ -233,7 +228,7 @@ export function init() {
         }
     });
 
-    // Handler for going to login
+    // Go to login handler
     document.getElementById('go-to-login').addEventListener('click', function(e) {
         e.preventDefault();
         window.showSection('login');
@@ -257,7 +252,7 @@ async function createReferralRecords(referrerId, userId) {
             .select('referrer_id')
             .eq('referred_id', referrerId)
             .eq('level', 1)
-            .maybeSingle();  // Use maybeSingle
+            .maybeSingle();
             
         if (level2Referrer) {
             // Level 2
@@ -275,7 +270,7 @@ async function createReferralRecords(referrerId, userId) {
                 .select('referrer_id')
                 .eq('referred_id', level2Referrer.referrer_id)
                 .eq('level', 1)
-                .maybeSingle();  // Use maybeSingle
+                .maybeSingle();
                 
             if (level3Referrer) {
                 // Level 3
@@ -291,55 +286,4 @@ async function createReferralRecords(referrerId, userId) {
     } catch (error) {
         console.error('Error creating referral records:', error);
     }
-}
-
-function showWelcomeBanner() {
-    const banner = document.createElement('div');
-    banner.className = 'welcome-banner';
-    banner.innerHTML = `
-        <div class="welcome-content">
-            <div class="welcome-title">Welcome to GLY</div>
-            <div class="welcome-text">
-                We bring science to the financial world through advanced quantitative trading.
-            </div>
-            <div class="welcome-bonus-list">
-                <div class="welcome-bonus-item">
-                    <span>First deposit $50:</span>
-                    <span>$2 USDT bonus + $5 referral</span>
-                </div>
-                <div class="welcome-bonus-item">
-                    <span>First deposit $100:</span>
-                    <span>$5 USDT bonus + $10 referral</span>
-                </div>
-                <div class="welcome-bonus-item">
-                    <span>First deposit $300:</span>
-                    <span>$10 USDT bonus + $15 referral</span>
-                </div>
-                <div class="welcome-bonus-item">
-                    <span>First deposit $500:</span>
-                    <span>$20 USDT bonus + $30 referral</span>
-                </div>
-                <div class="welcome-bonus-item">
-                    <span>First deposit $800:</span>
-                    <span>$30 USDT bonus + $50 referral</span>
-                </div>
-            </div>
-            <button class="welcome-close" id="close-welcome">Confirm</button>
-        </div>
-    `;
-    
-    document.body.appendChild(banner);
-    
-    setTimeout(() => {
-        banner.classList.add('show');
-    }, 100);
-    
-    document.getElementById('close-welcome').addEventListener('click', () => {
-        banner.classList.remove('show');
-        setTimeout(() => {
-            if (document.body.contains(banner)) {
-                document.body.removeChild(banner);
-            }
-        }, 300);
-    });
 }

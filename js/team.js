@@ -2,60 +2,60 @@
 export default function renderTeam() {
     return `
         <div class="card padding">
-            <div class="text-white text-bold text-center margin-bottom">Анализ доходов</div>
+            <div class="text-white text-bold text-center margin-bottom">Income Analysis</div>
             
-            <!-- Простая диаграмма -->
+            <!-- Simple chart -->
             <div class="chart-container">
                 <canvas id="team-chart" width="400" height="200"></canvas>
             </div>
 
-            <!-- Статистика команды -->
+            <!-- Team statistics -->
             <div class="team-stats">
                 <div class="team-stat">
                     <div class="team-stat-value" id="total-team">0</div>
-                    <div class="team-stat-label">Всего в команде</div>
+                    <div class="team-stat-label">Total in Team</div>
                 </div>
                 <div class="team-stat">
                     <div class="team-stat-value" id="level1-count">0</div>
-                    <div class="team-stat-label">Уровень 1</div>
+                    <div class="team-stat-label">Level 1</div>
                 </div>
                 <div class="team-stat">
                     <div class="team-stat-value" id="team-earnings">0.00</div>
-                    <div class="team-stat-label">Заработано (USDT)</div>
+                    <div class="team-stat-label">Earned (USDT)</div>
                 </div>
             </div>
 
-            <!-- Кнопка для просмотра всех рефералов -->
+            <!-- Button to view all referrals -->
             <div class="pro-btn margin-top" id="view-all-referrals" style="text-align: center; background: transparent; border: 1px solid #4e7771; color: #4e7771;">
-                Посмотреть команду
+                View Team
             </div>
         </div>
 
-        <!-- Список рефералов -->
+        <!-- Referrals list -->
         <div class="card padding margin-top" id="referrals-list" style="display: none;">
-            <div class="text-white text-bold text-center margin-bottom">Ваша команда</div>
+            <div class="text-white text-bold text-center margin-bottom">Your Team</div>
             
-            <!-- Уровень 1 -->
+            <!-- Level 1 -->
             <div class="referral-level">
-                <div class="text-cyan text-bold margin-bottom">Уровень 1</div>
+                <div class="text-cyan text-bold margin-bottom">Level 1</div>
                 <div class="referral-list" id="level1-list">
-                    <!-- Заполняется динамически -->
+                    <!-- Filled dynamically -->
                 </div>
             </div>
 
-            <!-- Уровень 2 -->
+            <!-- Level 2 -->
             <div class="referral-level margin-top">
-                <div class="text-cyan text-bold margin-bottom">Уровень 2</div>
+                <div class="text-cyan text-bold margin-bottom">Level 2</div>
                 <div class="referral-list" id="level2-list">
-                    <!-- Заполняется динамически -->
+                    <!-- Filled dynamically -->
                 </div>
             </div>
 
-            <!-- Уровень 3 -->
+            <!-- Level 3 -->
             <div class="referral-level margin-top">
-                <div class="text-cyan text-bold margin-bottom">Уровень 3</div>
+                <div class="text-cyan text-bold margin-bottom">Level 3</div>
                 <div class="referral-list" id="level3-list">
-                    <!-- Заполняется динамически -->
+                    <!-- Filled dynamically -->
                 </div>
             </div>
         </div>
@@ -65,10 +65,10 @@ export default function renderTeam() {
 export async function init() {
     document.body.classList.add('no-tabbar');
 
-    // Загрузка данных команды
+    // Load team data
     await loadTeamData();
 
-    // Обработчик для кнопки
+    // Handler for button
     const viewAllBtn = document.getElementById('view-all-referrals');
     if (viewAllBtn) {
         viewAllBtn.addEventListener('click', function() {
@@ -76,10 +76,10 @@ export async function init() {
             if (referralsList.style.display === 'none') {
                 referralsList.style.display = 'block';
                 loadReferralsList();
-                this.textContent = 'Скрыть команду';
+                this.textContent = 'Hide Team';
             } else {
                 referralsList.style.display = 'none';
-                this.textContent = 'Посмотреть команду';
+                this.textContent = 'View Team';
             }
         });
     }
@@ -93,7 +93,7 @@ async function loadTeamData() {
     }
     
     try {
-        // Получаем статистику по уровням
+        // Get statistics by levels
         const { data: level1, error: error1 } = await supabase
             .from('referrals')
             .select('referred_id')
@@ -121,11 +121,11 @@ async function loadTeamData() {
         const level3Count = level3?.length || 0;
         const totalTeam = level1Count + level2Count + level3Count;
         
-        // Обновляем статистику
+        // Update statistics
         document.getElementById('total-team').textContent = totalTeam;
         document.getElementById('level1-count').textContent = level1Count;
         
-        // Получаем общий заработок от команды
+        // Get total earnings from team
         const { data: transactions } = await supabase
             .from('transactions')
             .select('amount')
@@ -135,7 +135,7 @@ async function loadTeamData() {
         const teamEarnings = transactions?.reduce((sum, t) => sum + t.amount, 0) || 0;
         document.getElementById('team-earnings').textContent = teamEarnings.toFixed(2);
         
-        // Инициализация диаграммы
+        // Initialize chart
         initTeamChart(level1Count, level2Count, level3Count);
         
     } catch (error) {
@@ -149,9 +149,9 @@ function initTeamChart(level1Count, level2Count, level3Count) {
 
     const ctx = canvas.getContext('2d');
     const data = {
-        labels: ['Уровень 1', 'Уровень 2', 'Уровень 3'],
+        labels: ['Level 1', 'Level 2', 'Level 3'],
         datasets: [{
-            label: 'Количество рефералов',
+            label: 'Number of Referrals',
             data: [level1Count, level2Count, level3Count],
             backgroundColor: [
                 'rgba(78, 119, 113, 0.8)',
@@ -197,7 +197,7 @@ async function loadReferralsList() {
     if (!user) return;
     
     try {
-        // Получаем рефералов по уровням
+        // Get referrals by levels
         const { data: level1 } = await supabase
             .from('referrals')
             .select('referred_id')
@@ -216,7 +216,7 @@ async function loadReferralsList() {
             .eq('referrer_id', user.id)
             .eq('level', 3);
         
-        // Заполняем уровни
+        // Fill levels
         await fillReferralLevel('level1-list', level1 || []);
         await fillReferralLevel('level2-list', level2 || []);
         await fillReferralLevel('level3-list', level3 || []);
@@ -231,14 +231,14 @@ async function fillReferralLevel(containerId, referrals) {
     let html = '';
     
     if (referrals.length === 0) {
-        html = '<div style="color: #ccc; text-align: center; padding: 10px;">Нет рефералов</div>';
+        html = '<div style="color: #ccc; text-align: center; padding: 10px;">No referrals</div>';
     } else {
         for (const ref of referrals) {
             const { data: user } = await supabase
                 .from('users')
                 .select('username, email, balance, created_at')
                 .eq('id', ref.referred_id)
-                .maybeSingle();  // Используем maybeSingle
+                .maybeSingle();  // Use maybeSingle
                 
             if (user) {
                 const date = new Date(user.created_at).toLocaleDateString();
@@ -246,7 +246,7 @@ async function fillReferralLevel(containerId, referrals) {
                     <div class="referral-item">
                         <div class="referral-info">
                             <div class="referral-id">${user.username}</div>
-                            <div class="referral-email">${date} | Баланс: ${user.balance.toFixed(2)} USDT</div>
+                            <div class="referral-email">${date} | Balance: ${user.balance.toFixed(2)} USDT</div>
                         </div>
                     </div>
                 `;

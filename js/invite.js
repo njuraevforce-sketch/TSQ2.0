@@ -128,7 +128,7 @@ async function loadUserData() {
     document.getElementById('invite-code').textContent = user.invite_code;
     
     // Generate referral link
-    const referralLink = `https://gly2.pages.dev/#register?ref=${user.invite_code}`;
+    const referralLink = `https://2galaxy.win/#register?ref=${user.invite_code}`;
     document.getElementById('referral-link').textContent = referralLink;
     
     // Generate QR code

@@ -2078,16 +2078,16 @@ html {
     }
     
     .vip-icon-wrapper {
-        width: 160px; /* Увеличено с 45px до 60px */
-        height: 160px; /* Увеличено с 45px до 60px */
+        width: 140px; /* Увеличено с 45px до 60px */
+        height: 140px; /* Увеличено с 45px до 60px */
         top: 50%;
         left: 60%; /* Сохраняем смещение на 20% вправо */
         transform: translate(-50%, -50%);
     }
     
     .vip-icon {
-        width: 160px !important; /* Увеличено с 45px до 60px */
-        height: 160px !important; /* Увеличено с 45px до 60px */
+        width: 140px !important; /* Увеличено с 45px до 60px */
+        height: 140px !important; /* Увеличено с 45px до 60px */
     }
     
     .vip-level-name {

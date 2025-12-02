@@ -1118,8 +1118,8 @@ html {
     top: 50%; /* Центрирование по вертикали */
     left: 70%; /* Смещено от центра на 20% вправо (было 70%) */
     transform: translate(-50%, -50%); /* Центрирование */
-    width: 180px; /* Увеличено с 55px до 80px */
-    height: 180px; /* Увеличено с 55px до 80px */
+    width: 125px; /* Увеличено с 55px до 80px */
+    height: 125px; /* Увеличено с 55px до 80px */
     z-index: 10;
     background: transparent !important;
     border: none !important;

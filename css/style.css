@@ -1127,8 +1127,8 @@ html {
 }
 
 .vip-icon {
-    width: 180px !important; /* Увеличено с 55px до 80px */
-    height: 180px !important; /* Увеличено с 55px до 80px */
+    width: 125px !important; /* Увеличено с 55px до 80px */
+    height: 125px !important; /* Увеличено с 55px до 80px */
     object-fit: contain;
     display: block !important;
     visibility: visible !important;

@@ -879,7 +879,7 @@ uni-page-body {
     position: relative;
     opacity: 0.6;
     transform: scale(0.95);
-    height: 200px; /* Уменьшено с 250px до 200px (на 20%) */
+    height: 190px; /* Уменьшено с 250px до 200px (на 20%) */
     background: transparent;
     border: 2px solid transparent;
 }
@@ -901,10 +901,10 @@ uni-page-body {
 .vip-icon-wrapper {
     position: absolute;
     top: 50%; /* Центрирование по вертикали */
-    left: 60%; /* Смещено от центра на 20% вправо (было 70%) */
+    left: 70%; /* Смещено от центра на 20% вправо (было 70%) */
     transform: translate(-50%, -50%); /* Центрирование */
-    width: 80px; /* Увеличено с 55px до 80px */
-    height: 80px; /* Увеличено с 55px до 80px */
+    width: 180px; /* Увеличено с 55px до 80px */
+    height: 180px; /* Увеличено с 55px до 80px */
     z-index: 10;
     background: transparent !important;
     border: none !important;
@@ -912,8 +912,8 @@ uni-page-body {
 }
 
 .vip-icon {
-    width: 80px !important; /* Увеличено с 55px до 80px */
-    height: 80px !important; /* Увеличено с 55px до 80px */
+    width: 180px !important; /* Увеличено с 55px до 80px */
+    height: 180px !important; /* Увеличено с 55px до 80px */
     object-fit: contain;
     display: block !important;
     visibility: visible !important;

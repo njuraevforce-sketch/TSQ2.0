@@ -1,4 +1,4 @@
-/* Basic styles */
+/* Базовые стили */
 * {
     margin: 0;
     padding: 0;
@@ -13,6 +13,14 @@ body {
     overflow-x: hidden;
     font-size: 16px;
     overflow-y: auto;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 uni-page-body {
@@ -32,7 +40,7 @@ uni-page-body {
     overflow-x: hidden;
 }
 
-/* Navbar styles */
+/* Навбар стили */
 .u-navbar {
     position: relative;
     width: 100%;
@@ -59,7 +67,7 @@ uni-page-body {
     position: relative;
 }
 
-/* Fixed navbar styles with back button */
+/* Исправленные стили для навбара с кнопкой назад */
 .u-navbar__content__back {
     position: absolute;
     left: 15px;
@@ -99,7 +107,24 @@ uni-page-body {
     padding: 0 80px;
 }
 
-/* Icons */
+/* Кнопка установки PWA */
+.u-navbar__content__install {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 10;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+}
+
+/* Иконки */
 .u-icon {
     display: inline-flex;
     align-items: center;
@@ -112,7 +137,7 @@ uni-page-body {
     border-radius: 50%;
 }
 
-/* TopNull and containers */
+/* TopNull и контейнеры */
 .topNull {
     height: 150px;
     background: #4e7771;
@@ -126,7 +151,7 @@ uni-page-body {
     overflow-x: hidden;
 }
 
-/* Cards */
+/* Карточки */
 .card {
     background: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
@@ -142,7 +167,7 @@ uni-page-body {
     border-radius: 10px;
 }
 
-/* Padding */
+/* Отступы */
 .padding {
     padding: 15px;
 }
@@ -169,7 +194,7 @@ uni-page-body {
     padding-top: 10px;
 }
 
-/* Margins */
+/* Маргины */
 .margin-top {
     margin-top: 15px;
 }
@@ -194,7 +219,7 @@ uni-page-body {
     margin-left: 5px;
 }
 
-/* Flex styles */
+/* Flex стили */
 .flex {
     display: flex;
 }
@@ -225,7 +250,7 @@ uni-page-body {
     justify-content: center;
 }
 
-/* Text styles */
+/* Текст стили */
 .text-center {
     text-align: center;
 }
@@ -286,7 +311,7 @@ uni-page-body {
     box-sizing: border-box;
 }
 
-/* Buttons */
+/* Кнопки */
 .pro-btn {
     background: #4e7771;
     border-radius: 10px;
@@ -351,7 +376,7 @@ uni-page-body {
     100% { transform: rotate(360deg); }
 }
 
-/* Tabbar - FIXED FOR EVEN DISTRIBUTION */
+/* Tabbar - ИСПРАВЛЕННЫЙ ДЛЯ РАВНОМЕРНОГО РАСПРЕДЕЛЕНИЯ */
 .uni-tabbar {
     position: fixed;
     bottom: 0;
@@ -418,7 +443,7 @@ uni-page-body {
     white-space: nowrap;
 }
 
-/* Notifications */
+/* Уведомления */
 .notice-section {
     margin: 15px 0;
 }
@@ -456,7 +481,7 @@ uni-page-body {
     100% { transform: translateX(-100%); }
 }
 
-/* Balance */
+/* Баланс */
 .balance-section {
     margin: 15px 0;
 }
@@ -484,7 +509,7 @@ uni-page-body {
     color: #ccc;
 }
 
-/* Actions */
+/* Действия */
 .action-section {
     margin: 15px 0;
 }
@@ -513,7 +538,7 @@ uni-page-body {
     font-size: 12px;
 }
 
-/* Popup */
+/* Попап */
 .pop-overlay {
     position: fixed;
     top: 0;
@@ -562,12 +587,12 @@ uni-page-body {
     font-size: 14px;
 }
 
-/* Borders */
+/* Границы */
 .border-bottom {
     border-bottom: 1px solid #545c66;
 }
 
-/* STYLES FOR SECTIONS */
+/* СТИЛИ ДЛЯ СЕКЦИЙ */
 .section {
     display: none;
 }
@@ -576,7 +601,7 @@ uni-page-body {
     display: block;
 }
 
-/* Banner with video */
+/* Баннер */
 .banner-section {
     background-color: #4e7771;
     width: 100%;
@@ -584,23 +609,55 @@ uni-page-body {
     overflow: hidden;
 }
 
-.video-container {
-    position: relative;
+.banner {
     width: 100%;
     height: 150px;
-    overflow: hidden;
+    position: relative;
     border-radius: 0 0 40px 40px;
+    overflow: hidden;
 }
 
 .banner-video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
     display: block;
 }
 
-/* Navigation icons - FIXED (NO BACKGROUND OR STYLES) */
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.play-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 24px;
+    color: #4e7771;
+    transition: transform 0.3s ease;
+}
+
+.play-btn:hover {
+    transform: scale(1.1);
+    background: white;
+}
+
+/* Навигационные иконки - ИСПРАВЛЕННЫЕ (БЕЗ ФОНА И СТИЛЕЙ) */
 .nav-section {
     background-color: rgba(0, 0, 0, 0.2);
     padding: 15px 20px 25px;
@@ -700,7 +757,7 @@ uni-page-body {
     background: #666;
 }
 
-/* Quantum statistics */
+/* Квантовая статистика */
 .quantum-section {
     padding: 15px;
     background: rgba(0, 0, 0, 0.2);
@@ -721,7 +778,7 @@ uni-page-body {
     color: #fff;
 }
 
-/* Container for quantum cards */
+/* Контейнер для квантовых карточек */
 .quantum-scroll-container {
     overflow-x: auto;
     white-space: nowrap;
@@ -739,7 +796,7 @@ uni-page-body {
     gap: 10px;
 }
 
-/* Marquee */
+/* Бегущая строка */
 .notice-section {
     margin: 15px 0;
 }
@@ -777,7 +834,7 @@ uni-page-body {
     100% { transform: translateX(-100%); }
 }
 
-/* Referral link */
+/* Реферальная ссылка */
 .referral-section {
     padding: 15px;
     background: rgba(0, 0, 0, 0.2);
@@ -814,7 +871,7 @@ uni-page-body {
     font-size: 14px;
 }
 
-/* Copy button */
+/* Кнопка копирования */
 .copy-btn {
     background: #4e7771;
     color: white;
@@ -834,7 +891,7 @@ uni-page-body {
     background: #3d615c;
 }
 
-/* VIP Levels - FIXED STYLES */
+/* Уровни VIP - ИСПРАВЛЕННЫЕ СТИЛИ */
 .vip-section {
     padding: 15px;
     background: transparent;
@@ -850,7 +907,7 @@ uni-page-body {
     text-align: center;
 }
 
-/* VIP carousel - fixed */
+/* VIP карусель - исправленная */
 .vip-carousel-container {
     position: relative;
     margin-top: 15px;
@@ -859,14 +916,14 @@ uni-page-body {
 .vip-carousel {
     display: flex;
     overflow: hidden;
-    height: 230px;
+    height: 230px; /* Уменьшено с 280px до 230px (на ~20%) */
     border-radius: 10px;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
 }
 
-/* VIP cards - fixed */
+/* VIP карточки - исправленные */
 .vip-card {
     min-width: 100%;
     border-radius: 10px;
@@ -881,7 +938,7 @@ uni-page-body {
     position: relative;
     opacity: 0.6;
     transform: scale(0.95);
-    height: 190px;
+    height: 190px; /* Уменьшено с 250px до 200px (на 20%) */
     background: transparent;
     border: 2px solid transparent;
 }
@@ -894,19 +951,19 @@ uni-page-body {
     display: flex;
 }
 
-/* Remove carousel controls */
+/* Убираем элементы управления каруселью */
 .vip-carousel-controls {
     display: none;
 }
 
-/* Fixed styles for icons - ENLARGED AND MOVED */
+/* Исправленные стили для иконок - УВЕЛИЧЕНЫ И ПЕРЕМЕЩЕНЫ */
 .vip-icon-wrapper {
     position: absolute;
-    top: 50%;
-    left: 70%;
-    transform: translate(-50%, -50%);
-    width: 180px;
-    height: 180px;
+    top: 50%; /* Центрирование по вертикали */
+    left: 70%; /* Смещено от центра на 20% вправо (было 70%) */
+    transform: translate(-50%, -50%); /* Центрирование */
+    width: 180px; /* Увеличено с 55px до 80px */
+    height: 180px; /* Увеличено с 55px до 80px */
     z-index: 10;
     background: transparent !important;
     border: none !important;
@@ -914,8 +971,8 @@ uni-page-body {
 }
 
 .vip-icon {
-    width: 180px !important;
-    height: 180px !important;
+    width: 180px !important; /* Увеличено с 55px до 80px */
+    height: 180px !important; /* Увеличено с 55px до 80px */
     object-fit: contain;
     display: block !important;
     visibility: visible !important;
@@ -936,10 +993,10 @@ uni-page-body {
 }
 
 .vip-level-name {
-    font-size: 16px;
+    font-size: 16px; /* Немного уменьшен шрифт */
     font-weight: bold;
     margin-bottom: 5px;
-    margin-top: 60px;
+    margin-top: 60px; /* Добавлен отступ сверху для размещения увеличенной иконки */
     z-index: 2;
     position: relative;
     color: white;
@@ -947,12 +1004,12 @@ uni-page-body {
 }
 
 .vip-level-requirement {
-    font-size: 12px;
+    font-size: 12px; /* Немного уменьшен шрифт */
     color: #ccc;
     z-index: 2;
     position: relative;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    padding: 0 10px;
+    padding: 0 10px; /* Добавлены отступы по бокам */
 }
 
 .vip-description {
@@ -992,7 +1049,7 @@ uni-page-body {
     z-index: 3;
 }
 
-/* Additional styles */
+/* Дополнительные стили */
 .quantum-signal {
     width: 30px;
     height: 30px;
@@ -1060,7 +1117,7 @@ uni-page-body {
     margin-right: 15px;
 }
 
-/* Cryptocurrency blocks */
+/* Криптовалютные блоки */
 .crypto-grid {
     display: flex;
     flex-direction: column;
@@ -1142,7 +1199,7 @@ uni-page-body {
     color: #ff4d4f;
 }
 
-/* Partners block */
+/* Блок партнеров */
 .partners-section {
     margin-top: 20px;
     text-align: center;
@@ -1154,7 +1211,7 @@ uni-page-body {
     border-radius: 10px;
 }
 
-/* Deposit and withdrawal icons */
+/* Иконки пополнения и вывода */
 .wallet-actions {
     display: flex;
     justify-content: space-between;
@@ -1195,7 +1252,7 @@ uni-page-body {
     font-weight: bold;
 }
 
-/* Transaction history */
+/* История транзакций */
 .transaction-categories {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -1255,7 +1312,7 @@ uni-page-body {
     font-size: 14px;
 }
 
-/* Profile settings */
+/* Настройки профиля */
 .settings-list {
     margin-top: 15px;
 }
@@ -1278,7 +1335,7 @@ uni-page-body {
     color: #ccc;
 }
 
-/* Quantification process */
+/* Процесс квантования */
 .quantum-process {
     display: none;
     text-align: center;
@@ -1311,7 +1368,7 @@ uni-page-body {
     font-weight: 500;
 }
 
-/* UTC time */
+/* Время UTC */
 .utc-time {
     text-align: center;
     color: #ccc;
@@ -1319,7 +1376,7 @@ uni-page-body {
     margin-bottom: 15px;
 }
 
-/* Input line styles */
+/* Стили для инпутов с линией */
 .input-line {
     background: transparent;
     border: none;
@@ -1348,7 +1405,7 @@ uni-page-body {
     margin-bottom: 20px;
 }
 
-/* Eye icon styles */
+/* Стили для иконок глазка */
 .password-toggle {
     position: absolute;
     right: 10px;
@@ -1372,7 +1429,7 @@ uni-page-body {
     line-height: 1;
 }
 
-/* Error styles */
+/* Стили для ошибок */
 .error {
     color: #ff4d4f;
     text-align: center;
@@ -1382,7 +1439,7 @@ uni-page-body {
     margin: 10px 0;
 }
 
-/* Authorization page styles */
+/* Стили для страниц авторизации */
 .login-section,
 .register-section {
     background: linear-gradient(180deg, #4e7771, #4e7771, rgba(185, 215, 168, 0.75));
@@ -1504,7 +1561,7 @@ uni-page-body {
     text-decoration: underline;
 }
 
-/* Profile styles in mine */
+/* Стили для профиля в mine */
 .profile-header {
     display: flex;
     align-items: center;
@@ -1546,7 +1603,7 @@ uni-page-body {
     color: #ccc;
 }
 
-/* Styles for new pages */
+/* Стили для новых страниц */
 /* Company page */
 .company-content {
     color: white;
@@ -1692,7 +1749,285 @@ uni-page-body {
     left: 0;
 }
 
-/* Mobile adaptation */
+/* Кастомные уведомления */
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 350px;
+}
+
+.notification {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    color: white;
+    font-size: 14px;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border-left: 4px solid #4e7771;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: #4e7771;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+@keyframes progress {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+}
+
+.notification-success {
+    border-left-color: #52c41a;
+}
+
+.notification-error {
+    border-left-color: #ff4d4f;
+}
+
+.notification-warning {
+    border-left-color: #faad14;
+}
+
+.notification-loading {
+    border-left-color: #1890ff;
+}
+
+/* Диалоги */
+.notification-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.notification-dialog.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dialog-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.dialog-content {
+    background: white;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    z-index: 1;
+    transform: scale(0.9);
+    transition: transform 0.3s;
+}
+
+.notification-dialog.show .dialog-content {
+    transform: scale(1);
+}
+
+.dialog-header {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    font-weight: bold;
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+}
+
+.dialog-body {
+    padding: 20px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.dialog-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.dialog-btn {
+    padding: 8px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    min-width: 80px;
+}
+
+.dialog-ok {
+    background: #4e7771;
+    color: white;
+}
+
+.dialog-cancel {
+    background: #f5f5f5;
+    color: #666;
+}
+
+/* Welcome banner */
+.welcome-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.welcome-banner.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.welcome-content {
+    background: white;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    padding: 30px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.welcome-title {
+    color: #4e7771;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.welcome-text {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.welcome-bonus-list {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-size: 13px;
+}
+
+.welcome-bonus-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px dashed #ddd;
+}
+
+.welcome-bonus-item:last-child {
+    border-bottom: none;
+}
+
+.welcome-close {
+    background: #4e7771;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto 0;
+}
+
+/* Установка PWA */
+.u-navbar__content__install {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 10;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+}
+
+/* Запрет выбора текста */
+.no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.no-zoom {
+    touch-action: pan-x pan-y;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+input, textarea {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Адаптация для мобильных экранов */
 @media (max-width: 480px) {
     .conWrap {
         width: 95%;
@@ -1730,36 +2065,36 @@ uni-page-body {
         font-size: 16px;
     }
     
-    /* Fixes for VIP cards on mobile */
+    /* Исправления для VIP карточек на мобильных */
     .vip-card {
-        height: 184px;
+        height: 184px; /* Уменьшено с 230px до 184px (на 20%) */
         padding: 12px;
     }
     
     .vip-carousel {
-        height: 210px;
+        height: 210px; /* Уменьшено пропорционально */
     }
     
     .vip-icon-wrapper {
-        width: 170px;
-        height: 170px;
+        width:170px; /* Увеличено с 50px до 70px */
+        height: 170px; /* Увеличено с 50px до 70px */
         top: 50%;
-        left: 60%;
+        left: 60%; /* Сохраняем смещение на 20% вправо */
         transform: translate(-50%, -50%);
     }
     
     .vip-icon {
-        width: 170px !important;
-        height: 170px !important;
+        width: 170px !important; /* Увеличено с 50px до 70px */
+        height: 170px !important; /* Увеличено с 50px до 70px */
     }
     
     .vip-level-name {
-        font-size: 14px;
-        margin-top: 50px;
+        font-size: 14px; /* Немного уменьшен шрифт */
+        margin-top: 50px; /* Уменьшен отступ сверху */
     }
     
     .vip-level-requirement {
-        font-size: 11px;
+        font-size: 11px; /* Немного уменьшен шрифт */
     }
     
     .pop-content {
@@ -1787,6 +2122,12 @@ uni-page-body {
     .qr-code {
         width: 150px;
         height: 150px;
+    }
+    
+    .notification-container {
+        top: 10px;
+        right: 10px;
+        max-width: 300px;
     }
 }
 
@@ -1838,49 +2179,49 @@ uni-page-body {
         font-size: 9px;
     }
     
-    /* Fixes for VIP cards on very small screens */
+    /* Исправления для VIP карточек на очень маленьких экранах */
     .vip-card {
-        height: 176px;
+        height: 176px; /* Уменьшено с 220px до 176px (на 20%) */
     }
     
     .vip-carousel {
-        height: 200px;
+        height: 200px; /* Уменьшено пропорционально */
     }
     
     .vip-icon-wrapper {
-        width: 60px;
-        height: 60px;
+        width: 60px; /* Увеличено с 45px до 60px */
+        height: 60px; /* Увеличено с 45px до 60px */
         top: 50%;
-        left: 60%;
+        left: 60%; /* Сохраняем смещение на 20% вправо */
         transform: translate(-50%, -50%);
     }
     
     .vip-icon {
-        width: 60px !important;
-        height: 60px !important;
+        width: 60px !important; /* Увеличено с 45px до 60px */
+        height: 60px !important; /* Увеличено с 45px до 60px */
     }
     
     .vip-level-name {
-        font-size: 13px;
-        margin-top: 45px;
+        font-size: 13px; /* Немного уменьшен шрифт */
+        margin-top: 45px; /* Уменьшен отступ сверху */
     }
     
     .vip-level-requirement {
-        font-size: 10px;
+        font-size: 10px; /* Немного уменьшен шрифт */
     }
 }
 
-/* Ensure tabbar is not shown on auth pages */
+/* Гарантируем, что таббар не показывается на auth страницах */
 body.auth-page .uni-tabbar {
     display: none !important;
 }
 
-/* Quick access pages without tabbar */
+/* Страницы быстрого доступа без таббара */
 body.no-tabbar .uni-tabbar {
     display: none !important;
 }
 
-/* Improve icon display in navigation */
+/* Улучшаем отображение иконок в навигации */
 .nav-icon img,
 .wallet-icon img {
     width: 100%;
@@ -1889,24 +2230,24 @@ body.no-tabbar .uni-tabbar {
     border-radius: 0;
 }
 
-/* Fix padding for content when tabbar is hidden */
+/* Исправляем отступы для контента когда таббар скрыт */
 .page.no-tabbar {
     padding-bottom: 0;
 }
 
-/* Utilities */
+/* Утилиты */
 .u-line-1 {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-/* Hide elements */
+/* Скрытие элементов */
 [hidden] {
     display: none !important;
 }
 
-/* Profile background */
+/* Фон для профиля */
 .profile-bg {
     background-image: url('assets/avatar.png');
     background-size: cover;
@@ -1914,120 +2255,4 @@ body.no-tabbar .uni-tabbar {
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
-}
-
-/* Text selection prevention */
-.no-select {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-/* Video container */
-.video-container {
-    position: relative;
-    width: 100%;
-    height: 150px;
-    overflow: hidden;
-    border-radius: 0 0 40px 40px;
-}
-
-.video-container video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-}
-
-/* Custom loader */
-.custom-loader {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 4000;
-    justify-content: center;
-    align-items: center;
-}
-
-.loader-content {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 30px;
-    border-radius: 10px;
-    color: white;
-    text-align: center;
-    max-width: 300px;
-}
-
-.loader-spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #4e7771;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 15px;
-}
-
-.loader-text {
-    font-size: 16px;
-}
-
-/* Improved styles for preventing scaling */
-html {
-    touch-action: manipulation;
-}
-
-body {
-    touch-action: pan-x pan-y;
-}
-
-/* Styles for install button */
-.install-btn {
-    transition: transform 0.3s ease;
-}
-
-.install-btn:hover {
-    transform: scale(1.1);
-}
-
-/* Adaptation for banner */
-.welcome-banner-content {
-    max-height: 60vh;
-    overflow-y: auto;
-    padding-right: 10px;
-}
-
-.welcome-banner-content::-webkit-scrollbar {
-    width: 5px;
-}
-
-.welcome-banner-content::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-.welcome-banner-content::-webkit-scrollbar-thumb {
-    background: #4e7771;
-    border-radius: 10px;
-}
-
-/* Custom loader element */
-#custom-loader {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 4000;
-    justify-content: center;
-    align-items: center;
 }

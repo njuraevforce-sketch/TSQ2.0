@@ -8,7 +8,7 @@ export default function renderAssets() {
                 <div class="text-gray">Total Balance</div>
             </div>
 
-            <!-- Deposit and Withdrawal icons -->
+            <!-- Deposit and Withdraw icons -->
             <div class="wallet-actions">
                 <div class="wallet-action" id="deposit-btn">
                     <div class="wallet-icon">
@@ -49,7 +49,7 @@ export default function renderAssets() {
             </div>
             
             <div class="transaction-list" id="transaction-list">
-                <!-- Transactions loaded dynamically -->
+                <!-- Transactions load dynamically -->
             </div>
         </div>
 
@@ -162,11 +162,11 @@ export async function init() {
 
 function setupEventListeners() {
     try {
-        // Handlers for deposit and withdrawal buttons
+        // Deposit and withdraw button handlers
         document.getElementById('deposit-btn').addEventListener('click', showDepositPopup);
         document.getElementById('withdraw-btn').addEventListener('click', showWithdrawPopup);
         
-        // Handlers for popups
+        // Popup handlers
         document.getElementById('close-deposit').addEventListener('click', hideDepositPopup);
         document.getElementById('close-withdraw').addEventListener('click', hideWithdrawPopup);
         document.getElementById('confirm-deposit').addEventListener('click', (e) => {
@@ -309,7 +309,6 @@ function hideDepositSuccessPopup() {
 function copyDepositAddress() {
     const depositAddress = document.getElementById('deposit-address').textContent;
     window.GLY.copyToClipboard(depositAddress).then(() => {
-        window.Notify.show('Address copied to clipboard', 'success');
         const copyBtn = document.getElementById('copy-deposit-btn');
         const originalText = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
@@ -324,12 +323,12 @@ async function processDeposit() {
     const user = window.getCurrentUser();
     
     if (!amount || amount < 17) {
-        window.Notify.alert('Minimum deposit amount is 17 USDT');
+        window.showCustomAlert('Minimum deposit amount is 17 USDT');
         return;
     }
     
     if (!user) {
-        window.Notify.alert('User not found');
+        window.showCustomAlert('User not found');
         return;
     }
     
@@ -357,7 +356,7 @@ async function processDeposit() {
         }, 1000);
         
     } catch (error) {
-        window.Notify.alert('Error processing deposit: ' + error.message);
+        window.showCustomAlert('Error processing deposit: ' + error.message);
     }
 }
 
@@ -367,34 +366,34 @@ async function processWithdrawal() {
     const user = window.getCurrentUser();
     
     if (!user) {
-        window.Notify.alert('User not found');
+        window.showCustomAlert('User not found');
         return;
     }
     
     if (!amount || amount < 20) {
-        window.Notify.alert('Minimum withdrawal amount is 20 USDT');
+        window.showCustomAlert('Minimum withdrawal amount is 20 USDT');
         return;
     }
     
     if (amount > user.balance) {
-        window.Notify.alert('Insufficient balance');
+        window.showCustomAlert('Insufficient balance');
         return;
     }
     
     if (!password) {
-        window.Notify.alert('Please enter transaction password');
+        window.showCustomAlert('Please enter transaction password');
         return;
     }
     
-    // Check transaction password
+    // Check payment password
     if (user.payment_password !== password) {
-        window.Notify.alert('Invalid transaction password');
+        window.showCustomAlert('Invalid transaction password');
         return;
     }
     
-    // Check withdrawal address
+    // Check for withdrawal address
     if (!user.withdrawal_address) {
-        window.Notify.alert('Please set withdrawal address first in Settings');
+        window.showCustomAlert('Please set withdrawal address first in Settings');
         return;
     }
     
@@ -403,49 +402,46 @@ async function processWithdrawal() {
     const fee = (amount * feePercent) / 100;
     const netAmount = amount - fee;
     
-    window.Notify.confirm(
-        `Withdrawal amount: ${amount} USDT\nFee (${feePercent}%): ${fee.toFixed(2)} USDT\nYou will receive: ${netAmount.toFixed(2)} USDT\nConfirm withdrawal?`,
-        'Confirm Withdrawal'
-    ).then(async (confirmed) => {
-        if (confirmed) {
-            try {
-                // Update user balance
-                const newBalance = user.balance - amount;
-                const { error: updateError } = await window.supabase
-                    .from('users')
-                    .update({ balance: newBalance })
-                    .eq('id', user.id);
-                    
-                if (updateError) throw updateError;
+    const confirmMessage = `Withdrawal amount: ${amount} USDT\nFee (${feePercent}%): ${fee.toFixed(2)} USDT\nYou will receive: ${netAmount.toFixed(2)} USDT\nConfirm withdrawal?`;
+    
+    window.showCustomModal('Confirm Withdrawal', confirmMessage, async () => {
+        try {
+            // Update user balance
+            const newBalance = user.balance - amount;
+            const { error: updateError } = await window.supabase
+                .from('users')
+                .update({ balance: newBalance })
+                .eq('id', user.id);
                 
-                // Create withdrawal transaction
-                const { error: txError } = await window.supabase
-                    .from('transactions')
-                    .insert([{
-                        user_id: user.id,
-                        type: 'withdrawal',
-                        amount: -amount,
-                        status: 'pending',
-                        description: `Withdrawal ${amount} USDT (Fee: ${fee.toFixed(2)} USDT)`
-                    }]);
-                    
-                if (txError) throw txError;
+            if (updateError) throw updateError;
+            
+            // Create withdrawal transaction
+            const { error: txError } = await window.supabase
+                .from('transactions')
+                .insert([{
+                    user_id: user.id,
+                    type: 'withdrawal',
+                    amount: -amount,
+                    status: 'pending',
+                    description: `Withdrawal ${amount} USDT (Fee: ${fee.toFixed(2)} USDT)`
+                }]);
                 
-                // Update user in localStorage
-                user.balance = newBalance;
-                localStorage.setItem('gly_user', JSON.stringify(user));
-                
-                window.Notify.show(`Withdrawal request for ${amount} USDT has been submitted. You will receive ${netAmount.toFixed(2)} USDT (fee: ${fee.toFixed(2)} USDT). Processing time: 1-24 hours.`, 'success');
-                hideWithdrawPopup();
-                
-                // Update interface
-                loadUserData();
-                setTimeout(() => {
-                    loadTransactionHistory();
-                }, 1000);
-            } catch (error) {
-                window.Notify.alert('Error processing withdrawal: ' + error.message);
-            }
+            if (txError) throw txError;
+            
+            // Update user in localStorage
+            user.balance = newBalance;
+            localStorage.setItem('gly_user', JSON.stringify(user));
+            
+            window.showCustomAlert(`Withdrawal request for ${amount} USDT has been submitted. You will receive ${netAmount.toFixed(2)} USDT (fee: ${fee.toFixed(2)} USDT). Processing time: 1-24 hours.`);
+            hideWithdrawPopup();
+            
+            // Update interface
+            loadUserData();
+            setTimeout(() => {
+                loadTransactionHistory();
+            }, 1000);
+        } catch (error) {
+            window.showCustomAlert('Error processing withdrawal: ' + error.message);
         }
     });
 }

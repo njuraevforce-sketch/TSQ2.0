@@ -1,7 +1,7 @@
 {
-  "name": "TSQ Quantitative",
-  "short_name": "TSQ",
-  "description": "Two Sigma Quantitative Investment Platform",
+  "name": "GLY",
+  "short_name": "GLY",
+  "description": "Global Ledger Yield - Quantum Investment Platform",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#4e7771",
@@ -11,12 +11,14 @@
     {
       "src": "assets/logo.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "assets/logo.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

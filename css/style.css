@@ -1,8 +1,16 @@
-/* Базовые стили */
+/* Basic styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 body {
@@ -13,6 +21,15 @@ body {
     overflow-x: hidden;
     font-size: 16px;
     overflow-y: auto;
+}
+
+/* Allow selection only for inputs */
+input, textarea {
+    -webkit-user-select: text !important;
+    -khtml-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+    user-select: text !important;
 }
 
 uni-page-body {
@@ -32,7 +49,7 @@ uni-page-body {
     overflow-x: hidden;
 }
 
-/* Навбар стили */
+/* Navbar styles */
 .u-navbar {
     position: relative;
     width: 100%;
@@ -59,7 +76,7 @@ uni-page-body {
     position: relative;
 }
 
-/* Исправленные стили для навбара с кнопкой назад */
+/* Fixed styles for navbar with back button */
 .u-navbar__content__back {
     position: absolute;
     left: 15px;
@@ -99,7 +116,26 @@ uni-page-body {
     padding: 0 80px;
 }
 
-/* Иконки */
+/* Install button */
+.install-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    display: none; /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Icons */
 .u-icon {
     display: inline-flex;
     align-items: center;
@@ -112,7 +148,7 @@ uni-page-body {
     border-radius: 50%;
 }
 
-/* TopNull и контейнеры */
+/* TopNull and containers */
 .topNull {
     height: 150px;
     background: #4e7771;
@@ -126,7 +162,7 @@ uni-page-body {
     overflow-x: hidden;
 }
 
-/* Карточки */
+/* Cards */
 .card {
     background: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
@@ -142,7 +178,7 @@ uni-page-body {
     border-radius: 10px;
 }
 
-/* Отступы */
+/* Paddings */
 .padding {
     padding: 15px;
 }
@@ -169,7 +205,7 @@ uni-page-body {
     padding-top: 10px;
 }
 
-/* Маргины */
+/* Margins */
 .margin-top {
     margin-top: 15px;
 }
@@ -194,7 +230,7 @@ uni-page-body {
     margin-left: 5px;
 }
 
-/* Flex стили */
+/* Flex styles */
 .flex {
     display: flex;
 }
@@ -225,7 +261,7 @@ uni-page-body {
     justify-content: center;
 }
 
-/* Текст стили */
+/* Text styles */
 .text-center {
     text-align: center;
 }
@@ -286,7 +322,7 @@ uni-page-body {
     box-sizing: border-box;
 }
 
-/* Кнопки */
+/* Buttons */
 .pro-btn {
     background: #4e7771;
     border-radius: 10px;
@@ -351,7 +387,7 @@ uni-page-body {
     100% { transform: rotate(360deg); }
 }
 
-/* Tabbar - ИСПРАВЛЕННЫЙ ДЛЯ РАВНОМЕРНОГО РАСПРЕДЕЛЕНИЯ */
+/* Tabbar - FIXED FOR EVEN DISTRIBUTION */
 .uni-tabbar {
     position: fixed;
     bottom: 0;
@@ -418,7 +454,7 @@ uni-page-body {
     white-space: nowrap;
 }
 
-/* Уведомления */
+/* Notifications */
 .notice-section {
     margin: 15px 0;
 }
@@ -456,7 +492,7 @@ uni-page-body {
     100% { transform: translateX(-100%); }
 }
 
-/* Баланс */
+/* Balance */
 .balance-section {
     margin: 15px 0;
 }
@@ -484,7 +520,7 @@ uni-page-body {
     color: #ccc;
 }
 
-/* Действия */
+/* Actions */
 .action-section {
     margin: 15px 0;
 }
@@ -513,7 +549,7 @@ uni-page-body {
     font-size: 12px;
 }
 
-/* Попап */
+/* Popup */
 .pop-overlay {
     position: fixed;
     top: 0;
@@ -562,12 +598,12 @@ uni-page-body {
     font-size: 14px;
 }
 
-/* Границы */
+/* Borders */
 .border-bottom {
     border-bottom: 1px solid #545c66;
 }
 
-/* СТИЛИ ДЛЯ СЕКЦИЙ */
+/* STYLES FOR SECTIONS */
 .section {
     display: none;
 }
@@ -576,7 +612,7 @@ uni-page-body {
     display: block;
 }
 
-/* Баннер */
+/* Banner */
 .banner-section {
     background-color: #4e7771;
     width: 100%;
@@ -596,9 +632,10 @@ uni-page-body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
 }
 
-/* Навигационные иконки - ИСПРАВЛЕННЫЕ (БЕЗ ФОНА И СТИЛЕЙ) */
+/* Navigation icons - FIXED (NO BACKGROUND AND STYLES) */
 .nav-section {
     background-color: rgba(0, 0, 0, 0.2);
     padding: 15px 20px 25px;
@@ -698,7 +735,7 @@ uni-page-body {
     background: #666;
 }
 
-/* Квантовая статистика */
+/* Quantum statistics */
 .quantum-section {
     padding: 15px;
     background: rgba(0, 0, 0, 0.2);
@@ -719,7 +756,7 @@ uni-page-body {
     color: #fff;
 }
 
-/* Контейнер для квантовых карточек */
+/* Container for quantum cards */
 .quantum-scroll-container {
     overflow-x: auto;
     white-space: nowrap;
@@ -737,7 +774,7 @@ uni-page-body {
     gap: 10px;
 }
 
-/* Бегущая строка */
+/* Running line */
 .notice-section {
     margin: 15px 0;
 }
@@ -775,7 +812,7 @@ uni-page-body {
     100% { transform: translateX(-100%); }
 }
 
-/* Реферальная ссылка */
+/* Referral link */
 .referral-section {
     padding: 15px;
     background: rgba(0, 0, 0, 0.2);
@@ -812,7 +849,7 @@ uni-page-body {
     font-size: 14px;
 }
 
-/* Кнопка копирования */
+/* Copy button */
 .copy-btn {
     background: #4e7771;
     color: white;
@@ -832,7 +869,7 @@ uni-page-body {
     background: #3d615c;
 }
 
-/* Уровни VIP - ИСПРАВЛЕННЫЕ СТИЛИ */
+/* VIP levels - FIXED STYLES */
 .vip-section {
     padding: 15px;
     background: transparent;
@@ -848,7 +885,7 @@ uni-page-body {
     text-align: center;
 }
 
-/* VIP карусель - исправленная */
+/* VIP carousel - fixed */
 .vip-carousel-container {
     position: relative;
     margin-top: 15px;
@@ -857,14 +894,14 @@ uni-page-body {
 .vip-carousel {
     display: flex;
     overflow: hidden;
-    height: 230px; /* Уменьшено с 280px до 230px (на ~20%) */
+    height: 230px; /* Reduced from 280px to 230px (~20%) */
     border-radius: 10px;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
 }
 
-/* VIP карточки - исправленные */
+/* VIP cards - fixed */
 .vip-card {
     min-width: 100%;
     border-radius: 10px;
@@ -879,7 +916,7 @@ uni-page-body {
     position: relative;
     opacity: 0.6;
     transform: scale(0.95);
-    height: 190px; /* Уменьшено с 250px до 200px (на 20%) */
+    height: 190px; /* Reduced from 250px to 200px (20%) */
     background: transparent;
     border: 2px solid transparent;
 }
@@ -892,19 +929,19 @@ uni-page-body {
     display: flex;
 }
 
-/* Убираем элементы управления каруселью */
+/* Remove carousel controls */
 .vip-carousel-controls {
     display: none;
 }
 
-/* Исправленные стили для иконок - УВЕЛИЧЕНЫ И ПЕРЕМЕЩЕНЫ */
+/* Fixed icon styles - ENLARGED AND MOVED */
 .vip-icon-wrapper {
     position: absolute;
-    top: 50%; /* Центрирование по вертикали */
-    left: 70%; /* Смещено от центра на 20% вправо (было 70%) */
-    transform: translate(-50%, -50%); /* Центрирование */
-    width: 180px; /* Увеличено с 55px до 80px */
-    height: 180px; /* Увеличено с 55px до 80px */
+    top: 50%; /* Vertical centering */
+    left: 70%; /* Shifted 20% right from center (was 70%) */
+    transform: translate(-50%, -50%); /* Centering */
+    width: 180px; /* Increased from 55px to 80px */
+    height: 180px; /* Increased from 55px to 80px */
     z-index: 10;
     background: transparent !important;
     border: none !important;
@@ -912,8 +949,8 @@ uni-page-body {
 }
 
 .vip-icon {
-    width: 180px !important; /* Увеличено с 55px до 80px */
-    height: 180px !important; /* Увеличено с 55px до 80px */
+    width: 180px !important; /* Increased from 55px to 80px */
+    height: 180px !important; /* Increased from 55px to 80px */
     object-fit: contain;
     display: block !important;
     visibility: visible !important;
@@ -934,10 +971,10 @@ uni-page-body {
 }
 
 .vip-level-name {
-    font-size: 16px; /* Немного уменьшен шрифт */
+    font-size: 16px; /* Slightly smaller font */
     font-weight: bold;
     margin-bottom: 5px;
-    margin-top: 60px; /* Добавлен отступ сверху для размещения увеличенной иконки */
+    margin-top: 60px; /* Added top margin for enlarged icon placement */
     z-index: 2;
     position: relative;
     color: white;
@@ -945,12 +982,12 @@ uni-page-body {
 }
 
 .vip-level-requirement {
-    font-size: 12px; /* Немного уменьшен шрифт */
+    font-size: 12px; /* Slightly smaller font */
     color: #ccc;
     z-index: 2;
     position: relative;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    padding: 0 10px; /* Добавлены отступы по бокам */
+    padding: 0 10px; /* Added side padding */
 }
 
 .vip-description {
@@ -990,7 +1027,7 @@ uni-page-body {
     z-index: 3;
 }
 
-/* Дополнительные стили */
+/* Additional styles */
 .quantum-signal {
     width: 30px;
     height: 30px;
@@ -1058,7 +1095,7 @@ uni-page-body {
     margin-right: 15px;
 }
 
-/* Криптовалютные блоки */
+/* Crypto blocks */
 .crypto-grid {
     display: flex;
     flex-direction: column;
@@ -1140,7 +1177,7 @@ uni-page-body {
     color: #ff4d4f;
 }
 
-/* Блок партнеров */
+/* Partners block */
 .partners-section {
     margin-top: 20px;
     text-align: center;
@@ -1152,7 +1189,7 @@ uni-page-body {
     border-radius: 10px;
 }
 
-/* Иконки пополнения и вывода */
+/* Deposit and withdrawal icons */
 .wallet-actions {
     display: flex;
     justify-content: space-between;
@@ -1193,7 +1230,7 @@ uni-page-body {
     font-weight: bold;
 }
 
-/* История транзакций */
+/* Transaction history */
 .transaction-categories {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -1253,7 +1290,7 @@ uni-page-body {
     font-size: 14px;
 }
 
-/* Настройки профиля */
+/* Profile settings */
 .settings-list {
     margin-top: 15px;
 }
@@ -1276,7 +1313,7 @@ uni-page-body {
     color: #ccc;
 }
 
-/* Процесс квантования */
+/* Quantification process */
 .quantum-process {
     display: none;
     text-align: center;
@@ -1309,7 +1346,7 @@ uni-page-body {
     font-weight: 500;
 }
 
-/* Время UTC */
+/* UTC time */
 .utc-time {
     text-align: center;
     color: #ccc;
@@ -1317,7 +1354,7 @@ uni-page-body {
     margin-bottom: 15px;
 }
 
-/* Стили для инпутов с линией */
+/* Styles for line inputs */
 .input-line {
     background: transparent;
     border: none;
@@ -1346,7 +1383,7 @@ uni-page-body {
     margin-bottom: 20px;
 }
 
-/* Стили для иконок глазка */
+/* Styles for eye icons */
 .password-toggle {
     position: absolute;
     right: 10px;
@@ -1370,7 +1407,7 @@ uni-page-body {
     line-height: 1;
 }
 
-/* Стили для ошибок */
+/* Styles for errors */
 .error {
     color: #ff4d4f;
     text-align: center;
@@ -1380,7 +1417,7 @@ uni-page-body {
     margin: 10px 0;
 }
 
-/* Стили для страниц авторизации */
+/* Styles for authorization pages */
 .login-section,
 .register-section {
     background: linear-gradient(180deg, #4e7771, #4e7771, rgba(185, 215, 168, 0.75));
@@ -1502,7 +1539,7 @@ uni-page-body {
     text-decoration: underline;
 }
 
-/* Стили для профиля в mine */
+/* Styles for profile in mine */
 .profile-header {
     display: flex;
     align-items: center;
@@ -1544,7 +1581,7 @@ uni-page-body {
     color: #ccc;
 }
 
-/* Стили для новых страниц */
+/* Styles for new pages */
 /* Company page */
 .company-content {
     color: white;
@@ -1690,7 +1727,7 @@ uni-page-body {
     left: 0;
 }
 
-/* Адаптация для мобильных экранов */
+/* Mobile adaptation */
 @media (max-width: 480px) {
     .conWrap {
         width: 95%;
@@ -1728,36 +1765,36 @@ uni-page-body {
         font-size: 16px;
     }
     
-    /* Исправления для VIP карточек на мобильных */
+    /* Fixes for VIP cards on mobile */
     .vip-card {
-        height: 184px; /* Уменьшено с 230px до 184px (на 20%) */
+        height: 184px; /* Reduced from 230px to 184px (20%) */
         padding: 12px;
     }
     
     .vip-carousel {
-        height: 210px; /* Уменьшено пропорционально */
+        height: 210px; /* Reduced proportionally */
     }
     
     .vip-icon-wrapper {
-        width:170px; /* Увеличено с 50px до 70px */
-        height: 170px; /* Увеличено с 50px до 70px */
+        width:170px; /* Increased from 50px to 70px */
+        height: 170px; /* Increased from 50px to 70px */
         top: 50%;
-        left: 60%; /* Сохраняем смещение на 20% вправо */
+        left: 60%; /* Keep 20% shift to the right */
         transform: translate(-50%, -50%);
     }
     
     .vip-icon {
-        width: 170px !important; /* Увеличено с 50px до 70px */
-        height: 170px !important; /* Увеличено с 50px до 70px */
+        width: 170px !important; /* Increased from 50px to 70px */
+        height: 170px !important; /* Increased from 50px to 70px */
     }
     
     .vip-level-name {
-        font-size: 14px; /* Немного уменьшен шрифт */
-        margin-top: 50px; /* Уменьшен отступ сверху */
+        font-size: 14px; /* Slightly smaller font */
+        margin-top: 50px; /* Reduced top margin */
     }
     
     .vip-level-requirement {
-        font-size: 11px; /* Немного уменьшен шрифт */
+        font-size: 11px; /* Slightly smaller font */
     }
     
     .pop-content {
@@ -1836,49 +1873,49 @@ uni-page-body {
         font-size: 9px;
     }
     
-    /* Исправления для VIP карточек на очень маленьких экранах */
+    /* Fixes for VIP cards on very small screens */
     .vip-card {
-        height: 176px; /* Уменьшено с 220px до 176px (на 20%) */
+        height: 176px; /* Reduced from 220px to 176px (20%) */
     }
     
     .vip-carousel {
-        height: 200px; /* Уменьшено пропорционально */
+        height: 200px; /* Reduced proportionally */
     }
     
     .vip-icon-wrapper {
-        width: 60px; /* Увеличено с 45px до 60px */
-        height: 60px; /* Увеличено с 45px до 60px */
+        width: 60px; /* Increased from 45px to 60px */
+        height: 60px; /* Increased from 45px to 60px */
         top: 50%;
-        left: 60%; /* Сохраняем смещение на 20% вправо */
+        left: 60%; /* Keep 20% shift to the right */
         transform: translate(-50%, -50%);
     }
     
     .vip-icon {
-        width: 60px !important; /* Увеличено с 45px до 60px */
-        height: 60px !important; /* Увеличено с 45px до 60px */
+        width: 60px !important; /* Increased from 45px to 60px */
+        height: 60px !important; /* Increased from 45px to 60px */
     }
     
     .vip-level-name {
-        font-size: 13px; /* Немного уменьшен шрифт */
-        margin-top: 45px; /* Уменьшен отступ сверху */
+        font-size: 13px; /* Slightly smaller font */
+        margin-top: 45px; /* Reduced top margin */
     }
     
     .vip-level-requirement {
-        font-size: 10px; /* Немного уменьшен шрифт */
+        font-size: 10px; /* Slightly smaller font */
     }
 }
 
-/* Гарантируем, что таббар не показывается на auth страницах */
+/* Ensure tabbar doesn't show on auth pages */
 body.auth-page .uni-tabbar {
     display: none !important;
 }
 
-/* Страницы быстрого доступа без таббара */
+/* Quick access pages without tabbar */
 body.no-tabbar .uni-tabbar {
     display: none !important;
 }
 
-/* Улучшаем отображение иконок в навигации */
+/* Improve icon display in navigation */
 .nav-icon img,
 .wallet-icon img {
     width: 100%;
@@ -1887,24 +1924,24 @@ body.no-tabbar .uni-tabbar {
     border-radius: 0;
 }
 
-/* Исправляем отступы для контента когда таббар скрыт */
+/* Fix padding for content when tabbar is hidden */
 .page.no-tabbar {
     padding-bottom: 0;
 }
 
-/* Утилиты */
+/* Utilities */
 .u-line-1 {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-/* Скрытие элементов */
+/* Element hiding */
 [hidden] {
     display: none !important;
 }
 
-/* Фон для профиля */
+/* Profile background */
 .profile-bg {
     background-image: url('assets/avatar.png');
     background-size: cover;

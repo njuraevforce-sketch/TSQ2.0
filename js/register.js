@@ -1,12 +1,12 @@
 // Register section
 export default function renderRegister() {
     return `
-        <!-- Registration form -->
+        <!-- Registration Form -->
         <div class="card padding" style="margin-top: 20px; background: transparent; box-shadow: none;">
             <div style="text-align: left; margin-bottom: 30px; display: flex; align-items: center;">
                 <img src="assets/logo.png" alt="GLY Logo" style="width: 80px; height: 80px; border-radius: 20px; margin-right: 20px;">
                 <div>
-                    <h2 style="color: white; margin-bottom: 5px; font-size: 28px;">Hello</h2>
+                    <h2 style="color: white; margin-bottom: 5px; font-size: 28px;">Welcome</h2>
                     <p style="color: #ccc; font-size: 16px;">Welcome to GLY</p>
                 </div>
             </div>
@@ -31,7 +31,7 @@ export default function renderRegister() {
                 </div>
                 
                 <div class="input-container" style="position: relative;">
-                    <input type="password" id="payment-password" placeholder="Payment Password" class="input-line" style="padding-right: 40px;">
+                    <input type="password" id="payment-password" placeholder="Transaction Password" class="input-line" style="padding-right: 40px;">
                     <i class="fas fa-eye password-toggle" id="toggle-payment-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #52c41a; cursor: pointer; z-index: 10;"></i>
                 </div>
                 
@@ -115,7 +115,7 @@ export function init() {
         }
         
         if (paymentPassword.length < 6) {
-            errorDiv.textContent = 'Payment password must be at least 6 characters';
+            errorDiv.textContent = 'Transaction password must be at least 6 characters';
             errorDiv.style.display = 'block';
             return;
         }
@@ -133,7 +133,7 @@ export function init() {
         this.disabled = true;
         
         try {
-            // Check if user exists with this username
+            // Check if user with such username exists
             const { data: existingUser } = await supabase
                 .from('users')
                 .select('id')
@@ -159,7 +159,7 @@ export function init() {
                 return;
             }
             
-            // Generate unique ID and code
+            // Generate unique IDs and code
             const userId = window.GLY.generateUserId();
             const userInviteCode = window.GLY.generateInviteCode();
             
@@ -207,12 +207,17 @@ export function init() {
             // Authenticate user
             localStorage.setItem('gly_user', JSON.stringify(newUser));
             
-            // Important: update current user in application
+            // Important: update current user in app
             if (window.glyApp) {
                 window.glyApp.currentUser = newUser;
             }
             
-            // Reload application for correct redirection
+            // Show welcome banner
+            setTimeout(() => {
+                showWelcomeBanner();
+            }, 500);
+            
+            // Reload app for correct redirection
             setTimeout(() => {
                 window.location.reload();
             }, 100);
@@ -286,4 +291,55 @@ async function createReferralRecords(referrerId, userId) {
     } catch (error) {
         console.error('Error creating referral records:', error);
     }
+}
+
+function showWelcomeBanner() {
+    const banner = document.createElement('div');
+    banner.className = 'welcome-banner';
+    banner.innerHTML = `
+        <div class="welcome-content">
+            <div class="welcome-title">Welcome to GLY</div>
+            <div class="welcome-text">
+                We bring science to the financial world through advanced quantitative trading.
+            </div>
+            <div class="welcome-bonus-list">
+                <div class="welcome-bonus-item">
+                    <span>First deposit $50:</span>
+                    <span>$2 USDT bonus + $5 referral</span>
+                </div>
+                <div class="welcome-bonus-item">
+                    <span>First deposit $100:</span>
+                    <span>$5 USDT bonus + $10 referral</span>
+                </div>
+                <div class="welcome-bonus-item">
+                    <span>First deposit $300:</span>
+                    <span>$10 USDT bonus + $15 referral</span>
+                </div>
+                <div class="welcome-bonus-item">
+                    <span>First deposit $500:</span>
+                    <span>$20 USDT bonus + $30 referral</span>
+                </div>
+                <div class="welcome-bonus-item">
+                    <span>First deposit $800:</span>
+                    <span>$30 USDT bonus + $50 referral</span>
+                </div>
+            </div>
+            <button class="welcome-close" id="close-welcome">Confirm</button>
+        </div>
+    `;
+    
+    document.body.appendChild(banner);
+    
+    setTimeout(() => {
+        banner.classList.add('show');
+    }, 100);
+    
+    document.getElementById('close-welcome').addEventListener('click', () => {
+        banner.classList.remove('show');
+        setTimeout(() => {
+            if (document.body.contains(banner)) {
+                document.body.removeChild(banner);
+            }
+        }, 300);
+    });
 }

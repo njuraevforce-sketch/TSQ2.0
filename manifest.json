@@ -1,8 +1,8 @@
 {
-  "name": "GLY Quantum Platform",
-  "short_name": "GLY",
-  "description": "AI-powered quantum trading platform",
-  "start_url": ".",
+  "name": "TSQ Quantitative",
+  "short_name": "TSQ",
+  "description": "Two Sigma Quantitative Investment Platform",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#4e7771",
   "theme_color": "#4e7771",

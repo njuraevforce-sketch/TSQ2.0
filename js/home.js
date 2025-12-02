@@ -5,7 +5,7 @@ export default function renderHome() {
         <div class="banner-section">
             <div class="banner">
                 <video class="banner-video" autoplay muted loop>
-                    <source src="assets/company.mp4" type="video/mp4">
+                    <source src="assets/company.MP4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>

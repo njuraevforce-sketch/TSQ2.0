@@ -68,7 +68,7 @@ export async function init() {
     // Load team data
     await loadTeamData();
 
-    // Handler for button
+    // Button handler
     const viewAllBtn = document.getElementById('view-all-referrals');
     if (viewAllBtn) {
         viewAllBtn.addEventListener('click', function() {
@@ -238,7 +238,7 @@ async function fillReferralLevel(containerId, referrals) {
                 .from('users')
                 .select('username, email, balance, created_at')
                 .eq('id', ref.referred_id)
-                .maybeSingle();  // Use maybeSingle
+                .maybeSingle();
                 
             if (user) {
                 const date = new Date(user.created_at).toLocaleDateString();

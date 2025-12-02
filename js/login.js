@@ -1,7 +1,7 @@
 // Login section
 export default function renderLogin() {
     return `
-        <!-- Login Form -->
+        <!-- Login form -->
         <div class="card padding" style="margin-top: 20px; background: transparent; box-shadow: none;">
             <div style="text-align: left; margin-bottom: 30px; display: flex; align-items: center;">
                 <img src="assets/logo.png" alt="GLY Logo" style="width: 80px; height: 80px; border-radius: 20px; margin-right: 20px;">
@@ -36,7 +36,7 @@ export default function renderLogin() {
 export function init() {
     document.body.classList.add('auth-page');
     
-    // Handler for password visibility toggle
+    // Password visibility toggle handler
     document.getElementById('toggle-password').addEventListener('click', function() {
         const passwordInput = document.getElementById('password');
         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -44,7 +44,7 @@ export function init() {
         this.classList.toggle('fa-eye-slash');
     });
 
-    // Handler for login button
+    // Login button handler
     document.getElementById('login-btn').addEventListener('click', async function() {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
@@ -67,7 +67,7 @@ export function init() {
                 .from('users')
                 .select('*')
                 .eq('username', username)
-                .maybeSingle();  // Use maybeSingle instead of single
+                .maybeSingle();
                 
             if (error) {
                 console.error('Supabase error:', error);
@@ -97,11 +97,6 @@ export function init() {
                 window.glyApp.currentUser = data;
             }
             
-            // Show welcome banner
-            setTimeout(() => {
-                showWelcomeBanner();
-            }, 500);
-            
             // Reload app for correct redirection
             setTimeout(() => {
                 window.location.reload();
@@ -109,7 +104,7 @@ export function init() {
             
         } catch (error) {
             console.error('Login error:', error);
-            errorDiv.textContent = 'Error logging in. Please try again later.';
+            errorDiv.textContent = 'Login error. Please try again later.';
             errorDiv.style.display = 'block';
         } finally {
             // Restore button
@@ -118,60 +113,9 @@ export function init() {
         }
     });
 
-    // Handler for going to register
+    // Go to registration handler
     document.getElementById('go-to-register').addEventListener('click', function(e) {
         e.preventDefault();
         window.showSection('register');
-    });
-}
-
-function showWelcomeBanner() {
-    const banner = document.createElement('div');
-    banner.className = 'welcome-banner';
-    banner.innerHTML = `
-        <div class="welcome-content">
-            <div class="welcome-title">Welcome to GLY</div>
-            <div class="welcome-text">
-                We bring science to the financial world through advanced quantitative trading.
-            </div>
-            <div class="welcome-bonus-list">
-                <div class="welcome-bonus-item">
-                    <span>First deposit $50:</span>
-                    <span>$2 USDT bonus + $5 referral</span>
-                </div>
-                <div class="welcome-bonus-item">
-                    <span>First deposit $100:</span>
-                    <span>$5 USDT bonus + $10 referral</span>
-                </div>
-                <div class="welcome-bonus-item">
-                    <span>First deposit $300:</span>
-                    <span>$10 USDT bonus + $15 referral</span>
-                </div>
-                <div class="welcome-bonus-item">
-                    <span>First deposit $500:</span>
-                    <span>$20 USDT bonus + $30 referral</span>
-                </div>
-                <div class="welcome-bonus-item">
-                    <span>First deposit $800:</span>
-                    <span>$30 USDT bonus + $50 referral</span>
-                </div>
-            </div>
-            <button class="welcome-close" id="close-welcome">Confirm</button>
-        </div>
-    `;
-    
-    document.body.appendChild(banner);
-    
-    setTimeout(() => {
-        banner.classList.add('show');
-    }, 100);
-    
-    document.getElementById('close-welcome').addEventListener('click', () => {
-        banner.classList.remove('show');
-        setTimeout(() => {
-            if (document.body.contains(banner)) {
-                document.body.removeChild(banner);
-            }
-        }, 300);
     });
 }

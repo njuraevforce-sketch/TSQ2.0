@@ -28,11 +28,11 @@ export default function renderRules() {
                 <div class="rules-section">
                     <h3>Referral System (3 levels):</h3>
                     <ul class="rules-list">
-                        <li>Level 1: 12% from referral earnings</li>
-                        <li>Level 2: 5% from referral earnings</li>
-                        <li>Level 3: 3% from referral earnings</li>
+                        <li>Level 1: 12% of referral earnings</li>
+                        <li>Level 2: 5% of referral earnings</li>
+                        <li>Level 3: 3% of referral earnings</li>
                     </ul>
-                    <p>Crediting occurs instantly with each referral earning</p>
+                    <p>Credits happen instantly with each referral's earnings</p>
                 </div>
 
                 <div class="rules-section">
@@ -45,7 +45,7 @@ export default function renderRules() {
                         <li>VIP5 (6000-12000 USDT): daily income 5.0%, 3 signals per day, requires 15 active referrals</li>
                         <li>VIP6 (12000-20000 USDT): daily income 6.0%, 3 signals per day, requires 25 active referrals</li>
                     </ul>
-                    <p>Active referral - user with balance from $20</p>
+                    <p>Active referral - user with balance of $20 or more</p>
                     <p>Signals refresh daily at 18:00 UTC</p>
                 </div>
 
@@ -53,9 +53,9 @@ export default function renderRules() {
                     <h3>Quantification Process:</h3>
                     <ul class="rules-list">
                         <li>Each signal brings 1/3 of daily percentage</li>
-                        <li>Income is credited to balance instantly</li>
-                        <li>Referral bonuses are credited automatically</li>
-                        <li>VIP level is recalculated after each quantification</li>
+                        <li>Income credited to balance instantly</li>
+                        <li>Referral bonuses credited automatically</li>
+                        <li>VIP level recalculated after each quantification</li>
                     </ul>
                 </div>
 
@@ -65,7 +65,7 @@ export default function renderRules() {
                         <li>Registration only by invitation code</li>
                         <li>Minimum age: 18 years</li>
                         <li>One user - one account</li>
-                        <li>VPN and proxy usage prohibited</li>
+                        <li>Use of VPN and proxies prohibited</li>
                     </ul>
                 </div>
 

@@ -231,7 +231,7 @@ function updateSignalsDisplay(signalsAvailable) {
         signalsText.textContent = `${signalsAvailable} Quantum Signals Available`;
     }
     
-    // Update visual signal display
+    // Update visual signals display
     signals.forEach((signal, index) => {
         if (index < signalsAvailable) {
             signal.classList.remove('used');
@@ -257,12 +257,12 @@ function highlightCurrentVipLevel(userVipLevel) {
 async function startQuantification() {
     const user = window.getCurrentUser();
     if (!user) {
-        window.GLYNotifications.error('Please login');
+        window.Notify.alert('Please login to the system');
         return;
     }
     
     if (user.signals_available <= 0) {
-        window.GLYNotifications.error('No quantum signals available! Please wait for daily refresh (18:00 UTC).');
+        window.Notify.alert('No quantum signals available! Please wait for daily refresh (18:00 UTC).');
         return;
     }
     
@@ -277,7 +277,7 @@ async function startQuantification() {
     // Show process
     process.style.display = 'block';
     
-    // Start process animation
+    // Run process animation
     await runQuantificationProcess();
     
     // Perform quantification
@@ -289,10 +289,10 @@ async function startQuantification() {
         profitResult.textContent = `Profit: +${result.profit.toFixed(2)} USDT`;
         profitResult.style.display = 'block';
         
-        // Update signal display
+        // Update signals display
         updateSignalsDisplay(result.signals_left);
         
-        // Hide process after 3 seconds
+        // After 3 seconds hide process
         setTimeout(() => {
             process.style.display = 'none';
             profitResult.style.display = 'none';
@@ -308,10 +308,10 @@ async function startQuantification() {
             quantBtn.innerHTML = 'AUTO QUANTIFICATION';
             
             // Show success message
-            window.GLYNotifications.success(`Quantum quantification successful! Profit: +${result.profit.toFixed(2)} USDT`);
+            window.Notify.show(`Quantum quantification successful! Profit: +${result.profit.toFixed(2)} USDT`, 'success');
         }, 3000);
     } else {
-        window.GLYNotifications.error(result.message);
+        window.Notify.alert(result.message);
         
         // Restore button
         quantBtn.disabled = false;

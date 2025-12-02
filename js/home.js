@@ -1,22 +1,24 @@
 // Home section
 export default function renderHome() {
     return `
-        <!-- Banner with video -->
+        <!-- Video banner with play button -->
         <div class="banner-section">
             <div class="banner">
-                <video class="banner-video" id="banner-video" poster="assets/logo.png">
-                    <source src="assets/company.MP4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <div class="video-overlay" id="video-overlay">
-                    <button class="play-btn" id="play-video-btn">
-                        <i class="fas fa-play"></i>
-                    </button>
+                <div class="video-container" id="video-container">
+                    <video class="banner-video" id="banner-video" muted playsinline>
+                        <source src="assets/company.MP4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-overlay" id="video-overlay">
+                        <div class="play-btn" id="play-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <!-- News ticker -->
+        <!-- Running line -->
         <div class="notice-section">
             <div class="notice-bar">
                 <div class="notice-icon">🚀</div>
@@ -79,7 +81,6 @@ export default function renderHome() {
                 </div>
             </div>
             <div class="crypto-grid" id="crypto-prices">
-                <!-- Crypto prices will be loaded via API -->
                 <div style="color: #ccc; text-align: center; padding: 20px;">
                     Loading live prices...
                 </div>
@@ -95,7 +96,7 @@ export default function renderHome() {
 }
 
 export function init() {
-    // Handlers for navigation icons
+    // Navigation icons handlers
     document.querySelectorAll('.nav-item[data-section]').forEach(item => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
@@ -104,48 +105,98 @@ export function init() {
         });
     });
 
-    // Initialize video player
-    initVideoPlayer();
-
+    // Video player setup
+    setupVideoPlayer();
+    
     // Load crypto prices
     loadCryptoPrices();
-    // Update every 30 seconds (safe limit for CoinGecko)
     setInterval(loadCryptoPrices, 30000);
+    
+    // Show welcome banner on first visit
+    setTimeout(() => {
+        showWelcomeBanner();
+    }, 1000);
 }
 
-function initVideoPlayer() {
+function setupVideoPlayer() {
     const video = document.getElementById('banner-video');
-    const playBtn = document.getElementById('play-video-btn');
     const overlay = document.getElementById('video-overlay');
-
-    if (video && playBtn && overlay) {
-        playBtn.addEventListener('click', () => {
-            video.play();
-            overlay.style.display = 'none';
+    const playBtn = document.getElementById('play-btn');
+    
+    if (!video) return;
+    
+    // Ensure video doesn't autoplay
+    video.autoplay = false;
+    video.controls = false;
+    video.loop = false;
+    
+    // Play button click handler
+    playBtn.addEventListener('click', () => {
+        video.play().catch(e => {
+            console.log('Video play failed:', e);
+            window.showCustomAlert('Video playback failed. Please try again.');
         });
-
-        video.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (video.paused) {
-                video.play();
-                overlay.style.display = 'none';
-            } else {
-                video.pause();
-                overlay.style.display = 'flex';
-            }
-        });
-
-        video.addEventListener('ended', () => {
+        overlay.style.display = 'none';
+        video.setAttribute('controls', 'true');
+    });
+    
+    // When video ends or pauses, show play button again
+    video.addEventListener('ended', () => {
+        overlay.style.display = 'flex';
+        video.removeAttribute('controls');
+        video.currentTime = 0;
+    });
+    
+    video.addEventListener('pause', () => {
+        if (video.currentTime < video.duration) {
             overlay.style.display = 'flex';
-        });
+            video.removeAttribute('controls');
+        }
+    });
+    
+    // Prevent video from going fullscreen
+    video.addEventListener('webkitbeginfullscreen', (e) => {
+        e.preventDefault();
+        video.webkitExitFullscreen();
+    });
+    
+    video.addEventListener('fullscreenchange', (e) => {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        }
+    });
+}
 
-        // Prevent fullscreen
-        video.addEventListener('webkitbeginfullscreen', (e) => {
-            e.preventDefault();
-        });
-        video.addEventListener('mozbeginfullscreen', (e) => {
-            e.preventDefault();
-        });
+function showWelcomeBanner() {
+    const user = window.getCurrentUser();
+    if (!user) return;
+    
+    // Check if banner was shown today
+    const lastShown = localStorage.getItem('welcome_banner_shown');
+    const today = new Date().toDateString();
+    
+    if (lastShown !== today) {
+        setTimeout(() => {
+            const bannerContent = `
+                <div style="text-align: center; padding: 10px;">
+                    <h3 style="color: #4e7771; margin-bottom: 15px;">Welcome to Two Sigma Quantitative (TSQ)</h3>
+                    <p style="margin-bottom: 10px; color: #333;">We strive to bring science into the financial world.</p>
+                    <p style="margin-bottom: 15px; color: #333; font-weight: bold;">First deposit bonus and referral bonus for new users (automatically credited):</p>
+                    
+                    <div style="background: #f5f5f5; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+                        <p style="margin: 5px 0; color: #333;">First deposit $50: $2 USDT (referral bonus $5 USDT)</p>
+                        <p style="margin: 5px 0; color: #333;">First deposit $100: $5 USDT (referral bonus $10 USDT)</p>
+                        <p style="margin: 5px 0; color: #333;">First deposit $300: $10 USDT (referral bonus $15 USDT)</p>
+                        <p style="margin: 5px 0; color: #333;">First deposit $500: $20 USDT (referral bonus $30 USDT)</p>
+                        <p style="margin: 5px 0; color: #333;">First deposit $800: $30 USDT (referral bonus $50 USDT)</p>
+                    </div>
+                </div>
+            `;
+            
+            window.showCustomModal('Welcome Bonus', bannerContent, () => {
+                localStorage.setItem('welcome_banner_shown', today);
+            });
+        }, 1500);
     }
 }
 
@@ -170,7 +221,7 @@ async function loadCryptoPrices() {
             lastUpdatedElement.textContent = 'Updating...';
         }
 
-        // Use CoinGecko API (free, up to 50 requests per minute)
+        // Use CoinGecko API
         const response = await fetch(
             'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,ripple,cardano,solana,polkadot,dogecoin&vs_currencies=usd&include_24hr_change=true'
         );
@@ -181,7 +232,7 @@ async function loadCryptoPrices() {
         
         const data = await response.json();
         
-        // Cryptocurrency array with their data
+        // Crypto array with data
         const cryptoData = [
             { 
                 id: 'bitcoin', 
@@ -272,7 +323,7 @@ async function loadCryptoPrices() {
         
         cryptoContainer.innerHTML = html;
         
-        // Update last update time
+        // Update last updated time
         if (lastUpdatedElement) {
             const now = new Date();
             const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });

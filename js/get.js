@@ -2,7 +2,7 @@
 export default function renderGet() {
     return `
         <div class="card padding">
-            <!-- Время UTC -->
+            <!-- UTC Time -->
             <div class="utc-time" id="utc-time">
                 UTC: Loading...
             </div>
@@ -23,7 +23,7 @@ export default function renderGet() {
                 </button>
             </div>
 
-            <!-- Процесс квантования -->
+            <!-- Quantification process -->
             <div class="quantum-process" id="quantum-process" style="display: none;">
                 <div class="process-step" id="step-1">Analyzing market conditions...</div>
                 <div class="process-step" id="step-2">Calculating quantum probabilities...</div>
@@ -32,7 +32,7 @@ export default function renderGet() {
                 <div class="process-step" id="profit-result" style="display: none; color: #52c41a; font-weight: bold;"></div>
             </div>
 
-            <!-- VIP карточки -->
+            <!-- VIP cards -->
             <div class="vip-section">
                 <div class="section-title">VIP Levels</div>
                 <div class="vip-carousel-container">
@@ -108,17 +108,17 @@ export default function renderGet() {
 }
 
 export async function init() {
-    // Инициализация VIP карусели
+    // Initialize VIP carousel
     initVipCarousel();
     
-    // Обновление времени UTC
+    // Update UTC time
     updateUTCTime();
     setInterval(updateUTCTime, 1000);
     
-    // Загрузка данных пользователя
+    // Load user data
     await loadUserData();
     
-    // Обработчик кнопки квантования
+    // Quantification button handler
     document.getElementById('quant-btn').addEventListener('click', startQuantification);
 }
 
@@ -215,10 +215,10 @@ async function loadUserData() {
     const user = window.getCurrentUser();
     if (!user) return;
     
-    // Обновляем отображение сигналов
+    // Update signals display
     updateSignalsDisplay(user.signals_available);
     
-    // Обновляем VIP уровень в карусели
+    // Update VIP level in carousel
     highlightCurrentVipLevel(user.vip_level);
 }
 
@@ -226,12 +226,12 @@ function updateSignalsDisplay(signalsAvailable) {
     const signals = document.querySelectorAll('.signal');
     const signalsText = document.getElementById('signals-text');
     
-    // Обновляем текст
+    // Update text
     if (signalsText) {
         signalsText.textContent = `${signalsAvailable} Quantum Signals Available`;
     }
     
-    // Обновляем визуальное отображение сигналов
+    // Update visual signal display
     signals.forEach((signal, index) => {
         if (index < signalsAvailable) {
             signal.classList.remove('used');
@@ -257,68 +257,68 @@ function highlightCurrentVipLevel(userVipLevel) {
 async function startQuantification() {
     const user = window.getCurrentUser();
     if (!user) {
-        alert('Пожалуйста, войдите в систему');
+        window.GLYNotifications.error('Please login');
         return;
     }
     
     if (user.signals_available <= 0) {
-        alert('No quantum signals available! Please wait for daily refresh (18:00 UTC).');
+        window.GLYNotifications.error('No quantum signals available! Please wait for daily refresh (18:00 UTC).');
         return;
     }
     
     const quantBtn = document.getElementById('quant-btn');
     const process = document.getElementById('quantum-process');
     
-    // Отключаем кнопку
+    // Disable button
     quantBtn.disabled = true;
     quantBtn.style.opacity = '0.5';
     quantBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> PROCESSING...';
     
-    // Показываем процесс
+    // Show process
     process.style.display = 'block';
     
-    // Запускаем анимацию процесса
+    // Start process animation
     await runQuantificationProcess();
     
-    // Выполняем квантование
+    // Perform quantification
     const result = await window.performQuantification();
     
     if (result.success) {
-        // Показываем результат
+        // Show result
         const profitResult = document.getElementById('profit-result');
         profitResult.textContent = `Profit: +${result.profit.toFixed(2)} USDT`;
         profitResult.style.display = 'block';
         
-        // Обновляем отображение сигналов
+        // Update signal display
         updateSignalsDisplay(result.signals_left);
         
-        // Через 3 секунды скрываем процесс
+        // Hide process after 3 seconds
         setTimeout(() => {
             process.style.display = 'none';
             profitResult.style.display = 'none';
             
-            // Сбрасываем шаги процесса
+            // Reset process steps
             document.querySelectorAll('.process-step').forEach(step => {
                 step.classList.remove('active');
             });
             
-            // Восстанавливаем кнопку
+            // Restore button
             quantBtn.disabled = false;
             quantBtn.style.opacity = '1';
             quantBtn.innerHTML = 'AUTO QUANTIFICATION';
             
-            // Показываем сообщение об успехе
-            alert(`Quantum quantification successful! Profit: +${result.profit.toFixed(2)} USDT`);
+            // Show success message
+            window.GLYNotifications.success(`Quantum quantification successful! Profit: +${result.profit.toFixed(2)} USDT`);
         }, 3000);
     } else {
-        alert(result.message);
+        window.GLYNotifications.error(result.message);
         
-        // Восстанавливаем кнопку
+        // Restore button
         quantBtn.disabled = false;
         quantBtn.style.opacity = '1';
         quantBtn.innerHTML = 'AUTO QUANTIFICATION';
         
-        // Скрываем процесс
+        // Hide process
         process.style.display = 'none';
     }
 }

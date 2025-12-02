@@ -857,7 +857,7 @@ uni-page-body {
 .vip-carousel {
     display: flex;
     overflow: hidden;
-    height: 280px;
+    height: 230px; /* Уменьшено с 280px до 230px (на ~20%) */
     border-radius: 10px;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
@@ -879,7 +879,7 @@ uni-page-body {
     position: relative;
     opacity: 0.6;
     transform: scale(0.95);
-    height: 250px;
+    height: 200px; /* Уменьшено с 250px до 200px (на 20%) */
     background: transparent;
     border: 2px solid transparent;
 }
@@ -897,14 +897,14 @@ uni-page-body {
     display: none;
 }
 
-/* Исправленные стили для иконок */
+/* Исправленные стили для иконок - УВЕЛИЧЕНЫ И ПЕРЕМЕЩЕНЫ */
 .vip-icon-wrapper {
     position: absolute;
-    top: 20px;
-    left: 70%;
-    transform: translateX(-50%);
-    width: 55px;
-    height: 55px;
+    top: 50%; /* Центрирование по вертикали */
+    left: 60%; /* Смещено от центра на 20% вправо (было 70%) */
+    transform: translate(-50%, -50%); /* Центрирование */
+    width: 80px; /* Увеличено с 55px до 80px */
+    height: 80px; /* Увеличено с 55px до 80px */
     z-index: 10;
     background: transparent !important;
     border: none !important;
@@ -912,8 +912,8 @@ uni-page-body {
 }
 
 .vip-icon {
-    width: 55px !important;
-    height: 55px !important;
+    width: 80px !important; /* Увеличено с 55px до 80px */
+    height: 80px !important; /* Увеличено с 55px до 80px */
     object-fit: contain;
     display: block !important;
     visibility: visible !important;
@@ -934,10 +934,10 @@ uni-page-body {
 }
 
 .vip-level-name {
-    font-size: 18px;
+    font-size: 16px; /* Немного уменьшен шрифт */
     font-weight: bold;
     margin-bottom: 5px;
-    margin-top: 0;
+    margin-top: 60px; /* Добавлен отступ сверху для размещения увеличенной иконки */
     z-index: 2;
     position: relative;
     color: white;
@@ -945,11 +945,12 @@ uni-page-body {
 }
 
 .vip-level-requirement {
-    font-size: 14px;
+    font-size: 12px; /* Немного уменьшен шрифт */
     color: #ccc;
     z-index: 2;
     position: relative;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    padding: 0 10px; /* Добавлены отступы по бокам */
 }
 
 .vip-description {
@@ -1729,31 +1730,34 @@ uni-page-body {
     
     /* Исправления для VIP карточек на мобильных */
     .vip-card {
-        height: 230px;
+        height: 184px; /* Уменьшено с 230px до 184px (на 20%) */
         padding: 12px;
     }
     
     .vip-carousel {
-        height: 250px;
+        height: 210px; /* Уменьшено пропорционально */
     }
     
     .vip-icon-wrapper {
-        width: 50px;
-        height: 50px;
-        top: 15px;
+        width: 70px; /* Увеличено с 50px до 70px */
+        height: 70px; /* Увеличено с 50px до 70px */
+        top: 50%;
+        left: 60%; /* Сохраняем смещение на 20% вправо */
+        transform: translate(-50%, -50%);
     }
     
     .vip-icon {
-        width: 50px !important;
-        height: 50px !important;
+        width: 70px !important; /* Увеличено с 50px до 70px */
+        height: 70px !important; /* Увеличено с 50px до 70px */
     }
     
     .vip-level-name {
-        font-size: 16px;
+        font-size: 14px; /* Немного уменьшен шрифт */
+        margin-top: 50px; /* Уменьшен отступ сверху */
     }
     
     .vip-level-requirement {
-        font-size: 13px;
+        font-size: 11px; /* Немного уменьшен шрифт */
     }
     
     .pop-content {
@@ -1834,21 +1838,33 @@ uni-page-body {
     
     /* Исправления для VIP карточек на очень маленьких экранах */
     .vip-card {
-        height: 220px;
+        height: 176px; /* Уменьшено с 220px до 176px (на 20%) */
     }
     
     .vip-carousel {
-        height: 240px;
+        height: 200px; /* Уменьшено пропорционально */
     }
     
     .vip-icon-wrapper {
-        width: 45px;
-        height: 45px;
+        width: 60px; /* Увеличено с 45px до 60px */
+        height: 60px; /* Увеличено с 45px до 60px */
+        top: 50%;
+        left: 60%; /* Сохраняем смещение на 20% вправо */
+        transform: translate(-50%, -50%);
     }
     
     .vip-icon {
-        width: 45px !important;
-        height: 45px !important;
+        width: 60px !important; /* Увеличено с 45px до 60px */
+        height: 60px !important; /* Увеличено с 45px до 60px */
+    }
+    
+    .vip-level-name {
+        font-size: 13px; /* Немного уменьшен шрифт */
+        margin-top: 45px; /* Уменьшен отступ сверху */
+    }
+    
+    .vip-level-requirement {
+        font-size: 10px; /* Немного уменьшен шрифт */
     }
 }
 

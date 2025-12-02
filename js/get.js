@@ -231,7 +231,7 @@ function updateSignalsDisplay(signalsAvailable) {
         signalsText.textContent = `${signalsAvailable} Quantum Signals Available`;
     }
     
-    // Update visual signals display
+    // Update visual signal display
     signals.forEach((signal, index) => {
         if (index < signalsAvailable) {
             signal.classList.remove('used');
@@ -257,12 +257,12 @@ function highlightCurrentVipLevel(userVipLevel) {
 async function startQuantification() {
     const user = window.getCurrentUser();
     if (!user) {
-        window.Notify.alert('Please login to the system');
+        window.showCustomAlert('Please log in to continue');
         return;
     }
     
     if (user.signals_available <= 0) {
-        window.Notify.alert('No quantum signals available! Please wait for daily refresh (18:00 UTC).');
+        window.showCustomAlert('No quantum signals available! Please wait for daily refresh (18:00 UTC).');
         return;
     }
     
@@ -292,7 +292,7 @@ async function startQuantification() {
         // Update signals display
         updateSignalsDisplay(result.signals_left);
         
-        // After 3 seconds hide process
+        // Hide process after 3 seconds
         setTimeout(() => {
             process.style.display = 'none';
             profitResult.style.display = 'none';
@@ -308,10 +308,10 @@ async function startQuantification() {
             quantBtn.innerHTML = 'AUTO QUANTIFICATION';
             
             // Show success message
-            window.Notify.show(`Quantum quantification successful! Profit: +${result.profit.toFixed(2)} USDT`, 'success');
+            window.showCustomAlert(`Quantum quantification successful! Profit: +${result.profit.toFixed(2)} USDT`);
         }, 3000);
     } else {
-        window.Notify.alert(result.message);
+        window.showCustomAlert(result.message);
         
         // Restore button
         quantBtn.disabled = false;

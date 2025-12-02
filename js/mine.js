@@ -2,20 +2,23 @@
 export default function renderMine() {
     return `
         <!-- Profile with background image -->
-        <div class="card padding profile-bg">
-            <div style="display: flex; align-items: center; margin-bottom: 20px;">
+        <div class="card padding profile-bg" style="background-image: url('assets/avatar.png'); background-size: cover; background-position: center; border-radius: 10px; padding: 20px; margin-bottom: 20px; position: relative;">
+            <!-- Dark overlay for better text readability -->
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); border-radius: 10px; z-index: 1;"></div>
+            
+            <div style="position: relative; z-index: 2; display: flex; align-items: center; margin-bottom: 20px;">
                 <div style="flex: 1;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;">
-                        <div class="profile-vip-badge" id="user-vip-level">VIP 1</div>
-                        <button class="copy-id-btn" id="copy-user-id">
+                        <div class="profile-vip-badge" id="user-vip-level" style="background: rgba(78, 119, 113, 0.8);">VIP 1</div>
+                        <button class="copy-id-btn" id="copy-user-id" style="background: rgba(255, 255, 255, 0.2);">
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
                     <div class="profile-id-copy">
-                        <span class="profile-id" id="user-id">ID: Loading...</span>
+                        <span class="profile-id" id="user-id" style="color: white; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">ID: Loading...</span>
                     </div>
-                    <div style="margin-top: 10px; color: white; font-size: 16px;">
-                        Balance: <span id="user-balance">0.00</span> USDT
+                    <div style="margin-top: 15px; color: white; font-size: 18px; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">
+                        Balance: <span id="user-balance" style="color: #f9ae3d;">0.00</span> USDT
                     </div>
                 </div>
             </div>
@@ -45,7 +48,7 @@ export default function renderMine() {
                     <div class="setting-name">Change Password</div>
                     <div class="setting-value">Update</div>
                 </div>
-                <div class="pro-btn" id="logout-btn" style="background: transparent; border: 1px solid #ff6b6b; margin-top: 10px;">Logout</div>
+                <div class="pro-btn" id="logout-btn" style="background: transparent; border: 2px solid #ff6b6b; margin-top: 10px; color: #ff6b6b; font-weight: bold;">Logout</div>
             </div>
         </div>
 
@@ -65,8 +68,8 @@ export default function renderMine() {
                         </p>
                     </div>
                     <div class="pop-footer">
-                        <button type="submit" id="save-address" style="margin-right: 10px;">Save</button>
-                        <button type="button" id="close-address">Cancel</button>
+                        <button type="submit" id="save-address" style="margin-right: 10px; background: #4e7771;">Save</button>
+                        <button type="button" id="close-address" style="background: #666;">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -95,8 +98,8 @@ export default function renderMine() {
                         </div>
                     </div>
                     <div class="pop-footer">
-                        <button type="submit" id="save-password" style="margin-right: 10px;">Save</button>
-                        <button type="button" id="close-password">Cancel</button>
+                        <button type="submit" id="save-password" style="margin-right: 10px; background: #4e7771;">Save</button>
+                        <button type="button" id="close-password" style="background: #666;">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -141,7 +144,7 @@ export default function renderMine() {
                     </div>
                 </div>
                 <div class="pop-footer">
-                    <button id="close-support">Close</button>
+                    <button id="close-support" style="background: #4e7771;">Close</button>
                 </div>
             </div>
         </div>

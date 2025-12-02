@@ -1,11 +1,12 @@
 // Main application module
+import './notifications.js';
+
 class GLYApp {
     constructor() {
         this.currentSection = null;
         this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register', 'company', 'invite', 'team', 'rules'];
         this.currentUser = null;
         this.supabase = null;
-        this.deferredPrompt = null;
         this.init();
     }
 
@@ -16,23 +17,19 @@ class GLYApp {
         // Check authentication
         await this.checkAuth();
         
-        // Initialize PWA
-        this.setupPWA();
-        
         // Hide tabbar by default
         this.hideTabbar();
         
         // Load initial section
         if (this.currentUser) {
             await this.showSection('home');
-            // Show welcome banner on login
-            this.showWelcomeBanner();
         } else {
             await this.showSection('login');
         }
         
         this.setupEventListeners();
         this.setupNavigation();
+        this.setupPWA();
         
         // Start signal update check
         this.startSignalUpdateCheck();
@@ -63,6 +60,42 @@ class GLYApp {
         window.supabase = this.supabase;
     }
 
+    setupPWA() {
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show button only on Android
+            const isAndroid = /android/i.test(navigator.userAgent);
+            if (isAndroid && installBtn) {
+                installBtn.style.display = 'flex';
+            }
+        });
+
+        if (installBtn) {
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        installBtn.style.display = 'none';
+                    }
+                    deferredPrompt = null;
+                }
+            });
+        }
+
+        window.addEventListener('appinstalled', () => {
+            if (installBtn) {
+                installBtn.style.display = 'none';
+            }
+            deferredPrompt = null;
+        });
+    }
+
     async checkAuth() {
         const storedUser = localStorage.getItem('gly_user');
         if (storedUser) {
@@ -75,7 +108,7 @@ class GLYApp {
                         .from('users')
                         .select('*')
                         .eq('id', this.currentUser.id)
-                        .maybeSingle();
+                        .maybeSingle();  // Use maybeSingle
                         
                     if (error) {
                         console.warn('Could not fetch user data:', error);
@@ -97,39 +130,6 @@ class GLYApp {
                 this.currentUser = null;
             }
         }
-    }
-
-    setupPWA() {
-        // Handler for install button
-        const installBtn = document.getElementById('install-btn');
-        if (installBtn) {
-            installBtn.addEventListener('click', () => {
-                this.showPWAInstallPrompt();
-            });
-        }
-
-        // Track beforeinstallprompt event
-        window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent automatic prompt display
-            e.preventDefault();
-            // Save event for later use
-            this.deferredPrompt = e;
-            
-            // Show install button
-            if (installBtn) {
-                installBtn.style.display = 'flex';
-            }
-        });
-
-        // Check if app is installed
-        window.addEventListener('appinstalled', () => {
-            // Hide install button
-            if (installBtn) {
-                installBtn.style.display = 'none';
-            }
-            this.deferredPrompt = null;
-            this.showCustomAlert('App installed successfully!');
-        });
     }
 
     setupEventListeners() {
@@ -170,23 +170,6 @@ class GLYApp {
 
         window.logout = () => {
             this.logout();
-        };
-        
-        // Custom alert/confirm functions
-        window.showCustomAlert = (message) => {
-            return this.showCustomAlert(message);
-        };
-        
-        window.showCustomConfirm = (message) => {
-            return this.showCustomConfirm(message);
-        };
-        
-        window.showLoader = (message = 'Loading...') => {
-            return this.showLoader(message);
-        };
-        
-        window.hideLoader = () => {
-            return this.hideLoader();
         };
     }
 
@@ -328,9 +311,6 @@ class GLYApp {
                         <i class="fas fa-arrow-left"></i>
                     </div>
                     <div class="u-navbar__content__title">${title}</div>
-                    <div class="install-btn" id="install-btn" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: white; font-size: 20px; cursor: pointer; z-index: 10;">
-                        <i class="fas fa-download"></i>
-                    </div>
                 `;
                 
                 const backButton = document.getElementById('navbar-back-btn');
@@ -339,150 +319,14 @@ class GLYApp {
                         window.showSection('home');
                     });
                 }
-                
-                // Re-attach install button event
-                const installBtn = document.getElementById('install-btn');
-                if (installBtn) {
-                    installBtn.addEventListener('click', () => {
-                        this.showPWAInstallPrompt();
-                    });
-                }
             } else {
                 navbarContent.innerHTML = `
                     <div class="u-navbar__content__logo">
                         <img src="assets/logo.png" alt="Logo">
                     </div>
                     <div class="u-navbar__content__title">${title}</div>
-                    <div class="install-btn" id="install-btn" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: white; font-size: 20px; cursor: pointer; z-index: 10;">
-                        <i class="fas fa-download"></i>
-                    </div>
                 `;
-                
-                // Re-attach install button event
-                const installBtn = document.getElementById('install-btn');
-                if (installBtn) {
-                    installBtn.addEventListener('click', () => {
-                        this.showPWAInstallPrompt();
-                    });
-                }
             }
-        }
-    }
-
-    showPWAInstallPrompt() {
-        if (this.deferredPrompt) {
-            // Show install prompt
-            this.deferredPrompt.prompt();
-            
-            // Wait for user response
-            this.deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('User accepted the install prompt');
-                } else {
-                    console.log('User dismissed the install prompt');
-                }
-                this.deferredPrompt = null;
-            });
-        } else {
-            // For iOS show instructions
-            if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
-                this.showCustomAlert('To install this app: tap Share button, then "Add to Home Screen"');
-            } else {
-                this.showCustomAlert('App installation is available in Chrome/Edge browser menu');
-            }
-        }
-    }
-
-    showCustomAlert(message) {
-        return new Promise((resolve) => {
-            const alertEl = document.getElementById('custom-alert');
-            const messageEl = document.getElementById('custom-alert-message');
-            const okBtn = document.getElementById('custom-alert-ok');
-            
-            messageEl.textContent = message;
-            alertEl.style.display = 'flex';
-            
-            const handleClose = () => {
-                alertEl.style.display = 'none';
-                okBtn.removeEventListener('click', handleClose);
-                resolve();
-            };
-            
-            okBtn.addEventListener('click', handleClose);
-        });
-    }
-
-    showCustomConfirm(message) {
-        return new Promise((resolve) => {
-            const confirmEl = document.getElementById('custom-confirm');
-            const messageEl = document.getElementById('custom-confirm-message');
-            const yesBtn = document.getElementById('custom-confirm-yes');
-            const noBtn = document.getElementById('custom-confirm-no');
-            
-            messageEl.textContent = message;
-            confirmEl.style.display = 'flex';
-            
-            const handleYes = () => {
-                confirmEl.style.display = 'none';
-                yesBtn.removeEventListener('click', handleYes);
-                noBtn.removeEventListener('click', handleNo);
-                resolve(true);
-            };
-            
-            const handleNo = () => {
-                confirmEl.style.display = 'none';
-                yesBtn.removeEventListener('click', handleYes);
-                noBtn.removeEventListener('click', handleNo);
-                resolve(false);
-            };
-            
-            yesBtn.addEventListener('click', handleYes);
-            noBtn.addEventListener('click', handleNo);
-        });
-    }
-
-    showLoader(message = 'Loading...') {
-        // Create loader if it doesn't exist
-        if (!document.getElementById('custom-loader')) {
-            const loader = document.createElement('div');
-            loader.id = 'custom-loader';
-            loader.className = 'custom-loader';
-            loader.innerHTML = `
-                <div class="loader-content">
-                    <div class="loader-spinner"></div>
-                    <div class="loader-text">${message}</div>
-                </div>
-            `;
-            document.body.appendChild(loader);
-        }
-        document.getElementById('custom-loader').style.display = 'flex';
-    }
-
-    hideLoader() {
-        const loader = document.getElementById('custom-loader');
-        if (loader) {
-            loader.style.display = 'none';
-        }
-    }
-
-    showWelcomeBanner() {
-        // Check if welcome banner has been shown
-        const hasSeenWelcome = localStorage.getItem('gly_welcome_seen');
-        
-        if (!hasSeenWelcome) {
-            setTimeout(() => {
-                const welcomeBanner = document.getElementById('welcome-banner');
-                const confirmBtn = document.getElementById('welcome-confirm');
-                
-                if (welcomeBanner) {
-                    welcomeBanner.style.display = 'flex';
-                    
-                    confirmBtn.addEventListener('click', () => {
-                        welcomeBanner.style.display = 'none';
-                        localStorage.setItem('gly_welcome_seen', 'true');
-                    }, { once: true });
-                }
-            }, 1000);
         }
     }
 
@@ -538,7 +382,7 @@ class GLYApp {
             // Update balance
             await this.updateUserBalance(profitPerSignal, 'quantification');
             
-            // Decrease signals count
+            // Decrease signal count
             const newSignals = this.currentUser.signals_available - 1;
             const { error } = await this.supabase
                 .from('users')
@@ -581,10 +425,10 @@ class GLYApp {
         if (!this.currentUser) return;
         
         try {
-            // Find referrers for 3 levels
+            // Find referrers 3 levels
             const referrals = await this.getReferralChain(this.currentUser.id);
             
-            // Percentages for each level
+            // Percent for each level
             const levelPercents = { 1: 12, 2: 5, 3: 3 };
             
             for (const [level, referrerId] of Object.entries(referrals)) {
@@ -671,7 +515,7 @@ class GLYApp {
     }
 
     startSignalUpdateCheck() {
-        // Check every minute if signals need updating
+        // Check every minute if signals need update
         setInterval(() => {
             this.checkAndUpdateSignals();
         }, 60000);
@@ -688,7 +532,7 @@ class GLYApp {
         const today = now.toISOString().split('T')[0];
         const lastUpdate = this.currentUser.last_signal_update?.split('T')[0];
         
-        // If it's 18:00 UTC and hasn't been updated today
+        // If it's 18:00 UTC and not updated today
         if (utcHour >= 18 && today !== lastUpdate) {
             try {
                 // Update signals
@@ -718,7 +562,7 @@ class GLYApp {
         if (!this.currentUser) return;
         
         try {
-            // Get number of ACTIVE level 1 referrals (balance ≥ 20 USDT)
+            // Get count of ACTIVE level 1 referrals (balance ≥ 20 USDT)
             const { data: activeReferrals, error: refError } = await this.supabase
                 .from('referrals')
                 .select(`
@@ -761,10 +605,13 @@ class GLYApp {
     }
 
     logout() {
-        localStorage.removeItem('gly_user');
-        localStorage.removeItem('gly_welcome_seen');
-        this.currentUser = null;
-        window.showSection('login');
+        window.Notify.confirm('Are you sure you want to logout?', 'Logout').then((confirmed) => {
+            if (confirmed) {
+                localStorage.removeItem('gly_user');
+                this.currentUser = null;
+                window.showSection('login');
+            }
+        });
     }
 }
 
@@ -803,21 +650,5 @@ window.GLY = {
     
     generateInviteCode: () => {
         return Math.random().toString(36).substr(2, 8).toUpperCase();
-    },
-    
-    alert: async (message) => {
-        return window.showCustomAlert(message);
-    },
-    
-    confirm: async (message) => {
-        return window.showCustomConfirm(message);
-    },
-    
-    showLoading: (message) => {
-        window.showLoader(message);
-    },
-    
-    hideLoading: () => {
-        window.hideLoader();
     }
 };

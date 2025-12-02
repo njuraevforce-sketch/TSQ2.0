@@ -7,7 +7,7 @@ export default function renderInvite() {
                 <p style="color: #ccc;">Earn bonuses for invited friends</p>
             </div>
 
-            <!-- QR code -->
+            <!-- QR Code -->
             <div class="qr-code">
                 <img src="" alt="QR Code" id="qr-code-image">
             </div>
@@ -68,9 +68,9 @@ export default function renderInvite() {
             <div class="card padding margin-top">
                 <div class="text-white text-bold text-center">Referral Bonuses</div>
                 <div style="color: #ccc; font-size: 14px; text-align: center; margin-top: 10px;">
-                    <p>Level 1: 12% of referral earnings</p>
-                    <p>Level 2: 5% of referral earnings</p>
-                    <p>Level 3: 3% of referral earnings</p>
+                    <p>Level 1: 12% of referral's earnings</p>
+                    <p>Level 2: 5% of referral's earnings</p>
+                    <p>Level 3: 3% of referral's earnings</p>
                 </div>
             </div>
         </div>
@@ -92,7 +92,6 @@ export async function init() {
         copyReferralBtn.addEventListener('click', function() {
             const referralLink = document.getElementById('referral-link').textContent;
             window.GLY.copyToClipboard(referralLink).then(() => {
-                window.Notify.show('Referral link copied to clipboard', 'success');
                 const originalText = copyReferralBtn.innerHTML;
                 copyReferralBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
                 setTimeout(function() {
@@ -108,7 +107,6 @@ export async function init() {
         copyInviteCodeBtn.addEventListener('click', function() {
             const inviteCode = document.getElementById('invite-code').textContent;
             window.GLY.copyToClipboard(inviteCode).then(() => {
-                window.Notify.show('Invitation code copied to clipboard', 'success');
                 const originalText = copyInviteCodeBtn.innerHTML;
                 copyInviteCodeBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
                 setTimeout(() => {
@@ -165,7 +163,7 @@ async function loadReferralStats() {
                     .from('users')
                     .select('balance')
                     .eq('id', referral.referred_id)
-                    .maybeSingle();  // Use maybeSingle
+                    .maybeSingle();
                     
                 if (referredUser && referredUser.balance >= 20) {
                     activeReferrals++;

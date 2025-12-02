@@ -15,7 +15,7 @@ export default function renderRegister() {
                 <div class="input-container">
                     <input type="text" id="reg-username" placeholder="Username" class="input-line">
                 </div>
-                
+    
                 <div class="input-container">
                     <input type="email" id="email" placeholder="Email" class="input-line">
                 </div>

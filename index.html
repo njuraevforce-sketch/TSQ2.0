@@ -2,58 +2,200 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#4e7771">
-    <link rel="manifest" href="manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>GLY - Global Ledger Yield</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
     <style>
-        .uni-tabbar {
-            display: none;
-        }
-        body {
-            overflow-x: hidden;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-            text-size-adjust: 100%;
-        }
+        .uni-tabbar { display: none; }
+        body { overflow-x: hidden; }
+        
+        /* Disable text selection */
         * {
-            -webkit-tap-highlight-color: transparent;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
         }
+        
+        /* Allow selection only in input fields */
         input, textarea {
             -webkit-user-select: text;
             -moz-user-select: text;
             -ms-user-select: text;
             user-select: text;
         }
+        
+        /* Install button */
+        .install-btn {
+            position: fixed;
+            top: 10px;
+            right: 15px;
+            z-index: 1001;
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4e7771;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .install-btn i { margin-top: 2px; }
+        
+        /* Disable zoom gestures */
+        body {
+            touch-action: pan-x pan-y;
+            -webkit-text-size-adjust: none;
+            text-size-adjust: none;
+        }
+        
+        /* Custom modal styles */
+        .custom-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .custom-modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 350px;
+            overflow: hidden;
+            animation: modalSlideIn 0.3s ease;
+        }
+        
+        @keyframes modalSlideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .custom-modal-header {
+            padding: 15px;
+            font-weight: bold;
+            border-bottom: 1px solid #eee;
+            font-size: 18px;
+            text-align: center;
+            background: #4e7771;
+            color: white;
+        }
+        
+        .custom-modal-body {
+            padding: 20px;
+            color: #333;
+        }
+        
+        .custom-modal-footer {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+        
+        .custom-modal-btn {
+            background: #4e7771;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        /* Loading overlay */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4e7771;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: 14px;
+        }
+        
+        /* Hide install button on iOS */
+        @supports (-webkit-touch-callout: none) {
+            .install-btn {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Install Button -->
+    <div class="install-btn" id="install-btn">
+        <i class="fas fa-download"></i>
+    </div>
+    
+    <!-- Custom Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loading-text">Loading...</div>
+    </div>
+    
+    <!-- Custom Modal -->
+    <div class="custom-modal" id="custom-modal">
+        <div class="custom-modal-content">
+            <div class="custom-modal-header" id="modal-header">Notification</div>
+            <div class="custom-modal-body" id="modal-body"></div>
+            <div class="custom-modal-footer">
+                <button class="custom-modal-btn" id="modal-ok">OK</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Navbar -->
     <div class="u-navbar u-navbar--fixed">
         <div class="u-navbar__content">
             <div class="u-navbar__content__title"></div>
-            <div class="u-navbar__content__install" id="install-btn" style="display: none;">
-                <i class="fas fa-download"></i>
-            </div>
         </div>
     </div>
     <div class="u-navbar__placeholder"></div>
 
-    <!-- Main content -->
+    <!-- Main Content -->
     <div class="page">
         <div class="topNull"></div>
         
@@ -72,7 +214,7 @@
         </div>
     </div>
 
-    <!-- Bottom navigation -->
+    <!-- Bottom Navigation -->
     <div class="uni-tabbar">
         <div class="uni-tabbar__bd">
             <div class="uni-tabbar__item" data-section="home">
@@ -102,8 +244,7 @@
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="js/notifications.js"></script>
+    <!-- Load Scripts -->
     <script src="js/app.js" type="module"></script>
 </body>
 </html>

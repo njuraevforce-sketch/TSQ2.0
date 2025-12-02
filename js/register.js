@@ -1,49 +1,49 @@
 // Register section
 export default function renderRegister() {
     return `
-        <!-- Форма регистрации -->
+        <!-- Registration form -->
         <div class="card padding" style="margin-top: 20px; background: transparent; box-shadow: none;">
             <div style="text-align: left; margin-bottom: 30px; display: flex; align-items: center;">
                 <img src="assets/logo.png" alt="GLY Logo" style="width: 80px; height: 80px; border-radius: 20px; margin-right: 20px;">
                 <div>
-                    <h2 style="color: white; margin-bottom: 5px; font-size: 28px;">Привет</h2>
-                    <p style="color: #ccc; font-size: 16px;">Добро пожаловать в GLY</p>
+                    <h2 style="color: white; margin-bottom: 5px; font-size: 28px;">Hello</h2>
+                    <p style="color: #ccc; font-size: 16px;">Welcome to GLY</p>
                 </div>
             </div>
             
             <form id="register-form" onsubmit="return false;">
                 <div class="input-container">
-                    <input type="text" id="reg-username" placeholder="Имя пользователя" class="input-line">
+                    <input type="text" id="reg-username" placeholder="Username" class="input-line">
                 </div>
                 
                 <div class="input-container">
-                    <input type="email" id="email" placeholder="Почта" class="input-line">
+                    <input type="email" id="email" placeholder="Email" class="input-line">
                 </div>
                 
                 <div class="input-container" style="position: relative;">
-                    <input type="password" id="reg-password" placeholder="Пароль" class="input-line" style="padding-right: 40px;">
+                    <input type="password" id="reg-password" placeholder="Password" class="input-line" style="padding-right: 40px;">
                     <i class="fas fa-eye password-toggle" id="toggle-reg-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #52c41a; cursor: pointer; z-index: 10;"></i>
                 </div>
                 
                 <div class="input-container" style="position: relative;">
-                    <input type="password" id="confirm-password" placeholder="Подтвердить пароль" class="input-line" style="padding-right: 40px;">
+                    <input type="password" id="confirm-password" placeholder="Confirm Password" class="input-line" style="padding-right: 40px;">
                     <i class="fas fa-eye password-toggle" id="toggle-confirm-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #52c41a; cursor: pointer; z-index: 10;"></i>
                 </div>
                 
                 <div class="input-container" style="position: relative;">
-                    <input type="password" id="payment-password" placeholder="Пароль платежа" class="input-line" style="padding-right: 40px;">
+                    <input type="password" id="payment-password" placeholder="Payment Password" class="input-line" style="padding-right: 40px;">
                     <i class="fas fa-eye password-toggle" id="toggle-payment-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #52c41a; cursor: pointer; z-index: 10;"></i>
                 </div>
                 
                 <div class="input-container">
-                    <input type="text" id="invite-code" placeholder="Пригласительный код (обязательно)" class="input-line">
+                    <input type="text" id="invite-code" placeholder="Invitation Code (required)" class="input-line">
                 </div>
                 
-                <button type="submit" id="register-btn" class="pro-btn" style="width: 100%; background: #4e7771; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 30px;">Зарегистрироваться</button>
+                <button type="submit" id="register-btn" class="pro-btn" style="width: 100%; background: #4e7771; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 30px;">Register</button>
             </form>
             
             <div style="text-align: center; margin-top: 20px;">
-                <p style="color: #ccc;">Уже есть аккаунт? <a href="#" id="go-to-login" style="color: #52c41a;">Войдите сейчас!</a></p>
+                <p style="color: #ccc;">Already have an account? <a href="#" id="go-to-login" style="color: #52c41a;">Login now!</a></p>
             </div>
             
             <div id="register-error" class="error" style="display: none;"></div>
@@ -54,7 +54,7 @@ export default function renderRegister() {
 export function init() {
     document.body.classList.add('auth-page');
     
-    // Извлекаем invite код из URL
+    // Extract invite code from URL
     const hash = window.location.hash;
     if (hash.includes('?ref=')) {
         const refCode = hash.split('?ref=')[1];
@@ -63,7 +63,7 @@ export function init() {
         }
     }
     
-    // Обработчики для переключения видимости паролей
+    // Handlers for password visibility toggle
     document.getElementById('toggle-reg-password').addEventListener('click', function() {
         const passwordInput = document.getElementById('reg-password');
         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -85,7 +85,7 @@ export function init() {
         this.classList.toggle('fa-eye-slash');
     });
 
-    // Обработчик для кнопки регистрации
+    // Handler for register button
     document.getElementById('register-btn').addEventListener('click', async function() {
         const username = document.getElementById('reg-username').value.trim();
         const email = document.getElementById('email').value.trim();
@@ -95,75 +95,75 @@ export function init() {
         const inviteCode = document.getElementById('invite-code').value.trim().toUpperCase();
         const errorDiv = document.getElementById('register-error');
         
-        // Валидация
+        // Validation
         if (!username || !email || !password || !confirmPassword || !paymentPassword || !inviteCode) {
-            errorDiv.textContent = 'Пожалуйста, заполните все обязательные поля';
+            errorDiv.textContent = 'Please fill in all required fields';
             errorDiv.style.display = 'block';
             return;
         }
         
         if (password !== confirmPassword) {
-            errorDiv.textContent = 'Пароли не совпадают';
+            errorDiv.textContent = 'Passwords do not match';
             errorDiv.style.display = 'block';
             return;
         }
         
         if (password.length < 6) {
-            errorDiv.textContent = 'Пароль должен быть не менее 6 символов';
+            errorDiv.textContent = 'Password must be at least 6 characters';
             errorDiv.style.display = 'block';
             return;
         }
         
         if (paymentPassword.length < 6) {
-            errorDiv.textContent = 'Платежный пароль должен быть не менее 6 символов';
+            errorDiv.textContent = 'Payment password must be at least 6 characters';
             errorDiv.style.display = 'block';
             return;
         }
         
-        // Проверка пригласительного кода
+        // Check invitation code
         if (!inviteCode) {
-            errorDiv.textContent = 'Пригласительный код обязателен для регистрации';
+            errorDiv.textContent = 'Invitation code is required for registration';
             errorDiv.style.display = 'block';
             return;
         }
         
-        // Показываем загрузку
+        // Show loading
         const originalText = this.innerHTML;
-        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Регистрация...';
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
         this.disabled = true;
         
         try {
-            // Проверяем, существует ли пользователь с таким именем
+            // Check if user exists with this username
             const { data: existingUser } = await supabase
                 .from('users')
                 .select('id')
                 .eq('username', username)
-                .maybeSingle();  // Используем maybeSingle вместо single
+                .maybeSingle();  // Use maybeSingle instead of single
                 
             if (existingUser) {
-                errorDiv.textContent = 'Пользователь с таким именем уже существует';
+                errorDiv.textContent = 'User with this username already exists';
                 errorDiv.style.display = 'block';
                 return;
             }
             
-            // Проверяем пригласительный код (простая проверка существования)
+            // Check invitation code (simple existence check)
             const { data: referrer } = await supabase
                 .from('users')
                 .select('id, invite_code')
                 .eq('invite_code', inviteCode)
-                .maybeSingle();  // Используем maybeSingle
+                .maybeSingle();  // Use maybeSingle
                 
             if (!referrer) {
-                errorDiv.textContent = 'Неверный пригласительный код';
+                errorDiv.textContent = 'Invalid invitation code';
                 errorDiv.style.display = 'block';
                 return;
             }
             
-            // Генерируем уникальные ID и код
+            // Generate unique ID and code
             const userId = window.GLY.generateUserId();
             const userInviteCode = window.GLY.generateInviteCode();
             
-            // Создаем пользователя
+            // Create user
             const newUser = {
                 id: userId,
                 username: username,
@@ -172,28 +172,28 @@ export function init() {
                 payment_password: paymentPassword,
                 invite_code: userInviteCode,
                 referred_by: inviteCode,
-                balance: 3.00, // Бонус за регистрацию
+                balance: 3.00, // Registration bonus
                 vip_level: 1,
                 signals_available: 3,
                 last_signal_update: new Date().toISOString(),
                 created_at: new Date().toISOString()
             };
             
-            // Сохраняем в базу
+            // Save to database
             const { error: userError } = await supabase
                 .from('users')
                 .insert([newUser]);
                 
             if (userError) {
-                errorDiv.textContent = 'Ошибка при регистрации. Попробуйте позже.';
+                errorDiv.textContent = 'Registration error. Please try again later.';
                 errorDiv.style.display = 'block';
                 return;
             }
             
-            // Создаем реферальные записи
+            // Create referral records
             await createReferralRecords(referrer.id, userId);
             
-            // Создаем транзакцию для бонуса
+            // Create transaction for bonus
             await supabase
                 .from('transactions')
                 .insert([{
@@ -204,31 +204,31 @@ export function init() {
                     description: 'Registration bonus'
                 }]);
             
-            // Авторизуем пользователя
+            // Authenticate user
             localStorage.setItem('gly_user', JSON.stringify(newUser));
             
-            // Важно: обновляем текущего пользователя в приложении
+            // Important: update current user in application
             if (window.glyApp) {
                 window.glyApp.currentUser = newUser;
             }
             
-            // Перезагружаем приложение для корректного перенаправления
+            // Reload application for correct redirection
             setTimeout(() => {
                 window.location.reload();
             }, 100);
             
         } catch (error) {
             console.error('Registration error:', error);
-            errorDiv.textContent = 'Ошибка при регистрации. Попробуйте позже.';
+            errorDiv.textContent = 'Registration error. Please try again later.';
             errorDiv.style.display = 'block';
         } finally {
-            // Восстанавливаем кнопку
+            // Restore button
             this.innerHTML = originalText;
             this.disabled = false;
         }
     });
 
-    // Обработчик для перехода на вход
+    // Handler for going to login
     document.getElementById('go-to-login').addEventListener('click', function(e) {
         e.preventDefault();
         window.showSection('login');
@@ -237,7 +237,7 @@ export function init() {
 
 async function createReferralRecords(referrerId, userId) {
     try {
-        // Уровень 1
+        // Level 1
         await supabase
             .from('referrals')
             .insert([{
@@ -246,16 +246,16 @@ async function createReferralRecords(referrerId, userId) {
                 level: 1
             }]);
         
-        // Находим реферера уровня 2
+        // Find level 2 referrer
         const { data: level2Referrer } = await supabase
             .from('referrals')
             .select('referrer_id')
             .eq('referred_id', referrerId)
             .eq('level', 1)
-            .maybeSingle();  // Используем maybeSingle
+            .maybeSingle();  // Use maybeSingle
             
         if (level2Referrer) {
-            // Уровень 2
+            // Level 2
             await supabase
                 .from('referrals')
                 .insert([{
@@ -264,16 +264,16 @@ async function createReferralRecords(referrerId, userId) {
                     level: 2
                 }]);
             
-            // Находим реферера уровня 3
+            // Find level 3 referrer
             const { data: level3Referrer } = await supabase
                 .from('referrals')
                 .select('referrer_id')
                 .eq('referred_id', level2Referrer.referrer_id)
                 .eq('level', 1)
-                .maybeSingle();  // Используем maybeSingle
+                .maybeSingle();  // Use maybeSingle
                 
             if (level3Referrer) {
-                // Уровень 3
+                // Level 3
                 await supabase
                     .from('referrals')
                     .insert([{

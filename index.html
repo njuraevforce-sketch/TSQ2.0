@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>GLY - Global Ledger Yield</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         .uni-tabbar {
@@ -17,7 +20,7 @@
     </style>
 </head>
 <body>
-    <!-- Навбар -->
+    <!-- Navbar -->
     <div class="u-navbar u-navbar--fixed">
         <div class="u-navbar__content">
             <div class="u-navbar__content__title"></div>
@@ -25,12 +28,12 @@
     </div>
     <div class="u-navbar__placeholder"></div>
 
-    <!-- Основной контент -->
+    <!-- Main content -->
     <div class="page">
         <div class="topNull"></div>
         
         <div class="conWrap">
-            <!-- Контейнеры для динамически загружаемого контента -->
+            <!-- Containers for dynamic content -->
             <div id="login" class="section active"></div>
             <div id="register" class="section"></div>
             <div id="home" class="section"></div>
@@ -44,7 +47,7 @@
         </div>
     </div>
 
-    <!-- Нижняя навигация -->
+    <!-- Bottom navigation -->
     <div class="uni-tabbar">
         <div class="uni-tabbar__bd">
             <div class="uni-tabbar__item" data-section="home">
@@ -74,7 +77,8 @@
         </div>
     </div>
 
-    <!-- Загрузка скриптов -->
+    <!-- Load scripts -->
+    <script src="js/notifications.js"></script>
     <script src="js/app.js" type="module"></script>
 </body>
 </html>

@@ -49,7 +49,7 @@ export default function renderMine() {
             </div>
         </div>
 
-        <!-- Popup for withdrawal address setting -->
+        <!-- Withdrawal address popup -->
         <div class="pop-overlay" id="address-popup" style="display: none;">
             <div class="pop-content">
                 <form id="address-form" onsubmit="return false;">
@@ -72,7 +72,7 @@ export default function renderMine() {
             </div>
         </div>
 
-        <!-- Popup for password change -->
+        <!-- Change password popup -->
         <div class="pop-overlay" id="password-popup" style="display: none;">
             <div class="pop-content">
                 <form id="password-change-form" onsubmit="return false;">
@@ -102,7 +102,7 @@ export default function renderMine() {
             </div>
         </div>
 
-        <!-- Popup for customer service -->
+        <!-- Customer service popup -->
         <div class="pop-overlay" id="support-popup" style="display: none;">
             <div class="pop-content">
                 <div class="pop-header">Customer Service</div>
@@ -154,7 +154,7 @@ export function init() {
         // Load profile data
         loadProfileData();
         
-        // Setup event handlers
+        // Setup event listeners
         setupEventListeners();
     }, 100);
 }
@@ -202,7 +202,7 @@ async function loadProfileData() {
             return;
         }
         
-        // Update page data
+        // Update data on page
         document.getElementById('user-vip-level').textContent = `VIP ${user.vip_level}`;
         document.getElementById('user-id').textContent = `ID: ${user.id}`;
         document.getElementById('user-balance').textContent = user.balance.toFixed(2);
@@ -249,12 +249,12 @@ async function saveWithdrawalAddress() {
     const user = window.getCurrentUser();
     
     if (!address) {
-        window.GLYNotifications.error('Please enter a valid wallet address');
+        window.Notify.alert('Please enter a valid wallet address');
         return;
     }
     
     if (!user) {
-        window.GLYNotifications.error('User not found');
+        window.Notify.alert('User not found');
         return;
     }
     
@@ -271,13 +271,13 @@ async function saveWithdrawalAddress() {
         user.withdrawal_address = address;
         localStorage.setItem('gly_user', JSON.stringify(user));
         
-        window.GLYNotifications.success('Withdrawal address has been saved successfully!');
+        window.Notify.show('Withdrawal address has been saved successfully!', 'success');
         hideAddressPopup();
         
         // Update display
         document.querySelector('#withdrawal-address-setting .setting-value').textContent = 'Configured';
     } catch (error) {
-        window.GLYNotifications.error('Error saving address: ' + error.message);
+        window.Notify.alert('Error saving address: ' + error.message);
     }
 }
 
@@ -288,28 +288,28 @@ async function changePassword() {
     const user = window.getCurrentUser();
     
     if (!user) {
-        window.GLYNotifications.error('User not found');
+        window.Notify.alert('User not found');
         return;
     }
     
     if (!currentPassword || !newPassword || !confirmPassword) {
-        window.GLYNotifications.error('Please fill in all fields');
+        window.Notify.alert('Please fill in all fields');
         return;
     }
     
     if (newPassword !== confirmPassword) {
-        window.GLYNotifications.error('New passwords do not match');
+        window.Notify.alert('New passwords do not match');
         return;
     }
     
     if (newPassword.length < 6) {
-        window.GLYNotifications.error('Password must be at least 6 characters long');
+        window.Notify.alert('Password must be at least 6 characters long');
         return;
     }
     
     // Check current password
     if (user.password !== currentPassword) {
-        window.GLYNotifications.error('Current password is incorrect');
+        window.Notify.alert('Current password is incorrect');
         return;
     }
     
@@ -326,10 +326,10 @@ async function changePassword() {
         user.password = newPassword;
         localStorage.setItem('gly_user', JSON.stringify(user));
         
-        window.GLYNotifications.success('Password has been changed successfully!');
+        window.Notify.show('Password has been changed successfully!', 'success');
         hidePasswordPopup();
     } catch (error) {
-        window.GLYNotifications.error('Error changing password: ' + error.message);
+        window.Notify.alert('Error changing password: ' + error.message);
     }
 }
 
@@ -340,49 +340,49 @@ function changeLanguage() {
     const nextIndex = (currentIndex + 1) % languages.length;
     
     document.querySelector('#language-setting .setting-value').textContent = languages[nextIndex];
-    window.GLYNotifications.info(`Language changed to ${languages[nextIndex]}`);
+    window.Notify.show(`Language changed to ${languages[nextIndex]}`, 'info');
 }
 
 function copyUserId() {
     const userId = document.getElementById('user-id').textContent.replace('ID: ', '');
     window.GLY.copyToClipboard(userId).then(() => {
+        window.Notify.show('User ID copied to clipboard', 'success');
         const copyBtn = document.getElementById('copy-user-id');
         const originalHtml = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i class="fas fa-check"></i>';
         setTimeout(() => {
             copyBtn.innerHTML = originalHtml;
         }, 2000);
-        window.GLYNotifications.success('User ID copied to clipboard');
     });
 }
 
 function copyTelegram() {
     window.GLY.copyToClipboard('@GLYSupport').then(() => {
+        window.Notify.show('Telegram copied to clipboard', 'success');
         const copyBtn = document.getElementById('copy-telegram');
         const originalText = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
         setTimeout(() => {
             copyBtn.innerHTML = originalText;
         }, 2000);
-        window.GLYNotifications.success('Telegram contact copied');
     });
 }
 
 function copyEmail() {
     window.GLY.copyToClipboard('support@gly.io').then(() => {
+        window.Notify.show('Email copied to clipboard', 'success');
         const copyBtn = document.getElementById('copy-email');
         const originalText = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
         setTimeout(() => {
             copyBtn.innerHTML = originalText;
         }, 2000);
-        window.GLYNotifications.success('Email copied');
     });
 }
 
 function logout() {
-    window.GLYNotifications.confirm('Are you sure you want to logout?', 'Confirm Logout').then((result) => {
-        if (result) {
+    window.Notify.confirm('Are you sure you want to logout?', 'Logout').then((confirmed) => {
+        if (confirmed) {
             window.logout();
         }
     });

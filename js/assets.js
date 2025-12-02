@@ -1,14 +1,14 @@
 // Assets section
 export default function renderAssets() {
     return `
-        <!-- Баланс -->
+        <!-- Balance -->
         <div class="card padding">
             <div class="text-center">
                 <div class="balance-amount text-white" id="total-balance">0.00 USDT</div>
                 <div class="text-gray">Total Balance</div>
             </div>
 
-            <!-- Иконки пополнения и вывода -->
+            <!-- Deposit and withdrawal icons -->
             <div class="wallet-actions">
                 <div class="wallet-action" id="deposit-btn">
                     <div class="wallet-icon">
@@ -25,7 +25,7 @@ export default function renderAssets() {
             </div>
         </div>
 
-        <!-- История транзакций -->
+        <!-- Transaction history -->
         <div class="card padding margin-top">
             <div class="text-white text-bold text-center">Transaction History</div>
             
@@ -49,11 +49,11 @@ export default function renderAssets() {
             </div>
             
             <div class="transaction-list" id="transaction-list">
-                <!-- Транзакции загружаются динамически -->
+                <!-- Transactions loaded dynamically -->
             </div>
         </div>
 
-        <!-- Попап для депозита -->
+        <!-- Deposit popup -->
         <div class="pop-overlay" id="deposit-popup" style="display: none;">
             <div class="pop-content">
                 <form id="deposit-form" onsubmit="return false;">
@@ -80,7 +80,7 @@ export default function renderAssets() {
                         <p class="margin-top-sm" style="font-size: 12px; color: #666;">
                             Minimum deposit: 17 USDT<br>
                             Network: TRC20<br>
-                            После отправки средств нажмите "Подтвердить депозит"
+                            After sending funds, click "Confirm Deposit"
                         </p>
                     </div>
                     <div class="pop-footer">
@@ -91,7 +91,7 @@ export default function renderAssets() {
             </div>
         </div>
 
-        <!-- Попап для вывода -->
+        <!-- Withdrawal popup -->
         <div class="pop-overlay" id="withdraw-popup" style="display: none;">
             <div class="pop-content">
                 <form id="withdraw-form" onsubmit="return false;">
@@ -109,7 +109,7 @@ export default function renderAssets() {
                         </div>
                         <p style="font-size: 12px; color: #666;">
                             Minimum withdrawal: 20 USDT<br>
-                            Fee: зависит от VIP уровня<br>
+                            Fee: depends on VIP level<br>
                             Processing time: 1-24 hours
                         </p>
                     </div>
@@ -121,7 +121,7 @@ export default function renderAssets() {
             </div>
         </div>
         
-        <!-- Попап успешного депозита -->
+        <!-- Deposit success popup -->
         <div class="pop-overlay" id="deposit-success-popup" style="display: none;">
             <div class="pop-content">
                 <div class="pop-header">Deposit Submitted</div>
@@ -130,8 +130,8 @@ export default function renderAssets() {
                         <div style="font-size: 48px; color: #52c41a;">✓</div>
                     </div>
                     <p style="text-align: center; color: #333;">
-                        Ваш депозит отправлен на проверку.<br>
-                        Средства будут зачислены в течение 72 часов.
+                        Your deposit has been submitted for verification.<br>
+                        Funds will be credited within 72 hours.
                     </p>
                 </div>
                 <div class="pop-footer">
@@ -143,16 +143,16 @@ export default function renderAssets() {
 }
 
 export async function init() {
-    // Используем задержку для гарантии, что DOM полностью загружен
+    // Use delay to ensure DOM is fully loaded
     setTimeout(async () => {
         try {
-            // Загрузка данных пользователя
+            // Load user data
             await loadUserData();
             
-            // Загрузка истории транзакций
+            // Load transaction history
             await loadTransactionHistory();
             
-            // Настройка обработчиков событий
+            // Setup event listeners
             setupEventListeners();
         } catch (error) {
             console.error('Error initializing assets section:', error);
@@ -162,11 +162,11 @@ export async function init() {
 
 function setupEventListeners() {
     try {
-        // Обработчики для кнопок депозита и вывода
+        // Handlers for deposit and withdrawal buttons
         document.getElementById('deposit-btn').addEventListener('click', showDepositPopup);
         document.getElementById('withdraw-btn').addEventListener('click', showWithdrawPopup);
         
-        // Обработчики для попапов
+        // Handlers for popups
         document.getElementById('close-deposit').addEventListener('click', hideDepositPopup);
         document.getElementById('close-withdraw').addEventListener('click', hideWithdrawPopup);
         document.getElementById('confirm-deposit').addEventListener('click', (e) => {
@@ -179,12 +179,12 @@ function setupEventListeners() {
         });
         document.getElementById('close-deposit-success').addEventListener('click', hideDepositSuccessPopup);
         
-        // Копирование адреса депозита
+        // Copy deposit address
         document.getElementById('copy-deposit-btn').addEventListener('click', copyDepositAddress);
         
     } catch (error) {
         console.error('Error setting up event listeners in assets:', error);
-        // Повторяем попытку через 500мс
+        // Retry after 500ms
         setTimeout(setupEventListeners, 500);
     }
 }
@@ -196,7 +196,7 @@ async function loadUserData() {
         return;
     }
     
-    // Обновляем баланс
+    // Update balance
     const balanceElement = document.getElementById('total-balance');
     if (balanceElement) {
         balanceElement.textContent = `${user.balance.toFixed(2)} USDT`;
@@ -208,7 +208,7 @@ async function loadTransactionHistory() {
     if (!user) return;
     
     try {
-        // Получаем транзакции пользователя
+        // Get user transactions
         const { data: transactions, error } = await window.supabase
             .from('transactions')
             .select('*')
@@ -218,7 +218,7 @@ async function loadTransactionHistory() {
             
         if (error) throw error;
         
-        // Рассчитываем статистику
+        // Calculate statistics
         let totalEarned = 0;
         let totalDeposits = 0;
         let totalWithdrawals = 0;
@@ -233,7 +233,7 @@ async function loadTransactionHistory() {
                 const amount = transaction.amount;
                 const isPositive = amount > 0;
                 
-                // Обновляем статистику
+                // Update statistics
                 if (transaction.type === 'deposit') {
                     totalDeposits += amount;
                 } else if (transaction.type === 'withdrawal') {
@@ -261,7 +261,7 @@ async function loadTransactionHistory() {
         
         transactionList.innerHTML = html;
         
-        // Обновляем статистику
+        // Update statistics
         document.getElementById('total-earned').textContent = `${totalEarned.toFixed(2)} USDT`;
         document.getElementById('total-deposits').textContent = `${totalDeposits.toFixed(2)} USDT`;
         document.getElementById('total-withdrawals').textContent = `${totalWithdrawals.toFixed(2)} USDT`;
@@ -315,6 +315,7 @@ function copyDepositAddress() {
         setTimeout(() => {
             copyBtn.innerHTML = originalText;
         }, 2000);
+        window.GLYNotifications.success('Address copied to clipboard');
     });
 }
 
@@ -323,17 +324,17 @@ async function processDeposit() {
     const user = window.getCurrentUser();
     
     if (!amount || amount < 17) {
-        alert('Minimum deposit amount is 17 USDT');
+        window.GLYNotifications.error('Minimum deposit amount is 17 USDT');
         return;
     }
     
     if (!user) {
-        alert('User not found');
+        window.GLYNotifications.error('User not found');
         return;
     }
     
     try {
-        // Создаем запись о депозите
+        // Create deposit record
         const { error } = await window.supabase
             .from('transactions')
             .insert([{
@@ -346,17 +347,17 @@ async function processDeposit() {
             
         if (error) throw error;
         
-        // Показываем попап успеха
+        // Show success popup
         hideDepositPopup();
         document.getElementById('deposit-success-popup').style.display = 'flex';
         
-        // Обновляем историю транзакций
+        // Update transaction history
         setTimeout(() => {
             loadTransactionHistory();
         }, 1000);
         
     } catch (error) {
-        alert('Error processing deposit: ' + error.message);
+        window.GLYNotifications.error('Error processing deposit: ' + error.message);
     }
 }
 
@@ -366,45 +367,50 @@ async function processWithdrawal() {
     const user = window.getCurrentUser();
     
     if (!user) {
-        alert('User not found');
+        window.GLYNotifications.error('User not found');
         return;
     }
     
     if (!amount || amount < 20) {
-        alert('Minimum withdrawal amount is 20 USDT');
+        window.GLYNotifications.error('Minimum withdrawal amount is 20 USDT');
         return;
     }
     
     if (amount > user.balance) {
-        alert('Insufficient balance');
+        window.GLYNotifications.error('Insufficient balance');
         return;
     }
     
     if (!password) {
-        alert('Please enter transaction password');
+        window.GLYNotifications.error('Please enter transaction password');
         return;
     }
     
-    // Проверяем платежный пароль
+    // Check payment password
     if (user.payment_password !== password) {
-        alert('Invalid transaction password');
+        window.GLYNotifications.error('Invalid transaction password');
         return;
     }
     
-    // Проверяем наличие адреса вывода
+    // Check for withdrawal address
     if (!user.withdrawal_address) {
-        alert('Please set withdrawal address first in Settings');
+        window.GLYNotifications.error('Please set withdrawal address first in Settings');
         return;
     }
     
-    // Рассчитываем комиссию в зависимости от VIP уровня
+    // Calculate fee based on VIP level
     const feePercent = getWithdrawalFee(user.vip_level);
     const fee = (amount * feePercent) / 100;
     const netAmount = amount - fee;
     
-    if (confirm(`Withdrawal amount: ${amount} USDT\nFee (${feePercent}%): ${fee.toFixed(2)} USDT\nYou will receive: ${netAmount.toFixed(2)} USDT\nConfirm withdrawal?`)) {
+    const confirmResult = await window.GLYNotifications.confirm(
+        `Withdrawal amount: ${amount} USDT\nFee (${feePercent}%): ${fee.toFixed(2)} USDT\nYou will receive: ${netAmount.toFixed(2)} USDT\nConfirm withdrawal?`,
+        'Confirm Withdrawal'
+    );
+    
+    if (confirmResult) {
         try {
-            // Обновляем баланс пользователя
+            // Update user balance
             const newBalance = user.balance - amount;
             const { error: updateError } = await window.supabase
                 .from('users')
@@ -413,7 +419,7 @@ async function processWithdrawal() {
                 
             if (updateError) throw updateError;
             
-            // Создаем транзакцию вывода
+            // Create withdrawal transaction
             const { error: txError } = await window.supabase
                 .from('transactions')
                 .insert([{
@@ -426,20 +432,20 @@ async function processWithdrawal() {
                 
             if (txError) throw txError;
             
-            // Обновляем пользователя в localStorage
+            // Update user in localStorage
             user.balance = newBalance;
             localStorage.setItem('gly_user', JSON.stringify(user));
             
-            alert(`Withdrawal request for ${amount} USDT has been submitted. You will receive ${netAmount.toFixed(2)} USDT (fee: ${fee.toFixed(2)} USDT). Processing time: 1-24 hours.`);
+            window.GLYNotifications.success(`Withdrawal request for ${amount} USDT has been submitted. You will receive ${netAmount.toFixed(2)} USDT (fee: ${fee.toFixed(2)} USDT). Processing time: 1-24 hours.`);
             hideWithdrawPopup();
             
-            // Обновляем интерфейс
+            // Update interface
             loadUserData();
             setTimeout(() => {
                 loadTransactionHistory();
             }, 1000);
         } catch (error) {
-            alert('Error processing withdrawal: ' + error.message);
+            window.GLYNotifications.error('Error processing withdrawal: ' + error.message);
         }
     }
 }

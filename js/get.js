@@ -40,75 +40,63 @@ export default function renderGet() {
                         <div class="vip-card active" data-level="1">
                             <div class="vip-percent-left">2.2%</div>
                             <div class="vip-requirement-left">VIP 1</div>
-                            <div style="text-align: center; margin-bottom: 10px;">
-                                <img src="assets/vipicon1.png" alt="VIP 1" style="width: 40px; height: 40px;">
+                            <div class="vip-icon-wrapper">
+                                <img src="assets/vipicon1.png" alt="VIP 1" class="vip-icon">
                             </div>
-                            <img src="assets/vip1.png" alt="VIP 1" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+                            <img src="assets/vip1.png" alt="VIP 1" class="vip-bg-img">
                             <div class="vip-level-name">0-299 USDT</div>
                             <div class="vip-level-requirement">2.2% daily, 3 signals</div>
                         </div>
                         <div class="vip-card" data-level="2">
                             <div class="vip-percent-left">2.8%</div>
                             <div class="vip-requirement-left">VIP 2</div>
-                            <div style="text-align: center; margin-bottom: 10px;">
-                                <img src="assets/vipicon2.png" alt="VIP 2" style="width: 40px; height: 40px;">
+                            <div class="vip-icon-wrapper">
+                                <img src="assets/vipicon2.png" alt="VIP 2" class="vip-icon">
                             </div>
-                            <img src="assets/vip2.png" alt="VIP 2" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+                            <img src="assets/vip2.png" alt="VIP 2" class="vip-bg-img">
                             <div class="vip-level-name">300-1000 USDT</div>
                             <div class="vip-level-requirement">2.8% daily, 3 signals, 2 refs</div>
                         </div>
                         <div class="vip-card" data-level="3">
                             <div class="vip-percent-left">3.5%</div>
                             <div class="vip-requirement-left">VIP 3</div>
-                            <div style="text-align: center; margin-bottom: 10px;">
-                                <img src="assets/vipicon3.png" alt="VIP 3" style="width: 40px; height: 40px;">
+                            <div class="vip-icon-wrapper">
+                                <img src="assets/vipicon3.png" alt="VIP 3" class="vip-icon">
                             </div>
-                            <img src="assets/vip3.png" alt="VIP 3" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+                            <img src="assets/vip3.png" alt="VIP 3" class="vip-bg-img">
                             <div class="vip-level-name">1000-3500 USDT</div>
                             <div class="vip-level-requirement">3.5% daily, 3 signals, 5 refs</div>
                         </div>
                         <div class="vip-card" data-level="4">
                             <div class="vip-percent-left">4.0%</div>
                             <div class="vip-requirement-left">VIP 4</div>
-                            <div style="text-align: center; margin-bottom: 10px;">
-                                <img src="assets/vipicon4.png" alt="VIP 4" style="width: 40px; height: 40px;">
+                            <div class="vip-icon-wrapper">
+                                <img src="assets/vipicon4.png" alt="VIP 4" class="vip-icon">
                             </div>
-                            <img src="assets/vip4.png" alt="VIP 4" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+                            <img src="assets/vip4.png" alt="VIP 4" class="vip-bg-img">
                             <div class="vip-level-name">3500-6000 USDT</div>
                             <div class="vip-level-requirement">4.0% daily, 3 signals, 8 refs</div>
                         </div>
                         <div class="vip-card" data-level="5">
                             <div class="vip-percent-left">5.0%</div>
                             <div class="vip-requirement-left">VIP 5</div>
-                            <div style="text-align: center; margin-bottom: 10px;">
-                                <img src="assets/vipicon5.png" alt="VIP 5" style="width: 40px; height: 40px;">
+                            <div class="vip-icon-wrapper">
+                                <img src="assets/vipicon5.png" alt="VIP 5" class="vip-icon">
                             </div>
-                            <img src="assets/vip5.png" alt="VIP 5" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+                            <img src="assets/vip5.png" alt="VIP 5" class="vip-bg-img">
                             <div class="vip-level-name">6000-12000 USDT</div>
                             <div class="vip-level-requirement">5.0% daily, 3 signals, 15 refs</div>
                         </div>
                         <div class="vip-card" data-level="6">
                             <div class="vip-percent-left">6.0%</div>
                             <div class="vip-requirement-left">VIP 6</div>
-                            <div style="text-align: center; margin-bottom: 10px;">
-                                <img src="assets/vipicon6.png" alt="VIP 6" style="width: 40px; height: 40px;">
+                            <div class="vip-icon-wrapper">
+                                <img src="assets/vipicon6.png" alt="VIP 6" class="vip-icon">
                             </div>
-                            <img src="assets/vip6.png" alt="VIP 6" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+                            <img src="assets/vip6.png" alt="VIP 6" class="vip-bg-img">
                             <div class="vip-level-name">12000-20000 USDT</div>
                             <div class="vip-level-requirement">6.0% daily, 3 signals, 25 refs</div>
                         </div>
-                    </div>
-                    <div class="vip-carousel-controls">
-                        <button class="vip-carousel-prev">‹</button>
-                        <div class="vip-carousel-dots">
-                            <span class="vip-dot active" data-index="0"></span>
-                            <span class="vip-dot" data-index="1"></span>
-                            <span class="vip-dot" data-index="2"></span>
-                            <span class="vip-dot" data-index="3"></span>
-                            <span class="vip-dot" data-index="4"></span>
-                            <span class="vip-dot" data-index="5"></span>
-                        </div>
-                        <button class="vip-carousel-next">›</button>
                     </div>
                 </div>
                 <div class="vip-description" id="vip-description">
@@ -137,9 +125,6 @@ export async function init() {
 function initVipCarousel() {
     const carousel = document.getElementById('vip-carousel');
     const cards = document.querySelectorAll('.vip-card');
-    const dots = document.querySelectorAll('.vip-dot');
-    const prevBtn = document.querySelector('.vip-carousel-prev');
-    const nextBtn = document.querySelector('.vip-carousel-next');
     const description = document.getElementById('vip-description');
     
     let currentIndex = 0;
@@ -163,13 +148,6 @@ function initVipCarousel() {
             }
         });
         
-        dots.forEach((dot, index) => {
-            dot.classList.remove('active');
-            if (index === currentIndex) {
-                dot.classList.add('active');
-            }
-        });
-        
         description.textContent = vipDescriptions[currentIndex];
         
         carousel.scrollTo({
@@ -177,23 +155,6 @@ function initVipCarousel() {
             behavior: 'smooth'
         });
     }
-    
-    prevBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex - 1 + cards.length) % cards.length;
-        updateCarousel();
-    });
-    
-    nextBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex + 1) % cards.length;
-        updateCarousel();
-    });
-    
-    dots.forEach(dot => {
-        dot.addEventListener('click', () => {
-            currentIndex = parseInt(dot.getAttribute('data-index'));
-            updateCarousel();
-        });
-    });
     
     carousel.addEventListener('mousedown', (e) => {
         isDragging = true;

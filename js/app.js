@@ -1,24 +1,25 @@
-// Основной модуль приложения
+// Main application module
 class GLYApp {
     constructor() {
         this.currentSection = null;
         this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register', 'company', 'invite', 'team', 'rules'];
         this.currentUser = null;
         this.supabase = null;
+        this.deferredPrompt = null;
         this.init();
     }
 
     async init() {
-        // Инициализация Supabase
+        // Initialize Supabase
         await this.initSupabase();
         
-        // Проверка авторизации
+        // Check authentication
         await this.checkAuth();
         
-        // Скрываем таббар по умолчанию
+        // Hide tabbar by default
         this.hideTabbar();
         
-        // Загружаем начальную секцию
+        // Load initial section
         if (this.currentUser) {
             await this.showSection('home');
         } else {
@@ -27,13 +28,14 @@ class GLYApp {
         
         this.setupEventListeners();
         this.setupNavigation();
+        this.setupPWAInstall();
         
-        // Запускаем проверку обновления сигналов
+        // Start signal update check
         this.startSignalUpdateCheck();
     }
 
     async initSupabase() {
-        // Создаем Supabase клиент с правильными заголовками
+        // Create Supabase client
         this.supabase = supabase.createClient(
             'https://jxyazsguwkbklavamzyj.supabase.co',
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI',
@@ -63,17 +65,16 @@ class GLYApp {
             try {
                 this.currentUser = JSON.parse(storedUser);
                 
-                // Пытаемся обновить данные пользователя из базы
+                // Try to update user data from database
                 try {
                     const { data, error } = await this.supabase
                         .from('users')
                         .select('*')
                         .eq('id', this.currentUser.id)
-                        .maybeSingle();  // Используем maybeSingle
+                        .maybeSingle();
                         
                     if (error) {
                         console.warn('Could not fetch user data:', error);
-                        // Используем сохраненные данные
                         return;
                     }
                     
@@ -83,7 +84,6 @@ class GLYApp {
                     }
                 } catch (error) {
                     console.warn('Auth check error:', error);
-                    // Продолжаем с сохраненными данными
                 }
             } catch (e) {
                 console.error('Error parsing stored user:', e);
@@ -94,7 +94,7 @@ class GLYApp {
     }
 
     setupEventListeners() {
-        // Навигация по таббару
+        // Tabbar navigation
         document.querySelectorAll('.uni-tabbar__item').forEach(item => {
             item.addEventListener('click', (e) => {
                 const section = e.currentTarget.getAttribute('data-section');
@@ -104,7 +104,7 @@ class GLYApp {
     }
 
     setupNavigation() {
-        // Глобальные функции
+        // Global functions
         window.showSection = (sectionId) => {
             this.showSection(sectionId);
         };
@@ -134,10 +134,56 @@ class GLYApp {
         };
     }
 
+    setupPWAInstall() {
+        // Handle the beforeinstallprompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            this.deferredPrompt = e;
+            this.showInstallButton();
+        });
+
+        window.addEventListener('appinstalled', () => {
+            this.deferredPrompt = null;
+            this.hideInstallButton();
+            window.GLYNotifications.success('App installed successfully!');
+        });
+    }
+
+    showInstallButton() {
+        const installBtn = document.getElementById('install-btn');
+        if (installBtn) {
+            installBtn.style.display = 'flex';
+        }
+    }
+
+    hideInstallButton() {
+        const installBtn = document.getElementById('install-btn');
+        if (installBtn) {
+            installBtn.style.display = 'none';
+        }
+    }
+
+    handlePWAInstall() {
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        
+        if (isAndroid && this.deferredPrompt) {
+            this.deferredPrompt.prompt();
+            this.deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted install');
+                }
+                this.deferredPrompt = null;
+            });
+        } else {
+            // For iOS or other devices
+            console.log('PWA install not available on this device');
+        }
+    }
+
     async showSection(sectionId) {
         if (this.currentSection === sectionId) return;
 
-        // Проверяем авторизацию для защищенных страниц
+        // Check authentication for protected pages
         const protectedSections = ['home', 'get', 'assets', 'mine', 'invite', 'team', 'rules'];
         if (protectedSections.includes(sectionId)) {
             const user = this.currentUser || JSON.parse(localStorage.getItem('gly_user'));
@@ -154,7 +200,7 @@ class GLYApp {
             }
         }
 
-        // Скрыть текущую секцию
+        // Hide current section
         if (this.currentSection) {
             document.getElementById(this.currentSection).classList.remove('active');
             if (this.currentSection !== 'login' && this.currentSection !== 'register' && 
@@ -167,11 +213,11 @@ class GLYApp {
             }
         }
 
-        // Показать новую секцию
+        // Show new section
         await this.loadSection(sectionId);
         document.getElementById(sectionId).classList.add('active');
         
-        // Управление видимостью таббара и навбара
+        // Manage tabbar and navbar visibility
         if (sectionId === 'login' || sectionId === 'register') {
             this.hideTabbar();
             this.hideNavbar();
@@ -192,7 +238,7 @@ class GLYApp {
             document.body.classList.remove('no-tabbar');
             this.setNavbarTitle('', false);
             
-            // Устанавливаем активный таб
+            // Set active tab
             document.querySelectorAll('.uni-tabbar__item').forEach(item => {
                 item.classList.remove('uni-tabbar__item--active');
             });
@@ -209,14 +255,14 @@ class GLYApp {
         const sectionElement = document.getElementById(sectionId);
         
         try {
-            // Динамически импортируем модуль секции
+            // Dynamically import section module
             const module = await import(`./${sectionId}.js`);
             
-            // Вызываем функцию рендеринга секции
+            // Call section rendering function
             if (module.default && typeof module.default === 'function') {
                 sectionElement.innerHTML = module.default();
                 
-                // Инициализируем секцию после рендеринга
+                // Initialize section after rendering
                 if (module.init && typeof module.init === 'function') {
                     setTimeout(() => module.init(), 0);
                 }
@@ -272,6 +318,9 @@ class GLYApp {
                         <i class="fas fa-arrow-left"></i>
                     </div>
                     <div class="u-navbar__content__title">${title}</div>
+                    <button class="install-btn" id="install-btn" style="${['login', 'register'].includes(this.currentSection) ? 'display: none;' : 'display: flex;'}">
+                        <i class="fas fa-download"></i>
+                    </button>
                 `;
                 
                 const backButton = document.getElementById('navbar-back-btn');
@@ -286,7 +335,16 @@ class GLYApp {
                         <img src="assets/logo.png" alt="Logo">
                     </div>
                     <div class="u-navbar__content__title">${title}</div>
+                    <button class="install-btn" id="install-btn" style="${['login', 'register'].includes(this.currentSection) ? 'display: none;' : 'display: flex;'}">
+                        <i class="fas fa-download"></i>
+                    </button>
                 `;
+            }
+            
+            // Add event listener to install button
+            const installBtn = document.getElementById('install-btn');
+            if (installBtn) {
+                installBtn.addEventListener('click', () => this.handlePWAInstall());
             }
         }
     }
@@ -297,7 +355,7 @@ class GLYApp {
         try {
             const newBalance = this.currentUser.balance + amount;
             
-            // Обновляем в базе
+            // Update in database
             const { error } = await this.supabase
                 .from('users')
                 .update({ balance: newBalance })
@@ -305,11 +363,11 @@ class GLYApp {
                 
             if (error) throw error;
             
-            // Обновляем текущего пользователя
+            // Update current user
             this.currentUser.balance = newBalance;
             localStorage.setItem('gly_user', JSON.stringify(this.currentUser));
             
-            // Создаем транзакцию
+            // Create transaction
             await this.supabase
                 .from('transactions')
                 .insert([{
@@ -335,15 +393,15 @@ class GLYApp {
         }
         
         try {
-            // Получаем уровень VIP
+            // Get VIP level
             const vipLevel = this.currentUser.vip_level;
             const dailyPercent = await this.getVipPercent(vipLevel);
             const profitPerSignal = (this.currentUser.balance * (dailyPercent / 100)) / 3;
             
-            // Обновляем баланс
+            // Update balance
             await this.updateUserBalance(profitPerSignal, 'quantification');
             
-            // Уменьшаем количество сигналов
+            // Decrease signal count
             const newSignals = this.currentUser.signals_available - 1;
             const { error } = await this.supabase
                 .from('users')
@@ -352,11 +410,11 @@ class GLYApp {
                 
             if (error) throw error;
             
-            // Обновляем текущего пользователя
+            // Update current user
             this.currentUser.signals_available = newSignals;
             localStorage.setItem('gly_user', JSON.stringify(this.currentUser));
             
-            // Начисляем реферальные бонусы
+            // Distribute referral bonuses
             await this.distributeReferralProfit(profitPerSignal);
             
             return { 
@@ -386,10 +444,10 @@ class GLYApp {
         if (!this.currentUser) return;
         
         try {
-            // Находим рефереров 3 уровней
+            // Find 3-level referrers
             const referrals = await this.getReferralChain(this.currentUser.id);
             
-            // Проценты для каждого уровня
+            // Percentages for each level
             const levelPercents = { 1: 12, 2: 5, 3: 3 };
             
             for (const [level, referrerId] of Object.entries(referrals)) {
@@ -397,7 +455,7 @@ class GLYApp {
                     const percent = levelPercents[level];
                     const referralProfit = (profit * percent) / 100;
                     
-                    // Обновляем баланс реферера напрямую
+                    // Update referrer balance directly
                     const { data: userData } = await this.supabase
                         .from('users')
                         .select('balance')
@@ -412,7 +470,7 @@ class GLYApp {
                             .eq('id', referrerId);
                     }
                     
-                    // Создаем транзакцию
+                    // Create transaction
                     await this.supabase
                         .from('transactions')
                         .insert([{
@@ -433,7 +491,7 @@ class GLYApp {
         const chain = { 1: null, 2: null, 3: null };
         
         try {
-            // Уровень 1
+            // Level 1
             const { data: level1 } = await this.supabase
                 .from('referrals')
                 .select('referrer_id')
@@ -444,7 +502,7 @@ class GLYApp {
             if (level1) {
                 chain[1] = level1.referrer_id;
                 
-                // Уровень 2
+                // Level 2
                 const { data: level2 } = await this.supabase
                     .from('referrals')
                     .select('referrer_id')
@@ -455,7 +513,7 @@ class GLYApp {
                 if (level2) {
                     chain[2] = level2.referrer_id;
                     
-                    // Уровень 3
+                    // Level 3
                     const { data: level3 } = await this.supabase
                         .from('referrals')
                         .select('referrer_id')
@@ -476,12 +534,12 @@ class GLYApp {
     }
 
     startSignalUpdateCheck() {
-        // Проверяем каждую минуту, нужно ли обновить сигналы
+        // Check every minute if signals need to be updated
         setInterval(() => {
             this.checkAndUpdateSignals();
         }, 60000);
         
-        // Первоначальная проверка
+        // Initial check
         this.checkAndUpdateSignals();
     }
 
@@ -493,10 +551,10 @@ class GLYApp {
         const today = now.toISOString().split('T')[0];
         const lastUpdate = this.currentUser.last_signal_update?.split('T')[0];
         
-        // Если сейчас 18:00 UTC и сегодня еще не обновляли
+        // If it's 18:00 UTC and not updated today
         if (utcHour >= 18 && today !== lastUpdate) {
             try {
-                // Обновляем сигналы
+                // Update signals
                 const { error } = await this.supabase
                     .from('users')
                     .update({ 
@@ -510,7 +568,7 @@ class GLYApp {
                     this.currentUser.last_signal_update = now.toISOString();
                     localStorage.setItem('gly_user', JSON.stringify(this.currentUser));
                     
-                    // Обновляем VIP уровень
+                    // Update VIP level
                     await this.updateVipLevel();
                 }
             } catch (error) {
@@ -523,7 +581,7 @@ class GLYApp {
         if (!this.currentUser) return;
         
         try {
-            // Получаем количество АКТИВНЫХ рефералов 1 уровня (баланс ≥ 20 USDT)
+            // Get ACTIVE level 1 referrals (balance ≥ 20 USDT)
             const { data: activeReferrals, error: refError } = await this.supabase
                 .from('referrals')
                 .select(`
@@ -539,7 +597,7 @@ class GLYApp {
             
             const activeRefs = activeReferrals?.length || 0;
             
-            // Определяем новый VIP уровень на основе баланса и АКТИВНЫХ рефералов
+            // Determine new VIP level based on balance and ACTIVE referrals
             let newVipLevel = 1;
             
             if (this.currentUser.balance >= 300 && activeRefs >= 2) newVipLevel = 2;
@@ -548,7 +606,7 @@ class GLYApp {
             if (this.currentUser.balance >= 6000 && activeRefs >= 15) newVipLevel = 5;
             if (this.currentUser.balance >= 12000 && activeRefs >= 25) newVipLevel = 6;
             
-            // Если уровень изменился
+            // If level changed
             if (newVipLevel !== this.currentUser.vip_level) {
                 const { error } = await this.supabase
                     .from('users')
@@ -572,12 +630,25 @@ class GLYApp {
     }
 }
 
-// Инициализация приложения
+// Initialize application
 document.addEventListener('DOMContentLoaded', () => {
     window.glyApp = new GLYApp();
 });
 
-// Глобальные утилиты
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('ServiceWorker registered');
+            })
+            .catch(error => {
+                console.log('ServiceWorker registration failed:', error);
+            });
+    });
+}
+
+// Global utilities
 window.GLY = {
     formatCurrency: (amount) => {
         return new Intl.NumberFormat('en-US', {

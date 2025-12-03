@@ -59,7 +59,7 @@ export default function renderAssets() {
                 <form id="deposit-form" onsubmit="return false;">
                     <div class="pop-header">Deposit USDT</div>
                     <div class="pop-body">
-                        <p>Send USDT to the following address (TRC20 network):</p>
+                        <p style="color: #333;">Send USDT to the following address (TRC20 network):</p>
                         <div class="referral-section margin-top">
                             <div class="referral-content">
                                 <div class="referral-info">
@@ -75,7 +75,7 @@ export default function renderAssets() {
                         <div class="margin-top">
                             <label style="color: #333; font-size: 14px;">Amount (USDT)</label>
                             <input type="number" id="deposit-amount" placeholder="Enter amount" 
-                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
+                                   style="width: 100%; padding: 10px; border: 2px solid #52c41a; border-radius: 5px; margin-top: 5px; background: rgba(0,0,0,0.1); color: white;">
                         </div>
                         <p class="margin-top-sm" style="font-size: 12px; color: #666;">
                             Minimum deposit: 17 USDT<br>
@@ -100,12 +100,12 @@ export default function renderAssets() {
                         <div class="margin-bottom">
                             <label style="color: #333; font-size: 14px;">Amount (USDT)</label>
                             <input type="number" id="withdraw-amount" placeholder="Enter amount" 
-                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
+                                   style="width: 100%; padding: 10px; border: 2px solid #52c41a; border-radius: 5px; margin-top: 5px; background: rgba(0,0,0,0.1); color: white;">
                         </div>
                         <div class="margin-bottom">
                             <label style="color: #333; font-size: 14px;">Transaction Password</label>
                             <input type="password" id="withdraw-password" placeholder="Enter transaction password" 
-                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
+                                   style="width: 100%; padding: 10px; border: 2px solid #52c41a; border-radius: 5px; margin-top: 5px; background: rgba(0,0,0,0.1); color: white;">
                         </div>
                         <p style="font-size: 12px; color: #666;">
                             Minimum withdrawal: 20 USDT<br>
@@ -164,7 +164,9 @@ function setupEventListeners() {
     try {
         // Deposit and withdraw button handlers
         document.getElementById('deposit-btn').addEventListener('click', showDepositPopup);
-        document.getElementById('withdraw-btn').addEventListener('click', showWithdrawPopup);
+        document.getElementById('withdraw-btn').addEventListener('click', () => {
+            window.showSection('withdraw');
+        });
         
         // Popup handlers
         document.getElementById('close-deposit').addEventListener('click', hideDepositPopup);

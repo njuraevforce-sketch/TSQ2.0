@@ -1,8 +1,8 @@
 {
-  "name": "GLY - Global Ledger Yield",
+  "name": "GLY - Galaxy",
   "short_name": "GLY",
   "description": "Quantum Investment Platform with AI Algorithms",
-  "start_url": "/",
+  "start_url": "/?v=1.0",
   "display": "standalone",
   "background_color": "#4e7771",
   "theme_color": "#4e7771",
@@ -19,5 +19,30 @@
     }
   ],
   "orientation": "portrait",
-  "categories": ["finance", "business", "investment"]
+  "scope": "/",
+  "theme_color": "#4e7771",
+  "background_color": "#4e7771",
+  "display_override": ["standalone", "minimal-ui"],
+  "prefer_related_applications": false,
+  "categories": ["finance", "business"],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Home",
+      "description": "Go to Dashboard",
+      "url": "/?section=home"
+    },
+    {
+      "name": "Quantification",
+      "short_name": "Get",
+      "description": "Start Quantum Trading",
+      "url": "/?section=get"
+    },
+    {
+      "name": "Assets",
+      "short_name": "Wallet",
+      "description": "View Your Assets",
+      "url": "/?section=assets"
+    }
+  ]
 }

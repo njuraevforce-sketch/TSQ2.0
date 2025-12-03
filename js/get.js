@@ -18,7 +18,7 @@ export default function renderGet() {
                     Loading signals...
                 </div>
                 
-                <button class="quant-btn" id="quant-btn">
+                <button class="quant-btn-compact" id="quant-btn">
                     AUTO QUANTIFICATION
                 </button>
             </div>

@@ -24,65 +24,78 @@ export default function renderMine() {
             </div>
         </div>
 
-        <!-- Calendar -->
-        <div class="card padding margin-top">
-            <div class="text-white text-bold margin-bottom">Calendar</div>
-            <div id="calendar-container" style="min-height: 200px;">
-                <!-- Calendar will be loaded here -->
+        <!-- Calendar Section -->
+        <div class="card padding margin-top calendar-section" id="calendar-section">
+            <div class="calendar-header">
+                <div class="calendar-title" id="current-month">Loading...</div>
+                <div class="calendar-time" id="current-time">Loading UTC...</div>
             </div>
-            <div class="text-center margin-top-sm" id="current-time" style="color: #ccc; font-size: 12px;">
-                Loading UTC time...
+            <div class="calendar-grid" id="calendar-days-header">
+                <div class="calendar-day">Sun</div>
+                <div class="calendar-day">Mon</div>
+                <div class="calendar-day">Tue</div>
+                <div class="calendar-day">Wed</div>
+                <div class="calendar-day">Thu</div>
+                <div class="calendar-day">Fri</div>
+                <div class="calendar-day">Sat</div>
+            </div>
+            <div class="calendar-grid" id="calendar-dates">
+                <!-- Calendar dates will be loaded here -->
+            </div>
+            <div class="calendar-footer">
+                <div class="current-time" id="full-current-time">Loading...</div>
+                <div class="utc-time-badge" id="utc-badge">UTC</div>
             </div>
         </div>
 
         <!-- Settings -->
         <div class="card padding margin-top">
-            <div class="text-white text-bold margin-bottom">Settings</div>
+            <div class="text-white text-bold">Settings</div>
             <div class="settings-list">
                 <div class="setting-item" id="withdrawal-address-setting">
-                    <div class="setting-icon">
-                        <img src="assets/withdrawal.png?v=1.0" alt="Withdrawal" style="width: 24px; height: 24px;">
-                    </div>
-                    <div class="setting-info">
+                    <div class="setting-content">
+                        <div class="setting-icon">
+                            <img src="assets/settings/withdrawal.png?v=1.0" alt="Withdrawal">
+                        </div>
                         <div class="setting-name">Withdrawal Address</div>
-                        <div class="setting-value" id="withdrawal-address-status">Set address</div>
                     </div>
+                    <div class="setting-value">Set address</div>
                 </div>
                 <div class="setting-item" id="transaction-password-setting">
-                    <div class="setting-icon">
-                        <img src="assets/password.png?v=1.0" alt="Password" style="width: 24px; height: 24px;">
-                    </div>
-                    <div class="setting-info">
+                    <div class="setting-content">
+                        <div class="setting-icon">
+                            <img src="assets/settings/password.png?v=1.0" alt="Transaction Password">
+                        </div>
                         <div class="setting-name">Transaction Password</div>
-                        <div class="setting-value">Change</div>
                     </div>
+                    <div class="setting-value">Change</div>
                 </div>
                 <div class="setting-item" id="customer-service-setting">
-                    <div class="setting-icon">
-                        <img src="assets/support.png?v=1.0" alt="Support" style="width: 24px; height: 24px;">
-                    </div>
-                    <div class="setting-info">
+                    <div class="setting-content">
+                        <div class="setting-icon">
+                            <img src="assets/settings/support.png?v=1.0" alt="Customer Service">
+                        </div>
                         <div class="setting-name">Customer Service</div>
-                        <div class="setting-value">Contact</div>
                     </div>
+                    <div class="setting-value">Contact</div>
                 </div>
                 <div class="setting-item" id="language-setting">
-                    <div class="setting-icon">
-                        <img src="assets/language.png?v=1.0" alt="Language" style="width: 24px; height: 24px;">
-                    </div>
-                    <div class="setting-info">
+                    <div class="setting-content">
+                        <div class="setting-icon">
+                            <img src="assets/settings/language.png?v=1.0" alt="Language">
+                        </div>
                         <div class="setting-name">Language</div>
-                        <div class="setting-value">English</div>
                     </div>
+                    <div class="setting-value">English</div>
                 </div>
                 <div class="setting-item" id="change-password-setting">
-                    <div class="setting-icon">
-                        <img src="assets/security.png?v=1.0" alt="Security" style="width: 24px; height: 24px;">
-                    </div>
-                    <div class="setting-info">
+                    <div class="setting-content">
+                        <div class="setting-icon">
+                            <img src="assets/settings/change-password.png?v=1.0" alt="Change Password">
+                        </div>
                         <div class="setting-name">Change Password</div>
-                        <div class="setting-value">Update</div>
                     </div>
+                    <div class="setting-value">Update</div>
                 </div>
                 <div class="pro-btn" id="logout-btn" style="background: transparent; border: 2px solid #ff6b6b; margin-top: 10px; color: #ff6b6b; font-weight: bold;">Logout</div>
             </div>
@@ -193,14 +206,15 @@ export function init() {
         // Load profile data
         loadProfileData();
         
+        // Setup event listeners
+        setupEventListeners();
+        
         // Initialize calendar
         initCalendar();
         
-        // Start time update
-        startTimeUpdate();
-        
-        // Setup event listeners
-        setupEventListeners();
+        // Start time updates
+        updateTime();
+        setInterval(updateTime, 1000);
     }, 100);
 }
 
@@ -239,62 +253,6 @@ function setupEventListeners() {
     }
 }
 
-function initCalendar() {
-    const container = document.getElementById('calendar-container');
-    if (!container) return;
-
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth();
-    const today = now.getDate();
-
-    // Get first day of month
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    
-    let html = '<div class="calendar-grid">';
-    
-    // Day names
-    dayNames.forEach(day => {
-        html += `<div class="calendar-day-name">${day}</div>`;
-    });
-
-    // Empty cells for days before first day
-    for (let i = 0; i < firstDay; i++) {
-        html += '<div class="calendar-day empty"></div>';
-    }
-
-    // Days of month
-    for (let day = 1; day <= daysInMonth; day++) {
-        const isToday = day === today;
-        html += `
-            <div class="calendar-day ${isToday ? 'today' : ''}">
-                ${day}
-                ${isToday ? '<div class="today-indicator"></div>' : ''}
-            </div>
-        `;
-    }
-
-    html += '</div>';
-    container.innerHTML = html;
-}
-
-function startTimeUpdate() {
-    function updateTime() {
-        const now = new Date();
-        const utcTime = now.toUTCString();
-        const timeElement = document.getElementById('current-time');
-        if (timeElement) {
-            timeElement.textContent = utcTime;
-        }
-    }
-    
-    updateTime();
-    setInterval(updateTime, 1000);
-}
-
 async function loadProfileData() {
     try {
         const user = window.getCurrentUser();
@@ -310,12 +268,78 @@ async function loadProfileData() {
         
         // Update withdrawal address display
         if (user.withdrawal_address) {
-            document.getElementById('withdrawal-address-status').textContent = 'Configured';
-            document.getElementById('withdrawal-address-status').style.color = '#52c41a';
+            document.querySelector('#withdrawal-address-setting .setting-value').textContent = 'Configured';
         }
     } catch (error) {
         console.error('Error loading profile data:', error);
     }
+}
+
+function initCalendar() {
+    const now = new Date();
+    const currentMonth = now.getUTCMonth();
+    const currentYear = now.getUTCFullYear();
+    const today = now.getUTCDate();
+    
+    // Update month display
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+                       "July", "August", "September", "October", "November", "December"];
+    document.getElementById('current-month').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+    
+    // Get first day of month and total days
+    const firstDay = new Date(currentYear, currentMonth, 1).getUTCDay();
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getUTCDate();
+    
+    // Create calendar dates grid
+    let calendarHTML = '';
+    
+    // Previous month's days
+    const prevMonthLastDay = new Date(currentYear, currentMonth, 0).getUTCDate();
+    for (let i = 0; i < firstDay; i++) {
+        calendarHTML += `<div class="calendar-date other-month">${prevMonthLastDay - firstDay + i + 1}</div>`;
+    }
+    
+    // Current month's days
+    for (let day = 1; day <= daysInMonth; day++) {
+        const isToday = (day === today);
+        calendarHTML += `<div class="calendar-date ${isToday ? 'today' : ''}" data-day="${day}">${day}</div>`;
+    }
+    
+    // Next month's days
+    const totalCells = 42; // 6 weeks
+    const remainingCells = totalCells - (firstDay + daysInMonth);
+    for (let i = 1; i <= remainingCells; i++) {
+        calendarHTML += `<div class="calendar-date other-month">${i}</div>`;
+    }
+    
+    document.getElementById('calendar-dates').innerHTML = calendarHTML;
+}
+
+function updateTime() {
+    const now = new Date();
+    
+    // Format UTC time
+    const utcHours = now.getUTCHours().toString().padStart(2, '0');
+    const utcMinutes = now.getUTCMinutes().toString().padStart(2, '0');
+    const utcSeconds = now.getUTCSeconds().toString().padStart(2, '0');
+    const utcTimeString = `${utcHours}:${utcMinutes}:${utcSeconds}`;
+    
+    // Full date and time
+    const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: 'UTC'
+    };
+    const fullDateTime = now.toLocaleDateString('en-US', options) + ' UTC';
+    
+    // Update display
+    document.getElementById('current-time').textContent = utcTimeString;
+    document.getElementById('full-current-time').textContent = fullDateTime;
 }
 
 function showAddressPopup() {
@@ -377,8 +401,7 @@ async function saveWithdrawalAddress() {
         hideAddressPopup();
         
         // Update display
-        document.getElementById('withdrawal-address-status').textContent = 'Configured';
-        document.getElementById('withdrawal-address-status').style.color = '#52c41a';
+        document.querySelector('#withdrawal-address-setting .setting-value').textContent = 'Configured';
     } catch (error) {
         window.showCustomAlert('Error saving address: ' + error.message);
     }

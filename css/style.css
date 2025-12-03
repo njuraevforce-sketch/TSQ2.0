@@ -3,6 +3,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    
+    /* Disable text selection */
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -11,6 +13,7 @@
     -webkit-touch-callout: none;
 }
 
+/* Allow selection only in input fields */
 input, textarea {
     -webkit-user-select: text;
     -moz-user-select: text;
@@ -26,11 +29,17 @@ body {
     overflow-x: hidden;
     font-size: 16px;
     overflow-y: auto;
+    
+    /* Disable zoom gestures */
     touch-action: pan-x pan-y;
     -webkit-text-size-adjust: none;
     text-size-adjust: none;
+    
+    /* Prevent context menu */
     -webkit-user-callout: none;
     -webkit-touch-callout: none;
+    
+    /* Prevent pull-to-refresh on mobile */
     overscroll-behavior-y: contain;
 }
 
@@ -51,19 +60,66 @@ uni-page-body {
     overflow-x: hidden;
 }
 
+/* Disable zoom on mobile */
 html {
     touch-action: manipulation;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
 }
 
-/* Установить фоновые изображения для VIP карточек */
-.vip-card[data-level="1"] { background-image: url('assets/vip1.png'); }
-.vip-card[data-level="2"] { background-image: url('assets/vip2.png'); }
-.vip-card[data-level="3"] { background-image: url('assets/vip3.png'); }
-.vip-card[data-level="4"] { background-image: url('assets/vip4.png'); }
-.vip-card[data-level="5"] { background-image: url('assets/vip5.png'); }
-.vip-card[data-level="6"] { background-image: url('assets/vip6.png'); }
+/* Video player styles */
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 0 0 40px 40px;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.play-btn {
+    width: 60px;
+    height: 60px;
+    background: rgba(78, 119, 113, 0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.play-btn:hover {
+    background: rgba(78, 119, 113, 1);
+    transform: scale(1.1);
+}
+
+.play-btn i {
+    margin-left: 5px;
+}
+
+/* Disable video controls on mobile */
+.banner-video::-webkit-media-controls {
+    display: none !important;
+}
+
+.banner-video::-webkit-media-controls-enclosure {
+    display: none !important;
+}
 
 /* Install button */
 .install-btn {
@@ -82,11 +138,18 @@ html {
     font-size: 16px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    display: none;
+    display: none; /* Hidden by default, shown via JS */
 }
 
 .install-btn i { 
     margin-top: 2px; 
+}
+
+/* Hide install button on iOS */
+@supports (-webkit-touch-callout: none) {
+    .install-btn {
+        display: none !important;
+    }
 }
 
 /* Custom modal styles */
@@ -211,6 +274,7 @@ html {
     position: relative;
 }
 
+/* Исправленные стили для навбара с кнопкой назад */
 .u-navbar__content__back {
     position: absolute;
     left: 15px;
@@ -983,7 +1047,7 @@ html {
     background: #3d615c;
 }
 
-/* Уровни VIP - ОБНОВЛЕННЫЕ СТИЛИ 345x130 */
+/* Уровни VIP - ИСПРАВЛЕННЫЕ СТИЛИ */
 .vip-section {
     padding: 15px;
     background: transparent;
@@ -999,120 +1063,111 @@ html {
     text-align: center;
 }
 
-/* VIP карусель - новый размер 345x130 */
+/* VIP карусель - исправленная */
 .vip-carousel-container {
     position: relative;
     margin-top: 15px;
-    height: 130px;
+    height: 130px; /* Fixed height for carousel container */
 }
 
 .vip-carousel {
     display: flex;
-    overflow-x: auto;
-    height: 130px;
+    overflow: hidden;
+    height: 130px; /* Fixed height matching design */
+    border-radius: 10px;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    gap: 10px;
-    padding: 0 10px;
 }
 
-/* VIP карточки - 345x130 с иконками 100x100 справа */
+/* VIP карточки - исправленные */
 .vip-card {
-    min-width: 345px;
-    height: 130px;
+    min-width: 100%;
     border-radius: 10px;
-    padding: 15px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
+    text-align: center;
     color: white;
+    transition: transform 0.3s ease;
     scroll-snap-align: start;
     position: relative;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    border: 1px solid rgba(78,119,113,0.5);
-    flex-shrink: 0;
+    opacity: 0.6;
+    transform: scale(0.95);
+    height: 130px; /* Fixed height 130px as requested */
+    background: transparent;
+    border: 2px solid transparent;
 }
 
 .vip-card.active {
-    border: 2px solid #52c41a;
-    box-shadow: 0 0 15px rgba(82,196,26,0.3);
+    opacity: 1;
+    transform: scale(1);
+    background: transparent;
+    border: 2px solid #4e7771;
+    display: flex;
 }
 
-/* Иконки VIP - 100x100, справа с отступом 20px */
+/* Убираем элементы управления каруселью */
+.vip-carousel-controls {
+    display: none;
+}
+
+/* Исправленные стили для иконок - УВЕЛИЧЕНЫ И ПЕРЕМЕЩЕНЫ */
 .vip-icon-wrapper {
     position: absolute;
-    right: 20px;
     top: 50%;
+    right: 20px; /* 20px from right edge as requested */
     transform: translateY(-50%);
-    width: 100px;
+    width: 100px; /* 100x100 as requested */
     height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    z-index: 10;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
 
 .vip-icon {
-    width: 100% !important;
-    height: 100% !important;
+    width: 100px !important;
+    height: 100px !important;
     object-fit: contain;
-    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
     display: block !important;
     visibility: visible !important;
+    background: transparent !important;
+    border: none !important;
 }
 
-/* Текст слева */
+.vip-bg-img {
+    width: 100%;
+    height: 130px; /* Match card height */
+    border-radius: 8px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    object-fit: cover;
+}
+
 .vip-level-name {
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 5px;
-    text-align: left;
-    width: 60%;
-    color: white;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
     z-index: 2;
     position: relative;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    text-align: left;
+    margin-left: 15px;
 }
 
 .vip-level-requirement {
     font-size: 12px;
     color: #ccc;
-    text-align: left;
-    width: 60%;
     z-index: 2;
     position: relative;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-    padding: 0 10px;
-}
-
-/* Проценты и требования слева */
-.vip-percent-left {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #f9ae3d;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    z-index: 3;
-}
-
-.vip-requirement-left {
-    position: absolute;
-    top: 45px;
-    left: 15px;
-    font-size: 12px;
-    color: #4e7771;
-    background: rgba(255,255,255,0.9);
-    padding: 3px 8px;
-    border-radius: 10px;
-    font-weight: bold;
-    z-index: 3;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    text-align: left;
+    margin-left: 15px;
 }
 
 .vip-description {
@@ -1125,19 +1180,31 @@ html {
     text-align: center;
 }
 
-/* Стили для карусели */
-.vip-carousel::-webkit-scrollbar {
-    height: 4px;
+.vip-percent-left {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    z-index: 3;
 }
 
-.vip-carousel::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.2);
-    border-radius: 2px;
-}
-
-.vip-carousel::-webkit-scrollbar-thumb {
-    background: #4e7771;
-    border-radius: 2px;
+.vip-requirement-left {
+    position: absolute;
+    top: 40px;
+    left: 15px;
+    font-size: 14px;
+    color: #4e7771;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+    z-index: 3;
 }
 
 /* Дополнительные стили */
@@ -1302,163 +1369,78 @@ html {
     border-radius: 10px;
 }
 
-/* КАЛЕНДАРЬ - новые стили для mine */
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    margin-top: 10px;
-}
-
-.calendar-day-name {
-    text-align: center;
-    color: #4e7771;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 5px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 3px;
-}
-
-.calendar-day {
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-    background: rgba(0,0,0,0.1);
-    color: #ccc;
-    font-size: 14px;
-    position: relative;
-}
-
-.calendar-day.today {
-    background: #4e7771;
-    color: white;
-    font-weight: bold;
-}
-
-.today-indicator {
-    position: absolute;
-    bottom: 2px;
-    width: 4px;
-    height: 4px;
-    background: #f9ae3d;
-    border-radius: 50%;
-}
-
-.calendar-day.empty {
-    background: transparent;
-}
-
-/* НАСТРОЙКИ С ИКОНКАМИ - новые стили для mine */
-.setting-item {
-    display: flex;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    cursor: pointer;
-}
-
-.setting-icon {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 15px;
-}
-
-.setting-icon img {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-}
-
-.setting-info {
-    flex: 1;
+/* Иконки пополнения и вывода */
+.wallet-actions {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    margin-top: 15px;
 }
 
-.setting-name {
-    color: white;
-    font-size: 14px;
-}
-
-.setting-value {
-    color: #ccc;
-    font-size: 13px;
-}
-
-/* ASSETS - компактные стили */
-.wallet-actions-compact {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-top: 20px;
-    padding: 10px 0;
-}
-
-.wallet-action-compact {
+.wallet-action {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 48%;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
     cursor: pointer;
-    min-height: 60px;
 }
 
-.wallet-action-compact img {
+.wallet-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #4e7771;
     width: 40px;
     height: 40px;
-    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wallet-icon img {
+    width: 100%;
+    height: 100%;
     object-fit: contain;
 }
 
-.wallet-text-compact {
+.wallet-text {
     color: white;
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-.transaction-categories-compact {
+/* История транзакций */
+.transaction-categories {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    margin: 15px 0;
-    padding: 0 5px;
+    gap: 10px;
+    margin-top: 15px;
 }
 
-.transaction-category-compact {
-    background: rgba(0,0,0,0.2);
-    padding: 10px 8px;
-    border-radius: 8px;
+.transaction-category {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
     text-align: center;
-    min-height: 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
 
-.transaction-category-name-compact {
-    color: #ccc;
-    font-size: 11px;
+.transaction-category-name {
+    color: white;
+    font-size: 14px;
     margin-bottom: 5px;
-    line-height: 1.2;
 }
 
-.transaction-category-amount-compact {
-    color: #f9ae3d;
-    font-size: 13px;
+.transaction-category-amount {
+    color: #4e7771;
+    font-size: 18px;
     font-weight: bold;
-    line-height: 1.2;
 }
 
-.transaction-list-compact {
-    max-height: 150px;
+.transaction-list {
+    margin-top: 15px;
+    max-height: 200px;
     overflow-y: auto;
-    margin-top: 10px;
 }
 
 .transaction-item {
@@ -1466,7 +1448,6 @@ html {
     justify-content: space-between;
     padding: 10px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 12px;
 }
 
 .transaction-info {
@@ -1476,298 +1457,150 @@ html {
 
 .transaction-type {
     color: white;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .transaction-date {
     color: #ccc;
-    font-size: 11px;
+    font-size: 12px;
 }
 
 .transaction-amount {
     font-weight: bold;
-    font-size: 12px;
+    font-size: 14px;
 }
 
-/* WITHDRAW - новые стили */
-.network-selection {
-    display: flex;
-    gap: 10px;
-    margin: 15px 0;
-    padding: 10px;
-    background: rgba(0,0,0,0.2);
-    border-radius: 10px;
-}
-
-.network-option {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    border: 2px solid transparent;
-    border-radius: 8px;
-    background: rgba(0,0,0,0.3);
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.network-option.active {
-    border-color: #4e7771;
-    background: rgba(78,119,113,0.3);
-}
-
-.network-option img {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 5px;
-    object-fit: contain;
-}
-
-.network-option span {
-    color: white;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.withdraw-form {
+/* Настройки профиля */
+.settings-list {
     margin-top: 15px;
 }
 
-.form-group {
+.setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+}
+
+.setting-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.setting-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+.setting-content {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.setting-name {
+    font-size: 14px;
+    flex: 1;
+}
+
+.setting-value {
+    font-size: 14px;
+    color: #ccc;
+}
+
+/* Календарь */
+.calendar-section {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    color: white;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 15px;
 }
 
-.form-group label {
-    display: block;
-    color: #ccc;
-    font-size: 13px;
-    margin-bottom: 5px;
-}
-
-.input-line {
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid #52c41a;
-    border-radius: 0;
-    padding: 10px 0;
-    color: white;
-    font-size: 14px;
-    width: 100%;
-    outline: none;
-}
-
-.input-line::placeholder {
-    color: #666;
-}
-
-.saved-address {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 5px;
-    padding: 5px 10px;
-    background: rgba(78,119,113,0.2);
-    border-radius: 5px;
-    font-size: 12px;
-    color: #ccc;
-}
-
-.saved-address button {
-    background: #4e7771;
-    color: white;
-    border: none;
-    padding: 3px 10px;
-    border-radius: 3px;
-    font-size: 11px;
-    cursor: pointer;
-}
-
-.balance-info {
-    font-size: 12px;
-    color: #ccc;
-    margin-top: 5px;
-    text-align: right;
-}
-
-.balance-info span {
-    color: #f9ae3d;
+.calendar-title {
+    font-size: 16px;
     font-weight: bold;
 }
 
-.fee-info {
-    background: rgba(0,0,0,0.2);
-    padding: 10px;
-    border-radius: 8px;
-    margin: 15px 0;
-    font-size: 13px;
+.calendar-time {
+    font-size: 14px;
     color: #ccc;
 }
 
-.fee-info div {
-    display: flex;
-    justify-content: space-between;
-    margin: 5px 0;
-}
-
-.withdraw-notice {
-    margin-top: 15px;
-    padding: 10px;
-    background: rgba(0,0,0,0.1);
-    border-radius: 8px;
-    font-size: 11px;
-    color: #ccc;
-    text-align: center;
-}
-
-/* ADMIN PANEL - новые стили */
-.admin-nav {
-    display: flex;
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
     gap: 5px;
-    margin-bottom: 20px;
-    overflow-x: auto;
+    margin-bottom: 10px;
+}
+
+.calendar-day {
+    text-align: center;
+    font-size: 12px;
+    color: #ccc;
     padding: 5px 0;
 }
 
-.admin-nav-item {
-    padding: 8px 12px;
-    background: rgba(0,0,0,0.2);
+.calendar-date {
+    text-align: center;
+    padding: 8px 0;
     border-radius: 5px;
-    color: #ccc;
-    font-size: 12px;
-    white-space: nowrap;
     cursor: pointer;
-    flex-shrink: 0;
+    font-size: 14px;
 }
 
-.admin-nav-item.active {
+.calendar-date.today {
     background: #4e7771;
     color: white;
+    font-weight: bold;
 }
 
-.admin-tab {
-    display: none;
+.calendar-date.selected {
+    background: rgba(78, 119, 113, 0.3);
+    border: 1px solid #4e7771;
 }
 
-.admin-tab.active {
-    display: block;
+.calendar-date.other-month {
+    color: #666;
 }
 
-.withdrawal-request-item {
-    background: rgba(0,0,0,0.2);
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    border-left: 3px solid #f9ae3d;
-}
-
-.withdrawal-request-item.completed {
-    border-left-color: #52c41a;
-}
-
-.withdrawal-request-item.rejected {
-    border-left-color: #ff4d4f;
-}
-
-.withdrawal-request-item.pending {
-    border-left-color: #f9ae3d;
-}
-
-.request-header {
+.calendar-footer {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 8px;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.request-user {
-    color: white;
+.current-time {
     font-size: 14px;
-    font-weight: bold;
-}
-
-.request-amount {
-    color: #f9ae3d;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.request-details {
     color: #ccc;
-    font-size: 11px;
-    margin-bottom: 5px;
 }
 
-.request-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.request-actions button {
-    padding: 5px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.utc-time-badge {
+    background: rgba(78, 119, 113, 0.5);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
     font-size: 12px;
-    font-weight: 500;
-}
-
-.approve-btn {
-    background: #52c41a;
-    color: white;
-}
-
-.reject-btn {
-    background: #ff4d4f;
-    color: white;
-}
-
-.admin-search {
-    margin-bottom: 15px;
-}
-
-.admin-search input {
-    width: 100%;
-    padding: 10px;
-    background: rgba(0,0,0,0.2);
-    border: 1px solid rgba(78,119,113,0.5);
-    border-radius: 5px;
-    color: white;
-    font-size: 14px;
-}
-
-.user-item {
-    background: rgba(0,0,0,0.2);
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
-
-.user-item-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-}
-
-.user-name {
-    color: white;
     font-weight: bold;
-    font-size: 14px;
-}
-
-.user-balance {
-    color: #f9ae3d;
-    font-size: 14px;
-}
-
-.user-details {
-    color: #ccc;
-    font-size: 11px;
-}
-
-.admin-settings {
-    display: grid;
-    gap: 10px;
 }
 
 /* Процесс квантования */
@@ -1809,9 +1642,6 @@ html {
     color: #ccc;
     font-size: 12px;
     margin-bottom: 15px;
-    padding: 5px;
-    background: rgba(0,0,0,0.1);
-    border-radius: 5px;
 }
 
 /* Стили для инпутов с линией */
@@ -2230,11 +2060,10 @@ html {
     /* Исправления для VIP карточек на мобильных */
     .vip-card {
         height: 130px;
-        min-width: 320px;
-        padding: 12px;
+        padding: 10px;
     }
     
-    .vip-carousel-container {
+    .vip-carousel {
         height: 130px;
     }
     
@@ -2244,14 +2073,17 @@ html {
         right: 15px;
     }
     
+    .vip-icon {
+        width: 80px !important;
+        height: 80px !important;
+    }
+    
     .vip-level-name {
         font-size: 14px;
-        width: 60%;
     }
     
     .vip-level-requirement {
         font-size: 11px;
-        width: 60%;
     }
     
     .pop-content {
@@ -2323,11 +2155,11 @@ html {
         width: 48%;
     }
     
-    .wallet-action-compact {
+    .wallet-action {
         padding: 10px;
     }
     
-    .transaction-categories-compact {
+    .transaction-categories {
         grid-template-columns: 1fr;
     }
     
@@ -2348,10 +2180,9 @@ html {
     /* Исправления для VIP карточек на очень маленьких экранах */
     .vip-card {
         height: 130px;
-        min-width: 300px;
     }
     
-    .vip-carousel-container {
+    .vip-carousel {
         height: 130px;
     }
     
@@ -2361,14 +2192,17 @@ html {
         right: 10px;
     }
     
+    .vip-icon {
+        width: 70px !important;
+        height: 70px !important;
+    }
+    
     .vip-level-name {
         font-size: 13px;
-        width: 55%;
     }
     
     .vip-level-requirement {
         font-size: 10px;
-        width: 55%;
     }
     
     /* Video adjustments for small mobile */
@@ -2391,7 +2225,7 @@ body.no-tabbar .uni-tabbar {
 
 /* Улучшаем отображение иконок в навигации */
 .nav-icon img,
-.wallet-action-compact img {
+.wallet-icon img {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -2423,256 +2257,4 @@ body.no-tabbar .uni-tabbar {
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
-}
-
-/* Новые стили для кэширования */
-.version-stamp {
-    display: none;
-}
-
-/* Анимации для VIP карусели */
-@keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes slideOut {
-    from { transform: translateX(0); opacity: 1; }
-    to { transform: translateX(-100%); opacity: 0; }
-}
-
-.vip-card {
-    animation: slideIn 0.3s ease;
-}
-
-/* Стили для активной VIP карточки */
-.vip-card.active::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(78,119,113,0.3), rgba(0,0,0,0.3));
-    border-radius: 10px;
-    z-index: 1;
-}
-
-/* Стили для истории выводов */
-.withdrawal-history-item {
-    background: rgba(0,0,0,0.2);
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    border-left: 3px solid #f9ae3d;
-}
-
-.withdrawal-history-item.completed {
-    border-left-color: #52c41a;
-}
-
-.withdrawal-history-item.rejected {
-    border-left-color: #ff4d4f;
-}
-
-/* Стили для статусов */
-.status-pending {
-    color: #f9ae3d;
-}
-
-.status-processing {
-    color: #4e7771;
-}
-
-.status-completed {
-    color: #52c41a;
-}
-
-.status-rejected {
-    color: #ff6b6b;
-}
-
-/* Стили для админ статистики */
-.admin-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.admin-stat {
-    background: rgba(0,0,0,0.2);
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-}
-
-.admin-stat-value {
-    font-size: 20px;
-    font-weight: bold;
-    color: #f9ae3d;
-    margin-bottom: 5px;
-}
-
-.admin-stat-label {
-    font-size: 11px;
-    color: #ccc;
-}
-
-/* Стили для админ действий */
-.admin-action-btn {
-    background: linear-gradient(135deg, #4e7771, #3d615c);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-bottom: 10px;
-    width: 100%;
-}
-
-.admin-action-btn:hover {
-    background: linear-gradient(135deg, #3d615c, #2d4a46);
-}
-
-/* Стили для админ транзакций */
-.admin-transaction-item {
-    background: rgba(0,0,0,0.2);
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-}
-
-/* Стили для поиска в админке */
-.admin-search input:focus {
-    outline: none;
-    border-color: #52c41a;
-}
-
-/* Стили для выбора сети в выводе */
-.network-option:hover {
-    background: rgba(78,119,113,0.2);
-}
-
-/* Стили для кнопки MAX в выводе */
-#withdraw-max:hover {
-    background: #4e7771;
-    color: white;
-}
-
-/* Стили для индикатора сегодняшнего дня */
-.today-indicator {
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-}
-
-/* Стили для скроллбаров */
-::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.1);
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #4e7771;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #3d615c;
-}
-
-/* Стили для контейнера видео */
-.video-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    border-radius: 0 0 40px 40px;
-}
-
-.video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-}
-
-.play-btn {
-    width: 60px;
-    height: 60px;
-    background: rgba(78, 119, 113, 0.8);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.play-btn:hover {
-    background: rgba(78, 119, 113, 1);
-    transform: scale(1.1);
-}
-
-.play-btn i {
-    margin-left: 5px;
-}
-
-/* Disable video controls on mobile */
-.banner-video::-webkit-media-controls {
-    display: none !important;
-}
-
-.banner-video::-webkit-media-controls-enclosure {
-    display: none !important;
-}
-
-/* Стили для кэширования версий */
-.cache-version {
-    display: none;
-    position: fixed;
-    bottom: 5px;
-    right: 5px;
-    color: rgba(255,255,255,0.3);
-    font-size: 8px;
-    z-index: 9999;
-}
-
-/* Hide install button on iOS */
-@supports (-webkit-touch-callout: none) {
-    .install-btn {
-        display: none !important;
-    }
-}
-
-/* Print styles */
-@media print {
-    .no-print {
-        display: none !important;
-    }
-    
-    .card {
-        background: white !important;
-        color: black !important;
-    }
 }

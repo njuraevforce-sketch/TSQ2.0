@@ -2531,3 +2531,434 @@ body.no-tabbar .uni-tabbar {
     font-size: 14px;
     color: #fff;
 }
+/* Добавьте эти стили в конец файла style.css, перед последней закрывающей скобкой */
+
+/* Calendar стили для mine.js */
+.calendar-section {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.calendar-title {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.calendar-nav {
+    display: flex;
+    gap: 5px;
+}
+
+.calendar-nav button {
+    background: #4e7771;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+}
+
+.calendar-nav button:hover {
+    background: #3d615c;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.calendar-day {
+    text-align: center;
+    padding: 8px 0;
+    color: #ccc;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.calendar-date {
+    text-align: center;
+    padding: 8px 0;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.calendar-date:hover {
+    background: rgba(78, 119, 113, 0.3);
+}
+
+.calendar-date.today {
+    background: #4e7771;
+    color: white;
+    font-weight: bold;
+}
+
+.calendar-date.other-month {
+    color: #666;
+    cursor: default;
+}
+
+.calendar-date.other-month:hover {
+    background: transparent;
+}
+
+.calendar-time {
+    text-align: center;
+    color: #f9ae3d;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+/* Настройки профиля */
+.settings-list {
+    margin-top: 15px;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.setting-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: -10px;
+    margin-right: -10px;
+    border-radius: 5px;
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+.setting-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.setting-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.setting-name {
+    font-size: 14px;
+    flex: 1;
+}
+
+.setting-value {
+    font-size: 12px;
+    color: #ccc;
+    margin-left: 10px;
+    text-align: right;
+}
+
+/* Кнопка выхода */
+#logout-btn {
+    background: transparent;
+    border: 2px solid #ff6b6b;
+    color: #ff6b6b;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+
+#logout-btn:hover {
+    background: rgba(255, 107, 107, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Профиль */
+.profile-bg {
+    position: relative;
+    min-height: 150px;
+    background: linear-gradient(135deg, rgba(78, 119, 113, 0.9), rgba(42, 80, 75, 0.9));
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.profile-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('assets/avatar.png') center/cover no-repeat;
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.profile-bg > * {
+    position: relative;
+    z-index: 2;
+}
+
+.profile-vip-badge {
+    background: linear-gradient(135deg, #f9ae3d, #ff8c00);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+    display: inline-block;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.profile-id-copy {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.copy-id-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    padding: 4px 8px;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.copy-id-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.profile-id {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: monospace;
+    letter-spacing: 1px;
+}
+
+#user-balance {
+    color: #f9ae3d;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Popup стили для mine.js */
+.pop-overlay .pop-content {
+    background: white;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    overflow: hidden;
+    animation: modalSlideIn 0.3s ease;
+}
+
+.pop-overlay .pop-header {
+    padding: 15px;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+    font-size: 18px;
+    text-align: center;
+    background: #4e7771;
+    color: white;
+}
+
+.pop-overlay .pop-body {
+    padding: 20px;
+    color: #333;
+}
+
+.pop-overlay .pop-footer {
+    padding: 15px;
+    border-top: 1px solid #eee;
+    text-align: center;
+}
+
+.pop-overlay .pop-footer button {
+    background: #4e7771;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 5px;
+    transition: all 0.3s ease;
+}
+
+.pop-overlay .pop-footer button:hover {
+    background: #3d615c;
+    transform: translateY(-2px);
+}
+
+.pop-overlay .pop-footer button[style*="background: #666"] {
+    background: #666;
+}
+
+.pop-overlay .pop-footer button[style*="background: #666"]:hover {
+    background: #555;
+}
+
+/* Стили для формы изменения адреса и пароля */
+#address-form input,
+#password-change-form input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+#address-form label,
+#password-change-form label {
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Стили для поддержки */
+#support-popup .referral-section {
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+#support-popup .referral-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#support-popup .referral-text h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 14px;
+}
+
+#support-popup .referral-text p {
+    margin: 0;
+    color: #666;
+    font-size: 12px;
+}
+
+/* Мобильная адаптация для mine */
+@media (max-width: 480px) {
+    .profile-bg {
+        min-height: 130px;
+        padding: 15px;
+    }
+    
+    #user-balance {
+        font-size: 20px;
+    }
+    
+    .calendar-grid {
+        gap: 3px;
+    }
+    
+    .calendar-date {
+        padding: 6px 0;
+        font-size: 12px;
+    }
+    
+    .calendar-day {
+        font-size: 10px;
+        padding: 6px 0;
+    }
+    
+    .calendar-time {
+        font-size: 14px;
+        padding: 8px;
+    }
+    
+    .setting-item {
+        padding: 12px 0;
+    }
+    
+    .setting-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+    }
+    
+    .setting-name {
+        font-size: 13px;
+    }
+    
+    .setting-value {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 375px) {
+    .profile-bg {
+        min-height: 120px;
+        padding: 12px;
+    }
+    
+    #user-balance {
+        font-size: 18px;
+    }
+    
+    .profile-vip-badge {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+    
+    .profile-id {
+        font-size: 12px;
+    }
+    
+    .calendar-grid {
+        gap: 2px;
+    }
+    
+    .calendar-date {
+        padding: 4px 0;
+        font-size: 11px;
+    }
+}

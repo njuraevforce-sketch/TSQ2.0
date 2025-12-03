@@ -29,22 +29,37 @@ export default function renderMine() {
             <div class="text-white text-bold">Settings</div>
             <div class="settings-list">
                 <div class="setting-item" id="withdrawal-address-setting">
+                    <div class="setting-icon">
+                        <img src="assets/wallet.png" alt="Wallet" style="width: 20px; height: 20px;">
+                    </div>
                     <div class="setting-name">Withdrawal Address</div>
                     <div class="setting-value">Set address</div>
                 </div>
                 <div class="setting-item" id="transaction-password-setting">
+                    <div class="setting-icon">
+                        <img src="assets/password.png" alt="Password" style="width: 20px; height: 20px;">
+                    </div>
                     <div class="setting-name">Transaction Password</div>
                     <div class="setting-value">Change</div>
                 </div>
                 <div class="setting-item" id="customer-service-setting">
+                    <div class="setting-icon">
+                        <img src="assets/support.png" alt="Support" style="width: 20px; height: 20px;">
+                    </div>
                     <div class="setting-name">Customer Service</div>
                     <div class="setting-value">Contact</div>
                 </div>
                 <div class="setting-item" id="language-setting">
+                    <div class="setting-icon">
+                        <img src="assets/language.png" alt="Language" style="width: 20px; height: 20px;">
+                    </div>
                     <div class="setting-name">Language</div>
                     <div class="setting-value">English</div>
                 </div>
                 <div class="setting-item" id="change-password-setting">
+                    <div class="setting-icon">
+                        <img src="assets/key.png" alt="Key" style="width: 20px; height: 20px;">
+                    </div>
                     <div class="setting-name">Change Password</div>
                     <div class="setting-value">Update</div>
                 </div>
@@ -61,7 +76,7 @@ export default function renderMine() {
                         <div class="margin-bottom">
                             <label style="color: #333; font-size: 14px;">USDT Wallet Address (TRC20)</label>
                             <input type="text" id="withdrawal-address-input" placeholder="Enter your TRC20 address" 
-                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
+                                   style="width: 100%; padding: 10px; border: 2px solid #52c41a; border-radius: 5px; margin-top: 5px; background: rgba(0,0,0,0.1); color: white;">
                         </div>
                         <p style="font-size: 12px; color: #666;">
                             This address will be used for all future withdrawals. Please double-check the address.
@@ -84,17 +99,17 @@ export default function renderMine() {
                         <div class="margin-bottom">
                             <label style="color: #333; font-size: 14px;">Current Password</label>
                             <input type="password" id="current-password" placeholder="Enter current password" 
-                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
+                                   style="width: 100%; padding: 10px; border: 2px solid #52c41a; border-radius: 5px; margin-top: 5px; background: rgba(0,0,0,0.1); color: white;">
                         </div>
                         <div class="margin-bottom">
                             <label style="color: #333; font-size: 14px;">New Password</label>
                             <input type="password" id="new-password" placeholder="Enter new password" 
-                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
+                                   style="width: 100%; padding: 10px; border: 2px solid #52c41a; border-radius: 5px; margin-top: 5px; background: rgba(0,0,0,0.1); color: white;">
                         </div>
                         <div class="margin-bottom">
                             <label style="color: #333; font-size: 14px;">Confirm New Password</label>
                             <input type="password" id="confirm-password" placeholder="Confirm new password" 
-                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
+                                   style="width: 100%; padding: 10px; border: 2px solid #52c41a; border-radius: 5px; margin-top: 5px; background: rgba(0,0,0,0.1); color: white;">
                         </div>
                     </div>
                     <div class="pop-footer">

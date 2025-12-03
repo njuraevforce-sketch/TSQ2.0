@@ -41,9 +41,9 @@ export default function renderGet() {
                             <div class="vip-percent-left">2.2%</div>
                             <div class="vip-requirement-left">VIP 1</div>
                             <div class="vip-icon-wrapper">
-                                <img src="assets/vipicon1.png?v=1.0" alt="VIP 1" class="vip-icon">
+                                <img src="assets/vipicon1.png?v=${Date.now()}" alt="VIP 1" class="vip-icon">
                             </div>
-                            <img src="assets/vip1.png?v=1.0" alt="VIP 1" class="vip-bg-img">
+                            <img src="assets/vip1.png?v=${Date.now()}" alt="VIP 1" class="vip-bg-img">
                             <div class="vip-level-name">0-299 USDT</div>
                             <div class="vip-level-requirement">2.2% daily, 3 signals</div>
                         </div>
@@ -51,9 +51,9 @@ export default function renderGet() {
                             <div class="vip-percent-left">2.8%</div>
                             <div class="vip-requirement-left">VIP 2</div>
                             <div class="vip-icon-wrapper">
-                                <img src="assets/vipicon2.png?v=1.0" alt="VIP 2" class="vip-icon">
+                                <img src="assets/vipicon2.png?v=${Date.now()}" alt="VIP 2" class="vip-icon">
                             </div>
-                            <img src="assets/vip2.png?v=1.0" alt="VIP 2" class="vip-bg-img">
+                            <img src="assets/vip2.png?v=${Date.now()}" alt="VIP 2" class="vip-bg-img">
                             <div class="vip-level-name">300-1000 USDT</div>
                             <div class="vip-level-requirement">2.8% daily, 3 signals, 2 refs</div>
                         </div>
@@ -61,9 +61,9 @@ export default function renderGet() {
                             <div class="vip-percent-left">3.5%</div>
                             <div class="vip-requirement-left">VIP 3</div>
                             <div class="vip-icon-wrapper">
-                                <img src="assets/vipicon3.png?v=1.0" alt="VIP 3" class="vip-icon">
+                                <img src="assets/vipicon3.png?v=${Date.now()}" alt="VIP 3" class="vip-icon">
                             </div>
-                            <img src="assets/vip3.png?v=1.0" alt="VIP 3" class="vip-bg-img">
+                            <img src="assets/vip3.png?v=${Date.now()}" alt="VIP 3" class="vip-bg-img">
                             <div class="vip-level-name">1000-3500 USDT</div>
                             <div class="vip-level-requirement">3.5% daily, 3 signals, 5 refs</div>
                         </div>
@@ -71,9 +71,9 @@ export default function renderGet() {
                             <div class="vip-percent-left">4.0%</div>
                             <div class="vip-requirement-left">VIP 4</div>
                             <div class="vip-icon-wrapper">
-                                <img src="assets/vipicon4.png?v=1.0" alt="VIP 4" class="vip-icon">
+                                <img src="assets/vipicon4.png?v=${Date.now()}" alt="VIP 4" class="vip-icon">
                             </div>
-                            <img src="assets/vip4.png?v=1.0" alt="VIP 4" class="vip-bg-img">
+                            <img src="assets/vip4.png?v=${Date.now()}" alt="VIP 4" class="vip-bg-img">
                             <div class="vip-level-name">3500-6000 USDT</div>
                             <div class="vip-level-requirement">4.0% daily, 3 signals, 8 refs</div>
                         </div>
@@ -81,9 +81,9 @@ export default function renderGet() {
                             <div class="vip-percent-left">5.0%</div>
                             <div class="vip-requirement-left">VIP 5</div>
                             <div class="vip-icon-wrapper">
-                                <img src="assets/vipicon5.png?v=1.0" alt="VIP 5" class="vip-icon">
+                                <img src="assets/vipicon5.png?v=${Date.now()}" alt="VIP 5" class="vip-icon">
                             </div>
-                            <img src="assets/vip5.png?v=1.0" alt="VIP 5" class="vip-bg-img">
+                            <img src="assets/vip5.png?v=${Date.now()}" alt="VIP 5" class="vip-bg-img">
                             <div class="vip-level-name">6000-12000 USDT</div>
                             <div class="vip-level-requirement">5.0% daily, 3 signals, 15 refs</div>
                         </div>
@@ -91,9 +91,9 @@ export default function renderGet() {
                             <div class="vip-percent-left">6.0%</div>
                             <div class="vip-requirement-left">VIP 6</div>
                             <div class="vip-icon-wrapper">
-                                <img src="assets/vipicon6.png?v=1.0" alt="VIP 6" class="vip-icon">
+                                <img src="assets/vipicon6.png?v=${Date.now()}" alt="VIP 6" class="vip-icon">
                             </div>
-                            <img src="assets/vip6.png?v=1.0" alt="VIP 6" class="vip-bg-img">
+                            <img src="assets/vip6.png?v=${Date.now()}" alt="VIP 6" class="vip-bg-img">
                             <div class="vip-level-name">12000-20000 USDT</div>
                             <div class="vip-level-requirement">6.0% daily, 3 signals, 25 refs</div>
                         </div>

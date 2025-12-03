@@ -1369,259 +1369,6 @@ html {
     border-radius: 10px;
 }
 
-/* Иконки пополнения и вывода */
-.wallet-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-}
-
-.wallet-action {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 48%;
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.wallet-icon {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #4e7771;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.wallet-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.wallet-text {
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-/* История транзакций */
-.transaction-categories {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.transaction-category {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-}
-
-.transaction-category-name {
-    color: white;
-    font-size: 14px;
-    margin-bottom: 5px;
-}
-
-.transaction-category-amount {
-    color: #4e7771;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.transaction-list {
-    margin-top: 15px;
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-.transaction-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.transaction-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.transaction-type {
-    color: white;
-    font-size: 14px;
-}
-
-.transaction-date {
-    color: #ccc;
-    font-size: 12px;
-}
-
-.transaction-amount {
-    font-weight: bold;
-    font-size: 14px;
-}
-
-/* Настройки профиля - с иконками */
-.settings-list {
-    margin-top: 15px;
-}
-
-.setting-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
-    cursor: pointer;
-}
-
-.setting-icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.setting-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.setting-name {
-    font-size: 14px;
-    flex: 1;
-}
-
-.setting-value {
-    font-size: 14px;
-    color: #ccc;
-}
-
-/* Календарь в профиле */
-.calendar-section {
-    margin-top: 15px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    padding: 15px;
-}
-
-.calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.calendar-title {
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.calendar-nav button {
-    background: #4e7771;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    margin: 0 5px;
-}
-
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-}
-
-.calendar-day {
-    text-align: center;
-    padding: 8px 0;
-    color: #ccc;
-    font-size: 12px;
-}
-
-.calendar-date {
-    text-align: center;
-    padding: 8px 0;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.calendar-date.today {
-    background: #4e7771;
-    color: white;
-    font-weight: bold;
-}
-
-.calendar-date.other-month {
-    color: #666;
-}
-
-.calendar-time {
-    text-align: center;
-    margin-top: 15px;
-    color: #4e7771;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-/* Процесс квантования */
-.quantum-process {
-    display: none;
-    text-align: center;
-    margin-top: 20px;
-    color: white;
-    font-size: 14px;
-}
-
-.process-step {
-    margin: 10px 0;
-    padding: 0;
-    background: transparent;
-    border-radius: 0;
-    color: white;
-    opacity: 0.5;
-    transition: all 0.5s ease;
-    text-align: center;
-}
-
-.process-step.active {
-    opacity: 1;
-    background: transparent;
-    border: none;
-    transform: scale(1);
-    color: #52c41a;
-}
-
-.process-text {
-    font-size: 16px;
-    font-weight: 500;
-}
-
-/* Время UTC */
-.utc-time {
-    text-align: center;
-    color: #ccc;
-    font-size: 12px;
-    margin-bottom: 15px;
-}
-
 /* Стили для инпутов с линией */
 .input-line {
     background: transparent;
@@ -1997,6 +1744,526 @@ html {
     left: 0;
 }
 
+/* Компактные стили для assets */
+.wallet-actions-compact {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    gap: 10px;
+}
+
+.wallet-action-compact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 48%;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(78, 119, 113, 0.3);
+    height: 80px;
+    justify-content: center;
+}
+
+.wallet-action-compact:hover {
+    background: rgba(78, 119, 113, 0.2);
+    transform: translateY(-2px);
+}
+
+.wallet-action-compact img {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 8px;
+}
+
+.wallet-text-compact {
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.transaction-categories-compact {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.transaction-category-compact {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.transaction-category-name-compact {
+    color: #ccc;
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.transaction-category-amount-compact {
+    color: #4e7771;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.transaction-list-compact {
+    margin-top: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.transaction-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.transaction-type {
+    color: white;
+    font-size: 14px;
+}
+
+.transaction-date {
+    color: #ccc;
+    font-size: 12px;
+}
+
+.transaction-amount {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Стили для withdraw страницы */
+.network-selection {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.network-options {
+    display: flex;
+    gap: 10px;
+}
+
+.network-option {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.network-option.active {
+    border-color: #4e7771;
+    background: rgba(78, 119, 113, 0.2);
+}
+
+.network-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.network-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.network-name {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.network-check {
+    color: #52c41a;
+    font-size: 12px;
+    opacity: 0;
+}
+
+.network-option.active .network-check {
+    opacity: 1;
+}
+
+.wallet-address-section {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.amount-section {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.balance-info {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.balance-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.balance-line:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.password-section {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.withdrawals-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.confirm-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Стили для админ панели */
+.admin-container {
+    padding-bottom: 20px;
+}
+
+.admin-stats {
+    display: flex;
+    gap: 15px;
+}
+
+.admin-stat {
+    text-align: center;
+    padding: 10px 15px;
+    background: rgba(78, 119, 113, 0.3);
+    border-radius: 8px;
+    min-width: 80px;
+}
+
+.admin-stat-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f9ae3d;
+    margin-bottom: 5px;
+}
+
+.admin-stat-label {
+    font-size: 11px;
+    color: #ccc;
+}
+
+.admin-nav {
+    display: flex;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.admin-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 5px;
+    cursor: pointer;
+    color: #ccc;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.admin-nav-item.active {
+    color: white;
+    background: rgba(78, 119, 113, 0.2);
+    border-bottom-color: #4e7771;
+}
+
+.admin-nav-item i {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.admin-tabs {
+    position: relative;
+}
+
+.admin-tab {
+    display: none;
+}
+
+.admin-tab.active {
+    display: block;
+}
+
+.tab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tab-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.admin-input-small {
+    padding: 6px 10px;
+    border: 1px solid rgba(78, 119, 113, 0.5);
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    font-size: 12px;
+    min-width: 150px;
+}
+
+.admin-select-small {
+    padding: 6px 10px;
+    border: 1px solid rgba(78, 119, 113, 0.5);
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    font-size: 12px;
+    min-width: 120px;
+}
+
+.admin-btn-small {
+    padding: 6px 12px;
+    background: rgba(78, 119, 113, 0.7);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.admin-btn-small:hover {
+    background: rgba(78, 119, 113, 0.9);
+}
+
+.admin-btn {
+    padding: 10px 20px;
+    background: #4e7771;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    width: 100%;
+    justify-content: center;
+}
+
+.admin-btn:hover {
+    background: #3d615c;
+    transform: translateY(-2px);
+}
+
+.admin-btn-success {
+    padding: 10px 20px;
+    background: #52c41a;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    flex: 1;
+}
+
+.admin-btn-danger {
+    padding: 10px 20px;
+    background: #ff4d4f;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    flex: 1;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.admin-table th {
+    background: rgba(78, 119, 113, 0.5);
+    color: white;
+    padding: 10px;
+    text-align: left;
+    font-weight: bold;
+    border-bottom: 2px solid rgba(78, 119, 113, 0.8);
+}
+
+.admin-table td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ccc;
+}
+
+.admin-table tr:hover {
+    background: rgba(78, 119, 113, 0.1);
+}
+
+.vip-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    background: rgba(78, 119, 113, 0.5);
+    color: white;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.type-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    background: rgba(82, 196, 26, 0.2);
+    color: #52c41a;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    color: white;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.admin-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: span 2;
+}
+
+.admin-input {
+    padding: 10px;
+    border: 1px solid rgba(78, 119, 113, 0.5);
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.detail-row {
+    display: flex;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-label {
+    font-weight: bold;
+    color: #333;
+    min-width: 150px;
+}
+
+.detail-value {
+    color: #666;
+    flex: 1;
+}
+
+.setting-group {
+    margin-bottom: 15px;
+}
+
+.setting-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.withdrawal-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
 /* Адаптация для мобильных экранов */
 @media (max-width: 480px) {
     .conWrap {
@@ -2104,6 +2371,47 @@ html {
     .video-overlay {
         background: rgba(0, 0, 0, 0.4);
     }
+    
+    /* Компактные стили для мобильных */
+    .wallet-action-compact {
+        height: 70px;
+        padding: 8px;
+    }
+    
+    .wallet-action-compact img {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .transaction-category-compact {
+        height: 60px;
+        padding: 8px;
+    }
+    
+    .transaction-category-name-compact {
+        font-size: 10px;
+    }
+    
+    .transaction-category-amount-compact {
+        font-size: 12px;
+    }
+    
+    .admin-form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-group.full-width {
+        grid-column: span 1;
+    }
+    
+    .admin-table {
+        font-size: 10px;
+    }
+    
+    .admin-table th,
+    .admin-table td {
+        padding: 6px;
+    }
 }
 
 @media (max-width: 375px) {
@@ -2206,4 +2514,20 @@ body.no-tabbar .uni-tabbar {
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
+}
+
+/* Стили для выделения текста */
+.color-up {
+    color: #52c41a !important;
+}
+
+.color-down {
+    color: #ff4d4f !important;
+}
+
+.section-title-small {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #fff;
 }

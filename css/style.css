@@ -1067,13 +1067,12 @@ html {
 .vip-carousel-container {
     position: relative;
     margin-top: 15px;
-    height: 130px; /* Fixed height for carousel container */
 }
 
 .vip-carousel {
     display: flex;
     overflow: hidden;
-    height: 130px; /* Fixed height matching design */
+    height: 130px; /* Новая высота 130px */
     border-radius: 10px;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
@@ -1084,7 +1083,7 @@ html {
 .vip-card {
     min-width: 100%;
     border-radius: 10px;
-    padding: 10px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -1095,7 +1094,8 @@ html {
     position: relative;
     opacity: 0.6;
     transform: scale(0.95);
-    height: 130px; /* Fixed height 130px as requested */
+    height: 130px; /* Новая высота 130px */
+    width: 345px; /* Новая ширина 345px */
     background: transparent;
     border: 2px solid transparent;
 }
@@ -1116,11 +1116,12 @@ html {
 /* Исправленные стили для иконок - УВЕЛИЧЕНЫ И ПЕРЕМЕЩЕНЫ */
 .vip-icon-wrapper {
     position: absolute;
-    top: 50%;
-    right: 20px; /* 20px from right edge as requested */
-    transform: translateY(-50%);
-    width: 100px; /* 100x100 as requested */
-    height: 100px;
+    top: 50%; /* Центрирование по вертикали */
+    left: auto; /* Убираем left */
+    right: 20px; /* Отступ 20px от правого края */
+    transform: translateY(-50%); /* Центрирование по вертикали */
+    width: 100px; /* Размер 100x100 */
+    height: 100px; /* Размер 100x100 */
     z-index: 10;
     background: transparent !important;
     border: none !important;
@@ -1128,8 +1129,8 @@ html {
 }
 
 .vip-icon {
-    width: 100px !important;
-    height: 100px !important;
+    width: 100px !important; /* Размер 100x100 */
+    height: 100px !important; /* Размер 100x100 */
     object-fit: contain;
     display: block !important;
     visibility: visible !important;
@@ -1138,9 +1139,10 @@ html {
 }
 
 .vip-bg-img {
-    width: 100%;
-    height: 130px; /* Match card height */
+    width: 345px; /* Новая ширина 345px */
+    height: 130px; /* Новая высота 130px */
     border-radius: 8px;
+    margin-bottom: 10px;
     position: absolute;
     top: 0;
     left: 0;
@@ -1152,12 +1154,11 @@ html {
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 5px;
+    margin-top: 20px; /* Уменьшен отступ сверху */
     z-index: 2;
     position: relative;
     color: white;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    text-align: left;
-    margin-left: 15px;
 }
 
 .vip-level-requirement {
@@ -1166,8 +1167,7 @@ html {
     z-index: 2;
     position: relative;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    text-align: left;
-    margin-left: 15px;
+    padding: 0 10px;
 }
 
 .vip-description {
@@ -1470,7 +1470,7 @@ html {
     font-size: 14px;
 }
 
-/* Настройки профиля */
+/* Настройки профиля - с иконками */
 .settings-list {
     margin-top: 15px;
 }
@@ -1488,7 +1488,7 @@ html {
 .setting-icon {
     width: 24px;
     height: 24px;
-    margin-right: 12px;
+    margin-right: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1498,13 +1498,6 @@ html {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: brightness(0) invert(1);
-}
-
-.setting-content {
-    display: flex;
-    align-items: center;
-    flex: 1;
 }
 
 .setting-name {
@@ -1517,13 +1510,12 @@ html {
     color: #ccc;
 }
 
-/* Календарь */
+/* Календарь в профиле */
 .calendar-section {
+    margin-top: 15px;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     padding: 15px;
-    margin: 15px 0;
-    color: white;
 }
 
 .calendar-header {
@@ -1534,35 +1526,41 @@ html {
 }
 
 .calendar-title {
+    color: white;
     font-size: 16px;
     font-weight: bold;
 }
 
-.calendar-time {
-    font-size: 14px;
-    color: #ccc;
+.calendar-nav button {
+    background: #4e7771;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin: 0 5px;
 }
 
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
-    margin-bottom: 10px;
 }
 
 .calendar-day {
     text-align: center;
-    font-size: 12px;
+    padding: 8px 0;
     color: #ccc;
-    padding: 5px 0;
+    font-size: 12px;
 }
 
 .calendar-date {
     text-align: center;
     padding: 8px 0;
-    border-radius: 5px;
-    cursor: pointer;
+    color: white;
     font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
 .calendar-date.today {
@@ -1571,35 +1569,15 @@ html {
     font-weight: bold;
 }
 
-.calendar-date.selected {
-    background: rgba(78, 119, 113, 0.3);
-    border: 1px solid #4e7771;
-}
-
 .calendar-date.other-month {
     color: #666;
 }
 
-.calendar-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.calendar-time {
+    text-align: center;
     margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.current-time {
-    font-size: 14px;
-    color: #ccc;
-}
-
-.utc-time-badge {
-    background: rgba(78, 119, 113, 0.5);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 12px;
+    color: #4e7771;
+    font-size: 18px;
     font-weight: bold;
 }
 
@@ -2060,30 +2038,29 @@ html {
     /* Исправления для VIP карточек на мобильных */
     .vip-card {
         height: 130px;
-        padding: 10px;
+        width: 100%;
     }
     
     .vip-carousel {
         height: 130px;
     }
     
+    .vip-bg-img {
+        width: 100%;
+        height: 130px;
+    }
+    
     .vip-icon-wrapper {
-        width: 80px;
-        height: 80px;
-        right: 15px;
+        width: 100px;
+        height: 100px;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
     }
     
     .vip-icon {
-        width: 80px !important;
-        height: 80px !important;
-    }
-    
-    .vip-level-name {
-        font-size: 14px;
-    }
-    
-    .vip-level-requirement {
-        font-size: 11px;
+        width: 100px !important;
+        height: 100px !important;
     }
     
     .pop-content {
@@ -2175,34 +2152,6 @@ html {
     
     .uni-tabbar__label {
         font-size: 9px;
-    }
-    
-    /* Исправления для VIP карточек на очень маленьких экранах */
-    .vip-card {
-        height: 130px;
-    }
-    
-    .vip-carousel {
-        height: 130px;
-    }
-    
-    .vip-icon-wrapper {
-        width: 70px;
-        height: 70px;
-        right: 10px;
-    }
-    
-    .vip-icon {
-        width: 70px !important;
-        height: 70px !important;
-    }
-    
-    .vip-level-name {
-        font-size: 13px;
-    }
-    
-    .vip-level-requirement {
-        font-size: 10px;
     }
     
     /* Video adjustments for small mobile */

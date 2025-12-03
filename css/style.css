@@ -3,8 +3,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    
-    /* Disable text selection */
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -13,7 +11,6 @@
     -webkit-touch-callout: none;
 }
 
-/* Allow selection only in input fields */
 input, textarea {
     -webkit-user-select: text;
     -moz-user-select: text;
@@ -29,17 +26,11 @@ body {
     overflow-x: hidden;
     font-size: 16px;
     overflow-y: auto;
-    
-    /* Disable zoom gestures */
     touch-action: pan-x pan-y;
     -webkit-text-size-adjust: none;
     text-size-adjust: none;
-    
-    /* Prevent context menu */
     -webkit-user-callout: none;
     -webkit-touch-callout: none;
-    
-    /* Prevent pull-to-refresh on mobile */
     overscroll-behavior-y: contain;
 }
 
@@ -60,66 +51,19 @@ uni-page-body {
     overflow-x: hidden;
 }
 
-/* Disable zoom on mobile */
 html {
     touch-action: manipulation;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
 }
 
-/* Video player styles */
-.video-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    border-radius: 0 0 40px 40px;
-}
-
-.video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-}
-
-.play-btn {
-    width: 60px;
-    height: 60px;
-    background: rgba(78, 119, 113, 0.8);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.play-btn:hover {
-    background: rgba(78, 119, 113, 1);
-    transform: scale(1.1);
-}
-
-.play-btn i {
-    margin-left: 5px;
-}
-
-/* Disable video controls on mobile */
-.banner-video::-webkit-media-controls {
-    display: none !important;
-}
-
-.banner-video::-webkit-media-controls-enclosure {
-    display: none !important;
-}
+/* Установить фоновые изображения для VIP карточек */
+.vip-card[data-level="1"] { background-image: url('assets/vip1.png'); }
+.vip-card[data-level="2"] { background-image: url('assets/vip2.png'); }
+.vip-card[data-level="3"] { background-image: url('assets/vip3.png'); }
+.vip-card[data-level="4"] { background-image: url('assets/vip4.png'); }
+.vip-card[data-level="5"] { background-image: url('assets/vip5.png'); }
+.vip-card[data-level="6"] { background-image: url('assets/vip6.png'); }
 
 /* Install button */
 .install-btn {
@@ -138,18 +82,11 @@ html {
     font-size: 16px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    display: none; /* Hidden by default, shown via JS */
+    display: none;
 }
 
 .install-btn i { 
     margin-top: 2px; 
-}
-
-/* Hide install button on iOS */
-@supports (-webkit-touch-callout: none) {
-    .install-btn {
-        display: none !important;
-    }
 }
 
 /* Custom modal styles */
@@ -274,7 +211,6 @@ html {
     position: relative;
 }
 
-/* Исправленные стили для навбара с кнопкой назад */
 .u-navbar__content__back {
     position: absolute;
     left: 15px;
@@ -1047,7 +983,7 @@ html {
     background: #3d615c;
 }
 
-/* Уровни VIP - ИСПРАВЛЕННЫЕ СТИЛИ */
+/* Уровни VIP - ОБНОВЛЕННЫЕ СТИЛИ 345x130 */
 .vip-section {
     padding: 15px;
     background: transparent;
@@ -1063,7 +999,7 @@ html {
     text-align: center;
 }
 
-/* VIP карусель - исправленная */
+/* VIP карусель - новый размер 345x130 */
 .vip-carousel-container {
     position: relative;
     margin-top: 15px;
@@ -1072,104 +1008,111 @@ html {
 
 .vip-carousel {
     display: flex;
-    overflow: hidden;
+    overflow-x: auto;
     height: 130px;
-    border-radius: 10px;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    gap: 10px;
+    padding: 0 10px;
 }
 
-/* VIP карточки - исправленные */
+/* VIP карточки - 345x130 с иконками 100x100 справа */
 .vip-card {
     min-width: 345px;
-    width: 345px;
+    height: 130px;
     border-radius: 10px;
     padding: 15px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    text-align: center;
+    justify-content: center;
     color: white;
-    transition: transform 0.3s ease;
     scroll-snap-align: start;
     position: relative;
-    opacity: 0.6;
-    transform: scale(0.95);
-    height: 130px;
-    background: transparent;
-    border: 2px solid transparent;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 1px solid rgba(78,119,113,0.5);
+    flex-shrink: 0;
 }
 
 .vip-card.active {
-    opacity: 1;
-    transform: scale(1);
-    background: transparent;
-    border: 2px solid #4e7771;
-    display: flex;
+    border: 2px solid #52c41a;
+    box-shadow: 0 0 15px rgba(82,196,26,0.3);
 }
 
-/* Убираем элементы управления каруселью */
-.vip-carousel-controls {
-    display: none;
-}
-
-/* Исправленные стили для иконок - УВЕЛИЧЕНЫ И ПЕРЕМЕЩЕНЫ */
+/* Иконки VIP - 100x100, справа с отступом 20px */
 .vip-icon-wrapper {
     position: absolute;
+    right: 20px;
     top: 50%;
-    right: 20px; /* Сдвинуто к правому краю с отступом 20px */
     transform: translateY(-50%);
     width: 100px;
     height: 100px;
-    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
 
 .vip-icon {
-    width: 100px !important;
-    height: 100px !important;
+    width: 100% !important;
+    height: 100% !important;
     object-fit: contain;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
     display: block !important;
     visibility: visible !important;
-    background: transparent !important;
-    border: none !important;
 }
 
-.vip-bg-img {
-    width: 100%;
-    height: 100%;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    object-fit: cover;
-}
-
+/* Текст слева */
 .vip-level-name {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     margin-bottom: 5px;
+    text-align: left;
+    width: 60%;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
     z-index: 2;
     position: relative;
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    text-align: left;
-    margin-left: 15px;
 }
 
 .vip-level-requirement {
     font-size: 12px;
     color: #ccc;
+    text-align: left;
+    width: 60%;
     z-index: 2;
     position: relative;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    text-align: left;
-    margin-left: 15px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    padding: 0 10px;
+}
+
+/* Проценты и требования слева */
+.vip-percent-left {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #f9ae3d;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    z-index: 3;
+}
+
+.vip-requirement-left {
+    position: absolute;
+    top: 45px;
+    left: 15px;
+    font-size: 12px;
+    color: #4e7771;
+    background: rgba(255,255,255,0.9);
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-weight: bold;
+    z-index: 3;
 }
 
 .vip-description {
@@ -1182,31 +1125,19 @@ html {
     text-align: center;
 }
 
-.vip-percent-left {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    background: transparent;
-    padding: 0;
-    border-radius: 0;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-    z-index: 3;
+/* Стили для карусели */
+.vip-carousel::-webkit-scrollbar {
+    height: 4px;
 }
 
-.vip-requirement-left {
-    position: absolute;
-    top: 40px;
-    left: 15px;
-    font-size: 14px;
-    color: #4e7771;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-weight: bold;
-    z-index: 3;
+.vip-carousel::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.2);
+    border-radius: 2px;
+}
+
+.vip-carousel::-webkit-scrollbar-thumb {
+    background: #4e7771;
+    border-radius: 2px;
 }
 
 /* Дополнительные стили */
@@ -1371,85 +1302,163 @@ html {
     border-radius: 10px;
 }
 
-/* Иконки пополнения и вывода */
-.wallet-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-    gap: 10px;
+/* КАЛЕНДАРЬ - новые стили для mine */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-top: 10px;
 }
 
-.wallet-action {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 48%;
-    padding: 15px 5px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    cursor: pointer;
-    height: 80px; /* Уменьшена высота */
-    justify-content: center;
-}
-
-.wallet-icon {
-    font-size: 24px;
-    margin-bottom: 10px;
+.calendar-day-name {
+    text-align: center;
     color: #4e7771;
-    width: 30px;
-    height: 30px;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 5px;
+    background: rgba(0,0,0,0.1);
+    color: #ccc;
+    font-size: 14px;
+    position: relative;
 }
 
-.wallet-icon img {
-    width: 100%;
-    height: 100%;
+.calendar-day.today {
+    background: #4e7771;
+    color: white;
+    font-weight: bold;
+}
+
+.today-indicator {
+    position: absolute;
+    bottom: 2px;
+    width: 4px;
+    height: 4px;
+    background: #f9ae3d;
+    border-radius: 50%;
+}
+
+.calendar-day.empty {
+    background: transparent;
+}
+
+/* НАСТРОЙКИ С ИКОНКАМИ - новые стили для mine */
+.setting-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+}
+
+.setting-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.setting-icon img {
+    width: 24px;
+    height: 24px;
     object-fit: contain;
 }
 
-.wallet-text {
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
+.setting-info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* История транзакций */
-.transaction-categories {
+.setting-name {
+    color: white;
+    font-size: 14px;
+}
+
+.setting-value {
+    color: #ccc;
+    font-size: 13px;
+}
+
+/* ASSETS - компактные стили */
+.wallet-actions-compact {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+    padding: 10px 0;
+}
+
+.wallet-action-compact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    min-height: 60px;
+}
+
+.wallet-action-compact img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+    object-fit: contain;
+}
+
+.wallet-text-compact {
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.transaction-categories-compact {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
-    margin-top: 15px;
+    margin: 15px 0;
+    padding: 0 5px;
 }
 
-.transaction-category {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 12px 8px;
+.transaction-category-compact {
+    background: rgba(0,0,0,0.2);
+    padding: 10px 8px;
     border-radius: 8px;
     text-align: center;
-    height: 70px; /* Уменьшена высота */
+    min-height: 60px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.transaction-category-name {
-    color: white;
-    font-size: 12px;
+.transaction-category-name-compact {
+    color: #ccc;
+    font-size: 11px;
     margin-bottom: 5px;
+    line-height: 1.2;
 }
 
-.transaction-category-amount {
+.transaction-category-amount-compact {
     color: #f9ae3d;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
+    line-height: 1.2;
 }
 
-.transaction-list {
-    margin-top: 15px;
-    max-height: 200px;
+.transaction-list-compact {
+    max-height: 150px;
     overflow-y: auto;
+    margin-top: 10px;
 }
 
 .transaction-item {
@@ -1457,6 +1466,7 @@ html {
     justify-content: space-between;
     padding: 10px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 12px;
 }
 
 .transaction-info {
@@ -1466,63 +1476,298 @@ html {
 
 .transaction-type {
     color: white;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .transaction-date {
     color: #ccc;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .transaction-amount {
     font-weight: bold;
-    font-size: 14px;
+    font-size: 12px;
 }
 
-/* Настройки профиля */
-.settings-list {
+/* WITHDRAW - новые стили */
+.network-selection {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    padding: 10px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+
+.network-option {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.network-option.active {
+    border-color: #4e7771;
+    background: rgba(78,119,113,0.3);
+}
+
+.network-option img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 5px;
+    object-fit: contain;
+}
+
+.network-option span {
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.withdraw-form {
     margin-top: 15px;
 }
 
-.setting-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.form-group {
+    margin-bottom: 15px;
 }
 
-.setting-item:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-.setting-icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.setting-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
-}
-
-.setting-name {
-    font-size: 14px;
-    flex: 1;
-}
-
-.setting-value {
-    font-size: 14px;
+.form-group label {
+    display: block;
     color: #ccc;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.input-line {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #52c41a;
+    border-radius: 0;
+    padding: 10px 0;
+    color: white;
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+}
+
+.input-line::placeholder {
+    color: #666;
+}
+
+.saved-address {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+    padding: 5px 10px;
+    background: rgba(78,119,113,0.2);
+    border-radius: 5px;
+    font-size: 12px;
+    color: #ccc;
+}
+
+.saved-address button {
+    background: #4e7771;
+    color: white;
+    border: none;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.balance-info {
+    font-size: 12px;
+    color: #ccc;
+    margin-top: 5px;
+    text-align: right;
+}
+
+.balance-info span {
+    color: #f9ae3d;
+    font-weight: bold;
+}
+
+.fee-info {
+    background: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-size: 13px;
+    color: #ccc;
+}
+
+.fee-info div {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+}
+
+.withdraw-notice {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 8px;
+    font-size: 11px;
+    color: #ccc;
+    text-align: center;
+}
+
+/* ADMIN PANEL - новые стили */
+.admin-nav {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding: 5px 0;
+}
+
+.admin-nav-item {
+    padding: 8px 12px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 5px;
+    color: #ccc;
+    font-size: 12px;
+    white-space: nowrap;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.admin-nav-item.active {
+    background: #4e7771;
+    color: white;
+}
+
+.admin-tab {
+    display: none;
+}
+
+.admin-tab.active {
+    display: block;
+}
+
+.withdrawal-request-item {
+    background: rgba(0,0,0,0.2);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 3px solid #f9ae3d;
+}
+
+.withdrawal-request-item.completed {
+    border-left-color: #52c41a;
+}
+
+.withdrawal-request-item.rejected {
+    border-left-color: #ff4d4f;
+}
+
+.withdrawal-request-item.pending {
+    border-left-color: #f9ae3d;
+}
+
+.request-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.request-user {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.request-amount {
+    color: #f9ae3d;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.request-details {
+    color: #ccc;
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.request-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.request-actions button {
+    padding: 5px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.approve-btn {
+    background: #52c41a;
+    color: white;
+}
+
+.reject-btn {
+    background: #ff4d4f;
+    color: white;
+}
+
+.admin-search {
+    margin-bottom: 15px;
+}
+
+.admin-search input {
+    width: 100%;
+    padding: 10px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(78,119,113,0.5);
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+}
+
+.user-item {
+    background: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.user-item-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.user-name {
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.user-balance {
+    color: #f9ae3d;
+    font-size: 14px;
+}
+
+.user-details {
+    color: #ccc;
+    font-size: 11px;
+}
+
+.admin-settings {
+    display: grid;
+    gap: 10px;
 }
 
 /* Процесс квантования */
@@ -1564,6 +1809,9 @@ html {
     color: #ccc;
     font-size: 12px;
     margin-bottom: 15px;
+    padding: 5px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 5px;
 }
 
 /* Стили для инпутов с линией */
@@ -1982,34 +2230,28 @@ html {
     /* Исправления для VIP карточек на мобильных */
     .vip-card {
         height: 130px;
-        padding: 12px;
         min-width: 320px;
-        width: 320px;
+        padding: 12px;
     }
     
-    .vip-carousel {
+    .vip-carousel-container {
         height: 130px;
     }
     
     .vip-icon-wrapper {
-        width: 90px;
-        height: 90px;
-        top: 50%;
+        width: 80px;
+        height: 80px;
         right: 15px;
-        transform: translateY(-50%);
-    }
-    
-    .vip-icon {
-        width: 90px !important;
-        height: 90px !important;
     }
     
     .vip-level-name {
-        font-size: 13px;
+        font-size: 14px;
+        width: 60%;
     }
     
     .vip-level-requirement {
         font-size: 11px;
+        width: 60%;
     }
     
     .pop-content {
@@ -2053,17 +2295,6 @@ html {
     .video-overlay {
         background: rgba(0, 0, 0, 0.4);
     }
-    
-    /* Уменьшаем высоту блоков на мобильных */
-    .wallet-action {
-        height: 70px;
-        padding: 10px 5px;
-    }
-    
-    .transaction-category {
-        height: 65px;
-        padding: 10px 5px;
-    }
 }
 
 @media (max-width: 375px) {
@@ -2092,11 +2323,11 @@ html {
         width: 48%;
     }
     
-    .wallet-action {
-        padding: 8px;
+    .wallet-action-compact {
+        padding: 10px;
     }
     
-    .transaction-categories {
+    .transaction-categories-compact {
         grid-template-columns: 1fr;
     }
     
@@ -2118,32 +2349,26 @@ html {
     .vip-card {
         height: 130px;
         min-width: 300px;
-        width: 300px;
     }
     
-    .vip-carousel {
+    .vip-carousel-container {
         height: 130px;
     }
     
     .vip-icon-wrapper {
-        width: 80px;
-        height: 80px;
-        top: 50%;
+        width: 70px;
+        height: 70px;
         right: 10px;
-        transform: translateY(-50%);
-    }
-    
-    .vip-icon {
-        width: 80px !important;
-        height: 80px !important;
     }
     
     .vip-level-name {
-        font-size: 12px;
+        font-size: 13px;
+        width: 55%;
     }
     
     .vip-level-requirement {
         font-size: 10px;
+        width: 55%;
     }
     
     /* Video adjustments for small mobile */
@@ -2166,7 +2391,7 @@ body.no-tabbar .uni-tabbar {
 
 /* Улучшаем отображение иконок в навигации */
 .nav-icon img,
-.wallet-icon img {
+.wallet-action-compact img {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -2200,159 +2425,254 @@ body.no-tabbar .uni-tabbar {
     margin-bottom: 20px;
 }
 
-/* Network selection styles */
-.network-options {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.network-option {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: all 0.3s ease;
-}
-
-.network-option:hover {
-    border-color: rgba(82, 196, 26, 0.3);
-}
-
-.network-option.active {
-    border-color: #52c41a;
-    background: rgba(82, 196, 26, 0.1);
-}
-
-.network-icon {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.network-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.network-name {
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-/* Admin styles */
-.admin-tabs {
-    display: flex;
-    border-bottom: 2px solid rgba(78, 119, 113, 0.5);
-    margin-bottom: 15px;
-    overflow-x: auto;
-}
-
-.admin-tab {
-    padding: 10px 15px;
-    color: #ccc;
-    cursor: pointer;
-    white-space: nowrap;
-    border-bottom: 2px solid transparent;
-    transition: all 0.3s ease;
-}
-
-.admin-tab:hover {
-    color: white;
-}
-
-.admin-tab.active {
-    color: white;
-    border-bottom-color: #52c41a;
-    font-weight: bold;
-}
-
-.admin-tab-content {
+/* Новые стили для кэширования */
+.version-stamp {
     display: none;
 }
 
-.admin-tab-content.active {
-    display: block;
+/* Анимации для VIP карусели */
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
 }
 
-.admin-settings-grid {
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(-100%); opacity: 0; }
+}
+
+.vip-card {
+    animation: slideIn 0.3s ease;
+}
+
+/* Стили для активной VIP карточки */
+.vip-card.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(78,119,113,0.3), rgba(0,0,0,0.3));
+    border-radius: 10px;
+    z-index: 1;
+}
+
+/* Стили для истории выводов */
+.withdrawal-history-item {
+    background: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border-left: 3px solid #f9ae3d;
+}
+
+.withdrawal-history-item.completed {
+    border-left-color: #52c41a;
+}
+
+.withdrawal-history-item.rejected {
+    border-left-color: #ff4d4f;
+}
+
+/* Стили для статусов */
+.status-pending {
+    color: #f9ae3d;
+}
+
+.status-processing {
+    color: #4e7771;
+}
+
+.status-completed {
+    color: #52c41a;
+}
+
+.status-rejected {
+    color: #ff6b6b;
+}
+
+/* Стили для админ статистики */
+.admin-stats {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    margin-top: 15px;
+    margin-bottom: 20px;
 }
 
-.admin-setting-item {
-    background: rgba(0, 0, 0, 0.2);
+.admin-stat {
+    background: rgba(0,0,0,0.2);
     padding: 15px;
     border-radius: 10px;
     text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
 }
 
-.admin-setting-item:hover {
-    border-color: #52c41a;
-    transform: translateY(-2px);
+.admin-stat-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f9ae3d;
+    margin-bottom: 5px;
 }
 
-.admin-setting-icon {
-    font-size: 24px;
-    margin-bottom: 10px;
+.admin-stat-label {
+    font-size: 11px;
+    color: #ccc;
 }
 
-.admin-setting-name {
-    color: white;
-    font-size: 12px;
-}
-
+/* Стили для админ действий */
 .admin-action-btn {
-    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #4e7771, #3d615c);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: 100%;
 }
 
 .admin-action-btn:hover {
-    opacity: 0.8;
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, #3d615c, #2d4a46);
 }
 
-/* User action buttons */
-.user-action-btn {
+/* Стили для админ транзакций */
+.admin-transaction-item {
+    background: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+/* Стили для поиска в админке */
+.admin-search input:focus {
+    outline: none;
+    border-color: #52c41a;
+}
+
+/* Стили для выбора сети в выводе */
+.network-option:hover {
+    background: rgba(78,119,113,0.2);
+}
+
+/* Стили для кнопки MAX в выводе */
+#withdraw-max:hover {
+    background: #4e7771;
+    color: white;
+}
+
+/* Стили для индикатора сегодняшнего дня */
+.today-indicator {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Стили для скроллбаров */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4e7771;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3d615c;
+}
+
+/* Стили для контейнера видео */
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 0 0 40px 40px;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.play-btn {
+    width: 60px;
+    height: 60px;
+    background: rgba(78, 119, 113, 0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.user-action-btn:hover {
-    opacity: 0.8;
-    transform: translateY(-1px);
+.play-btn:hover {
+    background: rgba(78, 119, 113, 1);
+    transform: scale(1.1);
 }
 
-/* Стили для полей ввода в модальных окнах */
-input[type="text"],
-input[type="password"],
-input[type="number"],
-input[type="email"] {
-    border: 2px solid #52c41a !important;
-    background: rgba(0, 0, 0, 0.1) !important;
-    color: white !important;
-    border-radius: 5px !important;
-    padding: 10px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
+.play-btn i {
+    margin-left: 5px;
 }
 
-input[type="text"]::placeholder,
-input[type="password"]::placeholder,
-input[type="number"]::placeholder,
-input[type="email"]::placeholder {
-    color: #ccc !important;
+/* Disable video controls on mobile */
+.banner-video::-webkit-media-controls {
+    display: none !important;
+}
+
+.banner-video::-webkit-media-controls-enclosure {
+    display: none !important;
+}
+
+/* Стили для кэширования версий */
+.cache-version {
+    display: none;
+    position: fixed;
+    bottom: 5px;
+    right: 5px;
+    color: rgba(255,255,255,0.3);
+    font-size: 8px;
+    z-index: 9999;
+}
+
+/* Hide install button on iOS */
+@supports (-webkit-touch-callout: none) {
+    .install-btn {
+        display: none !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .card {
+        background: white !important;
+        color: black !important;
+    }
 }

@@ -4,7 +4,7 @@ export default function renderRegister() {
         <!-- Registration form -->
         <div class="card padding" style="margin-top: 20px; background: transparent; box-shadow: none;">
             <div style="text-align: left; margin-bottom: 30px; display: flex; align-items: center;">
-                <img src="assets/logo.png" alt="GLY Logo" style="width: 80px; height: 80px; border-radius: 20px; margin-right: 20px;">
+                <img src="assets/logo.png?v=1.0" alt="GLY Logo" style="width: 80px; height: 80px; border-radius: 20px; margin-right: 20px;">
                 <div>
                     <h2 style="color: white; margin-bottom: 5px; font-size: 28px;">Welcome</h2>
                     <p style="color: #ccc; font-size: 16px;">Welcome to GLY</p>
@@ -36,7 +36,7 @@ export default function renderRegister() {
                 </div>
                 
                 <div class="input-container">
-                    <input type="text" id="invite-code" placeholder="Invitation Code (required)" class="input-line">
+                    <input type="text" id="invite-code" placeholder="Invitation Code (required)" class="input-line" readonly style="background: rgba(255,255,255,0.1);">
                 </div>
                 
                 <button type="submit" id="register-btn" class="pro-btn" style="width: 100%; background: #4e7771; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 30px;">Register</button>
@@ -54,13 +54,26 @@ export default function renderRegister() {
 export function init() {
     document.body.classList.add('auth-page');
     
-    // Extract invite code from URL
+    // Get invite code from URL or localStorage
+    let inviteCode = '';
+    
+    // Check URL first
     const hash = window.location.hash;
     if (hash.includes('?ref=')) {
-        const refCode = hash.split('?ref=')[1];
+        const refCode = hash.split('?ref=')[1].split('&')[0];
         if (refCode) {
-            document.getElementById('invite-code').value = refCode;
+            inviteCode = refCode.toUpperCase();
         }
+    }
+    
+    // If not in URL, check localStorage
+    if (!inviteCode) {
+        inviteCode = localStorage.getItem('gly_referral_code') || '';
+    }
+    
+    // Auto-fill the invite code field
+    if (inviteCode) {
+        document.getElementById('invite-code').value = inviteCode;
     }
     
     // Password toggle handlers
@@ -204,6 +217,9 @@ export function init() {
                     description: 'Registration bonus'
                 }]);
             
+            // Clear stored referral code
+            localStorage.removeItem('gly_referral_code');
+            
             // Authenticate user
             localStorage.setItem('gly_user', JSON.stringify(newUser));
             
@@ -212,10 +228,14 @@ export function init() {
                 window.glyApp.currentUser = newUser;
             }
             
+            // Show success message
+            window.showCustomAlert('Registration successful! $3 bonus has been credited to your account.');
+            
             // Reload app for correct redirection
             setTimeout(() => {
+                window.location.hash = '#home';
                 window.location.reload();
-            }, 100);
+            }, 1500);
             
         } catch (error) {
             console.error('Registration error:', error);

@@ -2,7 +2,7 @@
 export default function renderMine() {
     return `
         <!-- Profile with background image -->
-        <div class="card padding profile-bg" style="background-image: url('assets/avatar.png'); background-size: cover; background-position: center; border-radius: 10px; padding: 20px; margin-bottom: 20px; position: relative;">
+        <div class="card padding profile-bg" style="background-image: url('assets/avatar.png?v=1.0'); background-size: cover; background-position: center; border-radius: 10px; padding: 20px; margin-bottom: 20px; position: relative;">
             <!-- Dark overlay for better text readability -->
             <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); border-radius: 10px; z-index: 1;"></div>
             
@@ -24,44 +24,65 @@ export default function renderMine() {
             </div>
         </div>
 
+        <!-- Calendar -->
+        <div class="card padding margin-top">
+            <div class="text-white text-bold margin-bottom">Calendar</div>
+            <div id="calendar-container" style="min-height: 200px;">
+                <!-- Calendar will be loaded here -->
+            </div>
+            <div class="text-center margin-top-sm" id="current-time" style="color: #ccc; font-size: 12px;">
+                Loading UTC time...
+            </div>
+        </div>
+
         <!-- Settings -->
         <div class="card padding margin-top">
-            <div class="text-white text-bold">Settings</div>
+            <div class="text-white text-bold margin-bottom">Settings</div>
             <div class="settings-list">
                 <div class="setting-item" id="withdrawal-address-setting">
                     <div class="setting-icon">
-                        <img src="assets/wallet.png" alt="Wallet" style="width: 20px; height: 20px;">
+                        <img src="assets/withdrawal.png?v=1.0" alt="Withdrawal" style="width: 24px; height: 24px;">
                     </div>
-                    <div class="setting-name">Withdrawal Address</div>
-                    <div class="setting-value">Set address</div>
+                    <div class="setting-info">
+                        <div class="setting-name">Withdrawal Address</div>
+                        <div class="setting-value" id="withdrawal-address-status">Set address</div>
+                    </div>
                 </div>
                 <div class="setting-item" id="transaction-password-setting">
                     <div class="setting-icon">
-                        <img src="assets/password.png" alt="Password" style="width: 20px; height: 20px;">
+                        <img src="assets/password.png?v=1.0" alt="Password" style="width: 24px; height: 24px;">
                     </div>
-                    <div class="setting-name">Transaction Password</div>
-                    <div class="setting-value">Change</div>
+                    <div class="setting-info">
+                        <div class="setting-name">Transaction Password</div>
+                        <div class="setting-value">Change</div>
+                    </div>
                 </div>
                 <div class="setting-item" id="customer-service-setting">
                     <div class="setting-icon">
-                        <img src="assets/support.png" alt="Support" style="width: 20px; height: 20px;">
+                        <img src="assets/support.png?v=1.0" alt="Support" style="width: 24px; height: 24px;">
                     </div>
-                    <div class="setting-name">Customer Service</div>
-                    <div class="setting-value">Contact</div>
+                    <div class="setting-info">
+                        <div class="setting-name">Customer Service</div>
+                        <div class="setting-value">Contact</div>
+                    </div>
                 </div>
                 <div class="setting-item" id="language-setting">
                     <div class="setting-icon">
-                        <img src="assets/language.png" alt="Language" style="width: 20px; height: 20px;">
+                        <img src="assets/language.png?v=1.0" alt="Language" style="width: 24px; height: 24px;">
                     </div>
-                    <div class="setting-name">Language</div>
-                    <div class="setting-value">English</div>
+                    <div class="setting-info">
+                        <div class="setting-name">Language</div>
+                        <div class="setting-value">English</div>
+                    </div>
                 </div>
                 <div class="setting-item" id="change-password-setting">
                     <div class="setting-icon">
-                        <img src="assets/key.png" alt="Key" style="width: 20px; height: 20px;">
+                        <img src="assets/security.png?v=1.0" alt="Security" style="width: 24px; height: 24px;">
                     </div>
-                    <div class="setting-name">Change Password</div>
-                    <div class="setting-value">Update</div>
+                    <div class="setting-info">
+                        <div class="setting-name">Change Password</div>
+                        <div class="setting-value">Update</div>
+                    </div>
                 </div>
                 <div class="pro-btn" id="logout-btn" style="background: transparent; border: 2px solid #ff6b6b; margin-top: 10px; color: #ff6b6b; font-weight: bold;">Logout</div>
             </div>
@@ -76,7 +97,7 @@ export default function renderMine() {
                         <div class="margin-bottom">
                             <label style="color: #333; font-size: 14px;">USDT Wallet Address (TRC20)</label>
                             <input type="text" id="withdrawal-address-input" placeholder="Enter your TRC20 address" 
-                                   style="width: 100%; padding: 10px; border: 2px solid #52c41a; border-radius: 5px; margin-top: 5px; background: rgba(0,0,0,0.1); color: white;">
+                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
                         </div>
                         <p style="font-size: 12px; color: #666;">
                             This address will be used for all future withdrawals. Please double-check the address.
@@ -99,17 +120,17 @@ export default function renderMine() {
                         <div class="margin-bottom">
                             <label style="color: #333; font-size: 14px;">Current Password</label>
                             <input type="password" id="current-password" placeholder="Enter current password" 
-                                   style="width: 100%; padding: 10px; border: 2px solid #52c41a; border-radius: 5px; margin-top: 5px; background: rgba(0,0,0,0.1); color: white;">
+                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
                         </div>
                         <div class="margin-bottom">
                             <label style="color: #333; font-size: 14px;">New Password</label>
                             <input type="password" id="new-password" placeholder="Enter new password" 
-                                   style="width: 100%; padding: 10px; border: 2px solid #52c41a; border-radius: 5px; margin-top: 5px; background: rgba(0,0,0,0.1); color: white;">
+                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
                         </div>
                         <div class="margin-bottom">
                             <label style="color: #333; font-size: 14px;">Confirm New Password</label>
                             <input type="password" id="confirm-password" placeholder="Confirm new password" 
-                                   style="width: 100%; padding: 10px; border: 2px solid #52c41a; border-radius: 5px; margin-top: 5px; background: rgba(0,0,0,0.1); color: white;">
+                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
                         </div>
                     </div>
                     <div class="pop-footer">
@@ -172,6 +193,12 @@ export function init() {
         // Load profile data
         loadProfileData();
         
+        // Initialize calendar
+        initCalendar();
+        
+        // Start time update
+        startTimeUpdate();
+        
         // Setup event listeners
         setupEventListeners();
     }, 100);
@@ -212,6 +239,62 @@ function setupEventListeners() {
     }
 }
 
+function initCalendar() {
+    const container = document.getElementById('calendar-container');
+    if (!container) return;
+
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const today = now.getDate();
+
+    // Get first day of month
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    
+    let html = '<div class="calendar-grid">';
+    
+    // Day names
+    dayNames.forEach(day => {
+        html += `<div class="calendar-day-name">${day}</div>`;
+    });
+
+    // Empty cells for days before first day
+    for (let i = 0; i < firstDay; i++) {
+        html += '<div class="calendar-day empty"></div>';
+    }
+
+    // Days of month
+    for (let day = 1; day <= daysInMonth; day++) {
+        const isToday = day === today;
+        html += `
+            <div class="calendar-day ${isToday ? 'today' : ''}">
+                ${day}
+                ${isToday ? '<div class="today-indicator"></div>' : ''}
+            </div>
+        `;
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+function startTimeUpdate() {
+    function updateTime() {
+        const now = new Date();
+        const utcTime = now.toUTCString();
+        const timeElement = document.getElementById('current-time');
+        if (timeElement) {
+            timeElement.textContent = utcTime;
+        }
+    }
+    
+    updateTime();
+    setInterval(updateTime, 1000);
+}
+
 async function loadProfileData() {
     try {
         const user = window.getCurrentUser();
@@ -227,7 +310,8 @@ async function loadProfileData() {
         
         // Update withdrawal address display
         if (user.withdrawal_address) {
-            document.querySelector('#withdrawal-address-setting .setting-value').textContent = 'Configured';
+            document.getElementById('withdrawal-address-status').textContent = 'Configured';
+            document.getElementById('withdrawal-address-status').style.color = '#52c41a';
         }
     } catch (error) {
         console.error('Error loading profile data:', error);
@@ -293,7 +377,8 @@ async function saveWithdrawalAddress() {
         hideAddressPopup();
         
         // Update display
-        document.querySelector('#withdrawal-address-setting .setting-value').textContent = 'Configured';
+        document.getElementById('withdrawal-address-status').textContent = 'Configured';
+        document.getElementById('withdrawal-address-status').style.color = '#52c41a';
     } catch (error) {
         window.showCustomAlert('Error saving address: ' + error.message);
     }

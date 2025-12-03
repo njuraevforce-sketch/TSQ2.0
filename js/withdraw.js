@@ -1,99 +1,237 @@
+[file name]: withdraw (1).js
+[file content begin]
 // Withdraw section
 export default function renderWithdraw() {
     return `
+        <!-- Withdraw header -->
         <div class="card padding">
-            <div class="text-white text-bold margin-bottom" style="text-align: center; font-size: 16px;">Withdraw USDT</div>
-            
-            <!-- Balance info -->
-            <div class="balance-display" style="text-align: center; margin-bottom: 20px;">
-                <div style="color: #ccc; font-size: 12px;">Available Balance</div>
-                <div id="available-balance-display" style="color: #f9ae3d; font-size: 24px; font-weight: bold; margin: 5px 0;">0.00 USDT</div>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h2 style="color: white;">Withdraw USDT</h2>
+                <p style="color: #ccc;">Available Balance: <span id="withdraw-balance" style="color: #f9ae3d; font-weight: bold;">0.00 USDT</span></p>
             </div>
-            
-            <!-- Network Selection -->
-            <div class="network-selection">
-                <div class="network-option active" data-network="trc20">
-                    <img src="assets/trc20.png?v=1.0" alt="TRC20">
-                    <span>TRC20</span>
-                </div>
-                <div class="network-option" data-network="bep20">
-                    <img src="assets/bep20.png?v=1.0" alt="BEP20">
-                    <span>BEP20</span>
+
+            <!-- Network selection with icons -->
+            <div class="network-section">
+                <div class="section-title" style="color: white; margin-bottom: 15px;">Select Network</div>
+                <div class="network-options">
+                    <div class="network-option" data-network="TRC20">
+                        <div class="network-icon">
+                            <img src="assets/trc20.png" alt="TRC20">
+                        </div>
+                        <div class="network-info">
+                            <div class="network-name">TRC20 (Tron)</div>
+                            <div class="network-fee" id="trc20-fee">Fee: 1%</div>
+                        </div>
+                        <div class="network-radio">
+                            <input type="radio" name="network" id="network-trc20" value="TRC20" checked>
+                        </div>
+                    </div>
+                    
+                    <div class="network-option" data-network="BEP20">
+                        <div class="network-icon">
+                            <img src="assets/bep20.png" alt="BEP20">
+                        </div>
+                        <div class="network-info">
+                            <div class="network-name">BEP20 (BSC)</div>
+                            <div class="network-fee" id="bep20-fee">Fee: 1%</div>
+                        </div>
+                        <div class="network-radio">
+                            <input type="radio" name="network" id="network-bep20" value="BEP20">
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <!-- Withdrawal Form -->
-            <div class="withdraw-form">
-                <div class="form-group">
-                    <label>Wallet Address</label>
-                    <input type="text" id="withdraw-address" placeholder="Enter your wallet address" 
-                           class="input-line">
-                    <div class="saved-address" id="saved-address-info" style="display: none;">
-                        <span style="color: #ccc; font-size: 12px;">Saved: <span id="saved-address-text" style="color: #52c41a;"></span></span>
-                        <button id="use-saved-address" style="font-size: 11px; padding: 3px 10px; background: #4e7771; color: white; border: none; border-radius: 3px; cursor: pointer;">Use</button>
+
+            <!-- Withdrawal address section -->
+            <div class="card padding margin-top" id="address-section">
+                <div class="section-title" style="color: white; margin-bottom: 15px;">Withdrawal Address</div>
+                
+                <!-- Saved addresses -->
+                <div class="saved-addresses" id="saved-addresses" style="display: none;">
+                    <div class="saved-address" id="trc20-saved">
+                        <div class="address-label">
+                            <i class="fas fa-wallet" style="color: #4e7771;"></i>
+                            TRC20 Address
+                        </div>
+                        <div class="address-value" id="trc20-address-value"></div>
                     </div>
-                    <div id="address-warning" style="display: none; color: #ff6b6b; font-size: 11px; margin-top: 5px;">
-                        No withdrawal address saved. Please set it in Settings or contact support.
+                    <div class="saved-address" id="bep20-saved" style="margin-top: 10px;">
+                        <div class="address-label">
+                            <i class="fas fa-wallet" style="color: #4e7771;"></i>
+                            BEP20 Address
+                        </div>
+                        <div class="address-value" id="bep20-address-value"></div>
+                    </div>
+                    <div class="text-gray" style="font-size: 12px; margin-top: 10px;">
+                        <i class="fas fa-info-circle"></i> To change address, contact support: @GLYSupport
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label>Amount (USDT)</label>
-                    <input type="number" id="withdraw-amount" placeholder="Minimum 20 USDT" 
-                           class="input-line">
-                    <div class="balance-info">
-                        <span style="color: #ccc; font-size: 12px;">Available: <span id="available-balance" style="color: #f9ae3d; font-weight: bold;">0.00</span> USDT</span>
-                        <button id="withdraw-max" style="font-size: 11px; padding: 2px 8px; background: transparent; border: 1px solid #4e7771; color: #4e7771; border-radius: 3px; cursor: pointer; margin-left: 10px;">MAX</button>
+                <!-- New address form -->
+                <div class="new-address-form" id="new-address-form">
+                    <div class="form-group">
+                        <label style="color: white; display: block; margin-bottom: 5px;">Enter your <span id="network-label">TRC20</span> address</label>
+                        <input type="text" id="withdrawal-address" placeholder="e.g., TQr7R6e9J9X7V6v8G6t7Y6u8I9o0P7b6v5C" 
+                               class="input-line" style="background: #2a2a2a; color: white;">
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label style="color: white; display: block; margin-bottom: 5px;">Confirm address</label>
+                        <input type="text" id="withdrawal-address-confirm" placeholder="Re-enter address" 
+                               class="input-line" style="background: #2a2a2a; color: white;">
+                    </div>
+                    <div class="text-gray" style="font-size: 12px; margin-top: 10px;">
+                        <i class="fas fa-exclamation-triangle"></i> Double-check the address. Once saved, it can only be changed through support.
                     </div>
                 </div>
+            </div>
+
+            <!-- Withdrawal amount -->
+            <div class="card padding margin-top">
+                <div class="section-title" style="color: white; margin-bottom: 15px;">Withdrawal Amount</div>
                 
                 <div class="form-group">
-                    <label>Transaction Password</label>
-                    <input type="password" id="withdraw-password" placeholder="Enter transaction password" 
-                           class="input-line">
+                    <input type="number" id="withdraw-amount" placeholder="Enter amount (USDT)" 
+                           class="input-line" style="background: #2a2a2a; color: white; text-align: center; font-size: 18px;">
                 </div>
                 
-                <!-- Fee Info -->
-                <div class="fee-info">
-                    <div>Withdrawal Amount: <span id="withdrawal-amount">0.00</span> USDT</div>
-                    <div>Network Fee (TRC20): <span id="network-fee">1.00</span> USDT</div>
-                    <div>VIP Fee (<span id="vip-fee-percent">7</span>%): <span id="vip-fee">0.00</span> USDT</div>
-                    <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 5px; margin-top: 5px; font-weight: bold; color: #f9ae3d;">You Receive: <span id="receive-amount">0.00</span> USDT</div>
+                <!-- Quick amount buttons -->
+                <div class="quick-amounts" style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button class="quick-amount-btn" data-amount="50">50 USDT</button>
+                    <button class="quick-amount-btn" data-amount="100">100 USDT</button>
+                    <button class="quick-amount-btn" data-amount="200">200 USDT</button>
+                    <button class="quick-amount-btn" data-amount="500">500 USDT</button>
                 </div>
                 
-                <button class="pro-btn" id="submit-withdraw" style="width: 100%; margin-top: 20px; background: linear-gradient(135deg, #4e7771, #3d615c);">Submit Withdrawal</button>
-                
-                <div class="withdraw-notice">
-                    <p style="font-size: 12px; color: #ccc; text-align: center; line-height: 1.4;">
-                        ⚠️ Withdrawal processing time: 1-24 hours<br>
-                        ⚠️ For address changes, contact Telegram support<br>
-                        ⚠️ Double-check address before submitting
-                    </p>
+                <!-- Fee and net amount -->
+                <div class="fee-calculation" style="margin-top: 20px;">
+                    <div class="fee-row" style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: #ccc;">Fee:</span>
+                        <span id="withdrawal-fee" style="color: #f9ae3d;">0.00 USDT</span>
+                    </div>
+                    <div class="fee-row" style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: #ccc;">VIP Level:</span>
+                        <span id="vip-level-display" style="color: #4e7771;">VIP 1</span>
+                    </div>
+                    <div class="fee-row" style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: #ccc;">Fee %:</span>
+                        <span id="fee-percent" style="color: #4e7771;">7%</span>
+                    </div>
+                    <div class="fee-row" style="display: flex; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid #444;">
+                        <span style="color: white; font-weight: bold;">You will receive:</span>
+                        <span id="net-amount" style="color: #52c41a; font-weight: bold; font-size: 18px;">0.00 USDT</span>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Payment password -->
+            <div class="card padding margin-top">
+                <div class="section-title" style="color: white; margin-bottom: 15px;">Confirm Withdrawal</div>
+                
+                <div class="form-group" style="position: relative;">
+                    <input type="password" id="payment-password" placeholder="Payment Password" 
+                           class="input-line" style="background: #2a2a2a; color: white; padding-right: 40px;">
+                    <i class="fas fa-eye password-toggle" id="toggle-payment-password" 
+                       style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #52c41a; cursor: pointer; z-index: 10;"></i>
+                </div>
+                
+                <button id="submit-withdrawal" class="pro-btn" style="width: 100%; margin-top: 20px; background: #4e7771; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px;">
+                    Submit Withdrawal Request
+                </button>
+            </div>
+
+            <!-- Important notes -->
+            <div class="card padding margin-top" style="background: rgba(249, 174, 61, 0.1); border: 1px solid #f9ae3d;">
+                <div style="color: #f9ae3d; font-weight: bold; margin-bottom: 10px;">
+                    <i class="fas fa-exclamation-circle"></i> Important Notes
+                </div>
+                <ul style="color: #ccc; font-size: 12px; padding-left: 20px; margin: 0;">
+                    <li>Minimum withdrawal: 20 USDT</li>
+                    <li>Processing time: 1-24 hours</li>
+                    <li>Double-check your withdrawal address</li>
+                    <li>Fee depends on your VIP level</li>
+                    <li>Funds will be sent to your saved address</li>
+                    <li>To change address, contact support</li>
+                </ul>
             </div>
         </div>
-        
-        <!-- Withdrawal History -->
-        <div class="card padding margin-top">
-            <div class="text-white text-bold margin-bottom" style="text-align: center; font-size: 14px;">Withdrawal History</div>
-            <div id="withdrawal-history" style="min-height: 100px;">
-                <div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">
-                    Loading withdrawal history...
-                </div>
-            </div>
-        </div>
-        
-        <!-- Processing popup -->
-        <div class="pop-overlay" id="withdraw-processing-popup" style="display: none;">
+
+        <!-- Withdrawal confirmation popup -->
+        <div class="pop-overlay" id="withdrawal-confirm-popup" style="display: none;">
             <div class="pop-content">
-                <div class="pop-header">Processing Withdrawal</div>
+                <div class="pop-header">Confirm Withdrawal</div>
                 <div class="pop-body">
                     <div style="text-align: center; margin-bottom: 20px;">
-                        <div class="loading-spinner" style="width: 40px; height: 40px; margin: 0 auto;"></div>
+                        <div style="font-size: 48px; color: #4e7771;">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
                     </div>
-                    <p style="text-align: center; color: #333;">
-                        Please wait while we process your withdrawal request...
+                    
+                    <div class="confirm-details">
+                        <div class="confirm-row">
+                            <span>Amount:</span>
+                            <span id="confirm-amount" style="color: white; font-weight: bold;"></span>
+                        </div>
+                        <div class="confirm-row">
+                            <span>Network:</span>
+                            <span id="confirm-network" style="color: #4e7771;"></span>
+                        </div>
+                        <div class="confirm-row">
+                            <span>Fee:</span>
+                            <span id="confirm-fee" style="color: #f9ae3d;"></span>
+                        </div>
+                        <div class="confirm-row">
+                            <span>You receive:</span>
+                            <span id="confirm-net" style="color: #52c41a; font-weight: bold;"></span>
+                        </div>
+                        <div class="confirm-row">
+                            <span>Address:</span>
+                            <span id="confirm-address" style="color: #ccc; font-size: 12px; word-break: break-all;"></span>
+                        </div>
+                    </div>
+                    
+                    <p style="text-align: center; color: #333; margin-top: 15px;">
+                        Are you sure you want to submit this withdrawal request?
                     </p>
+                </div>
+                <div class="pop-footer">
+                    <button type="button" id="confirm-withdrawal-btn" style="margin-right: 10px;">Confirm</button>
+                    <button type="button" id="cancel-withdrawal">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success popup -->
+        <div class="pop-overlay" id="withdrawal-success-popup" style="display: none;">
+            <div class="pop-content">
+                <div class="pop-header">Request Submitted</div>
+                <div class="pop-body">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <div style="font-size: 48px; color: #52c41a;">✓</div>
+                    </div>
+                    <p style="text-align: center; color: #333; margin-bottom: 15px;">
+                        Your withdrawal request has been submitted successfully!
+                    </p>
+                    <div class="success-details">
+                        <div class="success-row">
+                            <span>Request ID:</span>
+                            <span id="success-request-id" style="color: #4e7771; font-weight: bold;"></span>
+                        </div>
+                        <div class="success-row">
+                            <span>Amount:</span>
+                            <span id="success-amount" style="color: white; font-weight: bold;"></span>
+                        </div>
+                        <div class="success-row">
+                            <span>Status:</span>
+                            <span style="color: #f9ae3d; font-weight: bold;">Pending</span>
+                        </div>
+                    </div>
+                    <p style="text-align: center; color: #666; font-size: 12px; margin-top: 15px;">
+                        Please wait 1-24 hours for processing.<br>
+                        You can check status in Transaction History.
+                    </p>
+                </div>
+                <div class="pop-footer">
+                    <button id="close-success-popup" style="background: #4e7771;">OK</button>
                 </div>
             </div>
         </div>
@@ -102,10 +240,19 @@ export default function renderWithdraw() {
 
 export async function init() {
     document.body.classList.add('no-tabbar');
+    document.title = 'GLY - Withdraw';
+
+    // Set navbar title
+    window.setNavbarTitle('Withdraw', true);
+
+    // Load user data
     await loadUserData();
+    
+    // Setup event listeners
     setupEventListeners();
-    loadWithdrawalHistory();
-    setupNetworkSelection();
+    
+    // Calculate initial fee
+    calculateFee();
 }
 
 async function loadUserData() {
@@ -115,90 +262,22 @@ async function loadUserData() {
         return;
     }
     
-    // Update balance display
-    document.getElementById('available-balance-display').textContent = `${user.balance.toFixed(2)} USDT`;
-    document.getElementById('available-balance').textContent = user.balance.toFixed(2);
+    // Update balance
+    document.getElementById('withdraw-balance').textContent = `${user.balance.toFixed(2)} USDT`;
+    document.getElementById('vip-level-display').textContent = `VIP ${user.vip_level}`;
     
-    // Check for saved withdrawal address
-    if (user.withdrawal_address) {
-        document.getElementById('saved-address-info').style.display = 'flex';
-        document.getElementById('saved-address-text').textContent = user.withdrawal_address.substring(0, 10) + '...' + user.withdrawal_address.substring(user.withdrawal_address.length - 10);
-    } else {
-        document.getElementById('address-warning').style.display = 'block';
-    }
+    // Calculate fee percent based on VIP level
+    const feePercent = getFeePercent(user.vip_level);
+    document.getElementById('fee-percent').textContent = `${feePercent}%`;
     
-    // Update VIP fee
-    const feePercent = getWithdrawalFee(user.vip_level);
-    document.getElementById('vip-fee-percent').textContent = feePercent;
+    // Load saved addresses
+    await loadSavedAddresses(user);
+    
+    // Check if user has saved addresses
+    checkAddressStatus(user);
 }
 
-function setupEventListeners() {
-    // Network selection
-    document.querySelectorAll('.network-option').forEach(option => {
-        option.addEventListener('click', function() {
-            document.querySelectorAll('.network-option').forEach(opt => opt.classList.remove('active'));
-            this.classList.add('active');
-            updateFeeInfo();
-        });
-    });
-    
-    // Use saved address
-    document.getElementById('use-saved-address').addEventListener('click', function() {
-        const user = window.getCurrentUser();
-        if (user && user.withdrawal_address) {
-            document.getElementById('withdraw-address').value = user.withdrawal_address;
-        }
-    });
-    
-    // Withdraw amount input
-    const amountInput = document.getElementById('withdraw-amount');
-    amountInput.addEventListener('input', updateFeeInfo);
-    
-    // Withdraw max button
-    document.getElementById('withdraw-max').addEventListener('click', function() {
-        const user = window.getCurrentUser();
-        if (user) {
-            const maxAmount = Math.max(0, user.balance - 1); // Minus network fee
-            document.getElementById('withdraw-amount').value = maxAmount.toFixed(2);
-            updateFeeInfo();
-        }
-    });
-    
-    // Submit withdrawal
-    document.getElementById('submit-withdraw').addEventListener('click', processWithdrawal);
-}
-
-function setupNetworkSelection() {
-    // Default to TRC20
-    updateFeeInfo();
-}
-
-function updateFeeInfo() {
-    const amount = parseFloat(document.getElementById('withdraw-amount').value) || 0;
-    const user = window.getCurrentUser();
-    
-    if (!user) return;
-    
-    // Network fee
-    const network = document.querySelector('.network-option.active').dataset.network;
-    const networkFee = network === 'trc20' ? 1.00 : 0.50;
-    
-    // VIP fee
-    const vipFeePercent = getWithdrawalFee(user.vip_level);
-    const vipFee = (amount * vipFeePercent) / 100;
-    
-    // Total fee and receive amount
-    const totalFee = networkFee + vipFee;
-    const receiveAmount = Math.max(0, amount - totalFee);
-    
-    // Update display
-    document.getElementById('withdrawal-amount').textContent = amount.toFixed(2);
-    document.getElementById('network-fee').textContent = networkFee.toFixed(2);
-    document.getElementById('vip-fee').textContent = vipFee.toFixed(2);
-    document.getElementById('receive-amount').textContent = receiveAmount.toFixed(2);
-}
-
-function getWithdrawalFee(vipLevel) {
+function getFeePercent(vipLevel) {
     const fees = {
         1: 7,
         2: 5,
@@ -210,107 +289,129 @@ function getWithdrawalFee(vipLevel) {
     return fees[vipLevel] || 7;
 }
 
-async function loadWithdrawalHistory() {
+async function loadSavedAddresses(user) {
+    try {
+        // Check if user has saved addresses
+        const hasTRC20 = user.trc20_address && user.trc20_address.trim().length > 0;
+        const hasBEP20 = user.bep20_address && user.bep20_address.trim().length > 0;
+        
+        if (hasTRC20) {
+            document.getElementById('trc20-address-value').textContent = user.trc20_address;
+            document.getElementById('trc20-saved').style.display = 'block';
+        }
+        
+        if (hasBEP20) {
+            document.getElementById('bep20-address-value').textContent = user.bep20_address;
+            document.getElementById('bep20-saved').style.display = 'block';
+        }
+        
+        // Show saved addresses section if any address exists
+        if (hasTRC20 || hasBEP20) {
+            document.getElementById('saved-addresses').style.display = 'block';
+        }
+        
+    } catch (error) {
+        console.error('Error loading saved addresses:', error);
+    }
+}
+
+function checkAddressStatus(user) {
+    const selectedNetwork = document.querySelector('input[name="network"]:checked').value;
+    const hasTRC20 = user.trc20_address && user.trc20_address.trim().length > 0;
+    const hasBEP20 = user.bep20_address && user.bep20_address.trim().length > 0;
+    
+    if (selectedNetwork === 'TRC20' && hasTRC20) {
+        document.getElementById('new-address-form').style.display = 'none';
+        document.getElementById('saved-addresses').style.display = 'block';
+    } else if (selectedNetwork === 'BEP20' && hasBEP20) {
+        document.getElementById('new-address-form').style.display = 'none';
+        document.getElementById('saved-addresses').style.display = 'block';
+    } else {
+        document.getElementById('new-address-form').style.display = 'block';
+        document.getElementById('saved-addresses').style.display = 'none';
+        document.getElementById('network-label').textContent = selectedNetwork;
+    }
+}
+
+function setupEventListeners() {
+    try {
+        // Network selection
+        document.querySelectorAll('input[name="network"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const network = this.value;
+                const user = window.getCurrentUser();
+                
+                // Update network label
+                document.getElementById('network-label').textContent = network;
+                
+                // Check address status for selected network
+                checkAddressStatus(user);
+                
+                // Update fee display
+                const feePercent = getFeePercent(user.vip_level);
+                document.getElementById('fee-percent').textContent = `${feePercent}%`;
+                
+                // Recalculate fee
+                calculateFee();
+            });
+        });
+
+        // Quick amount buttons
+        document.querySelectorAll('.quick-amount-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const amount = parseFloat(this.getAttribute('data-amount'));
+                document.getElementById('withdraw-amount').value = amount;
+                calculateFee();
+            });
+        });
+
+        // Amount input
+        document.getElementById('withdraw-amount').addEventListener('input', calculateFee);
+        document.getElementById('withdraw-amount').addEventListener('change', calculateFee);
+
+        // Payment password toggle
+        document.getElementById('toggle-payment-password').addEventListener('click', function() {
+            const passwordInput = document.getElementById('payment-password');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // Submit withdrawal button
+        document.getElementById('submit-withdrawal').addEventListener('click', validateWithdrawal);
+
+        // Popup handlers
+        document.getElementById('confirm-withdrawal-btn').addEventListener('click', processWithdrawal);
+        document.getElementById('cancel-withdrawal').addEventListener('click', hideWithdrawalConfirmPopup);
+        document.getElementById('close-success-popup').addEventListener('click', hideWithdrawalSuccessPopup);
+        
+    } catch (error) {
+        console.error('Error setting up event listeners in withdraw:', error);
+        setTimeout(setupEventListeners, 500);
+    }
+}
+
+function calculateFee() {
     const user = window.getCurrentUser();
     if (!user) return;
     
-    try {
-        const { data: withdrawals, error } = await window.supabase
-            .from('withdrawals')
-            .select('*')
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false })
-            .limit(20);
-            
-        if (error) throw error;
-        
-        const container = document.getElementById('withdrawal-history');
-        let html = '';
-        
-        if (withdrawals && withdrawals.length > 0) {
-            withdrawals.forEach(withdrawal => {
-                const date = new Date(withdrawal.created_at).toLocaleDateString();
-                const time = new Date(withdrawal.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                const statusClass = getStatusClass(withdrawal.status);
-                const statusText = getStatusText(withdrawal.status);
-                
-                html += `
-                    <div class="withdrawal-history-item" style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid ${getStatusColor(withdrawal.status)};">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                            <div style="color: white; font-size: 12px; font-weight: bold;">${withdrawal.amount} USDT</div>
-                            <div class="${statusClass}" style="font-size: 10px; padding: 2px 8px; border-radius: 10px; background: ${getStatusBgColor(withdrawal.status)}; color: white;">${statusText}</div>
-                        </div>
-                        <div style="color: #ccc; font-size: 10px; margin-bottom: 3px;">To: ${withdrawal.address.substring(0, 10)}...${withdrawal.address.substring(withdrawal.address.length - 10)}</div>
-                        <div style="color: #ccc; font-size: 10px; margin-bottom: 3px;">Network: ${withdrawal.network.toUpperCase()}</div>
-                        <div style="color: #999; font-size: 9px;">${date} ${time}</div>
-                        ${withdrawal.tx_hash ? `<div style="color: #4e7771; font-size: 9px; margin-top: 3px;">TX: ${withdrawal.tx_hash.substring(0, 15)}...</div>` : ''}
-                    </div>
-                `;
-            });
-        } else {
-            html = '<div style="color: #ccc; text-align: center; padding: 30px; font-size: 12px;">No withdrawal history</div>';
-        }
-        
-        container.innerHTML = html;
-        
-    } catch (error) {
-        console.error('Error loading withdrawal history:', error);
-        document.getElementById('withdrawal-history').innerHTML = 
-            '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">Error loading history</div>';
-    }
+    const amount = parseFloat(document.getElementById('withdraw-amount').value) || 0;
+    const feePercent = getFeePercent(user.vip_level);
+    const fee = (amount * feePercent) / 100;
+    const netAmount = amount - fee;
+    
+    // Update display
+    document.getElementById('withdrawal-fee').textContent = `${fee.toFixed(2)} USDT`;
+    document.getElementById('net-amount').textContent = `${netAmount.toFixed(2)} USDT`;
 }
 
-function getStatusClass(status) {
-    const classes = {
-        'pending': 'status-pending',
-        'processing': 'status-processing',
-        'completed': 'status-completed',
-        'rejected': 'status-rejected'
-    };
-    return classes[status] || 'status-pending';
-}
-
-function getStatusText(status) {
-    const texts = {
-        'pending': 'Pending',
-        'processing': 'Processing',
-        'completed': 'Completed',
-        'rejected': 'Rejected'
-    };
-    return texts[status] || 'Pending';
-}
-
-function getStatusColor(status) {
-    const colors = {
-        'pending': '#f9ae3d',
-        'processing': '#4e7771',
-        'completed': '#52c41a',
-        'rejected': '#ff6b6b'
-    };
-    return colors[status] || '#f9ae3d';
-}
-
-function getStatusBgColor(status) {
-    const colors = {
-        'pending': 'rgba(249, 174, 61, 0.2)',
-        'processing': 'rgba(78, 119, 113, 0.2)',
-        'completed': 'rgba(82, 196, 26, 0.2)',
-        'rejected': 'rgba(255, 107, 107, 0.2)'
-    };
-    return colors[status] || 'rgba(249, 174, 61, 0.2)';
-}
-
-async function processWithdrawal() {
+async function validateWithdrawal() {
     const user = window.getCurrentUser();
-    if (!user) {
-        window.showCustomAlert('User not found');
-        return;
-    }
+    if (!user) return;
     
     const amount = parseFloat(document.getElementById('withdraw-amount').value);
-    const address = document.getElementById('withdraw-address').value.trim();
-    const password = document.getElementById('withdraw-password').value;
-    const network = document.querySelector('.network-option.active').dataset.network;
+    const network = document.querySelector('input[name="network"]:checked').value;
+    const paymentPassword = document.getElementById('payment-password').value;
     
     // Validation
     if (!amount || amount < 20) {
@@ -323,126 +424,181 @@ async function processWithdrawal() {
         return;
     }
     
-    if (!address) {
-        window.showCustomAlert('Please enter wallet address');
+    if (!paymentPassword) {
+        window.showCustomAlert('Please enter payment password');
         return;
     }
     
-    if (!password) {
-        window.showCustomAlert('Please enter transaction password');
+    if (user.payment_password !== paymentPassword) {
+        window.showCustomAlert('Invalid payment password');
         return;
     }
     
-    // Check payment password
-    if (user.payment_password !== password) {
-        window.showCustomAlert('Invalid transaction password');
-        return;
-    }
+    // Check address
+    let address = '';
+    const hasTRC20 = user.trc20_address && user.trc20_address.trim().length > 0;
+    const hasBEP20 = user.bep20_address && user.bep20_address.trim().length > 0;
     
-    // Validate address format (basic validation)
-    if (address.length < 25) {
-        window.showCustomAlert('Invalid wallet address format');
-        return;
-    }
-    
-    // Calculate fees
-    const networkFee = network === 'trc20' ? 1.00 : 0.50;
-    const vipFeePercent = getWithdrawalFee(user.vip_level);
-    const vipFee = (amount * vipFeePercent) / 100;
-    const totalFee = networkFee + vipFee;
-    const receiveAmount = amount - totalFee;
-    
-    const confirmMessage = `
-        <div style="text-align: center;">
-            <h4 style="color: #333; margin-bottom: 15px;">Confirm Withdrawal</h4>
-            <div style="background: #f5f5f5; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
-                <div style="display: flex; justify-content: space-between; margin: 5px 0;">
-                    <span style="color: #666;">Amount:</span>
-                    <span style="color: #333; font-weight: bold;">${amount.toFixed(2)} USDT</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin: 5px 0;">
-                    <span style="color: #666;">Network Fee:</span>
-                    <span style="color: #333;">${networkFee.toFixed(2)} USDT</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin: 5px 0;">
-                    <span style="color: #666;">VIP Fee (${vipFeePercent}%):</span>
-                    <span style="color: #333;">${vipFee.toFixed(2)} USDT</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin: 5px 0; padding-top: 5px; border-top: 1px solid #ddd;">
-                    <span style="color: #333; font-weight: bold;">You Receive:</span>
-                    <span style="color: #4e7771; font-weight: bold;">${receiveAmount.toFixed(2)} USDT</span>
-                </div>
-            </div>
-            <div style="text-align: left; font-size: 12px; color: #666; margin-bottom: 10px;">
-                <div>Network: ${network.toUpperCase()}</div>
-                <div>Address: ${address.substring(0, 15)}...${address.substring(address.length - 10)}</div>
-            </div>
-            <p style="color: #666; font-size: 12px;">Processing time: 1-24 hours</p>
-        </div>
-    `;
-    
-    window.showCustomModal('Confirm Withdrawal', confirmMessage, async () => {
-        // Show processing popup
-        document.getElementById('withdraw-processing-popup').style.display = 'flex';
+    if (network === 'TRC20' && hasTRC20) {
+        address = user.trc20_address;
+    } else if (network === 'BEP20' && hasBEP20) {
+        address = user.bep20_address;
+    } else {
+        // New address
+        address = document.getElementById('withdrawal-address').value.trim();
+        const confirmAddress = document.getElementById('withdrawal-address-confirm').value.trim();
         
-        try {
-            // Update user balance
-            const newBalance = user.balance - amount;
-            const { error: updateError } = await window.supabase
+        if (!address) {
+            window.showCustomAlert('Please enter withdrawal address');
+            return;
+        }
+        
+        if (address !== confirmAddress) {
+            window.showCustomAlert('Addresses do not match');
+            return;
+        }
+        
+        if (address.length < 20) {
+            window.showCustomAlert('Invalid address format');
+            return;
+        }
+    }
+    
+    if (!address) {
+        window.showCustomAlert('Withdrawal address not found');
+        return;
+    }
+    
+    // Calculate final amounts
+    const feePercent = getFeePercent(user.vip_level);
+    const fee = (amount * feePercent) / 100;
+    const netAmount = amount - fee;
+    
+    // Show confirmation popup
+    document.getElementById('confirm-amount').textContent = `${amount.toFixed(2)} USDT`;
+    document.getElementById('confirm-network').textContent = network;
+    document.getElementById('confirm-fee').textContent = `${fee.toFixed(2)} USDT (${feePercent}%)`;
+    document.getElementById('confirm-net').textContent = `${netAmount.toFixed(2)} USDT`;
+    document.getElementById('confirm-address').textContent = address;
+    
+    document.getElementById('withdrawal-confirm-popup').style.display = 'flex';
+}
+
+async function processWithdrawal() {
+    const user = window.getCurrentUser();
+    if (!user) return;
+    
+    const amount = parseFloat(document.getElementById('withdraw-amount').value);
+    const network = document.querySelector('input[name="network"]:checked').value;
+    const feePercent = getFeePercent(user.vip_level);
+    const fee = (amount * feePercent) / 100;
+    
+    let address = '';
+    let saveAddress = false;
+    const hasTRC20 = user.trc20_address && user.trc20_address.trim().length > 0;
+    const hasBEP20 = user.bep20_address && user.bep20_address.trim().length > 0;
+    
+    if (network === 'TRC20' && hasTRC20) {
+        address = user.trc20_address;
+    } else if (network === 'BEP20' && hasBEP20) {
+        address = user.bep20_address;
+    } else {
+        // New address - save it
+        address = document.getElementById('withdrawal-address').value.trim();
+        saveAddress = true;
+    }
+    
+    try {
+        // First save address if needed
+        if (saveAddress) {
+            const updateData = {};
+            if (network === 'TRC20') {
+                updateData.trc20_address = address;
+            } else if (network === 'BEP20') {
+                updateData.bep20_address = address;
+            }
+            
+            const { error: updateError } = await supabase
                 .from('users')
-                .update({ balance: newBalance })
+                .update(updateData)
                 .eq('id', user.id);
                 
             if (updateError) throw updateError;
             
-            // Create withdrawal record
-            const { error: withdrawalError } = await window.supabase
-                .from('withdrawals')
-                .insert([{
-                    user_id: user.id,
-                    amount: amount,
-                    network: network,
-                    address: address,
-                    status: 'pending',
-                    created_at: new Date().toISOString()
-                }]);
-                
-            if (withdrawalError) throw withdrawalError;
-            
-            // Create transaction record
-            const { error: txError } = await window.supabase
-                .from('transactions')
-                .insert([{
-                    user_id: user.id,
-                    type: 'withdrawal',
-                    amount: -amount,
-                    status: 'pending',
-                    description: `Withdrawal ${amount} USDT via ${network.toUpperCase()} (Fees: ${totalFee.toFixed(2)} USDT)`
-                }]);
-                
-            if (txError) throw txError;
-            
-            // Update user in localStorage
-            user.balance = newBalance;
+            // Update local user
+            if (network === 'TRC20') {
+                user.trc20_address = address;
+            } else if (network === 'BEP20') {
+                user.bep20_address = address;
+            }
             localStorage.setItem('gly_user', JSON.stringify(user));
-            
-            // Close processing popup
-            document.getElementById('withdraw-processing-popup').style.display = 'none';
-            
-            // Show success message
-            window.showCustomAlert(`Withdrawal request submitted successfully! You will receive ${receiveAmount.toFixed(2)} USDT within 24 hours.`);
-            
-            // Reset form
-            document.getElementById('withdraw-amount').value = '';
-            document.getElementById('withdraw-password').value = '';
-            
-            // Update displays
-            loadUserData();
-            loadWithdrawalHistory();
-            
-        } catch (error) {
-            document.getElementById('withdraw-processing-popup').style.display = 'none';
-            window.showCustomAlert('Error processing withdrawal: ' + error.message);
         }
-    });
+        
+        // Create withdrawal request
+        const { data, error } = await supabase
+            .from('withdrawal_requests')
+            .insert([{
+                user_id: user.id,
+                amount: amount,
+                network: network,
+                address: address,
+                status: 'pending'
+            }])
+            .select();
+            
+        if (error) throw error;
+        
+        // Update user balance
+        const newBalance = user.balance - amount;
+        const { error: balanceError } = await supabase
+            .from('users')
+            .update({ balance: newBalance })
+            .eq('id', user.id);
+            
+        if (balanceError) throw balanceError;
+        
+        // Create transaction record
+        await supabase
+            .from('transactions')
+            .insert([{
+                user_id: user.id,
+                type: 'withdrawal',
+                amount: -amount,
+                status: 'pending',
+                description: `Withdrawal ${amount} USDT via ${network} (Fee: ${fee.toFixed(2)} USDT)`
+            }]);
+        
+        // Update local user
+        user.balance = newBalance;
+        localStorage.setItem('gly_user', JSON.stringify(user));
+        
+        // Show success popup
+        hideWithdrawalConfirmPopup();
+        
+        document.getElementById('success-request-id').textContent = `#${data[0].id}`;
+        document.getElementById('success-amount').textContent = `${amount.toFixed(2)} USDT`;
+        document.getElementById('withdrawal-success-popup').style.display = 'flex';
+        
+        // Update balance display
+        document.getElementById('withdraw-balance').textContent = `${newBalance.toFixed(2)} USDT`;
+        
+    } catch (error) {
+        console.error('Error processing withdrawal:', error);
+        window.showCustomAlert('Error processing withdrawal: ' + error.message);
+    }
 }
+
+function hideWithdrawalConfirmPopup() {
+    document.getElementById('withdrawal-confirm-popup').style.display = 'none';
+}
+
+function hideWithdrawalSuccessPopup() {
+    document.getElementById('withdrawal-success-popup').style.display = 'none';
+    // Clear form
+    document.getElementById('withdraw-amount').value = '';
+    document.getElementById('payment-password').value = '';
+    document.getElementById('withdrawal-address').value = '';
+    document.getElementById('withdrawal-address-confirm').value = '';
+    calculateFee();
+}
+[file content end]

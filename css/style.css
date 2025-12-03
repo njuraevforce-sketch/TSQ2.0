@@ -1118,8 +1118,8 @@ html {
     top: 50%; /* Центрирование по вертикали */
     left: 70%; /* Смещено от центра на 20% вправо (было 70%) */
     transform: translate(-50%, -50%); /* Центрирование */
-    width: 125px; /* Увеличено с 55px до 80px */
-    height: 125px; /* Увеличено с 55px до 80px */
+    width: 100px; /* Увеличено с 55px до 80px */
+    height: 100px; /* Увеличено с 55px до 80px */
     z-index: 10;
     background: transparent !important;
     border: none !important;
@@ -1127,8 +1127,8 @@ html {
 }
 
 .vip-icon {
-    width: 125px !important; /* Увеличено с 55px до 80px */
-    height: 125px !important; /* Увеличено с 55px до 80px */
+    width: 100px !important; /* Увеличено с 55px до 80px */
+    height: 100px !important; /* Увеличено с 55px до 80px */
     object-fit: contain;
     display: block !important;
     visibility: visible !important;

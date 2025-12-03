@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>GLY - Global Ledger Yield</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="css/style.css?v=1.0">
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
+    
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     
     <style>
         .uni-tabbar { display: none; }
@@ -162,6 +166,17 @@
                 display: none !important;
             }
         }
+        
+        /* Cache version indicator */
+        .cache-version {
+            display: none;
+            position: fixed;
+            bottom: 5px;
+            right: 5px;
+            color: rgba(255,255,255,0.3);
+            font-size: 8px;
+            z-index: 9999;
+        }
     </style>
 </head>
 <body>
@@ -169,6 +184,9 @@
     <div class="install-btn" id="install-btn">
         <i class="fas fa-download"></i>
     </div>
+    
+    <!-- Cache Version Indicator -->
+    <div class="cache-version">v1.0</div>
     
     <!-- Custom Loading Overlay -->
     <div class="loading-overlay" id="loading-overlay">
@@ -221,25 +239,25 @@
         <div class="uni-tabbar__bd">
             <div class="uni-tabbar__item" data-section="home">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/home.png" alt="Home">
+                    <img src="assets/home.png?v=1.0" alt="Home">
                 </div>
                 <div class="uni-tabbar__label">Home</div>
             </div>
             <div class="uni-tabbar__item" data-section="get">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/get.png" alt="Get">
+                    <img src="assets/get.png?v=1.0" alt="Get">
                 </div>
                 <div class="uni-tabbar__label">Get</div>
             </div>
             <div class="uni-tabbar__item" data-section="assets">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/assets.png" alt="Assets">
+                    <img src="assets/assets.png?v=1.0" alt="Assets">
                 </div>
                 <div class="uni-tabbar__label">Assets</div>
             </div>
             <div class="uni-tabbar__item" data-section="mine">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/mine.png" alt="Mine">
+                    <img src="assets/mine.png?v=1.0" alt="Mine">
                 </div>
                 <div class="uni-tabbar__label">Mine</div>
             </div>
@@ -247,6 +265,25 @@
     </div>
 
     <!-- Load Scripts -->
-    <script src="js/app.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/app.js?v=1.0" type="module"></script>
+    
+    <script>
+        // Service Worker для кэширования
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+        
+        // Force cache reload
+        if (window.location.search.indexOf('reload') !== -1) {
+            window.location.search = '';
+        }
+    </script>
 </body>
 </html>

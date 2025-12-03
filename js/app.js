@@ -2,7 +2,7 @@
 class GLYApp {
     constructor() {
         this.currentSection = null;
-        this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register', 'company', 'invite', 'team', 'rules'];
+        this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register', 'company', 'invite', 'team', 'rules', 'withdraw', 'admin'];
         this.currentUser = null;
         this.supabase = null;
         this.deferredPrompt = null;
@@ -210,8 +210,17 @@ class GLYApp {
         
         if (this.currentSection === cleanSectionId) return;
 
+        // Special check for admin page
+        if (cleanSectionId === 'admin') {
+            const user = this.currentUser || JSON.parse(localStorage.getItem('gly_user'));
+            if (!user || user.username !== 'admin') {
+                window.showCustomAlert('Admin access only');
+                return;
+            }
+        }
+
         // Check authentication for protected pages
-        const protectedSections = ['home', 'get', 'assets', 'mine', 'invite', 'team', 'rules'];
+        const protectedSections = ['home', 'get', 'assets', 'mine', 'invite', 'team', 'rules', 'withdraw'];
         if (protectedSections.includes(cleanSectionId)) {
             const user = this.currentUser || JSON.parse(localStorage.getItem('gly_user'));
             if (!user) {
@@ -231,10 +240,15 @@ class GLYApp {
 
         // Hide current section
         if (this.currentSection) {
-            document.getElementById(this.currentSection).classList.remove('active');
+            const currentElement = document.getElementById(this.currentSection);
+            if (currentElement) {
+                currentElement.classList.remove('active');
+            }
+            
             if (this.currentSection !== 'login' && this.currentSection !== 'register' && 
                 this.currentSection !== 'company' && this.currentSection !== 'invite' && 
-                this.currentSection !== 'team' && this.currentSection !== 'rules') {
+                this.currentSection !== 'team' && this.currentSection !== 'rules' &&
+                this.currentSection !== 'withdraw' && this.currentSection !== 'admin') {
                 const activeTab = document.querySelector(`[data-section="${this.currentSection}"]`);
                 if (activeTab) {
                     activeTab.classList.remove('uni-tabbar__item--active');
@@ -244,7 +258,10 @@ class GLYApp {
 
         // Show new section
         await this.loadSection(cleanSectionId);
-        document.getElementById(cleanSectionId).classList.add('active');
+        const newElement = document.getElementById(cleanSectionId);
+        if (newElement) {
+            newElement.classList.add('active');
+        }
         
         // Manage tabbar and navbar visibility
         if (cleanSectionId === 'login' || cleanSectionId === 'register') {
@@ -252,7 +269,8 @@ class GLYApp {
             this.hideNavbar();
             document.body.classList.add('auth-page');
         } else if (cleanSectionId === 'company' || cleanSectionId === 'invite' || 
-                   cleanSectionId === 'team' || cleanSectionId === 'rules') {
+                   cleanSectionId === 'team' || cleanSectionId === 'rules' ||
+                   cleanSectionId === 'withdraw' || cleanSectionId === 'admin') {
             this.hideTabbar();
             this.showNavbar();
             document.body.classList.add('no-tabbar');
@@ -261,6 +279,8 @@ class GLYApp {
             else if (cleanSectionId === 'invite') this.setNavbarTitle('Invite', true);
             else if (cleanSectionId === 'team') this.setNavbarTitle('Team', true);
             else if (cleanSectionId === 'rules') this.setNavbarTitle('Rules', true);
+            else if (cleanSectionId === 'withdraw') this.setNavbarTitle('Withdraw', true);
+            else if (cleanSectionId === 'admin') this.setNavbarTitle('Admin', true);
         } else {
             this.showTabbar();
             this.showNavbar();
@@ -283,6 +303,11 @@ class GLYApp {
     async loadSection(sectionId) {
         const sectionElement = document.getElementById(sectionId);
         
+        if (!sectionElement) {
+            console.error(`Element with id "${sectionId}" not found in DOM`);
+            return;
+        }
+        
         try {
             // Add cache busting parameter to prevent caching
             const cacheBuster = `?v=${Date.now()}`;
@@ -301,7 +326,7 @@ class GLYApp {
             }
         } catch (error) {
             console.error(`Error loading section ${sectionId}:`, error);
-            sectionElement.innerHTML = `<div class="error">Error loading ${sectionId} section</div>`;
+            sectionElement.innerHTML = `<div class="error">Error loading ${sectionId} section. Please refresh the page.</div>`;
         }
     }
 
@@ -695,6 +720,11 @@ window.showCustomAlert = (message) => {
     const modalHeader = document.getElementById('modal-header');
     const modalOk = document.getElementById('modal-ok');
     
+    if (!modal || !modalBody || !modalHeader || !modalOk) {
+        console.error('Modal elements not found');
+        return;
+    }
+    
     modalHeader.textContent = 'Notification';
     modalBody.innerHTML = `<p style="text-align: center;">${message}</p>`;
     
@@ -710,6 +740,11 @@ window.showCustomModal = (title, content, onConfirm = null) => {
     const modalBody = document.getElementById('modal-body');
     const modalHeader = document.getElementById('modal-header');
     const modalOk = document.getElementById('modal-ok');
+    
+    if (!modal || !modalBody || !modalHeader || !modalOk) {
+        console.error('Modal elements not found');
+        return;
+    }
     
     modalHeader.textContent = title;
     modalBody.innerHTML = content;
@@ -728,11 +763,18 @@ window.showLoading = (message = 'Loading...') => {
     const loading = document.getElementById('loading-overlay');
     const loadingText = document.getElementById('loading-text');
     
+    if (!loading || !loadingText) {
+        console.error('Loading elements not found');
+        return;
+    }
+    
     loadingText.textContent = message;
     loading.style.display = 'flex';
 };
 
 window.hideLoading = () => {
     const loading = document.getElementById('loading-overlay');
-    loading.style.display = 'none';
+    if (loading) {
+        loading.style.display = 'none';
+    }
 };

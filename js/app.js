@@ -1,12 +1,12 @@
-// Main application module - UPDATED VERSION
+// Main application module
 class GLYApp {
     constructor() {
         this.currentSection = null;
-        this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register', 'company', 'invite', 'team', 'rules', 'withdraw', 'admin'];
+        this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register', 'company', 'invite', 'team', 'rules'];
         this.currentUser = null;
         this.supabase = null;
         this.deferredPrompt = null;
-        this.version = '1.0.0'; // Cache buster version
+        this.appVersion = '1.0.0';
         this.init();
     }
 
@@ -23,8 +23,11 @@ class GLYApp {
         // Setup PWA installation
         this.setupPWAInstall();
         
-        // Setup cache busting for assets
-        this.setupCacheBusting();
+        // Setup service worker for caching
+        this.setupServiceWorker();
+        
+        // Handle referral link from URL
+        this.handleReferralLink();
         
         // Load initial section
         if (this.currentUser) {
@@ -38,6 +41,9 @@ class GLYApp {
         
         // Start signal update check
         this.startSignalUpdateCheck();
+        
+        // Force refresh cache on version change
+        this.checkAppVersion();
     }
 
     async initSupabase() {
@@ -50,7 +56,7 @@ class GLYApp {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI',
-                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI`
+                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI`
                 },
                 db: {
                     schema: 'public'
@@ -63,6 +69,48 @@ class GLYApp {
         );
         
         window.supabase = this.supabase;
+    }
+
+    setupServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            // Add version to service worker URL to force update
+            const swUrl = `/service-worker.js?v=${this.appVersion}`;
+            
+            navigator.serviceWorker.register(swUrl)
+                .then(registration => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                    
+                    // Check for updates every time
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        console.log('New service worker found:', newWorker);
+                        
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                console.log('New content is available; please refresh.');
+                                // You can show a refresh notification here
+                            }
+                        });
+                    });
+                    
+                    // Check for updates on page load
+                    registration.update();
+                })
+                .catch(error => {
+                    console.error('Service Worker registration failed:', error);
+                });
+            
+            // Clear old caches on load
+            if ('caches' in window) {
+                caches.keys().then(cacheNames => {
+                    cacheNames.forEach(cacheName => {
+                        if (!cacheName.includes(this.appVersion)) {
+                            caches.delete(cacheName);
+                        }
+                    });
+                });
+            }
+        }
     }
 
     setupPWAInstall() {
@@ -115,19 +163,24 @@ class GLYApp {
         }
     }
 
-    setupCacheBusting() {
-        // Add version to all image URLs
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                const images = document.querySelectorAll('img');
-                images.forEach(img => {
-                    const src = img.src;
-                    if (src && !src.includes('?v=')) {
-                        img.src = src + (src.includes('?') ? '&' : '?') + 'v=' + this.version;
-                    }
-                });
-            }, 1000);
-        });
+    handleReferralLink() {
+        // Check URL for referral code
+        const hash = window.location.hash;
+        if (hash.includes('?ref=')) {
+            const refCode = hash.split('?ref=')[1];
+            
+            // Store referral code in localStorage for registration
+            if (refCode) {
+                localStorage.setItem('gly_referral_code', refCode);
+                
+                // If user is not logged in, redirect to registration page
+                if (!this.currentUser) {
+                    setTimeout(() => {
+                        this.showSection('register');
+                    }, 500);
+                }
+            }
+        }
     }
 
     async checkAuth() {
@@ -209,7 +262,7 @@ class GLYApp {
         if (this.currentSection === sectionId) return;
 
         // Check authentication for protected pages
-        const protectedSections = ['home', 'get', 'assets', 'mine', 'invite', 'team', 'rules', 'withdraw', 'admin'];
+        const protectedSections = ['home', 'get', 'assets', 'mine', 'invite', 'team', 'rules'];
         if (protectedSections.includes(sectionId)) {
             const user = this.currentUser || JSON.parse(localStorage.getItem('gly_user'));
             if (!user) {
@@ -223,13 +276,6 @@ class GLYApp {
                 document.body.classList.add('auth-page');
                 return;
             }
-            
-            // Check admin access for admin section
-            if (sectionId === 'admin' && !user.is_admin) {
-                window.showCustomAlert('Access Denied - Admin Only');
-                await this.showSection('home');
-                return;
-            }
         }
 
         // Hide current section
@@ -237,8 +283,7 @@ class GLYApp {
             document.getElementById(this.currentSection).classList.remove('active');
             if (this.currentSection !== 'login' && this.currentSection !== 'register' && 
                 this.currentSection !== 'company' && this.currentSection !== 'invite' && 
-                this.currentSection !== 'team' && this.currentSection !== 'rules' &&
-                this.currentSection !== 'withdraw' && this.currentSection !== 'admin') {
+                this.currentSection !== 'team' && this.currentSection !== 'rules') {
                 const activeTab = document.querySelector(`[data-section="${this.currentSection}"]`);
                 if (activeTab) {
                     activeTab.classList.remove('uni-tabbar__item--active');
@@ -256,22 +301,15 @@ class GLYApp {
             this.hideNavbar();
             document.body.classList.add('auth-page');
         } else if (sectionId === 'company' || sectionId === 'invite' || 
-                   sectionId === 'team' || sectionId === 'rules' ||
-                   sectionId === 'withdraw' || sectionId === 'admin') {
+                   sectionId === 'team' || sectionId === 'rules') {
             this.hideTabbar();
             this.showNavbar();
             document.body.classList.add('no-tabbar');
             
-            // Set navbar title
-            const titles = {
-                'company': 'Company',
-                'invite': 'Invite',
-                'team': 'Team',
-                'rules': 'Rules',
-                'withdraw': 'Withdraw',
-                'admin': 'Admin Panel'
-            };
-            this.setNavbarTitle(titles[sectionId] || sectionId, true);
+            if (sectionId === 'company') this.setNavbarTitle('Company', true);
+            else if (sectionId === 'invite') this.setNavbarTitle('Invite', true);
+            else if (sectionId === 'team') this.setNavbarTitle('Team', true);
+            else if (sectionId === 'rules') this.setNavbarTitle('Rules', true);
         } else {
             this.showTabbar();
             this.showNavbar();
@@ -294,12 +332,12 @@ class GLYApp {
     async loadSection(sectionId) {
         const sectionElement = document.getElementById(sectionId);
         
-        // Add cache busting to module imports
-        const cacheBuster = `?v=${this.version}`;
-        
         try {
+            // Add version parameter to prevent caching
+            const modulePath = `./${sectionId}.js?v=${this.appVersion}`;
+            
             // Dynamically import section module
-            const module = await import(`./${sectionId}.js${cacheBuster}`);
+            const module = await import(modulePath);
             
             // Call section rendering function
             if (module.default && typeof module.default === 'function') {
@@ -307,12 +345,12 @@ class GLYApp {
                 
                 // Initialize section after rendering
                 if (module.init && typeof module.init === 'function') {
-                    setTimeout(() => module.init(), 100);
+                    setTimeout(() => module.init(), 0);
                 }
             }
         } catch (error) {
             console.error(`Error loading section ${sectionId}:`, error);
-            sectionElement.innerHTML = `<div class="error" style="color: white; text-align: center; padding: 40px;">Error loading ${sectionId} section</div>`;
+            sectionElement.innerHTML = `<div class="error">Error loading ${sectionId} section</div>`;
         }
     }
 
@@ -372,7 +410,7 @@ class GLYApp {
             } else {
                 navbarContent.innerHTML = `
                     <div class="u-navbar__content__logo">
-                        <img src="assets/logo.png?v=${this.version}" alt="Logo">
+                        <img src="assets/logo.png?v=1.0" alt="Logo">
                     </div>
                     <div class="u-navbar__content__title">${title}</div>
                 `;
@@ -654,6 +692,28 @@ class GLYApp {
         }
     }
 
+    checkAppVersion() {
+        const storedVersion = localStorage.getItem('gly_app_version');
+        if (storedVersion !== this.appVersion) {
+            // Clear cache and reload if version changed
+            if ('caches' in window) {
+                caches.keys().then(cacheNames => {
+                    cacheNames.forEach(cacheName => {
+                        caches.delete(cacheName);
+                    });
+                });
+            }
+            
+            // Update stored version
+            localStorage.setItem('gly_app_version', this.appVersion);
+            
+            // Force reload to get new assets
+            setTimeout(() => {
+                window.location.reload(true);
+            }, 1000);
+        }
+    }
+
     logout() {
         localStorage.removeItem('gly_user');
         this.currentUser = null;
@@ -696,6 +756,14 @@ window.GLY = {
     
     generateInviteCode: () => {
         return Math.random().toString(36).substr(2, 8).toUpperCase();
+    },
+    
+    // Function to force cache refresh for images
+    refreshImageCache: (imageUrl) => {
+        if (!imageUrl.includes('?')) {
+            return imageUrl + '?v=' + new Date().getTime();
+        }
+        return imageUrl;
     }
 };
 
@@ -748,13 +816,27 @@ window.hideLoading = () => {
     loading.style.display = 'none';
 };
 
-// Add this to prevent caching issues
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }, function(err) {
-            console.log('ServiceWorker registration failed: ', err);
+// Force reload function for cache refresh
+window.forceRefreshCache = () => {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(registrations => {
+            for (let registration of registrations) {
+                registration.unregister();
+            }
         });
-    });
-}
+    }
+    
+    if ('caches' in window) {
+        caches.keys().then(cacheNames => {
+            cacheNames.forEach(cacheName => {
+                caches.delete(cacheName);
+            });
+        });
+    }
+    
+    // Clear localStorage version to trigger refresh
+    localStorage.removeItem('gly_app_version');
+    
+    // Reload page
+    window.location.reload(true);
+};

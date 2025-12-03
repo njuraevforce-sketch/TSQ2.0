@@ -2,7 +2,7 @@
 export default function renderMine() {
     return `
         <!-- Profile with background image -->
-        <div class="card padding profile-bg" style="background-image: url('assets/avatar.png?v=1.0'); background-size: cover; background-position: center; border-radius: 10px; padding: 20px; margin-bottom: 20px; position: relative;">
+        <div class="card padding profile-bg" style="background-image: url('assets/avatar.png'); background-size: cover; background-position: center; border-radius: 10px; padding: 20px; margin-bottom: 20px; position: relative;">
             <!-- Dark overlay for better text readability -->
             <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); border-radius: 10px; z-index: 1;"></div>
             
@@ -24,13 +24,17 @@ export default function renderMine() {
             </div>
         </div>
 
-        <!-- Calendar Section -->
-        <div class="card padding margin-top calendar-section" id="calendar-section">
+        <!-- Calendar Block -->
+        <div class="card padding margin-top calendar-section">
             <div class="calendar-header">
-                <div class="calendar-title" id="current-month">Loading...</div>
-                <div class="calendar-time" id="current-time">Loading UTC...</div>
+                <div class="calendar-title">UTC Calendar</div>
+                <div class="calendar-nav">
+                    <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                    <button id="next-month"><i class="fas fa-chevron-right"></i></button>
+                </div>
             </div>
-            <div class="calendar-grid" id="calendar-days-header">
+            <div class="calendar-grid" id="calendar-days">
+                <!-- Days of week -->
                 <div class="calendar-day">Sun</div>
                 <div class="calendar-day">Mon</div>
                 <div class="calendar-day">Tue</div>
@@ -38,13 +42,10 @@ export default function renderMine() {
                 <div class="calendar-day">Thu</div>
                 <div class="calendar-day">Fri</div>
                 <div class="calendar-day">Sat</div>
+                <!-- Dates will be populated by JavaScript -->
             </div>
-            <div class="calendar-grid" id="calendar-dates">
-                <!-- Calendar dates will be loaded here -->
-            </div>
-            <div class="calendar-footer">
-                <div class="current-time" id="full-current-time">Loading...</div>
-                <div class="utc-time-badge" id="utc-badge">UTC</div>
+            <div class="calendar-time" id="utc-time-display">
+                Loading UTC time...
             </div>
         </div>
 
@@ -53,48 +54,38 @@ export default function renderMine() {
             <div class="text-white text-bold">Settings</div>
             <div class="settings-list">
                 <div class="setting-item" id="withdrawal-address-setting">
-                    <div class="setting-content">
-                        <div class="setting-icon">
-                            <img src="assets/settings/withdrawal.png?v=1.0" alt="Withdrawal">
-                        </div>
-                        <div class="setting-name">Withdrawal Address</div>
+                    <div class="setting-icon">
+                        <img src="assets/setting-address.png" alt="Withdrawal Address">
                     </div>
+                    <div class="setting-name">Withdrawal Address</div>
                     <div class="setting-value">Set address</div>
                 </div>
                 <div class="setting-item" id="transaction-password-setting">
-                    <div class="setting-content">
-                        <div class="setting-icon">
-                            <img src="assets/settings/password.png?v=1.0" alt="Transaction Password">
-                        </div>
-                        <div class="setting-name">Transaction Password</div>
+                    <div class="setting-icon">
+                        <img src="assets/setting-password.png" alt="Transaction Password">
                     </div>
+                    <div class="setting-name">Transaction Password</div>
                     <div class="setting-value">Change</div>
                 </div>
                 <div class="setting-item" id="customer-service-setting">
-                    <div class="setting-content">
-                        <div class="setting-icon">
-                            <img src="assets/settings/support.png?v=1.0" alt="Customer Service">
-                        </div>
-                        <div class="setting-name">Customer Service</div>
+                    <div class="setting-icon">
+                        <img src="assets/setting-service.png" alt="Customer Service">
                     </div>
+                    <div class="setting-name">Customer Service</div>
                     <div class="setting-value">Contact</div>
                 </div>
                 <div class="setting-item" id="language-setting">
-                    <div class="setting-content">
-                        <div class="setting-icon">
-                            <img src="assets/settings/language.png?v=1.0" alt="Language">
-                        </div>
-                        <div class="setting-name">Language</div>
+                    <div class="setting-icon">
+                        <img src="assets/setting-language.png" alt="Language">
                     </div>
+                    <div class="setting-name">Language</div>
                     <div class="setting-value">English</div>
                 </div>
                 <div class="setting-item" id="change-password-setting">
-                    <div class="setting-content">
-                        <div class="setting-icon">
-                            <img src="assets/settings/change-password.png?v=1.0" alt="Change Password">
-                        </div>
-                        <div class="setting-name">Change Password</div>
+                    <div class="setting-icon">
+                        <img src="assets/setting-change-password.png" alt="Change Password">
                     </div>
+                    <div class="setting-name">Change Password</div>
                     <div class="setting-value">Update</div>
                 </div>
                 <div class="pro-btn" id="logout-btn" style="background: transparent; border: 2px solid #ff6b6b; margin-top: 10px; color: #ff6b6b; font-weight: bold;">Logout</div>
@@ -206,15 +197,11 @@ export function init() {
         // Load profile data
         loadProfileData();
         
-        // Setup event listeners
-        setupEventListeners();
-        
         // Initialize calendar
         initCalendar();
         
-        // Start time updates
-        updateTime();
-        setInterval(updateTime, 1000);
+        // Setup event listeners
+        setupEventListeners();
     }, 100);
 }
 
@@ -228,6 +215,25 @@ function setupEventListeners() {
         document.getElementById('change-password-setting').addEventListener('click', showPasswordPopup);
         document.getElementById('logout-btn').addEventListener('click', logout);
         document.getElementById('copy-user-id').addEventListener('click', copyUserId);
+
+        // Calendar navigation
+        document.getElementById('prev-month').addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar(currentYear, currentMonth);
+        });
+
+        document.getElementById('next-month').addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar(currentYear, currentMonth);
+        });
 
         // Popup handlers
         document.getElementById('close-address').addEventListener('click', hideAddressPopup);
@@ -253,6 +259,85 @@ function setupEventListeners() {
     }
 }
 
+// Calendar variables
+let currentDate = new Date();
+let currentYear = currentDate.getUTCFullYear();
+let currentMonth = currentDate.getUTCMonth();
+
+function initCalendar() {
+    // Render initial calendar
+    renderCalendar(currentYear, currentMonth);
+    
+    // Start UTC time update
+    updateUTCTime();
+    setInterval(updateUTCTime, 1000);
+}
+
+function renderCalendar(year, month) {
+    const calendarGrid = document.getElementById('calendar-days');
+    
+    // Clear existing dates (keep day headers)
+    while (calendarGrid.children.length > 7) {
+        calendarGrid.removeChild(calendarGrid.lastChild);
+    }
+    
+    // Get first day of month
+    const firstDay = new Date(Date.UTC(year, month, 1));
+    const firstDayIndex = firstDay.getUTCDay();
+    
+    // Get last day of month
+    const lastDay = new Date(Date.UTC(year, month + 1, 0));
+    const daysInMonth = lastDay.getUTCDate();
+    
+    // Get today's date in UTC
+    const today = new Date();
+    const todayUTC = new Date(Date.UTC(
+        today.getUTCFullYear(),
+        today.getUTCMonth(),
+        today.getUTCDate()
+    ));
+    
+    // Add empty cells for days before first day
+    for (let i = 0; i < firstDayIndex; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'calendar-date other-month';
+        emptyCell.textContent = '';
+        calendarGrid.appendChild(emptyCell);
+    }
+    
+    // Add days of month
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dateCell = document.createElement('div');
+        dateCell.className = 'calendar-date';
+        dateCell.textContent = day;
+        
+        // Check if this is today
+        const cellDate = new Date(Date.UTC(year, month, day));
+        if (cellDate.getTime() === todayUTC.getTime()) {
+            dateCell.classList.add('today');
+        }
+        
+        calendarGrid.appendChild(dateCell);
+    }
+    
+    // Update calendar title
+    const monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    document.querySelector('.calendar-title').textContent = 
+        `${monthNames[month]} ${year}`;
+}
+
+function updateUTCTime() {
+    const now = new Date();
+    const utcTime = now.toUTCString();
+    const utcElement = document.getElementById('utc-time-display');
+    if (utcElement) {
+        utcElement.textContent = utcTime;
+    }
+}
+
 async function loadProfileData() {
     try {
         const user = window.getCurrentUser();
@@ -273,73 +358,6 @@ async function loadProfileData() {
     } catch (error) {
         console.error('Error loading profile data:', error);
     }
-}
-
-function initCalendar() {
-    const now = new Date();
-    const currentMonth = now.getUTCMonth();
-    const currentYear = now.getUTCFullYear();
-    const today = now.getUTCDate();
-    
-    // Update month display
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-                       "July", "August", "September", "October", "November", "December"];
-    document.getElementById('current-month').textContent = `${monthNames[currentMonth]} ${currentYear}`;
-    
-    // Get first day of month and total days
-    const firstDay = new Date(currentYear, currentMonth, 1).getUTCDay();
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getUTCDate();
-    
-    // Create calendar dates grid
-    let calendarHTML = '';
-    
-    // Previous month's days
-    const prevMonthLastDay = new Date(currentYear, currentMonth, 0).getUTCDate();
-    for (let i = 0; i < firstDay; i++) {
-        calendarHTML += `<div class="calendar-date other-month">${prevMonthLastDay - firstDay + i + 1}</div>`;
-    }
-    
-    // Current month's days
-    for (let day = 1; day <= daysInMonth; day++) {
-        const isToday = (day === today);
-        calendarHTML += `<div class="calendar-date ${isToday ? 'today' : ''}" data-day="${day}">${day}</div>`;
-    }
-    
-    // Next month's days
-    const totalCells = 42; // 6 weeks
-    const remainingCells = totalCells - (firstDay + daysInMonth);
-    for (let i = 1; i <= remainingCells; i++) {
-        calendarHTML += `<div class="calendar-date other-month">${i}</div>`;
-    }
-    
-    document.getElementById('calendar-dates').innerHTML = calendarHTML;
-}
-
-function updateTime() {
-    const now = new Date();
-    
-    // Format UTC time
-    const utcHours = now.getUTCHours().toString().padStart(2, '0');
-    const utcMinutes = now.getUTCMinutes().toString().padStart(2, '0');
-    const utcSeconds = now.getUTCSeconds().toString().padStart(2, '0');
-    const utcTimeString = `${utcHours}:${utcMinutes}:${utcSeconds}`;
-    
-    // Full date and time
-    const options = { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        timeZone: 'UTC'
-    };
-    const fullDateTime = now.toLocaleDateString('en-US', options) + ' UTC';
-    
-    // Update display
-    document.getElementById('current-time').textContent = utcTimeString;
-    document.getElementById('full-current-time').textContent = fullDateTime;
 }
 
 function showAddressPopup() {

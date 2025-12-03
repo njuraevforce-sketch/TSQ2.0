@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>GLY - Global Ledger Yield</title>
     
-    <!-- Add cache control meta tags -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json?v=1.0">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Cache busting version for CSS -->
+    <link rel="stylesheet" href="css/style.css?v=1.5">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         .uni-tabbar { display: none; }
@@ -225,91 +225,72 @@
         <div class="uni-tabbar__bd">
             <div class="uni-tabbar__item" data-section="home">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/home.png?v=1.0" alt="Home">
+                    <img src="assets/home.png?v=1.5" alt="Home">
                 </div>
                 <div class="uni-tabbar__label">Home</div>
             </div>
             <div class="uni-tabbar__item" data-section="get">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/get.png?v=1.0" alt="Get">
+                    <img src="assets/get.png?v=1.5" alt="Get">
                 </div>
                 <div class="uni-tabbar__label">Get</div>
             </div>
             <div class="uni-tabbar__item" data-section="assets">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/assets.png?v=1.0" alt="Assets">
+                    <img src="assets/assets.png?v=1.5" alt="Assets">
                 </div>
                 <div class="uni-tabbar__label">Assets</div>
             </div>
             <div class="uni-tabbar__item" data-section="mine">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/mine.png?v=1.0" alt="Mine">
+                    <img src="assets/mine.png?v=1.5" alt="Mine">
                 </div>
                 <div class="uni-tabbar__label">Mine</div>
             </div>
         </div>
     </div>
 
-    <!-- Load Scripts -->
-    <script src="js/app.js?v=1.0" type="module"></script>
+    <!-- Load Scripts with cache busting -->
+    <script src="js/app.js?v=1.5" type="module"></script>
     
     <script>
-        // Force refresh cache on load
+        // Service Worker for better caching control
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/service-worker.js?v=1.0').then(function(registration) {
+                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
                     console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                    
-                    // Check for updates
-                    registration.update();
-                    
-                    // Force update if service worker is waiting
-                    if (registration.waiting) {
-                        registration.waiting.postMessage({type: 'SKIP_WAITING'});
-                        console.log('Service worker updated, reloading...');
-                        window.location.reload();
-                    }
                 }, function(err) {
                     console.log('ServiceWorker registration failed: ', err);
                 });
             });
         }
         
-        // Clear cache on page load if version changed
-        const currentVersion = '1.0';
-        const storedVersion = localStorage.getItem('gly_version');
+        // Clear cache on new version
+        const currentVersion = '1.5';
+        const lastVersion = localStorage.getItem('app_version');
         
-        if (storedVersion !== currentVersion) {
+        if (lastVersion !== currentVersion) {
             // Clear all caches
             if ('caches' in window) {
-                caches.keys().then(function(cacheNames) {
-                    cacheNames.forEach(function(cacheName) {
-                        caches.delete(cacheName);
-                    });
+                caches.keys().then(function(names) {
+                    for (let name of names) {
+                        caches.delete(name);
+                    }
                 });
             }
             
-            // Update version
-            localStorage.setItem('gly_version', currentVersion);
-            
-            // Reload to get fresh assets
-            setTimeout(function() {
-                window.location.reload(true);
-            }, 100);
-        }
-        
-        // Prevent caching for dynamic assets
-        const originalFetch = window.fetch;
-        window.fetch = function(url, options) {
-            if (typeof url === 'string') {
-                // Add timestamp to prevent caching for API requests
-                if (url.includes('.js') || url.includes('.css') || url.includes('.png') || url.includes('.jpg')) {
-                    const separator = url.includes('?') ? '&' : '?';
-                    url = url + separator + '_=' + Date.now();
-                }
+            // Clear localStorage except user data
+            const userData = localStorage.getItem('gly_user');
+            localStorage.clear();
+            if (userData) {
+                localStorage.setItem('gly_user', userData);
             }
-            return originalFetch(url, options);
-        };
+            
+            localStorage.setItem('app_version', currentVersion);
+            
+            // Force reload
+            window.location.reload(true);
+        }
     </script>
 </body>
 </html>

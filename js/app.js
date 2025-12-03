@@ -1,4 +1,4 @@
-// Main application module
+// Main application module - UPDATED VERSION
 class GLYApp {
     constructor() {
         this.currentSection = null;
@@ -6,6 +6,7 @@ class GLYApp {
         this.currentUser = null;
         this.supabase = null;
         this.deferredPrompt = null;
+        this.version = '1.0.0'; // Cache buster version
         this.init();
     }
 
@@ -22,8 +23,15 @@ class GLYApp {
         // Setup PWA installation
         this.setupPWAInstall();
         
-        // Check URL hash for direct section access
-        await this.handleHashChange();
+        // Setup cache busting for assets
+        this.setupCacheBusting();
+        
+        // Load initial section
+        if (this.currentUser) {
+            await this.showSection('home');
+        } else {
+            await this.showSection('login');
+        }
         
         this.setupEventListeners();
         this.setupNavigation();
@@ -55,45 +63,6 @@ class GLYApp {
         );
         
         window.supabase = this.supabase;
-    }
-
-    async handleHashChange() {
-        const hash = window.location.hash.substring(1); // Remove #
-        
-        if (hash) {
-            // Check if hash corresponds to a valid section
-            if (this.sections.includes(hash)) {
-                // Special check for admin section
-                if (hash === 'admin') {
-                    const user = this.currentUser;
-                    if (!user || user.username !== 'admin') {
-                        window.showCustomAlert('Access denied. Admin privileges required.');
-                        // Redirect to home if not admin
-                        if (this.currentUser) {
-                            await this.showSection('home');
-                        } else {
-                            await this.showSection('login');
-                        }
-                        return;
-                    }
-                }
-                await this.showSection(hash);
-            } else {
-                // Invalid hash, redirect based on auth
-                if (this.currentUser) {
-                    await this.showSection('home');
-                } else {
-                    await this.showSection('login');
-                }
-            }
-        } else {
-            // No hash, show appropriate section
-            if (this.currentUser) {
-                await this.showSection('home');
-            } else {
-                await this.showSection('login');
-            }
-        }
     }
 
     setupPWAInstall() {
@@ -144,6 +113,21 @@ class GLYApp {
                 installBtn.style.display = 'none';
             }
         }
+    }
+
+    setupCacheBusting() {
+        // Add version to all image URLs
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const images = document.querySelectorAll('img');
+                images.forEach(img => {
+                    const src = img.src;
+                    if (src && !src.includes('?v=')) {
+                        img.src = src + (src.includes('?') ? '&' : '?') + 'v=' + this.version;
+                    }
+                });
+            }, 1000);
+        });
     }
 
     async checkAuth() {
@@ -239,13 +223,11 @@ class GLYApp {
                 document.body.classList.add('auth-page');
                 return;
             }
-        }
-
-        // Special check for admin section
-        if (sectionId === 'admin') {
-            const user = this.currentUser;
-            if (!user || user.username !== 'admin') {
-                window.showCustomAlert('Access denied. Admin privileges required.');
+            
+            // Check admin access for admin section
+            if (sectionId === 'admin' && !user.is_admin) {
+                window.showCustomAlert('Access Denied - Admin Only');
+                await this.showSection('home');
                 return;
             }
         }
@@ -280,12 +262,16 @@ class GLYApp {
             this.showNavbar();
             document.body.classList.add('no-tabbar');
             
-            if (sectionId === 'company') this.setNavbarTitle('Company', true);
-            else if (sectionId === 'invite') this.setNavbarTitle('Invite', true);
-            else if (sectionId === 'team') this.setNavbarTitle('Team', true);
-            else if (sectionId === 'rules') this.setNavbarTitle('Rules', true);
-            else if (sectionId === 'withdraw') this.setNavbarTitle('Withdraw', true);
-            else if (sectionId === 'admin') this.setNavbarTitle('Admin Panel', true);
+            // Set navbar title
+            const titles = {
+                'company': 'Company',
+                'invite': 'Invite',
+                'team': 'Team',
+                'rules': 'Rules',
+                'withdraw': 'Withdraw',
+                'admin': 'Admin Panel'
+            };
+            this.setNavbarTitle(titles[sectionId] || sectionId, true);
         } else {
             this.showTabbar();
             this.showNavbar();
@@ -308,9 +294,12 @@ class GLYApp {
     async loadSection(sectionId) {
         const sectionElement = document.getElementById(sectionId);
         
+        // Add cache busting to module imports
+        const cacheBuster = `?v=${this.version}`;
+        
         try {
             // Dynamically import section module
-            const module = await import(`./${sectionId}.js`);
+            const module = await import(`./${sectionId}.js${cacheBuster}`);
             
             // Call section rendering function
             if (module.default && typeof module.default === 'function') {
@@ -318,12 +307,12 @@ class GLYApp {
                 
                 // Initialize section after rendering
                 if (module.init && typeof module.init === 'function') {
-                    setTimeout(() => module.init(), 0);
+                    setTimeout(() => module.init(), 100);
                 }
             }
         } catch (error) {
             console.error(`Error loading section ${sectionId}:`, error);
-            sectionElement.innerHTML = `<div class="error">Error loading ${sectionId} section</div>`;
+            sectionElement.innerHTML = `<div class="error" style="color: white; text-align: center; padding: 40px;">Error loading ${sectionId} section</div>`;
         }
     }
 
@@ -383,7 +372,7 @@ class GLYApp {
             } else {
                 navbarContent.innerHTML = `
                     <div class="u-navbar__content__logo">
-                        <img src="assets/logo.png" alt="Logo">
+                        <img src="assets/logo.png?v=${this.version}" alt="Logo">
                     </div>
                     <div class="u-navbar__content__title">${title}</div>
                 `;
@@ -758,3 +747,14 @@ window.hideLoading = () => {
     const loading = document.getElementById('loading-overlay');
     loading.style.display = 'none';
 };
+
+// Add this to prevent caching issues
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function(err) {
+            console.log('ServiceWorker registration failed: ', err);
+        });
+    });
+}

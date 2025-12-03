@@ -1,5 +1,3 @@
-[file name]: assets (7).js
-[file content begin]
 // Assets section - compact version
 export default function renderAssets() {
     return `
@@ -316,4 +314,3 @@ async function processDeposit() {
         window.showCustomAlert('Error processing deposit: ' + error.message);
     }
 }
-[file content end]

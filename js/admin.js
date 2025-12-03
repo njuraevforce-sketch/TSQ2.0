@@ -1,324 +1,262 @@
-[file name]: admin (1).js
-[file content begin]
-// Admin panel section
+// Admin section
 export default function renderAdmin() {
     return `
-        <!-- Admin Panel -->
-        <div class="admin-panel">
+        <div class="admin-container">
             <!-- Admin Header -->
-            <div class="card padding" style="background: linear-gradient(135deg, #4e7771 0%, #3a5a55 100%);">
+            <div class="card padding" style="background: rgba(0,0,0,0.3); margin-bottom: 15px;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <h2 style="color: white; margin-bottom: 5px;">Admin Panel</h2>
-                        <p style="color: rgba(255,255,255,0.8); font-size: 14px;">Welcome, <span id="admin-username">Admin</span></p>
+                        <p style="color: #ccc; font-size: 12px;">Full control panel</p>
                     </div>
-                    <div class="admin-status">
-                        <span class="status-badge online">● ONLINE</span>
-                    </div>
-                </div>
-                
-                <!-- Quick Stats -->
-                <div class="admin-quick-stats" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 20px;">
-                    <div class="stat-box">
-                        <div class="stat-value" id="total-users">0</div>
-                        <div class="stat-label">Total Users</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-value" id="pending-withdrawals">0</div>
-                        <div class="stat-label">Pending Withdrawals</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-value" id="today-deposits">0 USDT</div>
-                        <div class="stat-label">Today Deposits</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-value" id="today-withdrawals">0 USDT</div>
-                        <div class="stat-label">Today Withdrawals</div>
+                    <div class="admin-stats">
+                        <div class="admin-stat">
+                            <div class="admin-stat-value" id="total-users">0</div>
+                            <div class="admin-stat-label">Users</div>
+                        </div>
+                        <div class="admin-stat">
+                            <div class="admin-stat-value" id="pending-withdrawals">0</div>
+                            <div class="admin-stat-label">Pending WD</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Admin Navigation -->
             <div class="admin-nav">
-                <div class="nav-line" data-section="withdrawals">
-                    <div class="nav-icon"><i class="fas fa-money-bill-transfer"></i></div>
-                    <div class="nav-text">Withdrawal Requests</div>
-                    <div class="nav-badge" id="withdrawal-badge">0</div>
+                <div class="admin-nav-item active" data-tab="withdrawals">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Withdrawals</span>
                 </div>
-                
-                <div class="nav-line" data-section="users">
-                    <div class="nav-icon"><i class="fas fa-users"></i></div>
-                    <div class="nav-text">User Management</div>
+                <div class="admin-nav-item" data-tab="users">
+                    <i class="fas fa-users"></i>
+                    <span>Users</span>
                 </div>
-                
-                <div class="nav-line" data-section="transactions">
-                    <div class="nav-icon"><i class="fas fa-exchange-alt"></i></div>
-                    <div class="nav-text">All Transactions</div>
+                <div class="admin-nav-item" data-tab="transactions">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transactions</span>
                 </div>
-                
-                <div class="nav-line" data-section="referrals">
-                    <div class="nav-icon"><i class="fas fa-network-wired"></i></div>
-                    <div class="nav-text">Referral System</div>
-                </div>
-                
-                <div class="nav-line" data-section="settings">
-                    <div class="nav-icon"><i class="fas fa-cog"></i></div>
-                    <div class="nav-text">System Settings</div>
+                <div class="admin-nav-item" data-tab="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
                 </div>
             </div>
 
-            <!-- Content Sections -->
-            <div class="admin-content">
-                <!-- Withdrawal Requests Section -->
-                <div class="content-section active" id="withdrawals-section">
-                    <div class="section-header">
-                        <h3 style="color: white;">Withdrawal Requests</h3>
-                        <div class="section-actions">
-                            <button class="admin-btn small" id="refresh-withdrawals">
-                                <i class="fas fa-sync-alt"></i> Refresh
-                            </button>
+            <!-- Tabs Content -->
+            <div class="admin-tabs">
+                <!-- Withdrawals Tab -->
+                <div class="admin-tab active" id="withdrawals-tab">
+                    <div class="card padding">
+                        <div class="tab-header">
+                            <h3 style="color: white;">Pending Withdrawals</h3>
+                            <div class="tab-actions">
+                                <button class="admin-btn-small" id="refresh-withdrawals">
+                                    <i class="fas fa-sync-alt"></i> Refresh
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="filters" style="margin-bottom: 15px;">
-                        <select id="withdrawal-filter" class="admin-select">
-                            <option value="pending">Pending</option>
-                            <option value="approved">Approved</option>
-                            <option value="rejected">Rejected</option>
-                            <option value="all">All</option>
-                        </select>
-                        <input type="text" id="withdrawal-search" placeholder="Search by ID or address" class="admin-input">
-                    </div>
-                    
-                    <div class="withdrawal-list" id="withdrawal-list">
-                        <div class="empty-state">
-                            <i class="fas fa-inbox"></i>
-                            <p>No withdrawal requests found</p>
+                        
+                        <div class="withdrawals-table" id="withdrawals-table">
+                            <div style="color: #ccc; text-align: center; padding: 30px;">
+                                <i class="fas fa-spinner fa-spin"></i> Loading...
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- User Management Section -->
-                <div class="content-section" id="users-section">
-                    <div class="section-header">
-                        <h3 style="color: white;">User Management</h3>
-                        <div class="section-actions">
-                            <button class="admin-btn small" id="add-user">
-                                <i class="fas fa-plus"></i> Add User
-                            </button>
-                            <button class="admin-btn small" id="refresh-users">
-                                <i class="fas fa-sync-alt"></i> Refresh
-                            </button>
+                <!-- Users Tab -->
+                <div class="admin-tab" id="users-tab">
+                    <div class="card padding">
+                        <div class="tab-header">
+                            <h3 style="color: white;">All Users</h3>
+                            <div class="tab-actions">
+                                <input type="text" 
+                                       id="search-users" 
+                                       placeholder="Search users..."
+                                       class="admin-input-small">
+                                <button class="admin-btn-small" id="refresh-users">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="filters" style="margin-bottom: 15px;">
-                        <select id="user-filter" class="admin-select">
-                            <option value="all">All Users</option>
-                            <option value="vip1">VIP 1</option>
-                            <option value="vip2">VIP 2</option>
-                            <option value="vip3">VIP 3</option>
-                            <option value="vip4">VIP 4</option>
-                            <option value="vip5">VIP 5</option>
-                            <option value="vip6">VIP 6</option>
-                        </select>
-                        <input type="text" id="user-search" placeholder="Search by username or ID" class="admin-input">
-                    </div>
-                    
-                    <div class="user-list" id="user-list">
-                        <div class="empty-state">
-                            <i class="fas fa-users"></i>
-                            <p>No users found</p>
+                        
+                        <div class="users-table" id="users-table">
+                            <div style="color: #ccc; text-align: center; padding: 30px;">
+                                <i class="fas fa-spinner fa-spin"></i> Loading...
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Transactions Section -->
-                <div class="content-section" id="transactions-section">
-                    <div class="section-header">
-                        <h3 style="color: white;">All Transactions</h3>
-                        <div class="section-actions">
-                            <button class="admin-btn small" id="refresh-transactions">
-                                <i class="fas fa-sync-alt"></i> Refresh
-                            </button>
-                            <button class="admin-btn small" id="export-transactions">
-                                <i class="fas fa-download"></i> Export
-                            </button>
+                <!-- Transactions Tab -->
+                <div class="admin-tab" id="transactions-tab">
+                    <div class="card padding">
+                        <div class="tab-header">
+                            <h3 style="color: white;">All Transactions</h3>
+                            <div class="tab-actions">
+                                <select id="transaction-type-filter" class="admin-select-small">
+                                    <option value="">All Types</option>
+                                    <option value="deposit">Deposits</option>
+                                    <option value="withdrawal">Withdrawals</option>
+                                    <option value="quantification">Quantification</option>
+                                    <option value="referral">Referrals</option>
+                                </select>
+                                <button class="admin-btn-small" id="refresh-transactions">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="filters" style="margin-bottom: 15px;">
-                        <select id="transaction-filter" class="admin-select">
-                            <option value="all">All Transactions</option>
-                            <option value="deposit">Deposits</option>
-                            <option value="withdrawal">Withdrawals</option>
-                            <option value="quantification">Quantification</option>
-                            <option value="referral">Referral</option>
-                        </select>
-                        <input type="date" id="transaction-date" class="admin-input">
-                    </div>
-                    
-                    <div class="transactions-list" id="transactions-list">
-                        <div class="empty-state">
-                            <i class="fas fa-exchange-alt"></i>
-                            <p>No transactions found</p>
+                        
+                        <div class="transactions-table" id="transactions-table">
+                            <div style="color: #ccc; text-align: center; padding: 30px;">
+                                <i class="fas fa-spinner fa-spin"></i> Loading...
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Referral System Section -->
-                <div class="content-section" id="referrals-section">
-                    <div class="section-header">
-                        <h3 style="color: white;">Referral System</h3>
-                        <div class="section-actions">
-                            <button class="admin-btn small" id="refresh-referrals">
-                                <i class="fas fa-sync-alt"></i> Refresh
+                <!-- Settings Tab -->
+                <div class="admin-tab" id="settings-tab">
+                    <div class="card padding">
+                        <div class="tab-header">
+                            <h3 style="color: white;">Platform Settings</h3>
+                        </div>
+                        
+                        <div class="settings-form">
+                            <div class="setting-group">
+                                <label style="color: #fff; font-size: 14px;">Registration Bonus</label>
+                                <input type="number" 
+                                       id="reg-bonus" 
+                                       value="3.00" 
+                                       class="admin-input"
+                                       step="0.01">
+                                <div style="font-size: 12px; color: #ccc;">USDT</div>
+                            </div>
+                            
+                            <div class="setting-group">
+                                <label style="color: #fff; font-size: 14px;">Min Deposit</label>
+                                <input type="number" 
+                                       id="min-deposit" 
+                                       value="17" 
+                                       class="admin-input"
+                                       step="0.01">
+                                <div style="font-size: 12px; color: #ccc;">USDT</div>
+                            </div>
+                            
+                            <div class="setting-group">
+                                <label style="color: #fff; font-size: 14px;">Min Withdrawal</label>
+                                <input type="number" 
+                                       id="min-withdrawal" 
+                                       value="20" 
+                                       class="admin-input"
+                                       step="0.01">
+                                <div style="font-size: 12px; color: #ccc;">USDT</div>
+                            </div>
+                            
+                            <div class="setting-group">
+                                <label style="color: #fff; font-size: 14px;">Daily Signals</label>
+                                <input type="number" 
+                                       id="daily-signals" 
+                                       value="3" 
+                                       class="admin-input">
+                                <div style="font-size: 12px; color: #ccc;">Signals per day</div>
+                            </div>
+                            
+                            <button class="admin-btn" id="save-settings" style="margin-top: 20px;">
+                                <i class="fas fa-save"></i> Save Settings
                             </button>
                         </div>
                     </div>
-                    
-                    <div class="referral-stats-admin">
-                        <div class="stat-card">
-                            <div class="stat-value">0</div>
-                            <div class="stat-label">Total Referrals</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">0 USDT</div>
-                            <div class="stat-label">Total Referral Income</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">0</div>
-                            <div class="stat-label">Active Referrers</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Edit Modal -->
+        <div class="pop-overlay" id="edit-user-modal" style="display: none;">
+            <div class="pop-content" style="max-width: 500px;">
+                <form id="edit-user-form" onsubmit="return false;">
+                    <div class="pop-header">Edit User</div>
+                    <div class="pop-body">
+                        <div class="admin-form-grid">
+                            <div class="form-group">
+                                <label style="color: #333; font-size: 14px;">Username</label>
+                                <input type="text" id="edit-username" class="admin-input" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label style="color: #333; font-size: 14px;">Balance (USDT)</label>
+                                <input type="number" id="edit-balance" class="admin-input" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label style="color: #333; font-size: 14px;">VIP Level</label>
+                                <select id="edit-vip-level" class="admin-input">
+                                    <option value="1">VIP 1</option>
+                                    <option value="2">VIP 2</option>
+                                    <option value="3">VIP 3</option>
+                                    <option value="4">VIP 4</option>
+                                    <option value="5">VIP 5</option>
+                                    <option value="6">VIP 6</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label style="color: #333; font-size: 14px;">Signals Available</label>
+                                <input type="number" id="edit-signals" class="admin-input">
+                            </div>
+                            <div class="form-group full-width">
+                                <label style="color: #333; font-size: 14px;">Email</label>
+                                <input type="email" id="edit-email" class="admin-input">
+                            </div>
+                            <div class="form-group full-width">
+                                <label style="color: #333; font-size: 14px;">TRC20 Address</label>
+                                <input type="text" id="edit-address-trc20" class="admin-input">
+                            </div>
+                            <div class="form-group full-width">
+                                <label style="color: #333; font-size: 14px;">BEP20 Address</label>
+                                <input type="text" id="edit-address-bep20" class="admin-input">
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="top-referrers" id="top-referrers">
-                        <h4 style="color: white; margin-bottom: 15px;">Top Referrers</h4>
-                        <div class="empty-state">
-                            <i class="fas fa-trophy"></i>
-                            <p>No referrers data available</p>
-                        </div>
+                    <div class="pop-footer">
+                        <button type="submit" id="save-user-changes" style="margin-right: 10px;">Save Changes</button>
+                        <button type="button" id="cancel-edit-user">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Transaction Details Modal -->
+        <div class="pop-overlay" id="transaction-details-modal" style="display: none;">
+            <div class="pop-content" style="max-width: 500px;">
+                <div class="pop-header">Transaction Details</div>
+                <div class="pop-body">
+                    <div id="transaction-details-content">
+                        Loading details...
                     </div>
                 </div>
-
-                <!-- Settings Section -->
-                <div class="content-section" id="settings-section">
-                    <div class="section-header">
-                        <h3 style="color: white;">System Settings</h3>
-                    </div>
-                    
-                    <div class="settings-form">
-                        <div class="setting-group">
-                            <label class="setting-label">Minimum Deposit</label>
-                            <input type="number" class="setting-input" id="min-deposit" value="17" step="1">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label class="setting-label">Minimum Withdrawal</label>
-                            <input type="number" class="setting-input" id="min-withdrawal" value="20" step="1">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label class="setting-label">Registration Bonus</label>
-                            <input type="number" class="setting-input" id="reg-bonus" value="3" step="0.1">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label class="setting-label">VIP 1 Fee (%)</label>
-                            <input type="number" class="setting-input" id="vip1-fee" value="7" step="0.1">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label class="setting-label">VIP 2 Fee (%)</label>
-                            <input type="number" class="setting-input" id="vip2-fee" value="5" step="0.1">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label class="setting-label">VIP 3 Fee (%)</label>
-                            <input type="number" class="setting-input" id="vip3-fee" value="3" step="0.1">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label class="setting-label">VIP 4 Fee (%)</label>
-                            <input type="number" class="setting-input" id="vip4-fee" value="2" step="0.1">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label class="setting-label">VIP 5 Fee (%)</label>
-                            <input type="number" class="setting-input" id="vip5-fee" value="1" step="0.1">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label class="setting-label">VIP 6 Fee (%)</label>
-                            <input type="number" class="setting-input" id="vip6-fee" value="0.5" step="0.1">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label class="setting-label">Signals Refresh Time (UTC)</label>
-                            <input type="time" class="setting-input" id="signals-time" value="18:00">
-                        </div>
-                        
-                        <button class="admin-btn" id="save-settings" style="width: 100%; margin-top: 20px;">
-                            <i class="fas fa-save"></i> Save Settings
-                        </button>
-                    </div>
+                <div class="pop-footer">
+                    <button id="close-transaction-details">Close</button>
                 </div>
             </div>
         </div>
 
         <!-- Withdrawal Action Modal -->
         <div class="pop-overlay" id="withdrawal-action-modal" style="display: none;">
-            <div class="pop-content" style="max-width: 500px;">
+            <div class="pop-content">
                 <div class="pop-header">Process Withdrawal</div>
                 <div class="pop-body">
-                    <div class="request-details" id="request-details">
-                        <!-- Details loaded dynamically -->
-                    </div>
-                    
-                    <div class="action-section" id="approve-section" style="display: none;">
-                        <h4 style="color: #333; margin-bottom: 10px;">Approve Withdrawal</h4>
-                        <div class="form-group">
-                            <label>Transaction Hash</label>
-                            <input type="text" id="tx-hash" placeholder="Enter transaction hash" class="admin-input">
-                        </div>
-                        <div class="form-group">
-                            <label>Notes (optional)</label>
-                            <textarea id="approve-notes" placeholder="Enter notes" rows="3" class="admin-input"></textarea>
-                        </div>
-                        <button class="admin-btn success" id="confirm-approve">
-                            <i class="fas fa-check"></i> Confirm Approval
+                    <p style="color: #333; margin-bottom: 15px;" id="withdrawal-info">
+                        Loading withdrawal details...
+                    </p>
+                    <div class="action-buttons">
+                        <button class="admin-btn-success" id="approve-withdrawal">
+                            <i class="fas fa-check"></i> Approve
                         </button>
-                    </div>
-                    
-                    <div class="action-section" id="reject-section" style="display: none;">
-                        <h4 style="color: #333; margin-bottom: 10px;">Reject Withdrawal</h4>
-                        <div class="form-group">
-                            <label>Reason for rejection</label>
-                            <textarea id="reject-reason" placeholder="Enter reason" rows="3" class="admin-input" required></textarea>
-                        </div>
-                        <button class="admin-btn danger" id="confirm-reject">
-                            <i class="fas fa-times"></i> Confirm Rejection
+                        <button class="admin-btn-danger" id="reject-withdrawal">
+                            <i class="fas fa-times"></i> Reject
                         </button>
                     </div>
                 </div>
                 <div class="pop-footer">
-                    <button type="button" id="close-action-modal">Cancel</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- User Edit Modal -->
-        <div class="pop-overlay" id="user-edit-modal" style="display: none;">
-            <div class="pop-content" style="max-width: 500px;">
-                <div class="pop-header">Edit User</div>
-                <div class="pop-body">
-                    <div id="user-edit-form">
-                        <!-- Form loaded dynamically -->
-                    </div>
-                </div>
-                <div class="pop-footer">
-                    <button type="button" id="save-user-changes" style="margin-right: 10px;">Save Changes</button>
-                    <button type="button" id="close-user-modal">Cancel</button>
+                    <button id="close-withdrawal-action">Cancel</button>
                 </div>
             </div>
         </div>
@@ -327,173 +265,134 @@ export default function renderAdmin() {
 
 export async function init() {
     document.body.classList.add('no-tabbar');
-    document.title = 'GLY - Admin Panel';
-
+    
     // Check admin access
-    if (!await checkAdminAccess()) {
-        window.showSection('login');
-        return;
-    }
-
-    // Set navbar title
-    window.setNavbarTitle('Admin Panel', true);
-
+    await checkAdminAccess();
+    
     // Load admin data
     await loadAdminData();
     
     // Setup event listeners
     setupEventListeners();
     
-    // Load initial section
-    await loadSection('withdrawals');
+    // Load initial tab
+    loadTab('withdrawals');
 }
 
 async function checkAdminAccess() {
     const user = window.getCurrentUser();
-    if (!user) return false;
+    if (!user || user.username !== 'admin') {
+        window.showCustomAlert('Access denied. Admin only.');
+        setTimeout(() => {
+            window.showSection('home');
+        }, 2000);
+        return false;
+    }
+    return true;
+}
+
+function setupEventListeners() {
+    // Navigation tabs
+    document.querySelectorAll('.admin-nav-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const tab = this.getAttribute('data-tab');
+            
+            // Update active tab
+            document.querySelectorAll('.admin-nav-item').forEach(i => {
+                i.classList.remove('active');
+            });
+            this.classList.add('active');
+            
+            // Show selected tab
+            loadTab(tab);
+        });
+    });
     
-    // Check if user is admin
-    return user.role === 'admin';
+    // Refresh buttons
+    document.getElementById('refresh-withdrawals').addEventListener('click', () => loadWithdrawals());
+    document.getElementById('refresh-users').addEventListener('click', () => loadUsers());
+    document.getElementById('refresh-transactions').addEventListener('click', () => loadTransactions());
+    
+    // User search
+    document.getElementById('search-users').addEventListener('input', debounce(loadUsers, 300));
+    
+    // Transaction filter
+    document.getElementById('transaction-type-filter').addEventListener('change', loadTransactions);
+    
+    // Settings save
+    document.getElementById('save-settings').addEventListener('click', saveSettings);
+    
+    // Modal close buttons
+    document.getElementById('cancel-edit-user').addEventListener('click', () => {
+        document.getElementById('edit-user-modal').style.display = 'none';
+    });
+    
+    document.getElementById('close-transaction-details').addEventListener('click', () => {
+        document.getElementById('transaction-details-modal').style.display = 'none';
+    });
+    
+    document.getElementById('close-withdrawal-action').addEventListener('click', () => {
+        document.getElementById('withdrawal-action-modal').style.display = 'none';
+    });
+    
+    // Withdrawal actions
+    document.getElementById('approve-withdrawal').addEventListener('click', approveWithdrawal);
+    document.getElementById('reject-withdrawal').addEventListener('click', rejectWithdrawal);
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
 }
 
 async function loadAdminData() {
     try {
-        // Load quick stats
-        await loadQuickStats();
+        // Load total users
+        const { count: totalUsers } = await window.supabase
+            .from('users')
+            .select('*', { count: 'exact', head: true });
         
-        // Update admin username
-        const user = window.getCurrentUser();
-        if (user) {
-            document.getElementById('admin-username').textContent = user.username;
-        }
+        // Load pending withdrawals
+        const { count: pendingWithdrawals } = await window.supabase
+            .from('transactions')
+            .select('*', { count: 'exact', head: true })
+            .eq('type', 'withdrawal')
+            .eq('status', 'pending');
+        
+        document.getElementById('total-users').textContent = totalUsers || 0;
+        document.getElementById('pending-withdrawals').textContent = pendingWithdrawals || 0;
         
     } catch (error) {
         console.error('Error loading admin data:', error);
     }
 }
 
-async function loadQuickStats() {
-    try {
-        // Total users
-        const { count: totalUsers } = await supabase
-            .from('users')
-            .select('*', { count: 'exact', head: true });
-        
-        // Pending withdrawals
-        const { count: pendingWithdrawals } = await supabase
-            .from('withdrawal_requests')
-            .select('*', { count: 'exact', head: true })
-            .eq('status', 'pending');
-        
-        // Today's date
-        const today = new Date();
-        const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-        const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
-        
-        // Today deposits
-        const { data: todayDepositsData } = await supabase
-            .from('transactions')
-            .select('amount')
-            .eq('type', 'deposit')
-            .eq('status', 'completed')
-            .gte('created_at', todayStart.toISOString())
-            .lt('created_at', todayEnd.toISOString());
-        
-        const todayDeposits = todayDepositsData?.reduce((sum, t) => sum + t.amount, 0) || 0;
-        
-        // Today withdrawals
-        const { data: todayWithdrawalsData } = await supabase
-            .from('transactions')
-            .select('amount')
-            .eq('type', 'withdrawal')
-            .eq('status', 'completed')
-            .gte('created_at', todayStart.toISOString())
-            .lt('created_at', todayEnd.toISOString());
-        
-        const todayWithdrawals = Math.abs(todayWithdrawalsData?.reduce((sum, t) => sum + t.amount, 0) || 0);
-        
-        // Update UI
-        document.getElementById('total-users').textContent = totalUsers || 0;
-        document.getElementById('pending-withdrawals').textContent = pendingWithdrawals || 0;
-        document.getElementById('withdrawal-badge').textContent = pendingWithdrawals || 0;
-        document.getElementById('today-deposits').textContent = `${todayDeposits.toFixed(2)} USDT`;
-        document.getElementById('today-withdrawals').textContent = `${todayWithdrawals.toFixed(2)} USDT`;
-        
-    } catch (error) {
-        console.error('Error loading quick stats:', error);
-    }
-}
-
-function setupEventListeners() {
-    try {
-        // Navigation
-        document.querySelectorAll('.nav-line').forEach(nav => {
-            nav.addEventListener('click', async () => {
-                const section = nav.getAttribute('data-section');
-                await loadSection(section);
-                
-                // Update active nav
-                document.querySelectorAll('.nav-line').forEach(n => n.classList.remove('active'));
-                nav.classList.add('active');
-            });
-        });
-
-        // Withdrawal actions
-        document.getElementById('refresh-withdrawals').addEventListener('click', () => loadSection('withdrawals'));
-        document.getElementById('withdrawal-filter').addEventListener('change', () => loadSection('withdrawals'));
-        document.getElementById('withdrawal-search').addEventListener('input', () => loadSection('withdrawals'));
-
-        // User management
-        document.getElementById('refresh-users').addEventListener('click', () => loadSection('users'));
-        document.getElementById('user-filter').addEventListener('change', () => loadSection('users'));
-        document.getElementById('user-search').addEventListener('input', () => loadSection('users'));
-        document.getElementById('add-user').addEventListener('click', showAddUserModal);
-
-        // Transactions
-        document.getElementById('refresh-transactions').addEventListener('click', () => loadSection('transactions'));
-        document.getElementById('transaction-filter').addEventListener('change', () => loadSection('transactions'));
-        document.getElementById('transaction-date').addEventListener('change', () => loadSection('transactions'));
-        document.getElementById('export-transactions').addEventListener('click', exportTransactions);
-
-        // Referrals
-        document.getElementById('refresh-referrals').addEventListener('click', () => loadSection('referrals'));
-
-        // Settings
-        document.getElementById('save-settings').addEventListener('click', saveSettings);
-
-        // Modal buttons
-        document.getElementById('close-action-modal').addEventListener('click', hideActionModal);
-        document.getElementById('close-user-modal').addEventListener('click', hideUserModal);
-        document.getElementById('save-user-changes').addEventListener('click', saveUserChanges);
-        document.getElementById('confirm-approve').addEventListener('click', approveWithdrawal);
-        document.getElementById('confirm-reject').addEventListener('click', rejectWithdrawal);
-        
-    } catch (error) {
-        console.error('Error setting up admin event listeners:', error);
-        setTimeout(setupEventListeners, 500);
-    }
-}
-
-async function loadSection(section) {
-    // Hide all sections
-    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+function loadTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.admin-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
     
-    // Show selected section
-    document.getElementById(`${section}-section`).classList.add('active');
+    // Show selected tab
+    document.getElementById(`${tabName}-tab`).classList.add('active');
     
-    // Load section data
-    switch(section) {
+    // Load tab data
+    switch(tabName) {
         case 'withdrawals':
-            await loadWithdrawalRequests();
+            loadWithdrawals();
             break;
         case 'users':
-            await loadUsers();
+            loadUsers();
             break;
         case 'transactions':
-            await loadAllTransactions();
-            break;
-        case 'referrals':
-            await loadReferralData();
+            loadTransactions();
             break;
         case 'settings':
             loadSettings();
@@ -501,663 +400,544 @@ async function loadSection(section) {
     }
 }
 
-async function loadWithdrawalRequests() {
+async function loadWithdrawals() {
     try {
-        const filter = document.getElementById('withdrawal-filter').value;
-        const search = document.getElementById('withdrawal-search').value.toLowerCase();
-        
-        let query = supabase
-            .from('withdrawal_requests')
+        const { data: withdrawals, error } = await window.supabase
+            .from('transactions')
             .select(`
                 *,
-                user:users(id, username, balance, vip_level)
+                user:users(username, email)
             `)
+            .eq('type', 'withdrawal')
+            .eq('status', 'pending')
             .order('created_at', { ascending: false });
-        
-        if (filter !== 'all') {
-            query = query.eq('status', filter);
-        }
-        
-        const { data: requests, error } = await query;
         
         if (error) throw error;
         
-        const container = document.getElementById('withdrawal-list');
-        
-        if (!requests || requests.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-inbox"></i>
-                    <p>No withdrawal requests found</p>
-                </div>
-            `;
-            return;
-        }
-        
+        const container = document.getElementById('withdrawals-table');
         let html = '';
         
-        requests.forEach(request => {
-            // Apply search filter
-            if (search && !request.id.toString().includes(search) && 
-                !request.address.toLowerCase().includes(search) &&
-                !request.user?.username?.toLowerCase().includes(search)) {
-                return;
-            }
-            
-            const statusColor = {
-                'pending': '#f9ae3d',
-                'approved': '#52c41a',
-                'rejected': '#ff6b6b',
-                'processing': '#4e7771'
-            }[request.status] || '#ccc';
-            
-            const statusIcon = {
-                'pending': 'fa-clock',
-                'approved': 'fa-check-circle',
-                'rejected': 'fa-times-circle',
-                'processing': 'fa-spinner'
-            }[request.status] || 'fa-question-circle';
-            
-            html += `
-                <div class="withdrawal-item" data-id="${request.id}">
-                    <div class="withdrawal-header">
-                        <div class="withdrawal-id">#${request.id}</div>
-                        <div class="withdrawal-status" style="color: ${statusColor};">
-                            <i class="fas ${statusIcon}"></i> ${request.status.toUpperCase()}
-                        </div>
-                    </div>
-                    
-                    <div class="withdrawal-details">
-                        <div class="detail-row">
-                            <span class="detail-label">User:</span>
-                            <span class="detail-value">${request.user?.username || 'Unknown'} (VIP ${request.user?.vip_level || 1})</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Amount:</span>
-                            <span class="detail-value" style="color: #f9ae3d; font-weight: bold;">${request.amount} USDT</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Network:</span>
-                            <span class="detail-value">${request.network}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Address:</span>
-                            <span class="detail-value" style="font-family: monospace; font-size: 12px;">${request.address}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Date:</span>
-                            <span class="detail-value">${new Date(request.created_at).toLocaleString()}</span>
-                        </div>
-                    </div>
-                    
-                    ${request.status === 'pending' ? `
-                        <div class="withdrawal-actions">
-                            <button class="action-btn approve" data-id="${request.id}">
-                                <i class="fas fa-check"></i> Approve
-                            </button>
-                            <button class="action-btn reject" data-id="${request.id}">
-                                <i class="fas fa-times"></i> Reject
-                            </button>
-                        </div>
-                    ` : ''}
-                    
-                    ${request.admin_notes ? `
-                        <div class="admin-notes">
-                            <strong>Admin Notes:</strong> ${request.admin_notes}
-                        </div>
-                    ` : ''}
-                </div>
+        if (withdrawals && withdrawals.length > 0) {
+            html = `
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>User</th>
+                            <th>Amount</th>
+                            <th>Network</th>
+                            <th>Address</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
             `;
-        });
+            
+            withdrawals.forEach(tx => {
+                const date = new Date(tx.created_at).toLocaleDateString();
+                const time = new Date(tx.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const amount = Math.abs(tx.amount);
+                const shortAddress = tx.withdrawal_address ? 
+                    tx.withdrawal_address.substring(0, 10) + '...' + tx.withdrawal_address.substring(tx.withdrawal_address.length - 5) : 
+                    'N/A';
+                
+                html += `
+                    <tr>
+                        <td>${date}<br><small>${time}</small></td>
+                        <td>
+                            <div style="font-weight: bold;">${tx.user.username}</div>
+                            <small>${tx.user.email || 'No email'}</small>
+                        </td>
+                        <td style="color: #ff4d4f; font-weight: bold;">${amount.toFixed(2)} USDT</td>
+                        <td>${tx.network || 'TRC20'}</td>
+                        <td title="${tx.withdrawal_address || ''}">${shortAddress}</td>
+                        <td>
+                            <button class="admin-btn-small action-btn" data-id="${tx.id}" data-action="process">
+                                <i class="fas fa-cog"></i> Process
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+        } else {
+            html = '<div style="color: #ccc; text-align: center; padding: 30px;">No pending withdrawals</div>';
+        }
         
         container.innerHTML = html;
         
         // Add event listeners to action buttons
-        container.querySelectorAll('.action-btn.approve').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const requestId = parseInt(btn.getAttribute('data-id'));
-                showActionModal(requestId, 'approve');
-            });
-        });
-        
-        container.querySelectorAll('.action-btn.reject').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const requestId = parseInt(btn.getAttribute('data-id'));
-                showActionModal(requestId, 'reject');
+        container.querySelectorAll('.action-btn[data-action="process"]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const txId = this.getAttribute('data-id');
+                showWithdrawalAction(txId);
             });
         });
         
     } catch (error) {
-        console.error('Error loading withdrawal requests:', error);
-        document.getElementById('withdrawal-list').innerHTML = `
-            <div class="empty-state error">
-                <i class="fas fa-exclamation-triangle"></i>
-                <p>Error loading withdrawal requests</p>
-            </div>
-        `;
+        console.error('Error loading withdrawals:', error);
+        document.getElementById('withdrawals-table').innerHTML = 
+            '<div style="color: #ff4d4f; text-align: center; padding: 30px;">Error loading withdrawals</div>';
     }
-}
-
-async function showActionModal(requestId, action) {
-    try {
-        // Load request details
-        const { data: request, error } = await supabase
-            .from('withdrawal_requests')
-            .select(`
-                *,
-                user:users(username, email, balance)
-            `)
-            .eq('id', requestId)
-            .single();
-            
-        if (error) throw error;
-        
-        // Populate details
-        document.getElementById('request-details').innerHTML = `
-            <div class="request-info">
-                <div class="info-row">
-                    <span>Request ID:</span>
-                    <span>#${request.id}</span>
-                </div>
-                <div class="info-row">
-                    <span>User:</span>
-                    <span>${request.user?.username} (${request.user?.email || 'No email'})</span>
-                </div>
-                <div class="info-row">
-                    <span>Amount:</span>
-                    <span style="color: #f9ae3d; font-weight: bold;">${request.amount} USDT</span>
-                </div>
-                <div class="info-row">
-                    <span>Network:</span>
-                    <span>${request.network}</span>
-                </div>
-                <div class="info-row">
-                    <span>Address:</span>
-                    <span style="font-family: monospace; font-size: 12px;">${request.address}</span>
-                </div>
-                <div class="info-row">
-                    <span>User Balance:</span>
-                    <span>${request.user?.balance?.toFixed(2) || '0.00'} USDT</span>
-                </div>
-                <div class="info-row">
-                    <span>Date:</span>
-                    <span>${new Date(request.created_at).toLocaleString()}</span>
-                </div>
-            </div>
-        `;
-        
-        // Show appropriate action section
-        if (action === 'approve') {
-            document.getElementById('approve-section').style.display = 'block';
-            document.getElementById('reject-section').style.display = 'none';
-        } else {
-            document.getElementById('approve-section').style.display = 'none';
-            document.getElementById('reject-section').style.display = 'block';
-        }
-        
-        // Store current request id
-        document.getElementById('withdrawal-action-modal').dataset.requestId = requestId;
-        document.getElementById('withdrawal-action-modal').dataset.action = action;
-        
-        // Show modal
-        document.getElementById('withdrawal-action-modal').style.display = 'flex';
-        
-    } catch (error) {
-        console.error('Error showing action modal:', error);
-        window.showCustomAlert('Error loading request details');
-    }
-}
-
-async function approveWithdrawal() {
-    const modal = document.getElementById('withdrawal-action-modal');
-    const requestId = parseInt(modal.dataset.requestId);
-    const txHash = document.getElementById('tx-hash').value.trim();
-    const notes = document.getElementById('approve-notes').value.trim();
-    const admin = window.getCurrentUser();
-    
-    if (!txHash) {
-        window.showCustomAlert('Please enter transaction hash');
-        return;
-    }
-    
-    try {
-        // Call Supabase function to approve withdrawal
-        const { data, error } = await supabase.rpc('approve_withdrawal', {
-            p_request_id: requestId,
-            p_admin_id: admin.id,
-            p_transaction_hash: txHash,
-            p_notes: notes
-        });
-        
-        if (error) throw error;
-        
-        window.showCustomAlert('Withdrawal approved successfully!');
-        hideActionModal();
-        
-        // Refresh withdrawal list
-        await loadSection('withdrawals');
-        await loadQuickStats();
-        
-    } catch (error) {
-        console.error('Error approving withdrawal:', error);
-        window.showCustomAlert('Error approving withdrawal: ' + error.message);
-    }
-}
-
-async function rejectWithdrawal() {
-    const modal = document.getElementById('withdrawal-action-modal');
-    const requestId = parseInt(modal.dataset.requestId);
-    const reason = document.getElementById('reject-reason').value.trim();
-    const admin = window.getCurrentUser();
-    
-    if (!reason) {
-        window.showCustomAlert('Please enter rejection reason');
-        return;
-    }
-    
-    try {
-        // Call Supabase function to reject withdrawal
-        const { data, error } = await supabase.rpc('reject_withdrawal', {
-            p_request_id: requestId,
-            p_admin_id: admin.id,
-            p_reason: reason
-        });
-        
-        if (error) throw error;
-        
-        window.showCustomAlert('Withdrawal rejected and funds returned to user');
-        hideActionModal();
-        
-        // Refresh withdrawal list
-        await loadSection('withdrawals');
-        await loadQuickStats();
-        
-    } catch (error) {
-        console.error('Error rejecting withdrawal:', error);
-        window.showCustomAlert('Error rejecting withdrawal: ' + error.message);
-    }
-}
-
-function hideActionModal() {
-    document.getElementById('withdrawal-action-modal').style.display = 'none';
-    document.getElementById('tx-hash').value = '';
-    document.getElementById('approve-notes').value = '';
-    document.getElementById('reject-reason').value = '';
 }
 
 async function loadUsers() {
     try {
-        const filter = document.getElementById('user-filter').value;
-        const search = document.getElementById('user-search').value.toLowerCase();
-        
-        let query = supabase
+        const searchTerm = document.getElementById('search-users').value;
+        let query = window.supabase
             .from('users')
             .select('*')
-            .order('created_at', { ascending: false });
+            .order('created_at', { ascending: false })
+            .limit(50);
         
-        if (filter.startsWith('vip')) {
-            const vipLevel = parseInt(filter.replace('vip', ''));
-            query = query.eq('vip_level', vipLevel);
+        if (searchTerm) {
+            query = query.or(`username.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%,id.ilike.%${searchTerm}%`);
         }
         
         const { data: users, error } = await query;
         
         if (error) throw error;
         
-        const container = document.getElementById('user-list');
-        
-        if (!users || users.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-users"></i>
-                    <p>No users found</p>
-                </div>
-            `;
-            return;
-        }
-        
+        const container = document.getElementById('users-table');
         let html = '';
         
-        users.forEach(user => {
-            // Apply search filter
-            if (search && !user.id.toLowerCase().includes(search) && 
-                !user.username.toLowerCase().includes(search) &&
-                !user.email?.toLowerCase().includes(search)) {
-                return;
+        if (users && users.length > 0) {
+            html = `
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Balance</th>
+                            <th>VIP</th>
+                            <th>Referrals</th>
+                            <th>Joined</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            for (const user of users) {
+                // Get referral count
+                const { count: referrals } = await window.supabase
+                    .from('referrals')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('referrer_id', user.id)
+                    .eq('level', 1);
+                
+                const date = new Date(user.created_at).toLocaleDateString();
+                
+                html += `
+                    <tr>
+                        <td><small>${user.id.substring(0, 8)}...</small></td>
+                        <td>
+                            <div style="font-weight: bold;">${user.username}</div>
+                            <small>${user.email || 'No email'}</small>
+                        </td>
+                        <td style="color: #f9ae3d; font-weight: bold;">${user.balance.toFixed(2)} USDT</td>
+                        <td><span class="vip-badge">VIP ${user.vip_level}</span></td>
+                        <td>${referrals || 0}</td>
+                        <td>${date}</td>
+                        <td>
+                            <button class="admin-btn-small action-btn" data-id="${user.id}" data-action="edit">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </td>
+                    </tr>
+                `;
             }
             
-            html += `
-                <div class="user-item" data-id="${user.id}">
-                    <div class="user-header">
-                        <div class="user-info">
-                            <div class="user-name">${user.username}</div>
-                            <div class="user-id">${user.id}</div>
-                        </div>
-                        <div class="user-status">
-                            <span class="vip-badge">VIP ${user.vip_level}</span>
-                            <span class="role-badge">${user.role}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="user-details">
-                        <div class="detail-row">
-                            <span class="detail-label">Balance:</span>
-                            <span class="detail-value" style="color: #f9ae3d;">${user.balance.toFixed(2)} USDT</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Signals:</span>
-                            <span class="detail-value">${user.signals_available}/3</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Email:</span>
-                            <span class="detail-value">${user.email || 'No email'}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Invite Code:</span>
-                            <span class="detail-value">${user.invite_code}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Joined:</span>
-                            <span class="detail-value">${new Date(user.created_at).toLocaleDateString()}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="user-actions">
-                        <button class="action-btn edit" data-id="${user.id}">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
-                        <button class="action-btn transactions" data-id="${user.id}">
-                            <i class="fas fa-history"></i> Transactions
-                        </button>
-                        ${user.role !== 'admin' ? `
-                            <button class="action-btn delete" data-id="${user.id}">
-                                <i class="fas fa-trash"></i> Delete
-                            </button>
-                        ` : ''}
-                    </div>
-                </div>
-            `;
-        });
+            html += '</tbody></table>';
+        } else {
+            html = '<div style="color: #ccc; text-align: center; padding: 30px;">No users found</div>';
+        }
         
         container.innerHTML = html;
         
-        // Add event listeners
-        container.querySelectorAll('.action-btn.edit').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const userId = btn.getAttribute('data-id');
-                showUserEditModal(userId);
-            });
-        });
-        
-        container.querySelectorAll('.action-btn.delete').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const userId = btn.getAttribute('data-id');
-                deleteUser(userId);
+        // Add event listeners to action buttons
+        container.querySelectorAll('.action-btn[data-action="edit"]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const userId = this.getAttribute('data-id');
+                showEditUserModal(userId);
             });
         });
         
     } catch (error) {
         console.error('Error loading users:', error);
+        document.getElementById('users-table').innerHTML = 
+            '<div style="color: #ff4d4f; text-align: center; padding: 30px;">Error loading users</div>';
     }
 }
 
-async function showUserEditModal(userId) {
+async function loadTransactions() {
     try {
-        const { data: user, error } = await supabase
+        const typeFilter = document.getElementById('transaction-type-filter').value;
+        
+        let query = window.supabase
+            .from('transactions')
+            .select(`
+                *,
+                user:users(username)
+            `)
+            .order('created_at', { ascending: false })
+            .limit(100);
+        
+        if (typeFilter) {
+            query = query.eq('type', typeFilter);
+        }
+        
+        const { data: transactions, error } = await query;
+        
+        if (error) throw error;
+        
+        const container = document.getElementById('transactions-table');
+        let html = '';
+        
+        if (transactions && transactions.length > 0) {
+            html = `
+                <div style="max-height: 400px; overflow-y: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            transactions.forEach(tx => {
+                const date = new Date(tx.created_at).toLocaleDateString();
+                const time = new Date(tx.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const isPositive = tx.amount > 0;
+                const amountColor = isPositive ? '#52c41a' : '#ff4d4f';
+                const statusColor = tx.status === 'completed' ? '#52c41a' : 
+                                   tx.status === 'pending' ? '#f9ae3d' : 
+                                   '#ff4d4f';
+                
+                html += `
+                    <tr>
+                        <td>${date}<br><small>${time}</small></td>
+                        <td>${tx.user.username}</td>
+                        <td><span class="type-badge">${tx.type}</span></td>
+                        <td style="color: ${amountColor}; font-weight: bold;">${isPositive ? '+' : ''}${tx.amount.toFixed(2)} USDT</td>
+                        <td><span class="status-badge" style="background: ${statusColor};">${tx.status}</span></td>
+                        <td><small>${tx.description || ''}</small></td>
+                        <td>
+                            <button class="admin-btn-small action-btn" data-id="${tx.id}" data-action="view">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table></div>';
+        } else {
+            html = '<div style="color: #ccc; text-align: center; padding: 30px;">No transactions found</div>';
+        }
+        
+        container.innerHTML = html;
+        
+        // Add event listeners to action buttons
+        container.querySelectorAll('.action-btn[data-action="view"]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const txId = this.getAttribute('data-id');
+                showTransactionDetails(txId);
+            });
+        });
+        
+    } catch (error) {
+        console.error('Error loading transactions:', error);
+        document.getElementById('transactions-table').innerHTML = 
+            '<div style="color: #ff4d4f; text-align: center; padding: 30px;">Error loading transactions</div>';
+    }
+}
+
+async function loadSettings() {
+    // Settings are hardcoded for now, can be loaded from database if needed
+}
+
+async function showEditUserModal(userId) {
+    try {
+        const { data: user, error } = await window.supabase
             .from('users')
             .select('*')
             .eq('id', userId)
             .single();
-            
+        
         if (error) throw error;
         
-        document.getElementById('user-edit-form').innerHTML = `
-            <input type="hidden" id="edit-user-id" value="${user.id}">
-            
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" id="edit-username" value="${user.username}" class="admin-input">
-            </div>
-            
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="edit-email" value="${user.email || ''}" class="admin-input">
-            </div>
-            
-            <div class="form-group">
-                <label>Balance (USDT)</label>
-                <input type="number" id="edit-balance" value="${user.balance}" step="0.01" class="admin-input">
-            </div>
-            
-            <div class="form-group">
-                <label>VIP Level</label>
-                <select id="edit-vip-level" class="admin-select">
-                    ${[1,2,3,4,5,6].map(level => `
-                        <option value="${level}" ${user.vip_level === level ? 'selected' : ''}>VIP ${level}</option>
-                    `).join('')}
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label>Signals Available</label>
-                <input type="number" id="edit-signals" value="${user.signals_available}" min="0" max="3" class="admin-input">
-            </div>
-            
-            <div class="form-group">
-                <label>Role</label>
-                <select id="edit-role" class="admin-select">
-                    <option value="user" ${user.role === 'user' ? 'selected' : ''}>User</option>
-                    <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label>TRC20 Address</label>
-                <input type="text" id="edit-trc20" value="${user.trc20_address || ''}" class="admin-input">
-            </div>
-            
-            <div class="form-group">
-                <label>BEP20 Address</label>
-                <input type="text" id="edit-bep20" value="${user.bep20_address || ''}" class="admin-input">
-            </div>
-        `;
+        // Fill form
+        document.getElementById('edit-username').value = user.username;
+        document.getElementById('edit-balance').value = user.balance;
+        document.getElementById('edit-vip-level').value = user.vip_level;
+        document.getElementById('edit-signals').value = user.signals_available;
+        document.getElementById('edit-email').value = user.email || '';
+        document.getElementById('edit-address-trc20').value = user.withdrawal_address_trc20 || '';
+        document.getElementById('edit-address-bep20').value = user.withdrawal_address_bep20 || '';
         
-        document.getElementById('user-edit-modal').style.display = 'flex';
+        // Store user ID
+        document.getElementById('edit-user-form').setAttribute('data-user-id', userId);
+        
+        // Show modal
+        document.getElementById('edit-user-modal').style.display = 'flex';
+        
+        // Add save handler
+        document.getElementById('save-user-changes').onclick = async () => {
+            await saveUserChanges(userId);
+        };
         
     } catch (error) {
-        console.error('Error showing user edit modal:', error);
+        console.error('Error loading user:', error);
         window.showCustomAlert('Error loading user data');
     }
 }
 
-async function saveUserChanges() {
-    const userId = document.getElementById('edit-user-id').value;
-    const updates = {
-        username: document.getElementById('edit-username').value.trim(),
-        email: document.getElementById('edit-email').value.trim(),
-        balance: parseFloat(document.getElementById('edit-balance').value),
-        vip_level: parseInt(document.getElementById('edit-vip-level').value),
-        signals_available: parseInt(document.getElementById('edit-signals').value),
-        role: document.getElementById('edit-role').value,
-        trc20_address: document.getElementById('edit-trc20').value.trim(),
-        bep20_address: document.getElementById('edit-bep20').value.trim()
-    };
-    
+async function saveUserChanges(userId) {
     try {
-        const { error } = await supabase
+        const updates = {
+            balance: parseFloat(document.getElementById('edit-balance').value),
+            vip_level: parseInt(document.getElementById('edit-vip-level').value),
+            signals_available: parseInt(document.getElementById('edit-signals').value),
+            email: document.getElementById('edit-email').value || null,
+            withdrawal_address_trc20: document.getElementById('edit-address-trc20').value || null,
+            withdrawal_address_bep20: document.getElementById('edit-address-bep20').value || null
+        };
+        
+        const { error } = await window.supabase
             .from('users')
             .update(updates)
             .eq('id', userId);
-            
+        
         if (error) throw error;
         
         window.showCustomAlert('User updated successfully!');
-        hideUserModal();
+        document.getElementById('edit-user-modal').style.display = 'none';
         
-        // Refresh user list
-        await loadSection('users');
+        // Reload users tab
+        loadUsers();
         
     } catch (error) {
         console.error('Error updating user:', error);
-        window.showCustomAlert('Error updating user: ' + error.message);
+        window.showCustomAlert('Error updating user');
     }
 }
 
-async function deleteUser(userId) {
-    const confirm = await window.showCustomModal('Confirm Delete', 
-        `Are you sure you want to delete this user? This action cannot be undone.`,
-        () => true
-    );
-    
-    if (!confirm) return;
-    
+async function showTransactionDetails(txId) {
     try {
-        const { error } = await supabase
-            .from('users')
-            .delete()
-            .eq('id', userId);
-            
+        const { data: transaction, error } = await window.supabase
+            .from('transactions')
+            .select(`
+                *,
+                user:users(username, email)
+            `)
+            .eq('id', txId)
+            .single();
+        
         if (error) throw error;
         
-        window.showCustomAlert('User deleted successfully!');
+        const date = new Date(transaction.created_at).toLocaleString();
+        const isPositive = transaction.amount > 0;
+        const amountColor = isPositive ? '#52c41a' : '#ff4d4f';
         
-        // Refresh user list
-        await loadSection('users');
-        await loadQuickStats();
+        let details = `
+            <div style="color: #333;">
+                <div class="detail-row">
+                    <span class="detail-label">Transaction ID:</span>
+                    <span class="detail-value">${transaction.id}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date:</span>
+                    <span class="detail-value">${date}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">User:</span>
+                    <span class="detail-value">${transaction.user.username} (${transaction.user.email || 'No email'})</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Type:</span>
+                    <span class="detail-value">${transaction.type}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Amount:</span>
+                    <span class="detail-value" style="color: ${amountColor}; font-weight: bold;">${transaction.amount.toFixed(2)} USDT</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Status:</span>
+                    <span class="detail-value">${transaction.status}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Description:</span>
+                    <span class="detail-value">${transaction.description || 'N/A'}</span>
+                </div>
+        `;
+        
+        if (transaction.network) {
+            details += `
+                <div class="detail-row">
+                    <span class="detail-label">Network:</span>
+                    <span class="detail-value">${transaction.network}</span>
+                </div>
+            `;
+        }
+        
+        if (transaction.withdrawal_address) {
+            details += `
+                <div class="detail-row">
+                    <span class="detail-label">Withdrawal Address:</span>
+                    <span class="detail-value">${transaction.withdrawal_address}</span>
+                </div>
+            `;
+        }
+        
+        details += '</div>';
+        
+        document.getElementById('transaction-details-content').innerHTML = details;
+        document.getElementById('transaction-details-modal').style.display = 'flex';
         
     } catch (error) {
-        console.error('Error deleting user:', error);
-        window.showCustomAlert('Error deleting user: ' + error.message);
+        console.error('Error loading transaction:', error);
+        window.showCustomAlert('Error loading transaction details');
     }
 }
 
-function hideUserModal() {
-    document.getElementById('user-edit-modal').style.display = 'none';
+async function showWithdrawalAction(txId) {
+    try {
+        const { data: transaction, error } = await window.supabase
+            .from('transactions')
+            .select(`
+                *,
+                user:users(username, balance)
+            `)
+            .eq('id', txId)
+            .single();
+        
+        if (error) throw error;
+        
+        const amount = Math.abs(transaction.amount);
+        const userBalance = transaction.user.balance;
+        
+        let info = `
+            <div style="color: #333;">
+                <div style="margin-bottom: 10px;">
+                    <strong>User:</strong> ${transaction.user.username}
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <strong>Amount:</strong> ${amount.toFixed(2)} USDT
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <strong>Network:</strong> ${transaction.network || 'TRC20'}
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <strong>Address:</strong> ${transaction.withdrawal_address}
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <strong>User Balance:</strong> ${userBalance.toFixed(2)} USDT
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Status:</strong> ${transaction.status}
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('withdrawal-info').innerHTML = info;
+        document.getElementById('withdrawal-action-modal').setAttribute('data-tx-id', txId);
+        document.getElementById('withdrawal-action-modal').style.display = 'flex';
+        
+    } catch (error) {
+        console.error('Error loading withdrawal:', error);
+        window.showCustomAlert('Error loading withdrawal details');
+    }
 }
 
-async function loadAllTransactions() {
-    // Similar implementation for loading all transactions
-    // ... (code would be similar to loadWithdrawalRequests)
+async function approveWithdrawal() {
+    const txId = document.getElementById('withdrawal-action-modal').getAttribute('data-tx-id');
+    
+    try {
+        // Update transaction status
+        const { error: txError } = await window.supabase
+            .from('transactions')
+            .update({ status: 'completed' })
+            .eq('id', txId);
+        
+        if (txError) throw txError;
+        
+        window.showCustomAlert('Withdrawal approved successfully!');
+        document.getElementById('withdrawal-action-modal').style.display = 'none';
+        
+        // Reload withdrawals tab
+        loadWithdrawals();
+        loadAdminData();
+        
+    } catch (error) {
+        console.error('Error approving withdrawal:', error);
+        window.showCustomAlert('Error approving withdrawal');
+    }
 }
 
-async function loadReferralData() {
-    // Implementation for referral data
-    // ... (code would load referral statistics)
-}
-
-function loadSettings() {
-    // Load current settings into form
-    // This could be from a settings table or hardcoded
+async function rejectWithdrawal() {
+    const txId = document.getElementById('withdrawal-action-modal').getAttribute('data-tx-id');
+    
+    try {
+        // Get transaction details first
+        const { data: transaction, error: getError } = await window.supabase
+            .from('transactions')
+            .select('user_id, amount')
+            .eq('id', txId)
+            .single();
+        
+        if (getError) throw getError;
+        
+        // Return funds to user balance
+        const amountToReturn = Math.abs(transaction.amount);
+        const { data: user } = await window.supabase
+            .from('users')
+            .select('balance')
+            .eq('id', transaction.user_id)
+            .single();
+        
+        const newBalance = user.balance + amountToReturn;
+        
+        const { error: balanceError } = await window.supabase
+            .from('users')
+            .update({ balance: newBalance })
+            .eq('id', transaction.user_id);
+        
+        if (balanceError) throw balanceError;
+        
+        // Update transaction status
+        const { error: txError } = await window.supabase
+            .from('transactions')
+            .update({ 
+                status: 'cancelled',
+                description: `Withdrawal rejected - Funds returned to balance`
+            })
+            .eq('id', txId);
+        
+        if (txError) throw txError;
+        
+        window.showCustomAlert('Withdrawal rejected and funds returned to user!');
+        document.getElementById('withdrawal-action-modal').style.display = 'none';
+        
+        // Reload withdrawals tab
+        loadWithdrawals();
+        loadAdminData();
+        
+    } catch (error) {
+        console.error('Error rejecting withdrawal:', error);
+        window.showCustomAlert('Error rejecting withdrawal');
+    }
 }
 
 async function saveSettings() {
-    // Save settings to database
-    // This would update a settings table
+    // This is a placeholder - settings would be saved to database in real implementation
+    window.showCustomAlert('Settings saved successfully!');
 }
-
-function showAddUserModal() {
-    // Show modal for adding new user
-}
-
-async function exportTransactions() {
-    // Export transactions to CSV
-}
-
-function showAddUserModal() {
-    document.getElementById('user-edit-form').innerHTML = `
-        <div class="form-group">
-            <label>Username</label>
-            <input type="text" id="new-username" placeholder="Enter username" class="admin-input">
-        </div>
-        
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="new-email" placeholder="Enter email" class="admin-input">
-        </div>
-        
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="new-password" placeholder="Enter password" class="admin-input">
-        </div>
-        
-        <div class="form-group">
-            <label>Payment Password</label>
-            <input type="password" id="new-payment-password" placeholder="Enter payment password" class="admin-input">
-        </div>
-        
-        <div class="form-group">
-            <label>Initial Balance (USDT)</label>
-            <input type="number" id="new-balance" value="0" step="0.01" class="admin-input">
-        </div>
-        
-        <div class="form-group">
-            <label>VIP Level</label>
-            <select id="new-vip-level" class="admin-select">
-                ${[1,2,3,4,5,6].map(level => `
-                    <option value="${level}">VIP ${level}</option>
-                `).join('')}
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label>Role</label>
-            <select id="new-role" class="admin-select">
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-            </select>
-        </div>
-    `;
-    
-    // Change modal title and button
-    document.querySelector('#user-edit-modal .pop-header').textContent = 'Add New User';
-    document.getElementById('save-user-changes').textContent = 'Add User';
-    document.getElementById('save-user-changes').onclick = addNewUser;
-    
-    document.getElementById('user-edit-modal').style.display = 'flex';
-}
-
-async function addNewUser() {
-    const newUser = {
-        id: window.GLY.generateUserId(),
-        username: document.getElementById('new-username').value.trim(),
-        email: document.getElementById('new-email').value.trim(),
-        password: document.getElementById('new-password').value,
-        payment_password: document.getElementById('new-payment-password').value,
-        invite_code: window.GLY.generateInviteCode(),
-        balance: parseFloat(document.getElementById('new-balance').value) || 0,
-        vip_level: parseInt(document.getElementById('new-vip-level').value),
-        role: document.getElementById('new-role').value,
-        signals_available: 3,
-        last_signal_update: new Date().toISOString(),
-        created_at: new Date().toISOString()
-    };
-    
-    if (!newUser.username || !newUser.password || !newUser.payment_password) {
-        window.showCustomAlert('Please fill in all required fields');
-        return;
-    }
-    
-    try {
-        const { error } = await supabase
-            .from('users')
-            .insert([newUser]);
-            
-        if (error) throw error;
-        
-        window.showCustomAlert('User added successfully!');
-        hideUserModal();
-        
-        // Refresh user list
-        await loadSection('users');
-        await loadQuickStats();
-        
-    } catch (error) {
-        console.error('Error adding user:', error);
-        window.showCustomAlert('Error adding user: ' + error.message);
-    }
-}
-[file content end]

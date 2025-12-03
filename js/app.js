@@ -2,7 +2,7 @@
 class GLYApp {
     constructor() {
         this.currentSection = null;
-        this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register', 'company', 'invite', 'team', 'rules'];
+        this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register', 'company', 'invite', 'team', 'rules', 'withdraw', 'admin'];
         this.currentUser = null;
         this.supabase = null;
         this.deferredPrompt = null;
@@ -22,12 +22,8 @@ class GLYApp {
         // Setup PWA installation
         this.setupPWAInstall();
         
-        // Load initial section
-        if (this.currentUser) {
-            await this.showSection('home');
-        } else {
-            await this.showSection('login');
-        }
+        // Check URL hash for direct section access
+        await this.handleHashChange();
         
         this.setupEventListeners();
         this.setupNavigation();
@@ -59,6 +55,45 @@ class GLYApp {
         );
         
         window.supabase = this.supabase;
+    }
+
+    async handleHashChange() {
+        const hash = window.location.hash.substring(1); // Remove #
+        
+        if (hash) {
+            // Check if hash corresponds to a valid section
+            if (this.sections.includes(hash)) {
+                // Special check for admin section
+                if (hash === 'admin') {
+                    const user = this.currentUser;
+                    if (!user || user.username !== 'admin') {
+                        window.showCustomAlert('Access denied. Admin privileges required.');
+                        // Redirect to home if not admin
+                        if (this.currentUser) {
+                            await this.showSection('home');
+                        } else {
+                            await this.showSection('login');
+                        }
+                        return;
+                    }
+                }
+                await this.showSection(hash);
+            } else {
+                // Invalid hash, redirect based on auth
+                if (this.currentUser) {
+                    await this.showSection('home');
+                } else {
+                    await this.showSection('login');
+                }
+            }
+        } else {
+            // No hash, show appropriate section
+            if (this.currentUser) {
+                await this.showSection('home');
+            } else {
+                await this.showSection('login');
+            }
+        }
     }
 
     setupPWAInstall() {
@@ -190,7 +225,7 @@ class GLYApp {
         if (this.currentSection === sectionId) return;
 
         // Check authentication for protected pages
-        const protectedSections = ['home', 'get', 'assets', 'mine', 'invite', 'team', 'rules'];
+        const protectedSections = ['home', 'get', 'assets', 'mine', 'invite', 'team', 'rules', 'withdraw', 'admin'];
         if (protectedSections.includes(sectionId)) {
             const user = this.currentUser || JSON.parse(localStorage.getItem('gly_user'));
             if (!user) {
@@ -206,12 +241,22 @@ class GLYApp {
             }
         }
 
+        // Special check for admin section
+        if (sectionId === 'admin') {
+            const user = this.currentUser;
+            if (!user || user.username !== 'admin') {
+                window.showCustomAlert('Access denied. Admin privileges required.');
+                return;
+            }
+        }
+
         // Hide current section
         if (this.currentSection) {
             document.getElementById(this.currentSection).classList.remove('active');
             if (this.currentSection !== 'login' && this.currentSection !== 'register' && 
                 this.currentSection !== 'company' && this.currentSection !== 'invite' && 
-                this.currentSection !== 'team' && this.currentSection !== 'rules') {
+                this.currentSection !== 'team' && this.currentSection !== 'rules' &&
+                this.currentSection !== 'withdraw' && this.currentSection !== 'admin') {
                 const activeTab = document.querySelector(`[data-section="${this.currentSection}"]`);
                 if (activeTab) {
                     activeTab.classList.remove('uni-tabbar__item--active');
@@ -229,7 +274,8 @@ class GLYApp {
             this.hideNavbar();
             document.body.classList.add('auth-page');
         } else if (sectionId === 'company' || sectionId === 'invite' || 
-                   sectionId === 'team' || sectionId === 'rules') {
+                   sectionId === 'team' || sectionId === 'rules' ||
+                   sectionId === 'withdraw' || sectionId === 'admin') {
             this.hideTabbar();
             this.showNavbar();
             document.body.classList.add('no-tabbar');
@@ -238,6 +284,8 @@ class GLYApp {
             else if (sectionId === 'invite') this.setNavbarTitle('Invite', true);
             else if (sectionId === 'team') this.setNavbarTitle('Team', true);
             else if (sectionId === 'rules') this.setNavbarTitle('Rules', true);
+            else if (sectionId === 'withdraw') this.setNavbarTitle('Withdraw', true);
+            else if (sectionId === 'admin') this.setNavbarTitle('Admin Panel', true);
         } else {
             this.showTabbar();
             this.showNavbar();

@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>GLY - Global Ledger Yield</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=1.0">
     
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    
-    <!-- Cache Control -->
+    <!-- Add cache control meta tags -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css?v=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json?v=1.0">
     
     <style>
         .uni-tabbar { display: none; }
@@ -166,17 +168,6 @@
                 display: none !important;
             }
         }
-        
-        /* Cache version indicator */
-        .cache-version {
-            display: none;
-            position: fixed;
-            bottom: 5px;
-            right: 5px;
-            color: rgba(255,255,255,0.3);
-            font-size: 8px;
-            z-index: 9999;
-        }
     </style>
 </head>
 <body>
@@ -184,9 +175,6 @@
     <div class="install-btn" id="install-btn">
         <i class="fas fa-download"></i>
     </div>
-    
-    <!-- Cache Version Indicator -->
-    <div class="cache-version">v1.0</div>
     
     <!-- Custom Loading Overlay -->
     <div class="loading-overlay" id="loading-overlay">
@@ -229,8 +217,6 @@
             <div id="invite" class="section"></div>
             <div id="team" class="section"></div>
             <div id="rules" class="section"></div>
-            <div id="withdraw" class="section"></div>
-            <div id="admin" class="section"></div>
         </div>
     </div>
 
@@ -265,25 +251,65 @@
     </div>
 
     <!-- Load Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/app.js?v=1.0" type="module"></script>
     
     <script>
-        // Service Worker для кэширования
+        // Force refresh cache on load
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+                navigator.serviceWorker.register('/service-worker.js?v=1.0').then(function(registration) {
                     console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    
+                    // Check for updates
+                    registration.update();
+                    
+                    // Force update if service worker is waiting
+                    if (registration.waiting) {
+                        registration.waiting.postMessage({type: 'SKIP_WAITING'});
+                        console.log('Service worker updated, reloading...');
+                        window.location.reload();
+                    }
                 }, function(err) {
                     console.log('ServiceWorker registration failed: ', err);
                 });
             });
         }
         
-        // Force cache reload
-        if (window.location.search.indexOf('reload') !== -1) {
-            window.location.search = '';
+        // Clear cache on page load if version changed
+        const currentVersion = '1.0';
+        const storedVersion = localStorage.getItem('gly_version');
+        
+        if (storedVersion !== currentVersion) {
+            // Clear all caches
+            if ('caches' in window) {
+                caches.keys().then(function(cacheNames) {
+                    cacheNames.forEach(function(cacheName) {
+                        caches.delete(cacheName);
+                    });
+                });
+            }
+            
+            // Update version
+            localStorage.setItem('gly_version', currentVersion);
+            
+            // Reload to get fresh assets
+            setTimeout(function() {
+                window.location.reload(true);
+            }, 100);
         }
+        
+        // Prevent caching for dynamic assets
+        const originalFetch = window.fetch;
+        window.fetch = function(url, options) {
+            if (typeof url === 'string') {
+                // Add timestamp to prevent caching for API requests
+                if (url.includes('.js') || url.includes('.css') || url.includes('.png') || url.includes('.jpg')) {
+                    const separator = url.includes('?') ? '&' : '?';
+                    url = url + separator + '_=' + Date.now();
+                }
+            }
+            return originalFetch(url, options);
+        };
     </script>
 </body>
 </html>

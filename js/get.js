@@ -127,6 +127,11 @@ function initVipCarousel() {
     const cards = document.querySelectorAll('.vip-card');
     const description = document.getElementById('vip-description');
     
+    if (!carousel || cards.length === 0 || !description) {
+        console.error('Carousel elements not found');
+        return;
+    }
+    
     let currentIndex = 0;
     let startX = 0;
     let isDragging = false;
@@ -141,6 +146,9 @@ function initVipCarousel() {
     ];
     
     function updateCarousel() {
+        console.log('Updating carousel to index:', currentIndex);
+        
+        // Update cards
         cards.forEach((card, index) => {
             card.classList.remove('active');
             if (index === currentIndex) {
@@ -148,17 +156,24 @@ function initVipCarousel() {
             }
         });
         
-        description.textContent = vipDescriptions[currentIndex];
+        // Update description
+        if (vipDescriptions[currentIndex]) {
+            description.textContent = vipDescriptions[currentIndex];
+            console.log('Description updated:', vipDescriptions[currentIndex]);
+        }
         
+        // Scroll to active card
+        const cardWidth = cards[0].offsetWidth;
         carousel.scrollTo({
-            left: currentIndex * carousel.offsetWidth,
+            left: currentIndex * cardWidth,
             behavior: 'smooth'
         });
     }
     
-    // Initialize carousel with first card active
+    // Initialize carousel
     updateCarousel();
     
+    // Mouse drag events
     carousel.addEventListener('mousedown', (e) => {
         isDragging = true;
         startX = e.pageX - carousel.offsetLeft;
@@ -179,11 +194,15 @@ function initVipCarousel() {
         const diffX = startX - endX;
         const threshold = 50;
         
+        console.log('Mouse up - diffX:', diffX, 'threshold:', threshold);
+        
         if (Math.abs(diffX) > threshold) {
-            if (diffX > 0) {
-                currentIndex = (currentIndex + 1) % cards.length;
-            } else {
-                currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+            if (diffX > 0 && currentIndex < cards.length - 1) {
+                currentIndex++;
+                console.log('Swiped right, new index:', currentIndex);
+            } else if (diffX < 0 && currentIndex > 0) {
+                currentIndex--;
+                console.log('Swiped left, new index:', currentIndex);
             }
             updateCarousel();
         }
@@ -194,8 +213,13 @@ function initVipCarousel() {
         carousel.style.cursor = 'grab';
     });
     
+    // Touch events for mobile
     carousel.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
+    });
+    
+    carousel.addEventListener('touchmove', (e) => {
+        e.preventDefault();
     });
     
     carousel.addEventListener('touchend', (e) => {
@@ -203,12 +227,37 @@ function initVipCarousel() {
         const diffX = startX - endX;
         const threshold = 50;
         
+        console.log('Touch end - diffX:', diffX, 'threshold:', threshold);
+        
         if (Math.abs(diffX) > threshold) {
-            if (diffX > 0) {
-                currentIndex = (currentIndex + 1) % cards.length;
-            } else {
-                currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+            if (diffX > 0 && currentIndex < cards.length - 1) {
+                currentIndex++;
+                console.log('Swiped right (touch), new index:', currentIndex);
+            } else if (diffX < 0 && currentIndex > 0) {
+                currentIndex--;
+                console.log('Swiped left (touch), new index:', currentIndex);
             }
+            updateCarousel();
+        }
+    });
+    
+    // Also add click navigation for cards
+    cards.forEach((card, index) => {
+        card.addEventListener('click', () => {
+            if (index !== currentIndex) {
+                currentIndex = index;
+                updateCarousel();
+            }
+        });
+    });
+    
+    // Add keyboard navigation for testing
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' && currentIndex < cards.length - 1) {
+            currentIndex++;
+            updateCarousel();
+        } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+            currentIndex--;
             updateCarousel();
         }
     });

@@ -5,50 +5,46 @@ export default function renderAssets() {
         <div class="card padding">
             <div class="text-center">
                 <div class="balance-amount text-white" id="total-balance">0.00 USDT</div>
-                <div class="text-gray">Total Balance</div>
+                <div class="text-gray" style="font-size: 12px;">Total Balance</div>
             </div>
 
-            <!-- Deposit and Withdraw icons -->
-            <div class="wallet-actions">
-                <div class="wallet-action" id="deposit-btn">
-                    <div class="wallet-icon">
-                        <img src="assets/deposit.png" alt="Deposit">
-                    </div>
-                    <div class="wallet-text">Deposit</div>
+            <!-- Deposit and Withdraw - compact -->
+            <div class="wallet-actions-compact">
+                <div class="wallet-action-compact" id="deposit-btn">
+                    <img src="assets/deposit.png?v=1.0" alt="Deposit">
+                    <div class="wallet-text-compact">Deposit</div>
                 </div>
-                <div class="wallet-action" id="withdraw-btn">
-                    <div class="wallet-icon">
-                        <img src="assets/withdraw.png" alt="Withdraw">
-                    </div>
-                    <div class="wallet-text">Withdraw</div>
+                <div class="wallet-action-compact" id="withdraw-btn">
+                    <img src="assets/withdraw.png?v=1.0" alt="Withdraw">
+                    <div class="wallet-text-compact">Withdraw</div>
                 </div>
             </div>
         </div>
 
-        <!-- Transaction History -->
+        <!-- Transaction History - compact -->
         <div class="card padding margin-top">
-            <div class="text-white text-bold text-center">Transaction History</div>
+            <div class="text-white text-bold margin-bottom" style="font-size: 14px; text-align: center;">Transaction History</div>
             
-            <div class="transaction-categories">
-                <div class="transaction-category">
-                    <div class="transaction-category-name">Total Earned</div>
-                    <div class="transaction-category-amount" id="total-earned">0.00 USDT</div>
+            <div class="transaction-categories-compact">
+                <div class="transaction-category-compact">
+                    <div class="transaction-category-name-compact">Total Earned</div>
+                    <div class="transaction-category-amount-compact" id="total-earned">0.00 USDT</div>
                 </div>
-                <div class="transaction-category">
-                    <div class="transaction-category-name">Total Deposits</div>
-                    <div class="transaction-category-amount" id="total-deposits">0.00 USDT</div>
+                <div class="transaction-category-compact">
+                    <div class="transaction-category-name-compact">Total Deposits</div>
+                    <div class="transaction-category-amount-compact" id="total-deposits">0.00 USDT</div>
                 </div>
-                <div class="transaction-category">
-                    <div class="transaction-category-name">Total Withdrawals</div>
-                    <div class="transaction-category-amount" id="total-withdrawals">0.00 USDT</div>
+                <div class="transaction-category-compact">
+                    <div class="transaction-category-name-compact">Total Withdrawals</div>
+                    <div class="transaction-category-amount-compact" id="total-withdrawals">0.00 USDT</div>
                 </div>
-                <div class="transaction-category">
-                    <div class="transaction-category-name">Referral Income</div>
-                    <div class="transaction-category-amount" id="referral-income">0.00 USDT</div>
+                <div class="transaction-category-compact">
+                    <div class="transaction-category-name-compact">Referral Income</div>
+                    <div class="transaction-category-amount-compact" id="referral-income">0.00 USDT</div>
                 </div>
             </div>
             
-            <div class="transaction-list" id="transaction-list">
+            <div class="transaction-list-compact" id="transaction-list">
                 <!-- Transactions load dynamically -->
             </div>
         </div>
@@ -64,7 +60,7 @@ export default function renderAssets() {
                             <div class="referral-content">
                                 <div class="referral-info">
                                     <div class="referral-text">
-                                        <p id="deposit-address">TQr7R6e9J9X7V6v8G6t7Y6u8I9o0P7b6v5C</p>
+                                        <p id="deposit-address" style="color: #333;">TQr7R6e9J9X7V6v8G6t7Y6u8I9o0P7b6v5C</p>
                                     </div>
                                 </div>
                                 <button type="button" class="copy-btn" id="copy-deposit-btn">
@@ -75,7 +71,7 @@ export default function renderAssets() {
                         <div class="margin-top">
                             <label style="color: #333; font-size: 14px;">Amount (USDT)</label>
                             <input type="number" id="deposit-amount" placeholder="Enter amount" 
-                                   style="width: 100%; padding: 10px; border: 2px solid #52c41a; border-radius: 5px; margin-top: 5px; background: rgba(0,0,0,0.1); color: white;">
+                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
                         </div>
                         <p class="margin-top-sm" style="font-size: 12px; color: #666;">
                             Minimum deposit: 17 USDT<br>
@@ -100,12 +96,12 @@ export default function renderAssets() {
                         <div class="margin-bottom">
                             <label style="color: #333; font-size: 14px;">Amount (USDT)</label>
                             <input type="number" id="withdraw-amount" placeholder="Enter amount" 
-                                   style="width: 100%; padding: 10px; border: 2px solid #52c41a; border-radius: 5px; margin-top: 5px; background: rgba(0,0,0,0.1); color: white;">
+                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
                         </div>
                         <div class="margin-bottom">
                             <label style="color: #333; font-size: 14px;">Transaction Password</label>
                             <input type="password" id="withdraw-password" placeholder="Enter transaction password" 
-                                   style="width: 100%; padding: 10px; border: 2px solid #52c41a; border-radius: 5px; margin-top: 5px; background: rgba(0,0,0,0.1); color: white;">
+                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
                         </div>
                         <p style="font-size: 12px; color: #666;">
                             Minimum withdrawal: 20 USDT<br>
@@ -164,7 +160,8 @@ function setupEventListeners() {
     try {
         // Deposit and withdraw button handlers
         document.getElementById('deposit-btn').addEventListener('click', showDepositPopup);
-        document.getElementById('withdraw-btn').addEventListener('click', () => {
+        document.getElementById('withdraw-btn').addEventListener('click', function() {
+            // Redirect to withdraw page instead of showing popup
             window.showSection('withdraw');
         });
         
@@ -232,6 +229,7 @@ async function loadTransactionHistory() {
         if (transactions && transactions.length > 0) {
             transactions.forEach(transaction => {
                 const date = new Date(transaction.created_at).toLocaleDateString();
+                const time = new Date(transaction.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                 const amount = transaction.amount;
                 const isPositive = amount > 0;
                 
@@ -251,14 +249,14 @@ async function loadTransactionHistory() {
                     <div class="transaction-item">
                         <div class="transaction-info">
                             <div class="transaction-type">${getTransactionType(transaction.type)}</div>
-                            <div class="transaction-date">${date}</div>
+                            <div class="transaction-date">${date} ${time}</div>
                         </div>
                         <div class="transaction-amount color-${isPositive ? 'up' : 'down'}">${isPositive ? '+' : ''}${amount.toFixed(2)} USDT</div>
                     </div>
                 `;
             });
         } else {
-            html = '<div style="color: #ccc; text-align: center; padding: 20px;">No transactions yet</div>';
+            html = '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">No transactions yet</div>';
         }
         
         transactionList.innerHTML = html;
@@ -404,7 +402,7 @@ async function processWithdrawal() {
     const fee = (amount * feePercent) / 100;
     const netAmount = amount - fee;
     
-    const confirmMessage = `Withdrawal amount: ${amount} USDT\nFee (${feePercent}%): ${fee.toFixed(2)} USDT\nYou will receive: ${netAmount.toFixed(2)} USDT\nConfirm withdrawal?`;
+    const confirmMessage = `Withdrawal amount: ${amount} USDT<br>Fee (${feePercent}%): ${fee.toFixed(2)} USDT<br>You will receive: ${netAmount.toFixed(2)} USDT<br><br>Confirm withdrawal?`;
     
     window.showCustomModal('Confirm Withdrawal', confirmMessage, async () => {
         try {

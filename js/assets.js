@@ -1,4 +1,6 @@
-// Assets section
+[file name]: assets (7).js
+[file content begin]
+// Assets section - compact version
 export default function renderAssets() {
     return `
         <!-- Balance -->
@@ -87,36 +89,6 @@ export default function renderAssets() {
             </div>
         </div>
 
-        <!-- Withdrawal popup -->
-        <div class="pop-overlay" id="withdraw-popup" style="display: none;">
-            <div class="pop-content">
-                <form id="withdraw-form" onsubmit="return false;">
-                    <div class="pop-header">Withdraw USDT</div>
-                    <div class="pop-body">
-                        <div class="margin-bottom">
-                            <label style="color: #333; font-size: 14px;">Amount (USDT)</label>
-                            <input type="number" id="withdraw-amount" placeholder="Enter amount" 
-                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
-                        </div>
-                        <div class="margin-bottom">
-                            <label style="color: #333; font-size: 14px;">Transaction Password</label>
-                            <input type="password" id="withdraw-password" placeholder="Enter transaction password" 
-                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
-                        </div>
-                        <p style="font-size: 12px; color: #666;">
-                            Minimum withdrawal: 20 USDT<br>
-                            Fee: depends on VIP level<br>
-                            Processing time: 1-24 hours
-                        </p>
-                    </div>
-                    <div class="pop-footer">
-                        <button type="submit" id="confirm-withdraw" style="margin-right: 10px;">Confirm</button>
-                        <button type="button" id="close-withdraw">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        
         <!-- Deposit success popup -->
         <div class="pop-overlay" id="deposit-success-popup" style="display: none;">
             <div class="pop-content">
@@ -167,14 +139,9 @@ function setupEventListeners() {
         
         // Popup handlers
         document.getElementById('close-deposit').addEventListener('click', hideDepositPopup);
-        document.getElementById('close-withdraw').addEventListener('click', hideWithdrawPopup);
         document.getElementById('confirm-deposit').addEventListener('click', (e) => {
             e.preventDefault();
             processDeposit();
-        });
-        document.getElementById('confirm-withdraw').addEventListener('click', (e) => {
-            e.preventDefault();
-            processWithdrawal();
         });
         document.getElementById('close-deposit-success').addEventListener('click', hideDepositSuccessPopup);
         
@@ -292,16 +259,6 @@ function hideDepositPopup() {
     document.getElementById('deposit-amount').value = '';
 }
 
-function showWithdrawPopup() {
-    document.getElementById('withdraw-popup').style.display = 'flex';
-}
-
-function hideWithdrawPopup() {
-    document.getElementById('withdraw-popup').style.display = 'none';
-    document.getElementById('withdraw-amount').value = '';
-    document.getElementById('withdraw-password').value = '';
-}
-
 function hideDepositSuccessPopup() {
     document.getElementById('deposit-success-popup').style.display = 'none';
 }
@@ -359,101 +316,4 @@ async function processDeposit() {
         window.showCustomAlert('Error processing deposit: ' + error.message);
     }
 }
-
-async function processWithdrawal() {
-    const amount = parseFloat(document.getElementById('withdraw-amount').value);
-    const password = document.getElementById('withdraw-password').value;
-    const user = window.getCurrentUser();
-    
-    if (!user) {
-        window.showCustomAlert('User not found');
-        return;
-    }
-    
-    if (!amount || amount < 20) {
-        window.showCustomAlert('Minimum withdrawal amount is 20 USDT');
-        return;
-    }
-    
-    if (amount > user.balance) {
-        window.showCustomAlert('Insufficient balance');
-        return;
-    }
-    
-    if (!password) {
-        window.showCustomAlert('Please enter transaction password');
-        return;
-    }
-    
-    // Check payment password
-    if (user.payment_password !== password) {
-        window.showCustomAlert('Invalid transaction password');
-        return;
-    }
-    
-    // Check for withdrawal address
-    if (!user.withdrawal_address) {
-        window.showCustomAlert('Please set withdrawal address first in Settings');
-        return;
-    }
-    
-    // Calculate fee based on VIP level
-    const feePercent = getWithdrawalFee(user.vip_level);
-    const fee = (amount * feePercent) / 100;
-    const netAmount = amount - fee;
-    
-    const confirmMessage = `Withdrawal amount: ${amount} USDT<br>Fee (${feePercent}%): ${fee.toFixed(2)} USDT<br>You will receive: ${netAmount.toFixed(2)} USDT<br><br>Confirm withdrawal?`;
-    
-    window.showCustomModal('Confirm Withdrawal', confirmMessage, async () => {
-        try {
-            // Update user balance
-            const newBalance = user.balance - amount;
-            const { error: updateError } = await window.supabase
-                .from('users')
-                .update({ balance: newBalance })
-                .eq('id', user.id);
-                
-            if (updateError) throw updateError;
-            
-            // Create withdrawal transaction
-            const { error: txError } = await window.supabase
-                .from('transactions')
-                .insert([{
-                    user_id: user.id,
-                    type: 'withdrawal',
-                    amount: -amount,
-                    status: 'pending',
-                    description: `Withdrawal ${amount} USDT (Fee: ${fee.toFixed(2)} USDT)`
-                }]);
-                
-            if (txError) throw txError;
-            
-            // Update user in localStorage
-            user.balance = newBalance;
-            localStorage.setItem('gly_user', JSON.stringify(user));
-            
-            window.showCustomAlert(`Withdrawal request for ${amount} USDT has been submitted. You will receive ${netAmount.toFixed(2)} USDT (fee: ${fee.toFixed(2)} USDT). Processing time: 1-24 hours.`);
-            hideWithdrawPopup();
-            
-            // Update interface
-            loadUserData();
-            setTimeout(() => {
-                loadTransactionHistory();
-            }, 1000);
-        } catch (error) {
-            window.showCustomAlert('Error processing withdrawal: ' + error.message);
-        }
-    });
-}
-
-function getWithdrawalFee(vipLevel) {
-    const fees = {
-        1: 7,
-        2: 5,
-        3: 3,
-        4: 2,
-        5: 1,
-        6: 0.5
-    };
-    return fees[vipLevel] || 7;
-}
+[file content end]

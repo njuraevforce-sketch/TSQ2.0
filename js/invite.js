@@ -127,13 +127,20 @@ async function loadUserData() {
     // Update invitation code
     document.getElementById('invite-code').textContent = user.invite_code;
     
-    // Generate referral link
-    const referralLink = `https://2galaxy.win/#register?ref=${user.invite_code}`;
+    // Generate referral link that redirects to registration
+    const currentUrl = window.location.origin + window.location.pathname;
+    const referralLink = `${currentUrl}#register?ref=${user.invite_code}`;
     document.getElementById('referral-link').textContent = referralLink;
     
     // Generate QR code
     const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(referralLink)}`;
-    document.getElementById('qr-code-image').src = qrCodeUrl;
+    const qrImage = document.getElementById('qr-code-image');
+    qrImage.src = qrCodeUrl;
+    
+    // Add cache busting to QR code
+    qrImage.onerror = function() {
+        this.src = qrCodeUrl + '&t=' + Date.now();
+    };
 }
 
 async function loadReferralStats() {

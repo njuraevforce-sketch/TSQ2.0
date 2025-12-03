@@ -156,6 +156,9 @@ function initVipCarousel() {
         });
     }
     
+    // Initialize carousel with first card active
+    updateCarousel();
+    
     carousel.addEventListener('mousedown', (e) => {
         isDragging = true;
         startX = e.pageX - carousel.offsetLeft;

@@ -1,48 +1,40 @@
 {
   "name": "GLY - Galaxy",
   "short_name": "GLY",
-  "description": "Quantum Investment Platform with AI Algorithms",
-  "start_url": "/?v=1.0",
+  "description": "Quantum Investment Platform with Advanced AI Algorithms",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#4e7771",
   "theme_color": "#4e7771",
-  "icons": [
-    {
-      "src": "assets/logo.png?v=1.0",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "assets/logo.png?v=1.0",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ],
   "orientation": "portrait",
   "scope": "/",
-  "theme_color": "#4e7771",
-  "background_color": "#4e7771",
-  "display_override": ["standalone", "minimal-ui"],
-  "prefer_related_applications": false,
-  "categories": ["finance", "business"],
-  "shortcuts": [
+  "icons": [
     {
-      "name": "Dashboard",
-      "short_name": "Home",
-      "description": "Go to Dashboard",
-      "url": "/?section=home"
+      "src": "assets/logo.png?v=1.5",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "name": "Quantification",
-      "short_name": "Get",
-      "description": "Start Quantum Trading",
-      "url": "/?section=get"
+      "src": "assets/logo.png?v=1.5",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "business", "investment"],
+  "screenshots": [
+    {
+      "src": "assets/screenshot1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow"
     },
     {
-      "name": "Assets",
-      "short_name": "Wallet",
-      "description": "View Your Assets",
-      "url": "/?section=assets"
+      "src": "assets/screenshot2.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ]
 }

@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" href="assets/logo.png">
     
     <!-- Cache busting version for CSS -->
-    <link rel="stylesheet" href="css/style.css?v=1.8">
+    <link rel="stylesheet" href="css/style.css?v=1.9">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -303,6 +303,52 @@
             image-rendering: pixelated;
             image-rendering: crisp-edges;
         }
+        
+        /* RTL support for Arabic */
+        body.rtl {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        body.rtl .u-navbar__content__back {
+            right: 15px;
+            left: auto;
+        }
+        
+        body.rtl .input-container i {
+            left: 10px;
+            right: auto;
+        }
+        
+        body.rtl .network-options {
+            flex-direction: row-reverse;
+        }
+        
+        body.rtl .referral-content {
+            flex-direction: row-reverse;
+        }
+        
+        body.rtl .referral-info {
+            margin-right: 0;
+            margin-left: 15px;
+        }
+        
+        body.rtl .settings-list {
+            text-align: right;
+        }
+        
+        body.rtl .setting-item {
+            flex-direction: row-reverse;
+        }
+        
+        body.rtl .setting-icon {
+            margin-right: 0;
+            margin-left: 15px;
+        }
+        
+        body.rtl .calendar-nav {
+            flex-direction: row-reverse;
+        }
     </style>
 </head>
 <body>
@@ -364,33 +410,33 @@
         <div class="uni-tabbar__bd">
             <div class="uni-tabbar__item" data-section="home">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/home.png?v=1.8" alt="Home">
+                    <img src="assets/home.png?v=1.9" alt="Home" data-translate-alt="home">
                 </div>
-                <div class="uni-tabbar__label">Home</div>
+                <div class="uni-tabbar__label" data-translate="home">Home</div>
             </div>
             <div class="uni-tabbar__item" data-section="get">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/get.png?v=1.8" alt="Get">
+                    <img src="assets/get.png?v=1.9" alt="Get" data-translate-alt="get">
                 </div>
-                <div class="uni-tabbar__label">Get</div>
+                <div class="uni-tabbar__label" data-translate="get">Get</div>
             </div>
             <div class="uni-tabbar__item" data-section="assets">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/assets.png?v=1.8" alt="Assets">
+                    <img src="assets/assets.png?v=1.9" alt="Assets" data-translate-alt="assets">
                 </div>
-                <div class="uni-tabbar__label">Assets</div>
+                <div class="uni-tabbar__label" data-translate="assets">Assets</div>
             </div>
             <div class="uni-tabbar__item" data-section="mine">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/mine.png?v=1.8" alt="Mine">
+                    <img src="assets/mine.png?v=1.9" alt="Mine" data-translate-alt="mine">
                 </div>
-                <div class="uni-tabbar__label">Mine</div>
+                <div class="uni-tabbar__label" data-translate="mine">Mine</div>
             </div>
         </div>
     </div>
 
     <!-- Load Scripts with cache busting -->
-    <script src="js/app.js?v=1.8" type="module"></script>
+    <script src="js/app.js?v=1.9" type="module"></script>
     
     <script>
         // Service Worker for better caching control
@@ -405,7 +451,7 @@
         }
         
         // Clear cache on new version
-        const currentVersion = '1.8';
+        const currentVersion = '1.9';
         const lastVersion = localStorage.getItem('app_version');
         
         if (lastVersion !== currentVersion) {
@@ -420,9 +466,13 @@
             
             // Clear localStorage except user data
             const userData = localStorage.getItem('gly_user');
+            const language = localStorage.getItem('gly_language');
             localStorage.clear();
             if (userData) {
                 localStorage.setItem('gly_user', userData);
+            }
+            if (language) {
+                localStorage.setItem('gly_language', language);
             }
             
             localStorage.setItem('app_version', currentVersion);
@@ -491,6 +541,24 @@
                 e.preventDefault();
             }
         });
+        
+        // Add RTL support detection
+        function updateDirection() {
+            const lang = localStorage.getItem('gly_language') || 'en';
+            if (lang === 'ar') {
+                document.documentElement.dir = 'rtl';
+                document.body.classList.add('rtl');
+            } else {
+                document.documentElement.dir = 'ltr';
+                document.body.classList.remove('rtl');
+            }
+        }
+        
+        // Initial direction update
+        updateDirection();
+        
+        // Listen for language changes
+        window.addEventListener('languageChanged', updateDirection);
     </script>
 </body>
 </html>

@@ -301,6 +301,36 @@
             image-rendering: pixelated;
             image-rendering: crisp-edges;
         }
+        
+        /* Новый фон - темно-зеленый переходящий в светло-серый */
+        body {
+            background: linear-gradient(180deg, #1a3c34 0%, #2d524a 30%, #4e7771 60%, #a0b0a8 100%) !important;
+            overflow-x: hidden;
+        }
+        
+        /* Улучшаем скролл на мобильных */
+        html, body {
+            -webkit-overflow-scrolling: touch !important;
+            scroll-behavior: smooth !important;
+            overscroll-behavior-y: none !important;
+        }
+        
+        /* Убираем палочку выделения при касании */
+        * {
+            -webkit-tap-highlight-color: transparent !important;
+            -webkit-touch-callout: none !important;
+        }
+        
+        /* Убираем outline у всех элементов при фокусе */
+        *:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* Улучшаем скролл для контейнеров */
+        .conWrap, .page {
+            -webkit-overflow-scrolling: touch !important;
+        }
     </style>
 </head>
 <body>

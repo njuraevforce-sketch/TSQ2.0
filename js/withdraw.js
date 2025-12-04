@@ -1,4 +1,4 @@
-// Withdraw section
+// Withdraw section - UPDATED
 export default function renderWithdraw() {
     return `
         <div class="card padding">
@@ -28,21 +28,25 @@ export default function renderWithdraw() {
                 </div>
             </div>
 
-            <!-- Wallet Address -->
+            <!-- Wallet Address - Updated -->
             <div class="wallet-address-section margin-bottom">
                 <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;">Withdrawal Address</div>
                 <div class="input-container">
                     <input type="text" 
                            id="withdrawal-address" 
                            placeholder="Enter your wallet address" 
-                           class="input-line">
+                           class="input-line"
+                           readonly>
                 </div>
                 <div id="saved-address-message" style="display: none; font-size: 12px; color: #52c41a; margin-top: 5px;">
                     <i class="fas fa-check-circle"></i> Using saved address
                 </div>
                 <div id="no-address-message" style="display: none; font-size: 12px; color: #f9ae3d; margin-top: 5px;">
-                    <i class="fas fa-exclamation-circle"></i> No saved address. Please enter your wallet address.
+                    <i class="fas fa-exclamation-circle"></i> No saved address. Click "Set Address" below.
                 </div>
+                <button class="pro-btn" id="set-address-btn" style="width: 100%; margin-top: 10px; background: #3d615c;">
+                    <i class="fas fa-edit"></i> Set Withdrawal Address
+                </button>
             </div>
 
             <!-- Amount -->
@@ -160,6 +164,51 @@ export default function renderWithdraw() {
                 </div>
             </div>
         </div>
+
+        <!-- Set Address Modal (for when no address is saved) -->
+        <div class="pop-overlay" id="set-address-popup" style="display: none;">
+            <div class="pop-content">
+                <form id="set-address-form" onsubmit="return false;">
+                    <div class="pop-header">Set Withdrawal Address</div>
+                    <div class="pop-body">
+                        <!-- Network Selection in Modal -->
+                        <div class="network-selection margin-bottom">
+                            <div class="section-title-small" style="color: #333; margin-bottom: 10px; font-size: 14px;">Select Network</div>
+                            <div class="network-options">
+                                <div class="network-option active" data-network="TRC20">
+                                    <div class="network-icon">
+                                        <img src="assets/trc20.png" alt="TRC20">
+                                    </div>
+                                    <div class="network-name">TRC20</div>
+                                    <div class="network-check"><i class="fas fa-check"></i></div>
+                                </div>
+                                <div class="network-option" data-network="BEP20">
+                                    <div class="network-icon">
+                                        <img src="assets/bsc20.png" alt="BEP20">
+                                    </div>
+                                    <div class="network-name">BEP20</div>
+                                    <div class="network-check"><i class="fas fa-check"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="margin-bottom">
+                            <label style="color: #333; font-size: 14px;">USDT Wallet Address</label>
+                            <input type="text" id="new-withdrawal-address" 
+                                   placeholder="Enter your wallet address" 
+                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
+                        </div>
+                        <p style="font-size: 12px; color: #666;">
+                            This address will be saved for future withdrawals. Please double-check the address.
+                        </p>
+                    </div>
+                    <div class="pop-footer">
+                        <button type="submit" id="save-new-address" style="margin-right: 10px; background: #4e7771;">Save Address</button>
+                        <button type="button" id="close-set-address" style="background: #666;">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     `;
 }
 
@@ -194,6 +243,9 @@ function setupEventListeners() {
         });
     });
     
+    // Set address button
+    document.getElementById('set-address-btn').addEventListener('click', showSetAddressPopup);
+    
     // Transaction password toggle
     document.getElementById('toggle-transaction-password').addEventListener('click', function() {
         const passwordInput = document.getElementById('transaction-password');
@@ -209,6 +261,13 @@ function setupEventListeners() {
     document.getElementById('confirm-withdraw-final').addEventListener('click', processWithdrawal);
     document.getElementById('cancel-withdraw-confirm').addEventListener('click', () => {
         document.getElementById('withdraw-confirm-popup').style.display = 'none';
+    });
+    
+    // Set address modal
+    document.getElementById('close-set-address').addEventListener('click', hideSetAddressPopup);
+    document.getElementById('save-new-address').addEventListener('click', (e) => {
+        e.preventDefault();
+        saveNewAddress();
     });
 }
 
@@ -241,19 +300,81 @@ function checkSavedAddress() {
     // Check if user has saved address for this network
     if (selectedNetwork === 'TRC20' && user.withdrawal_address_trc20) {
         addressField.value = user.withdrawal_address_trc20;
-        addressField.disabled = true;
         savedMessage.style.display = 'block';
         noAddressMessage.style.display = 'none';
     } else if (selectedNetwork === 'BEP20' && user.withdrawal_address_bep20) {
         addressField.value = user.withdrawal_address_bep20;
-        addressField.disabled = true;
         savedMessage.style.display = 'block';
         noAddressMessage.style.display = 'none';
     } else {
         addressField.value = '';
-        addressField.disabled = false;
         savedMessage.style.display = 'none';
         noAddressMessage.style.display = 'block';
+    }
+}
+
+function showSetAddressPopup() {
+    // Set active network in modal to match current selection
+    const currentNetwork = document.querySelector('.network-option.active').getAttribute('data-network');
+    document.querySelectorAll('#set-address-popup .network-option').forEach(opt => {
+        opt.classList.remove('active');
+        if (opt.getAttribute('data-network') === currentNetwork) {
+            opt.classList.add('active');
+        }
+    });
+    
+    // Clear input field
+    document.getElementById('new-withdrawal-address').value = '';
+    
+    // Show modal
+    document.getElementById('set-address-popup').style.display = 'flex';
+}
+
+function hideSetAddressPopup() {
+    document.getElementById('set-address-popup').style.display = 'none';
+}
+
+async function saveNewAddress() {
+    const user = window.getCurrentUser();
+    if (!user) return;
+    
+    const selectedNetwork = document.querySelector('#set-address-popup .network-option.active').getAttribute('data-network');
+    const address = document.getElementById('new-withdrawal-address').value.trim();
+    
+    if (!address) {
+        window.showCustomAlert('Please enter a valid wallet address');
+        return;
+    }
+    
+    try {
+        // Save address in database
+        const updateData = {};
+        if (selectedNetwork === 'TRC20') {
+            updateData.withdrawal_address_trc20 = address;
+        } else {
+            updateData.withdrawal_address_bep20 = address;
+        }
+        
+        const { error } = await window.supabase
+            .from('users')
+            .update(updateData)
+            .eq('id', user.id);
+            
+        if (error) throw error;
+        
+        // Update user in localStorage
+        Object.assign(user, updateData);
+        localStorage.setItem('gly_user', JSON.stringify(user));
+        
+        window.showCustomAlert('Withdrawal address saved successfully!');
+        hideSetAddressPopup();
+        
+        // Update address display
+        checkSavedAddress();
+        
+    } catch (error) {
+        console.error('Error saving address:', error);
+        window.showCustomAlert('Error saving address: ' + error.message);
     }
 }
 
@@ -312,7 +433,9 @@ async function submitWithdrawal() {
     
     // Validation
     if (!address) {
-        window.showCustomAlert('Please enter wallet address');
+        // Show set address popup if no address
+        showSetAddressPopup();
+        window.showCustomAlert('Please set your withdrawal address first');
         return;
     }
     
@@ -364,28 +487,6 @@ async function processWithdrawal() {
     const fee = (amount * feePercent) / 100;
     
     try {
-        // Check if we need to save the address
-        if (!addressField.disabled) {
-            // Save address for this network
-            const updateData = {};
-            if (selectedNetwork === 'TRC20') {
-                updateData.withdrawal_address_trc20 = address;
-            } else {
-                updateData.withdrawal_address_bep20 = address;
-            }
-            
-            const { error: updateError } = await window.supabase
-                .from('users')
-                .update(updateData)
-                .eq('id', user.id);
-                
-            if (updateError) throw updateError;
-            
-            // Update user in localStorage
-            Object.assign(user, updateData);
-            localStorage.setItem('gly_user', JSON.stringify(user));
-        }
-        
         // Create withdrawal transaction
         const { error: txError } = await window.supabase
             .from('transactions')

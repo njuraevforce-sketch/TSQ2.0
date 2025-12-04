@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>GLY - Global Ledger Yield</title>
+    <meta name="theme-color" content="#4e7771">
+    <meta name="description" content="GLY - Global Ledger Yield - AI-powered cryptocurrency trading platform">
+    <meta name="keywords" content="crypto, trading, AI, blockchain, USDT, investment">
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
     
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="assets/logo.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    
     <!-- Cache busting version for CSS -->
-    <link rel="stylesheet" href="css/style.css?v=1.7">
+    <link rel="stylesheet" href="css/style.css?v=1.8">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,8 +25,7 @@
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- QR Code Library -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <!-- QRCode Library REMOVED - now using built-in canvas -->
     
     <style>
         .uni-tabbar { display: none; }
@@ -52,13 +59,14 @@
             height: 30px;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 50%;
-            display: flex;
+            display: none; /* Hidden by default, shown via JS */
             align-items: center;
             justify-content: center;
             color: #4e7771;
             font-size: 16px;
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 1px solid #4e7771;
         }
         
         .install-btn i { margin-top: 2px; }
@@ -91,6 +99,7 @@
             max-width: 350px;
             overflow: hidden;
             animation: modalSlideIn 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         
         @keyframes modalSlideIn {
@@ -104,13 +113,15 @@
             border-bottom: 1px solid #eee;
             font-size: 18px;
             text-align: center;
-            background: #4e7771;
+            background: linear-gradient(135deg, #4e7771, #3a5a55);
             color: white;
         }
         
         .custom-modal-body {
             padding: 20px;
             color: #333;
+            font-size: 14px;
+            line-height: 1.5;
         }
         
         .custom-modal-footer {
@@ -120,7 +131,7 @@
         }
         
         .custom-modal-btn {
-            background: #4e7771;
+            background: linear-gradient(135deg, #4e7771, #3a5a55);
             color: white;
             border: none;
             padding: 10px 25px;
@@ -128,6 +139,12 @@
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .custom-modal-btn:hover {
+            background: linear-gradient(135deg, #3a5a55, #4e7771);
+            transform: translateY(-2px);
         }
         
         /* Loading overlay */
@@ -163,6 +180,7 @@
         .loading-text {
             color: white;
             font-size: 14px;
+            font-weight: bold;
         }
         
         /* Hide install button on iOS */
@@ -170,6 +188,111 @@
             .install-btn {
                 display: none !important;
             }
+        }
+        
+        /* Network selection styles */
+        .network-selection {
+            background: rgba(78, 119, 113, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(78, 119, 113, 0.3);
+        }
+        
+        .network-options {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .network-option {
+            flex: 1;
+            padding: 12px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .network-option.active {
+            background: rgba(78, 119, 113, 0.3);
+            border-color: #4e7771;
+        }
+        
+        .network-option:hover {
+            background: rgba(78, 119, 113, 0.2);
+        }
+        
+        .network-icon {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        
+        .network-icon img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+        
+        .network-name {
+            text-align: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .network-check {
+            text-align: center;
+            color: #52c41a;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .network-option.active .network-check {
+            display: block;
+        }
+        
+        /* Deposit item styles */
+        .deposit-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid #4e7771;
+        }
+        
+        /* Section styles */
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .network-options {
+                flex-direction: column;
+            }
+            
+            .custom-modal-content {
+                width: 95%;
+            }
+        }
+        
+        /* Fix for Safari 100vh */
+        .page {
+            min-height: -webkit-fill-available;
         }
     </style>
 </head>
@@ -232,25 +355,25 @@
         <div class="uni-tabbar__bd">
             <div class="uni-tabbar__item" data-section="home">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/home.png?v=1.7" alt="Home">
+                    <img src="assets/home.png?v=1.8" alt="Home">
                 </div>
                 <div class="uni-tabbar__label">Home</div>
             </div>
             <div class="uni-tabbar__item" data-section="get">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/get.png?v=1.7" alt="Get">
+                    <img src="assets/get.png?v=1.8" alt="Get">
                 </div>
                 <div class="uni-tabbar__label">Get</div>
             </div>
             <div class="uni-tabbar__item" data-section="assets">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/assets.png?v=1.7" alt="Assets">
+                    <img src="assets/assets.png?v=1.8" alt="Assets">
                 </div>
                 <div class="uni-tabbar__label">Assets</div>
             </div>
             <div class="uni-tabbar__item" data-section="mine">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/mine.png?v=1.7" alt="Mine">
+                    <img src="assets/mine.png?v=1.8" alt="Mine">
                 </div>
                 <div class="uni-tabbar__label">Mine</div>
             </div>
@@ -258,7 +381,7 @@
     </div>
 
     <!-- Load Scripts with cache busting -->
-    <script src="js/app.js?v=1.7" type="module"></script>
+    <script src="js/app.js?v=1.8" type="module"></script>
     
     <script>
         // Service Worker for better caching control
@@ -273,7 +396,7 @@
         }
         
         // Clear cache on new version
-        const currentVersion = '1.7';
+        const currentVersion = '1.8';
         const lastVersion = localStorage.getItem('app_version');
         
         if (lastVersion !== currentVersion) {
@@ -299,11 +422,26 @@
             window.location.reload(true);
         }
         
+        // Prevent context menu on long press
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+        
+        // Prevent pull-to-refresh on mobile
+        document.addEventListener('touchmove', function(e) {
+            if (e.scale !== 1) { e.preventDefault(); }
+        }, { passive: false });
+        
         // Add direct link to admin for testing (remove in production)
         setTimeout(() => {
             // You can access admin by typing in console: window.showAdmin()
             window.showAdmin = function() {
-                window.showSection('admin');
+                const user = JSON.parse(localStorage.getItem('gly_user'));
+                if (user && user.username === 'admin') {
+                    window.showSection('admin');
+                } else {
+                    window.showCustomAlert('Admin access only');
+                }
             };
             
             // Or by adding ?admin to URL
@@ -314,6 +452,36 @@
                 }
             }
         }, 2000);
+        
+        // Auto-hide address bar on mobile
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                window.scrollTo(0, 1);
+            }, 0);
+        });
+        
+        // Detect if running as PWA
+        if (window.matchMedia('(display-mode: standalone)').matches || 
+            window.navigator.standalone === true) {
+            document.body.classList.add('pwa-mode');
+        }
+        
+        // Add network status detection
+        window.addEventListener('online', function() {
+            console.log('App is online');
+        });
+        
+        window.addEventListener('offline', function() {
+            console.log('App is offline');
+            window.showCustomAlert('No internet connection');
+        });
+        
+        // Prevent form submission on Enter in inputs
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+                e.preventDefault();
+            }
+        });
     </script>
 </body>
 </html>

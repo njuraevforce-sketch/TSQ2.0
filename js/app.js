@@ -1,4 +1,4 @@
-// Main application module
+// Main application module - UPDATED
 class GLYApp {
     constructor() {
         this.currentSection = null;
@@ -37,6 +37,9 @@ class GLYApp {
         
         // Start signal update check
         this.startSignalUpdateCheck();
+        
+        // Start deposit check interval
+        this.startDepositCheck();
     }
 
     async handleInviteCodeRedirect() {
@@ -325,6 +328,11 @@ class GLYApp {
                 // Initialize section after rendering
                 if (module.init && typeof module.init === 'function') {
                     setTimeout(() => module.init(), 0);
+                }
+                
+                // If deposit section, also check for deposits
+                if (sectionId === 'deposit' && module.checkForNewDeposits) {
+                    setTimeout(() => module.checkForNewDeposits(), 1000);
                 }
             }
         } catch (error) {
@@ -675,6 +683,94 @@ class GLYApp {
         localStorage.removeItem('gly_user');
         this.currentUser = null;
         window.showSection('login');
+    }
+
+    startDepositCheck() {
+        // Check for new deposits every 30 seconds
+        setInterval(async () => {
+            await this.checkForNewDeposits();
+        }, 30000);
+        
+        // Initial check
+        setTimeout(() => this.checkForNewDeposits(), 5000);
+    }
+
+    async checkForNewDeposits() {
+        const user = window.getCurrentUser();
+        if (!user) return;
+        
+        try {
+            // Check for pending deposits in deposit_transactions table
+            const { data: pendingDeposits, error } = await this.supabase
+                .from('deposit_transactions')
+                .select('*')
+                .eq('user_id', user.id)
+                .eq('status', 'confirmed');
+                
+            if (error) throw error;
+            
+            if (pendingDeposits && pendingDeposits.length > 0) {
+                for (const deposit of pendingDeposits) {
+                    // Process the deposit
+                    await this.processAutoDeposit(deposit);
+                }
+            }
+        } catch (error) {
+            console.error('Error checking for new deposits:', error);
+        }
+    }
+
+    async processAutoDeposit(deposit) {
+        try {
+            // Update user balance
+            const newBalance = user.balance + deposit.amount;
+            
+            const { error: updateError } = await this.supabase
+                .from('users')
+                .update({ 
+                    balance: newBalance,
+                    updated_at: new Date().toISOString()
+                })
+                .eq('id', deposit.user_id);
+                
+            if (updateError) throw updateError;
+            
+            // Update deposit status to processed
+            const { error: depositError } = await this.supabase
+                .from('deposit_transactions')
+                .update({ status: 'processed' })
+                .eq('id', deposit.id);
+                
+            if (depositError) throw depositError;
+            
+            // Create transaction record
+            await this.supabase
+                .from('transactions')
+                .insert([{
+                    user_id: deposit.user_id,
+                    type: 'deposit',
+                    amount: deposit.amount,
+                    status: 'completed',
+                    description: `Auto deposit ${deposit.amount} USDT (${deposit.network})`,
+                    network: deposit.network
+                }]);
+            
+            console.log(`Auto deposit processed: ${deposit.amount} USDT for user ${deposit.user_id}`);
+            
+            // Update current user if it's the logged in user
+            if (this.currentUser && this.currentUser.id === deposit.user_id) {
+                this.currentUser.balance = newBalance;
+                localStorage.setItem('gly_user', JSON.stringify(this.currentUser));
+                
+                // Show notification
+                if (this.currentSection === 'deposit') {
+                    window.showCustomAlert(`New deposit received: ${deposit.amount.toFixed(2)} USDT`);
+                }
+            }
+            
+        } catch (error) {
+            console.error('Error processing auto deposit:', error);
+        }
     }
 }
 

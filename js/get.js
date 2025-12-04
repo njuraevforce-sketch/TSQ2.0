@@ -1,9 +1,13 @@
 // Get section
+import { t } from './translate.js';
+
 export default function renderGet() {
+    const lang = localStorage.getItem('gly_language') || 'en';
+    
     return `
         <div class="card padding">
             <!-- UTC Time -->
-            <div class="utc-time" id="utc-time">
+            <div class="utc-time" id="utc-time" data-translate="loading_utc">
                 UTC: Loading...
             </div>
             
@@ -15,26 +19,26 @@ export default function renderGet() {
                     <div class="signal"></div>
                 </div>
                 <div style="text-align: center; color: #ccc; font-size: 14px; margin-bottom: 15px;" id="signals-text">
-                    Loading signals...
+                    ${t('loading')}
                 </div>
                 
-                <button class="quant-btn" id="quant-btn">
+                <button class="quant-btn" id="quant-btn" data-translate="auto_quantification">
                     AUTO QUANTIFICATION
                 </button>
             </div>
 
             <!-- Quantification process -->
             <div class="quantum-process" id="quantum-process" style="display: none;">
-                <div class="process-step" id="step-1">Analyzing market conditions...</div>
-                <div class="process-step" id="step-2">Calculating quantum probabilities...</div>
-                <div class="process-step" id="step-3">Executing quantum trades...</div>
-                <div class="process-step" id="step-4">Quantum quantification complete!</div>
+                <div class="process-step" id="step-1" data-translate="analyzing_market">Analyzing market conditions...</div>
+                <div class="process-step" id="step-2" data-translate="calculating_quantum">Calculating quantum probabilities...</div>
+                <div class="process-step" id="step-3" data-translate="executing_trades">Executing quantum trades...</div>
+                <div class="process-step" id="step-4" data-translate="quantum_complete">Quantum quantification complete!</div>
                 <div class="process-step" id="profit-result" style="display: none; color: #52c41a; font-weight: bold;"></div>
             </div>
 
             <!-- VIP cards -->
             <div class="vip-section">
-                <div class="section-title">VIP Levels</div>
+                <div class="section-title" data-translate="vip_levels">VIP Levels</div>
                 <div class="vip-carousel-container">
                     <div class="vip-carousel" id="vip-carousel">
                         <div class="vip-card active" data-level="1">
@@ -100,7 +104,7 @@ export default function renderGet() {
                     </div>
                 </div>
                 <div class="vip-description" id="vip-description">
-                    Basic level with standard returns. Invest 20 USDT to start earning 2.2% daily profit.
+                    ${t('vip_description_1')}
                 </div>
             </div>
         </div>
@@ -137,12 +141,12 @@ function initVipCarousel() {
     let isDragging = false;
     
     const vipDescriptions = [
-        "Basic level with standard returns. Invest 20 USDT to start earning 2.2% daily profit.",
-        "Enhanced returns with referral requirements. Invest 100 USDT and invite 2 friends to earn 2.8% daily.",
-        "Premium level with team building. Invite 5 friends to unlock 3.5% daily profit.",
-        "Advanced level with maximum benefits. Build a team of 7 referrals to earn 4.0% daily profit.",
-        "Professional level for serious investors. Build a team of 15 referrals to earn 5.0% daily profit.",
-        "Elite level with maximum returns. Build a team of 25 referrals to earn 6.0% daily profit."
+        t('vip_description_1'),
+        t('vip_description_2'),
+        t('vip_description_3'),
+        t('vip_description_4'),
+        t('vip_description_5'),
+        t('vip_description_6')
     ];
     
     function updateCarousel() {
@@ -265,7 +269,10 @@ function initVipCarousel() {
 
 async function loadUserData() {
     const user = window.getCurrentUser();
-    if (!user) return;
+    if (!user) {
+        window.showSection('login');
+        return;
+    }
     
     // Update signals display
     updateSignalsDisplay(user.signals_available);
@@ -280,7 +287,7 @@ function updateSignalsDisplay(signalsAvailable) {
     
     // Update text
     if (signalsText) {
-        signalsText.textContent = `${signalsAvailable} Quantum Signals Available`;
+        signalsText.textContent = `${signalsAvailable} ${t('quantum_signals_available')}`;
     }
     
     // Update visual signal display
@@ -309,12 +316,12 @@ function highlightCurrentVipLevel(userVipLevel) {
 async function startQuantification() {
     const user = window.getCurrentUser();
     if (!user) {
-        window.showCustomAlert('Please log in to continue');
+        window.showCustomAlert(t('please_login'));
         return;
     }
     
     if (user.signals_available <= 0) {
-        window.showCustomAlert('No quantum signals available! Please wait for daily refresh (18:00 UTC).');
+        window.showCustomAlert(t('no_signals'));
         return;
     }
     
@@ -324,7 +331,7 @@ async function startQuantification() {
     // Disable button
     quantBtn.disabled = true;
     quantBtn.style.opacity = '0.5';
-    quantBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> PROCESSING...';
+    quantBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${t('processing_quantification')}`;
     
     // Show process
     process.style.display = 'block';
@@ -338,7 +345,7 @@ async function startQuantification() {
     if (result.success) {
         // Show result
         const profitResult = document.getElementById('profit-result');
-        profitResult.textContent = `Profit: +${result.profit.toFixed(2)} USDT`;
+        profitResult.textContent = `${t('profit')} +${result.profit.toFixed(2)} USDT`;
         profitResult.style.display = 'block';
         
         // Update signals display
@@ -357,10 +364,10 @@ async function startQuantification() {
             // Restore button
             quantBtn.disabled = false;
             quantBtn.style.opacity = '1';
-            quantBtn.innerHTML = 'AUTO QUANTIFICATION';
+            quantBtn.textContent = t('auto_quantification');
             
             // Show success message
-            window.showCustomAlert(`Quantum quantification successful! Profit: +${result.profit.toFixed(2)} USDT`);
+            window.showCustomAlert(t('quantification_successful', null, { profit: result.profit.toFixed(2) }));
         }, 3000);
     } else {
         window.showCustomAlert(result.message);
@@ -368,7 +375,7 @@ async function startQuantification() {
         // Restore button
         quantBtn.disabled = false;
         quantBtn.style.opacity = '1';
-        quantBtn.innerHTML = 'AUTO QUANTIFICATION';
+        quantBtn.textContent = t('auto_quantification');
         
         // Hide process
         process.style.display = 'none';

@@ -2,7 +2,7 @@
 class GLYApp {
     constructor() {
         this.currentSection = null;
-        this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register', 'company', 'invite', 'team', 'rules', 'withdraw', 'admin'];
+        this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register', 'company', 'invite', 'team', 'rules', 'withdraw', 'admin', 'deposit'];
         this.currentUser = null;
         this.supabase = null;
         this.deferredPrompt = null;
@@ -220,7 +220,7 @@ class GLYApp {
         }
 
         // Check authentication for protected pages
-        const protectedSections = ['home', 'get', 'assets', 'mine', 'invite', 'team', 'rules', 'withdraw'];
+        const protectedSections = ['home', 'get', 'assets', 'mine', 'invite', 'team', 'rules', 'withdraw', 'deposit'];
         if (protectedSections.includes(cleanSectionId)) {
             const user = this.currentUser || JSON.parse(localStorage.getItem('gly_user'));
             if (!user) {
@@ -248,7 +248,8 @@ class GLYApp {
             if (this.currentSection !== 'login' && this.currentSection !== 'register' && 
                 this.currentSection !== 'company' && this.currentSection !== 'invite' && 
                 this.currentSection !== 'team' && this.currentSection !== 'rules' &&
-                this.currentSection !== 'withdraw' && this.currentSection !== 'admin') {
+                this.currentSection !== 'withdraw' && this.currentSection !== 'admin' &&
+                this.currentSection !== 'deposit') {
                 const activeTab = document.querySelector(`[data-section="${this.currentSection}"]`);
                 if (activeTab) {
                     activeTab.classList.remove('uni-tabbar__item--active');
@@ -270,7 +271,8 @@ class GLYApp {
             document.body.classList.add('auth-page');
         } else if (cleanSectionId === 'company' || cleanSectionId === 'invite' || 
                    cleanSectionId === 'team' || cleanSectionId === 'rules' ||
-                   cleanSectionId === 'withdraw' || cleanSectionId === 'admin') {
+                   cleanSectionId === 'withdraw' || cleanSectionId === 'admin' ||
+                   cleanSectionId === 'deposit') {
             this.hideTabbar();
             this.showNavbar();
             document.body.classList.add('no-tabbar');
@@ -281,6 +283,7 @@ class GLYApp {
             else if (cleanSectionId === 'rules') this.setNavbarTitle('Rules', true);
             else if (cleanSectionId === 'withdraw') this.setNavbarTitle('Withdraw', true);
             else if (cleanSectionId === 'admin') this.setNavbarTitle('Admin', true);
+            else if (cleanSectionId === 'deposit') this.setNavbarTitle('Deposit', true);
         } else {
             this.showTabbar();
             this.showNavbar();

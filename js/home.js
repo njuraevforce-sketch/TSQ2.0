@@ -1,4 +1,4 @@
-// Home section
+// Home section - UPDATED with deposit navigation
 export default function renderHome() {
     return `
         <!-- Video banner with play button -->
@@ -39,13 +39,13 @@ export default function renderHome() {
                     </div>
                     <div class="nav-text">Company</div>
                 </a>
-                <a href="#" class="nav-item" data-section="assets">
+                <a href="#" class="nav-item" data-section="deposit">
                     <div class="nav-icon">
                         <img src="assets/deposit.png" alt="Deposit">
                     </div>
                     <div class="nav-text">Deposit</div>
                 </a>
-                <a href="#" class="nav-item" data-section="assets">
+                <a href="#" class="nav-item" data-section="withdraw">
                     <div class="nav-icon">
                         <img src="assets/withdraw.png" alt="Withdraw">
                     </div>

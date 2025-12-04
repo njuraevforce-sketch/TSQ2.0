@@ -159,6 +159,25 @@ export const translations = {
     'quantification_process': 'Quantification Process:',
     'participation_requirements': 'Participation Requirements:',
     'security': 'Security:',
+ 'withdrawal_fee_details': 'Withdrawal fee:',
+    'vip1_details': 'VIP1 (0-299 USDT): daily income 2.2%, 3 signals per day',
+    'vip2_details': 'VIP2 (300-1000 USDT): daily income 2.8%, 3 signals per day, requires 2 active referrals',
+    'vip3_details': 'VIP3 (1000-3500 USDT): daily income 3.5%, 3 signals per day, requires 5 active referrals',
+    'vip4_details': 'VIP4 (3500-6000 USDT): daily income 4.0%, 3 signals per day, requires 8 active referrals',
+    'vip5_details': 'VIP5 (6000-12000 USDT): daily income 5.0%, 3 signals per day, requires 15 active referrals',
+    'vip6_details': 'VIP6 (12000-20000 USDT): daily income 6.0%, 3 signals per day, requires 25 active referrals',
+    'quantification_step1': 'Each signal brings 1/3 of daily percentage',
+    'quantification_step2': 'Income is credited to balance immediately',
+    'quantification_step3': 'Referral bonuses are credited automatically',
+    'quantification_step4': 'VIP level is recalculated after each quantification',
+    'requirement1': 'Registration only by invitation code',
+    'requirement2': 'Minimum age: 18 years',
+    'requirement3': 'One user - one account',
+    'requirement4': 'Use of VPN and proxy is prohibited',
+    'security1': 'Two passwords: login and transaction',
+    'security2': '2FA recommended',
+    'security3': 'Do not share your passwords with third parties',
+    'security4': 'Platform does not request private keys',
     
     // Invite
     'invite_friends': 'Invite Friends',
@@ -175,14 +194,23 @@ export const translations = {
     'copy_invitation_code': 'Copy invitation code',
     
     // Company
-    'about_gly': 'About GLY (Global Ledger Yield)',
+  'about_gly': 'About GLY (Global Ledger Yield)',
+    'about_gly_desc': 'With the continuous development of artificial intelligence (AI) technologies, more and more areas are beginning to apply AI algorithms to improve efficiency and accuracy. As a leading company in AI technology, GLY strives to create an innovative digital financial trading ecosystem through quantitative trading algorithms and blockchain technology.',
     'foundation_history': 'Foundation and History',
+    'foundation_history_desc': 'GLY (Global Ledger Yield) was founded in 2020 by a group of scientists and engineers in machine learning and AI, graduates of prestigious universities such as Stanford University, Massachusetts Institute of Technology, and University of California, Berkeley. The company received support from well-known investors. GLY has extensive technical experience in image processing, facial recognition, autonomous driving, augmented reality, deep neural networks, and deep machine learning, and holds patents for AI-based cloud computing analytics technology. The company aims to create a cryptocurrency trading system suitable for various trading scenarios and meeting the needs of individual and institutional investors.',
     'gly_advantages': 'GLY Technological Advantages',
+    'gly_advantages_desc': 'GLY has extensive experience in algorithms, data processing, and computing acceleration technologies. Since its foundation, GLY actively promotes research and development in artificial intelligence and finance, achieving significant success, especially in the cryptocurrency trading sector. GLY combines AI analysis with mathematical models, leading to accurate and efficient results. The company\'s financial and asset management services bring significant income, and the company has established extensive data partnerships and strategic partnerships with well-known cryptocurrency trading platforms. Currently, GLY\'s quantitative trading platform has over half a million users and has established itself as a leading global cryptocurrency trading platform.',
     'gly_application': 'GLY Application in Cryptocurrency Trading',
+    'gly_application_desc': 'GLY has extensive technical and practical experience in cryptocurrency trading. Its quantitative trading platform uses artificial intelligence algorithms and mathematical models for accurate analysis and prediction of market trends, offering effective trading strategies. Thanks to GLY\'s quantitative trading platform, users can trade cryptocurrencies more easily and get better trading opportunities. The platform offers many features including instant exchange, credit derivatives, futures trading, peer-to-peer trading, mining, liquidity pools.',
     'gly_partnership': 'GLY Partnership',
+    'gly_partnership_desc': 'GLY has officially partnered with leading crypto exchanges to create a new artificial intelligence and finance ecosystem. This partnership will further promote GLY\'s innovations in cryptocurrency trading.',
     'gly_platform': 'GLY Quantitative Trading Platform',
+    'gly_platform_desc': 'GLY Quantitative Trading Platform is one of GLY\'s main products. It uses artificial intelligence algorithms for intelligent analysis and decision-making, helping users in cryptocurrency trading. The platform provides powerful data analysis and trading functions, supporting various trading strategies and types. Users can choose different modes and trading tools according to their needs for a personalized trading experience.',
     'gly_prospects': 'GLY Development Prospects',
+    'gly_prospects_desc': 'GLY adheres to the fintech innovation philosophy and strives to create a digital financial trading ecosystem that integrates artificial intelligence, blockchain technology, and quantitative trading. In the future, GLY will continue to integrate multidimensional resources to create the world\'s first digital financial trading ecosystem and promote the wide application of AI-based quantitative trading in the digital economy and even in traditional asset management.',
     'gly_innovations': 'Innovations in GLY Quantitative Trading Algorithms',
+    'gly_innovations_desc': 'GLY Quantitative Trading Algorithm is one of GLY\'s main innovative technologies. This algorithm, based on blockchain and artificial intelligence technologies, combines data factors provided by each blockchain node, as well as data related to cryptocurrencies, into a trading decision factor library. Through multi-level and multi-aspect analysis of trading node data, the algorithm ensures more secure, transparent, decentralized, and efficient asset management.',
+    'certificate': 'Certificate',
     
     // Deposit
     'deposit_usdt': 'Deposit USDT',
@@ -206,6 +234,8 @@ export const translations = {
     'error_loading_address': 'Error loading address',
     'wait_for_address': 'Please wait for address to load',
     'address_copied': 'Address copied to clipboard!',
+     'trc20': 'TRC20',
+    'bep20': 'BEP20',
     
     // Withdraw
     'withdraw_usdt': 'Withdraw USDT',
@@ -229,6 +259,12 @@ export const translations = {
     'withdrawal_submitted': 'Withdrawal request submitted! You will receive {amount} USDT (fee: {fee} USDT). Processing time: 1-24 hours.',
     'insufficient_balance': 'Insufficient balance',
     'invalid_transaction_password': 'Invalid transaction password',
+     'network_trc20': 'TRC20',
+    'network_bep20': 'BEP20',
+    'address_save_note': 'This address will be saved for future withdrawals. Please double-check the address.',
+    'saved': 'Saved',
+    'address': 'Address',
+    'fee': 'Fee',
     
     // Common
     'notification': 'Notification',
@@ -255,6 +291,9 @@ export const translations = {
     'please_login': 'Please log in to continue',
     'offline': 'Offline',
     'online': 'Online',
+    'total': 'Total',
+    'network': 'Network',
+    'amount': 'Amount',
     
     // Language names
     'language_english': 'English',

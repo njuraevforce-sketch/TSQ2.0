@@ -48,63 +48,6 @@ export default function renderAssets() {
                 <!-- Transactions load dynamically -->
             </div>
         </div>
-
-        <!-- Deposit popup -->
-        <div class="pop-overlay" id="deposit-popup" style="display: none;">
-            <div class="pop-content">
-                <form id="deposit-form" onsubmit="return false;">
-                    <div class="pop-header">Deposit USDT</div>
-                    <div class="pop-body">
-                        <p style="color: #333;">Send USDT to the following address (TRC20 network):</p>
-                        <div class="referral-section margin-top">
-                            <div class="referral-content">
-                                <div class="referral-info">
-                                    <div class="referral-text">
-                                        <p id="deposit-address" style="color: #333;">TQr7R6e9J9X7V6v8G6t7Y6u8I9o0P7b6v5C</p>
-                                    </div>
-                                </div>
-                                <button type="button" class="copy-btn" id="copy-deposit-btn">
-                                    <i class="fas fa-copy"></i> COPY
-                                </button>
-                            </div>
-                        </div>
-                        <div class="margin-top">
-                            <label style="color: #333; font-size: 14px;">Amount (USDT)</label>
-                            <input type="number" id="deposit-amount" placeholder="Enter amount" 
-                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
-                        </div>
-                        <p class="margin-top-sm" style="font-size: 12px; color: #666;">
-                            Minimum deposit: 17 USDT<br>
-                            Network: TRC20<br>
-                            After sending funds, click "Confirm Deposit"
-                        </p>
-                    </div>
-                    <div class="pop-footer">
-                        <button type="submit" id="confirm-deposit" style="margin-right: 10px;">Confirm Deposit</button>
-                        <button type="button" id="close-deposit">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Deposit success popup -->
-        <div class="pop-overlay" id="deposit-success-popup" style="display: none;">
-            <div class="pop-content">
-                <div class="pop-header">Deposit Submitted</div>
-                <div class="pop-body">
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <div style="font-size: 48px; color: #52c41a;">✓</div>
-                    </div>
-                    <p style="text-align: center; color: #333;">
-                        Your deposit has been submitted for verification.<br>
-                        Funds will be credited within 72 hours.
-                    </p>
-                </div>
-                <div class="pop-footer">
-                    <button id="close-deposit-success">OK</button>
-                </div>
-            </div>
-        </div>
     `;
 }
 
@@ -129,22 +72,15 @@ export async function init() {
 function setupEventListeners() {
     try {
         // Deposit and withdraw button handlers
-        document.getElementById('deposit-btn').addEventListener('click', showDepositPopup);
+        document.getElementById('deposit-btn').addEventListener('click', function() {
+            // Redirect to deposit page
+            window.showSection('deposit');
+        });
+        
         document.getElementById('withdraw-btn').addEventListener('click', function() {
             // Redirect to withdraw page instead of showing popup
             window.showSection('withdraw');
         });
-        
-        // Popup handlers
-        document.getElementById('close-deposit').addEventListener('click', hideDepositPopup);
-        document.getElementById('confirm-deposit').addEventListener('click', (e) => {
-            e.preventDefault();
-            processDeposit();
-        });
-        document.getElementById('close-deposit-success').addEventListener('click', hideDepositSuccessPopup);
-        
-        // Copy deposit address
-        document.getElementById('copy-deposit-btn').addEventListener('click', copyDepositAddress);
         
     } catch (error) {
         console.error('Error setting up event listeners in assets:', error);
@@ -246,71 +182,4 @@ function getTransactionType(type) {
         'registration_bonus': 'Registration Bonus'
     };
     return types[type] || type;
-}
-
-function showDepositPopup() {
-    document.getElementById('deposit-popup').style.display = 'flex';
-}
-
-function hideDepositPopup() {
-    document.getElementById('deposit-popup').style.display = 'none';
-    document.getElementById('deposit-amount').value = '';
-}
-
-function hideDepositSuccessPopup() {
-    document.getElementById('deposit-success-popup').style.display = 'none';
-}
-
-function copyDepositAddress() {
-    const depositAddress = document.getElementById('deposit-address').textContent;
-    window.GLY.copyToClipboard(depositAddress).then(() => {
-        const copyBtn = document.getElementById('copy-deposit-btn');
-        const originalText = copyBtn.innerHTML;
-        copyBtn.innerHTML = '<i class="fas fa-check"></i> COPIED';
-        setTimeout(() => {
-            copyBtn.innerHTML = originalText;
-        }, 2000);
-    });
-}
-
-async function processDeposit() {
-    const amount = parseFloat(document.getElementById('deposit-amount').value);
-    const user = window.getCurrentUser();
-    
-    if (!amount || amount < 17) {
-        window.showCustomAlert('Minimum deposit amount is 17 USDT');
-        return;
-    }
-    
-    if (!user) {
-        window.showCustomAlert('User not found');
-        return;
-    }
-    
-    try {
-        // Create deposit record
-        const { error } = await window.supabase
-            .from('transactions')
-            .insert([{
-                user_id: user.id,
-                type: 'deposit',
-                amount: amount,
-                status: 'pending',
-                description: `Deposit ${amount} USDT`
-            }]);
-            
-        if (error) throw error;
-        
-        // Show success popup
-        hideDepositPopup();
-        document.getElementById('deposit-success-popup').style.display = 'flex';
-        
-        // Update transaction history
-        setTimeout(() => {
-            loadTransactionHistory();
-        }, 1000);
-        
-    } catch (error) {
-        window.showCustomAlert('Error processing deposit: ' + error.message);
-    }
 }

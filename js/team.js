@@ -1,12 +1,12 @@
-// Team section
+// team.js
 export default function renderTeam() {
     return `
         <div class="card padding">
             <div class="text-white text-bold text-center margin-bottom">Income Analysis</div>
             
-            <!-- Simple chart -->
+            <!-- New chart container -->
             <div class="chart-container">
-                <canvas id="team-chart" width="400" height="200"></canvas>
+                <canvas id="team-chart" width="526.25" height="250" style="width: 100%; height: 250px; background: none; position: relative;"></canvas>
             </div>
 
             <!-- Team statistics -->
@@ -135,7 +135,7 @@ async function loadTeamData() {
         const teamEarnings = transactions?.reduce((sum, t) => sum + t.amount, 0) || 0;
         document.getElementById('team-earnings').textContent = teamEarnings.toFixed(2);
         
-        // Initialize chart
+        // Initialize chart with new style
         initTeamChart(level1Count, level2Count, level3Count);
         
     } catch (error) {
@@ -145,51 +145,87 @@ async function loadTeamData() {
 
 function initTeamChart(level1Count, level2Count, level3Count) {
     const canvas = document.getElementById('team-chart');
-    if (!canvas.getContext) return;
+    if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
-    const data = {
-        labels: ['Level 1', 'Level 2', 'Level 3'],
-        datasets: [{
-            label: 'Number of Referrals',
-            data: [level1Count, level2Count, level3Count],
-            backgroundColor: [
-                'rgba(78, 119, 113, 0.8)',
-                'rgba(78, 119, 113, 0.6)',
-                'rgba(78, 119, 113, 0.4)'
-            ],
-            borderColor: [
-                'rgba(78, 119, 113, 1)',
-                'rgba(78, 119, 113, 1)',
-                'rgba(78, 119, 113, 1)'
-            ],
-            borderWidth: 1
-        }]
-    };
-
-    const maxValue = Math.max(...data.datasets[0].data) || 1;
-    const barWidth = 50;
-    const spacing = 30;
-    const startX = 50;
-    const chartHeight = 150;
-
+    
+    // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    data.datasets[0].data.forEach((value, index) => {
-        const x = startX + (barWidth + spacing) * index;
-        const barHeight = (value / maxValue) * chartHeight;
-        const y = canvas.height - barHeight - 40;
-
-        ctx.fillStyle = data.datasets[0].backgroundColor[index];
+    
+    // Set chart dimensions
+    const chartWidth = canvas.width;
+    const chartHeight = canvas.height;
+    const padding = 40;
+    const graphWidth = chartWidth - 2 * padding;
+    const graphHeight = chartHeight - 2 * padding;
+    
+    // Prepare data
+    const data = [
+        { label: 'Level 1', value: level1Count, color: '#4e7771' },
+        { label: 'Level 2', value: level2Count, color: '#3d615c' },
+        { label: 'Level 3', value: level3Count, color: '#2c4b45' }
+    ];
+    
+    // Find max value
+    const maxValue = Math.max(...data.map(d => d.value), 1);
+    
+    // Calculate bar properties
+    const barCount = data.length;
+    const barWidth = graphWidth / barCount * 0.6;
+    const barSpacing = graphWidth / barCount * 0.4;
+    
+    // Draw bars
+    data.forEach((item, index) => {
+        const x = padding + index * (barWidth + barSpacing) + barSpacing / 2;
+        const barHeight = (item.value / maxValue) * graphHeight;
+        const y = chartHeight - padding - barHeight;
+        
+        // Draw bar
+        ctx.fillStyle = item.color;
         ctx.fillRect(x, y, barWidth, barHeight);
-
-        ctx.fillStyle = 'white';
-        ctx.font = '12px Arial';
+        
+        // Draw value on top of bar
+        if (item.value > 0) {
+            ctx.fillStyle = '#fff';
+            ctx.font = '12px Helvetica Neue, Helvetica, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(item.value, x + barWidth / 2, y - 5);
+        }
+        
+        // Draw label below bar
+        ctx.fillStyle = '#e3e3e3';
+        ctx.font = '12px Helvetica Neue, Helvetica, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(value, x + barWidth / 2, y - 5);
-
-        ctx.fillText(data.labels[index], x + barWidth / 2, canvas.height - 20);
+        ctx.fillText(item.label, x + barWidth / 2, chartHeight - padding + 20);
     });
+    
+    // Draw Y-axis labels
+    ctx.fillStyle = '#ccc';
+    ctx.font = '10px Helvetica Neue, Helvetica, sans-serif';
+    ctx.textAlign = 'right';
+    
+    // Draw 3 grid lines and labels
+    for (let i = 0; i <= 3; i++) {
+        const value = (maxValue * i / 3);
+        const y = chartHeight - padding - (graphHeight * i / 3);
+        
+        // Draw grid line
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.beginPath();
+        ctx.moveTo(padding, y);
+        ctx.lineTo(chartWidth - padding, y);
+        ctx.stroke();
+        
+        // Draw label
+        ctx.fillStyle = '#ccc';
+        ctx.fillText(value.toFixed(0), padding - 10, y + 3);
+    }
+    
+    // Draw title
+    ctx.fillStyle = '#fff';
+    ctx.font = '14px Helvetica Neue, Helvetica, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Team Referrals by Level', chartWidth / 2, 20);
 }
 
 async function loadReferralsList() {

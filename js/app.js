@@ -1,4 +1,6 @@
-// Main application module - UPDATED
+// Main application module - UPDATED with language support
+import { initLanguage } from './translate.js';
+
 class GLYApp {
     constructor() {
         this.currentSection = null;
@@ -6,6 +8,10 @@ class GLYApp {
         this.currentUser = null;
         this.supabase = null;
         this.deferredPrompt = null;
+        
+        // Initialize language
+        initLanguage();
+        
         this.init();
     }
 
@@ -40,6 +46,11 @@ class GLYApp {
         
         // Start deposit check interval
         this.startDepositCheck();
+        
+        // Listen for language changes
+        window.addEventListener('languageChanged', () => {
+            this.updateCurrentPageTexts();
+        });
     }
 
     async handleInviteCodeRedirect() {
@@ -280,13 +291,13 @@ class GLYApp {
             this.showNavbar();
             document.body.classList.add('no-tabbar');
             
-            if (cleanSectionId === 'company') this.setNavbarTitle('Company', true);
-            else if (cleanSectionId === 'invite') this.setNavbarTitle('Invite', true);
-            else if (cleanSectionId === 'team') this.setNavbarTitle('Team', true);
-            else if (cleanSectionId === 'rules') this.setNavbarTitle('Rules', true);
-            else if (cleanSectionId === 'withdraw') this.setNavbarTitle('Withdraw', true);
-            else if (cleanSectionId === 'admin') this.setNavbarTitle('Admin', true);
-            else if (cleanSectionId === 'deposit') this.setNavbarTitle('Deposit', true);
+            if (cleanSectionId === 'company') this.setNavbarTitle(window.GLYTranslate?.t('company') || 'Company', true);
+            else if (cleanSectionId === 'invite') this.setNavbarTitle(window.GLYTranslate?.t('invite') || 'Invite', true);
+            else if (cleanSectionId === 'team') this.setNavbarTitle(window.GLYTranslate?.t('team') || 'Team', true);
+            else if (cleanSectionId === 'rules') this.setNavbarTitle(window.GLYTranslate?.t('rules') || 'Rules', true);
+            else if (cleanSectionId === 'withdraw') this.setNavbarTitle(window.GLYTranslate?.t('withdraw') || 'Withdraw', true);
+            else if (cleanSectionId === 'admin') this.setNavbarTitle(window.GLYTranslate?.t('admin_panel') || 'Admin', true);
+            else if (cleanSectionId === 'deposit') this.setNavbarTitle(window.GLYTranslate?.t('deposit') || 'Deposit', true);
         } else {
             this.showTabbar();
             this.showNavbar();
@@ -304,6 +315,11 @@ class GLYApp {
         }
 
         this.currentSection = cleanSectionId;
+        
+        // Update texts for the new section
+        setTimeout(() => {
+            this.updateCurrentPageTexts();
+        }, 100);
     }
 
     async loadSection(sectionId) {
@@ -338,6 +354,46 @@ class GLYApp {
         } catch (error) {
             console.error(`Error loading section ${sectionId}:`, error);
             sectionElement.innerHTML = `<div class="error">Error loading ${sectionId} section. Please refresh the page.</div>`;
+        }
+    }
+
+    updateCurrentPageTexts() {
+        // This function updates texts on the current page when language changes
+        if (!this.currentSection) return;
+        
+        // Update tabbar labels
+        document.querySelectorAll('.uni-tabbar__label').forEach((label, index) => {
+            switch(index) {
+                case 0: label.textContent = window.GLYTranslate?.t('home') || 'Home'; break;
+                case 1: label.textContent = window.GLYTranslate?.t('get') || 'Get'; break;
+                case 2: label.textContent = window.GLYTranslate?.t('assets') || 'Assets'; break;
+                case 3: label.textContent = window.GLYTranslate?.t('mine') || 'Mine'; break;
+            }
+        });
+        
+        // Update navbar title if needed
+        if (this.currentSection === 'company' || this.currentSection === 'invite' || 
+            this.currentSection === 'team' || this.currentSection === 'rules' ||
+            this.currentSection === 'withdraw' || this.currentSection === 'admin' ||
+            this.currentSection === 'deposit') {
+            
+            let title = '';
+            switch(this.currentSection) {
+                case 'company': title = window.GLYTranslate?.t('company') || 'Company'; break;
+                case 'invite': title = window.GLYTranslate?.t('invite') || 'Invite'; break;
+                case 'team': title = window.GLYTranslate?.t('team') || 'Team'; break;
+                case 'rules': title = window.GLYTranslate?.t('rules') || 'Rules'; break;
+                case 'withdraw': title = window.GLYTranslate?.t('withdraw') || 'Withdraw'; break;
+                case 'admin': title = window.GLYTranslate?.t('admin_panel') || 'Admin'; break;
+                case 'deposit': title = window.GLYTranslate?.t('deposit') || 'Deposit'; break;
+            }
+            
+            this.setNavbarTitle(title, true);
+        }
+        
+        // Call page-specific update function if available
+        if (window.updatePageTexts && typeof window.updatePageTexts === 'function') {
+            window.updatePageTexts();
         }
     }
 
@@ -824,7 +880,7 @@ window.showCustomAlert = (message) => {
         return;
     }
     
-    modalHeader.textContent = 'Notification';
+    modalHeader.textContent = window.GLYTranslate?.t('notification') || 'Notification';
     modalBody.innerHTML = `<p style="text-align: center;">${message}</p>`;
     
     modal.style.display = 'flex';

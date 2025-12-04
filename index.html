@@ -25,7 +25,8 @@
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- QRCode Library REMOVED - now using built-in canvas -->
+    <!-- QRCode Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     
     <style>
         .uni-tabbar { display: none; }
@@ -59,7 +60,7 @@
             height: 30px;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 50%;
-            display: none; /* Hidden by default, shown via JS */
+            display: none;
             align-items: center;
             justify-content: center;
             color: #4e7771;
@@ -293,6 +294,12 @@
         /* Fix for Safari 100vh */
         .page {
             min-height: -webkit-fill-available;
+        }
+        
+        /* QR Code canvas optimization */
+        canvas {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
         }
     </style>
 </head>

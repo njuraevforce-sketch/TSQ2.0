@@ -10,20 +10,20 @@ export default function renderWithdraw() {
             <!-- Network Selection -->
             <div class="network-selection margin-bottom">
                 <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;">Select Network</div>
-                <div class="network-options">
-                    <div class="network-option active" data-network="TRC20">
-                        <div class="network-icon">
-                            <img src="assets/trc20.png" alt="TRC20">
+                <div class="network-options" style="display: flex; gap: 8px; justify-content: center;">
+                    <div class="network-option active" data-network="TRC20" style="flex: 0 0 auto; padding: 6px 12px; min-height: auto;">
+                        <div class="network-icon" style="width: 24px; height: 24px; margin-bottom: 4px;">
+                            <img src="assets/trc20.png" alt="TRC20" style="width: 100%; height: 100%;">
                         </div>
-                        <div class="network-name">TRC20</div>
-                        <div class="network-check"><i class="fas fa-check"></i></div>
+                        <div class="network-name" style="font-size: 11px;">TRC20</div>
+                        <div class="network-check" style="font-size: 10px;"><i class="fas fa-check"></i></div>
                     </div>
-                    <div class="network-option" data-network="BEP20">
-                        <div class="network-icon">
-                            <img src="assets/bsc20.png" alt="BEP20">
+                    <div class="network-option" data-network="BEP20" style="flex: 0 0 auto; padding: 6px 12px; min-height: auto;">
+                        <div class="network-icon" style="width: 24px; height: 24px; margin-bottom: 4px;">
+                            <img src="assets/bsc20.png" alt="BEP20" style="width: 100%; height: 100%;">
                         </div>
-                        <div class="network-name">BEP20</div>
-                        <div class="network-check"><i class="fas fa-check"></i></div>
+                        <div class="network-name" style="font-size: 11px;">BEP20</div>
+                        <div class="network-check" style="font-size: 10px;"><i class="fas fa-check"></i></div>
                     </div>
                 </div>
             </div>
@@ -173,21 +173,21 @@ export default function renderWithdraw() {
                     <div class="pop-body">
                         <!-- Network Selection in Modal -->
                         <div class="network-selection margin-bottom">
-                            <div class="section-title-small" style="color: #333; margin-bottom: 10px; font-size: 14px;">Select Network</div>
-                            <div class="network-options">
-                                <div class="network-option active" data-network="TRC20">
-                                    <div class="network-icon">
-                                        <img src="assets/trc20.png" alt="TRC20">
+                            <div class="section-title-small" style="color: #333; margin-bottom: 8px; font-size: 13px;">Select Network</div>
+                            <div class="network-options" style="display: flex; gap: 8px; justify-content: center;">
+                                <div class="network-option active" data-network="TRC20" style="flex: 0 0 auto; padding: 6px 12px; min-height: auto;">
+                                    <div class="network-icon" style="width: 24px; height: 24px; margin-bottom: 4px;">
+                                        <img src="assets/trc20.png" alt="TRC20" style="width: 100%; height: 100%;">
                                     </div>
-                                    <div class="network-name">TRC20</div>
-                                    <div class="network-check"><i class="fas fa-check"></i></div>
+                                    <div class="network-name" style="font-size: 11px; color: #333;">TRC20</div>
+                                    <div class="network-check" style="font-size: 10px;"><i class="fas fa-check"></i></div>
                                 </div>
-                                <div class="network-option" data-network="BEP20">
-                                    <div class="network-icon">
-                                        <img src="assets/bsc20.png" alt="BEP20">
+                                <div class="network-option" data-network="BEP20" style="flex: 0 0 auto; padding: 6px 12px; min-height: auto;">
+                                    <div class="network-icon" style="width: 24px; height: 24px; margin-bottom: 4px;">
+                                        <img src="assets/bsc20.png" alt="BEP20" style="width: 100%; height: 100%;">
                                     </div>
-                                    <div class="network-name">BEP20</div>
-                                    <div class="network-check"><i class="fas fa-check"></i></div>
+                                    <div class="network-name" style="font-size: 11px; color: #333;">BEP20</div>
+                                    <div class="network-check" style="font-size: 10px;"><i class="fas fa-check"></i></div>
                                 </div>
                             </div>
                         </div>

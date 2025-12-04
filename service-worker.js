@@ -21,7 +21,19 @@ const urlsToCache = [
     '/assets/setting-password.png',
     '/assets/setting-service.png',
     '/assets/setting-language.png',
-    '/assets/setting-change-password.png'
+    '/assets/setting-change-password.png',
+    '/assets/vip1.png',
+    '/assets/vip2.png',
+    '/assets/vip3.png',
+    '/assets/vip4.png',
+    '/assets/vip5.png',
+    '/assets/vip6.png',
+    '/assets/vipicon1.png',
+    '/assets/vipicon2.png',
+    '/assets/vipicon3.png',
+    '/assets/vipicon4.png',
+    '/assets/vipicon5.png',
+    '/assets/vipicon6.png',
 ];
 
 // Install event

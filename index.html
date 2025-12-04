@@ -9,13 +9,16 @@
     <link rel="manifest" href="manifest.json">
     
     <!-- Cache busting version for CSS -->
-    <link rel="stylesheet" href="css/style.css?v=1.6">
+    <link rel="stylesheet" href="css/style.css?v=1.7">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     
     <style>
         .uni-tabbar { display: none; }
@@ -219,7 +222,7 @@
             <div id="rules" class="section"></div>
             <!-- NEW SECTIONS ADDED -->
             <div id="withdraw" class="section"></div>
-             <div id="deposit" class="section"></div>
+            <div id="deposit" class="section"></div>
             <div id="admin" class="section"></div>
         </div>
     </div>
@@ -229,25 +232,25 @@
         <div class="uni-tabbar__bd">
             <div class="uni-tabbar__item" data-section="home">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/home.png?v=1.6" alt="Home">
+                    <img src="assets/home.png?v=1.7" alt="Home">
                 </div>
                 <div class="uni-tabbar__label">Home</div>
             </div>
             <div class="uni-tabbar__item" data-section="get">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/get.png?v=1.6" alt="Get">
+                    <img src="assets/get.png?v=1.7" alt="Get">
                 </div>
                 <div class="uni-tabbar__label">Get</div>
             </div>
             <div class="uni-tabbar__item" data-section="assets">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/assets.png?v=1.6" alt="Assets">
+                    <img src="assets/assets.png?v=1.7" alt="Assets">
                 </div>
                 <div class="uni-tabbar__label">Assets</div>
             </div>
             <div class="uni-tabbar__item" data-section="mine">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/mine.png?v=1.6" alt="Mine">
+                    <img src="assets/mine.png?v=1.7" alt="Mine">
                 </div>
                 <div class="uni-tabbar__label">Mine</div>
             </div>
@@ -255,7 +258,7 @@
     </div>
 
     <!-- Load Scripts with cache busting -->
-    <script src="js/app.js?v=1.6" type="module"></script>
+    <script src="js/app.js?v=1.7" type="module"></script>
     
     <script>
         // Service Worker for better caching control
@@ -270,7 +273,7 @@
         }
         
         // Clear cache on new version
-        const currentVersion = '1.6';
+        const currentVersion = '1.7';
         const lastVersion = localStorage.getItem('app_version');
         
         if (lastVersion !== currentVersion) {

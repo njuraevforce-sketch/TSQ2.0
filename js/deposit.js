@@ -1,28 +1,30 @@
 // deposit.js - REAL QR codes with built-in generator
+import { t } from './translate.js';
+
 export default function renderDeposit() {
     return `
         <div class="card padding">
             <div style="text-align: center; margin-bottom: 20px;">
-                <h2 style="color: white;">Deposit USDT</h2>
-                <p style="color: #ccc; font-size: 14px;">Send USDT to your personal deposit address</p>
+                <h2 style="color: white;" data-translate="deposit_usdt">Deposit USDT</h2>
+                <p style="color: #ccc; font-size: 14px;" data-translate="send_usdt">Send USDT to your personal deposit address</p>
             </div>
 
             <!-- Network Selection -->
             <div class="network-selection margin-bottom">
-                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;">Select Network</div>
+                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;" data-translate="select_network">Select Network</div>
                 <div class="network-options">
                     <div class="network-option active" data-network="TRC20">
                         <div class="network-icon">
-                            <img src="assets/trc20.png" alt="TRC20">
+                            <img src="assets/trc20.png" alt="TRC20" data-translate-alt="trc20">
                         </div>
-                        <div class="network-name">TRC20</div>
+                        <div class="network-name" data-translate="network_trc20">TRC20</div>
                         <div class="network-check"><i class="fas fa-check"></i></div>
                     </div>
                     <div class="network-option" data-network="BEP20">
                         <div class="network-icon">
-                            <img src="assets/bsc20.png" alt="BEP20">
+                            <img src="assets/bsc20.png" alt="BEP20" data-translate-alt="bep20">
                         </div>
-                        <div class="network-name">BEP20</div>
+                        <div class="network-name" data-translate="network_bep20">BEP20</div>
                         <div class="network-check"><i class="fas fa-check"></i></div>
                     </div>
                 </div>
@@ -30,7 +32,7 @@ export default function renderDeposit() {
 
             <!-- Deposit Address Section -->
             <div class="deposit-address-section">
-                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;">Your Deposit Address</div>
+                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;" data-translate="your_deposit_address">Your Deposit Address</div>
                 
                 <!-- QR Code -->
                 <div style="text-align: center; margin-bottom: 20px; padding: 10px; background: white; border-radius: 8px; display: inline-block; margin-left: auto; margin-right: auto; display: block; width: 160px;">
@@ -44,46 +46,47 @@ export default function renderDeposit() {
                            class="input-line"
                            readonly
                            style="text-align: center; font-size: 14px; letter-spacing: 0.5px; font-family: monospace; background: rgba(255,255,255,0.1);"
+                           data-translate="wait_for_address"
                            placeholder="Loading address...">
                 </div>
                 
                 <!-- Copy button -->
                 <button class="pro-btn" id="copy-address-btn" style="width: 100%; background: #4e7771; border: none; padding: 12px; font-size: 14px;">
-                    <i class="fas fa-copy"></i> Copy Address
+                    <i class="fas fa-copy"></i> <span data-translate="copy_address">Copy Address</span>
                 </button>
             </div>
 
             <!-- Deposit Info -->
             <div class="deposit-info">
-                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;">Deposit Instructions</div>
+                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;" data-translate="deposit_instructions">Deposit Instructions</div>
                 
                 <div class="deposit-line">
-                    <span style="color: #ccc; font-size: 12px;">Send only:</span>
+                    <span style="color: #ccc; font-size: 12px;" data-translate="send_only">Send only:</span>
                     <span style="color: #fff; font-weight: bold; font-size: 14px;">USDT</span>
                 </div>
                 
                 <div class="deposit-line">
-                    <span style="color: #ccc; font-size: 12px;">Minimum deposit:</span>
+                    <span style="color: #ccc; font-size: 12px;" data-translate="minimum_deposit_amount">Minimum deposit:</span>
                     <span style="color: #52c41a; font-weight: bold; font-size: 14px;">17 USDT</span>
                 </div>
                 
                 <div class="deposit-line">
-                    <span style="color: #ccc; font-size: 12px;">Processing time:</span>
+                    <span style="color: #ccc; font-size: 12px;" data-translate="processing_time">Processing time:</span>
                     <span style="color: #fff; font-weight: bold; font-size: 14px;">1-10 minutes</span>
                 </div>
                 
                 <div class="deposit-line">
-                    <span style="color: #ccc; font-size: 12px;">Network:</span>
+                    <span style="color: #ccc; font-size: 12px;" data-translate="network">Network:</span>
                     <span id="selected-network-display" style="color: #f9ae3d; font-weight: bold; font-size: 14px;">TRC20</span>
                 </div>
             </div>
 
             <!-- Recent Deposits -->
             <div class="margin-top">
-                <div class="text-white text-bold" style="font-size: 14px; margin-bottom: 15px;">Recent Deposits</div>
+                <div class="text-white text-bold" style="font-size: 14px; margin-bottom: 15px;" data-translate="recent_deposits">Recent Deposits</div>
                 <div class="deposits-list" id="deposits-list">
                     <div style="color: #ccc; text-align: center; padding: 20px;">
-                        Loading deposit history...
+                        <span data-translate="loading_data">Loading deposit history...</span>
                     </div>
                 </div>
             </div>
@@ -92,12 +95,12 @@ export default function renderDeposit() {
             <div style="margin-top: 20px; padding: 15px; background: rgba(255, 87, 34, 0.1); border-radius: 8px; border-left: 3px solid #ff5722;">
                 <p style="color: #ffccbc; font-size: 12px;">
                     <i class="fas fa-exclamation-triangle" style="color: #ff5722; margin-right: 5px;"></i>
-                    <strong>Important:</strong><br>
-                    1. Send only USDT to this address<br>
-                    2. Do NOT send other cryptocurrencies<br>
-                    3. Minimum deposit: 17 USDT<br>
-                    4. Deposits are automatically credited<br>
-                    5. Wrong network deposits may be lost
+                    <strong data-translate="important">Important:</strong><br>
+                    <span data-translate="important_note_1">1. Send only USDT to this address</span><br>
+                    <span data-translate="important_note_2">2. Do NOT send other cryptocurrencies</span><br>
+                    <span data-translate="important_note_3">3. Minimum deposit: 17 USDT</span><br>
+                    <span data-translate="important_note_4">4. Deposits are automatically credited</span><br>
+                    <span data-translate="important_note_5">5. Wrong network deposits may be lost</span>
                 </p>
             </div>
         </div>
@@ -105,11 +108,11 @@ export default function renderDeposit() {
         <!-- Loading popup -->
         <div class="pop-overlay" id="loading-deposit-popup" style="display: none;">
             <div class="pop-content">
-                <div class="pop-header">Processing</div>
+                <div class="pop-header" data-translate="processing">Processing</div>
                 <div class="pop-body">
                     <div style="text-align: center; padding: 20px;">
                         <div class="loading-spinner"></div>
-                        <div class="loading-text" id="deposit-loading-text">Loading...</div>
+                        <div class="loading-text" id="deposit-loading-text" data-translate="loading">Loading...</div>
                     </div>
                 </div>
             </div>
@@ -368,6 +371,15 @@ export async function init() {
     
     // Setup event listeners
     setupEventListeners();
+    
+    // Update translations
+    import('./translate.js').then(module => {
+        if (module.updatePageLanguage) {
+            setTimeout(() => module.updatePageLanguage(), 100);
+        }
+    }).catch(error => {
+        console.error('Error loading translate module:', error);
+    });
 }
 
 function setupEventListeners() {
@@ -404,7 +416,7 @@ async function loadDepositAddress(network) {
     }
     
     try {
-        document.getElementById('deposit-address-display').value = 'Loading address...';
+        document.getElementById('deposit-address-display').value = t('loading_data');
         
         // Call our deposit server to get or generate address
         const API_BASE_URL = 'https://tron-wallet-server-production.up.railway.app';
@@ -432,12 +444,12 @@ async function loadDepositAddress(network) {
             generateRealQRCode(result.address);
             
         } else {
-            throw new Error('Failed to get deposit address from server');
+            throw new Error(t('error_loading_address'));
         }
         
     } catch (error) {
         console.error('Error loading deposit address:', error);
-        document.getElementById('deposit-address-display').value = 'Error loading address';
+        document.getElementById('deposit-address-display').value = t('error_loading_address');
         
         // Show error in QR container
         const canvas = document.getElementById('qr-code-canvas');
@@ -447,7 +459,7 @@ async function loadDepositAddress(network) {
         ctx.fillStyle = '#d32f2f';
         ctx.font = '12px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText('Error', canvas.width/2, canvas.height/2);
+        ctx.fillText(t('error'), canvas.width/2, canvas.height/2);
     }
 }
 
@@ -464,8 +476,8 @@ function generateRealQRCode(text) {
 async function copyDepositAddress() {
     const address = document.getElementById('deposit-address-display').value;
     
-    if (!address || address === 'Loading...' || address === 'Error loading address' || address === 'Loading address...') {
-        window.showCustomAlert('Please wait for address to load');
+    if (!address || address === t('loading_data') || address === t('error_loading_address') || address === t('wait_for_address')) {
+        window.showCustomAlert(t('wait_for_address'));
         return;
     }
     
@@ -475,7 +487,7 @@ async function copyDepositAddress() {
         // Show success feedback
         const copyBtn = document.getElementById('copy-address-btn');
         const originalText = copyBtn.innerHTML;
-        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        copyBtn.innerHTML = '<i class="fas fa-check"></i> ' + t('address_copied');
         copyBtn.style.background = '#52c41a';
         
         setTimeout(() => {
@@ -492,7 +504,7 @@ async function copyDepositAddress() {
         document.execCommand('copy');
         document.body.removeChild(textArea);
         
-        window.showCustomAlert('Address copied to clipboard!');
+        window.showCustomAlert(t('address_copied'));
     }
 }
 
@@ -567,7 +579,7 @@ async function loadRecentDeposits() {
                     `;
                 });
             } else {
-                html = '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">No deposit history</div>';
+                html = '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">' + t('no_deposit_history') + '</div>';
             }
         }
         
@@ -576,7 +588,7 @@ async function loadRecentDeposits() {
     } catch (error) {
         console.error('Error loading deposits:', error);
         const container = document.getElementById('deposits-list');
-        container.innerHTML = '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">Error loading deposit history</div>';
+        container.innerHTML = '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">' + t('error_loading') + '</div>';
     }
 }
 

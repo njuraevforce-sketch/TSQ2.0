@@ -1,4 +1,4 @@
-// Home section - UPDATED with deposit navigation
+// home.js - UPDATED with deposit navigation
 export default function renderHome() {
     return `
         <!-- Video banner with play button -->

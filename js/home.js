@@ -1,5 +1,9 @@
 // home.js - UPDATED with deposit navigation
+import { t } from './translate.js';
+
 export default function renderHome() {
+    const lang = localStorage.getItem('gly_language') || 'en';
+    
     return `
         <!-- Video banner with play button -->
         <div class="banner-section">
@@ -7,7 +11,7 @@ export default function renderHome() {
                 <div class="video-container" id="video-container">
                     <video class="banner-video" id="banner-video" muted playsinline>
                         <source src="assets/company.MP4" type="video/mp4">
-                        Your browser does not support the video tag.
+                        <span data-translate="video_error">Your browser does not support the video tag.</span>
                     </video>
                     <div class="video-overlay" id="video-overlay">
                         <div class="play-btn" id="play-btn">
@@ -35,39 +39,39 @@ export default function renderHome() {
             <div class="nav-grid">
                 <a href="#" class="nav-item" data-section="company">
                     <div class="nav-icon">
-                        <img src="assets/company.png" alt="Company">
+                        <img src="assets/company.png" alt="${t('company')}" data-translate-alt="company">
                     </div>
-                    <div class="nav-text">Company</div>
+                    <div class="nav-text" data-translate="company">Company</div>
                 </a>
                 <a href="#" class="nav-item" data-section="deposit">
                     <div class="nav-icon">
-                        <img src="assets/deposit.png" alt="Deposit">
+                        <img src="assets/deposit.png" alt="${t('deposit')}" data-translate-alt="deposit">
                     </div>
-                    <div class="nav-text">Deposit</div>
+                    <div class="nav-text" data-translate="deposit">Deposit</div>
                 </a>
                 <a href="#" class="nav-item" data-section="withdraw">
                     <div class="nav-icon">
-                        <img src="assets/withdraw.png" alt="Withdraw">
+                        <img src="assets/withdraw.png" alt="${t('withdraw')}" data-translate-alt="withdraw">
                     </div>
-                    <div class="nav-text">Withdraw</div>
+                    <div class="nav-text" data-translate="withdraw">Withdraw</div>
                 </a>
                 <a href="#" class="nav-item" data-section="invite">
                     <div class="nav-icon">
-                        <img src="assets/invite.png" alt="Invite">
+                        <img src="assets/invite.png" alt="${t('invite')}" data-translate-alt="invite">
                     </div>
-                    <div class="nav-text">Invite</div>
+                    <div class="nav-text" data-translate="invite">Invite</div>
                 </a>
                 <a href="#" class="nav-item" data-section="team">
                     <div class="nav-icon">
-                        <img src="assets/team.png" alt="Team">
+                        <img src="assets/team.png" alt="${t('team')}" data-translate-alt="team">
                     </div>
-                    <div class="nav-text">Team</div>
+                    <div class="nav-text" data-translate="team">Team</div>
                 </a>
                 <a href="#" class="nav-item" data-section="rules">
                     <div class="nav-icon">
-                        <img src="assets/rules.png" alt="Rules">
+                        <img src="assets/rules.png" alt="${t('rules')}" data-translate-alt="rules">
                     </div>
-                    <div class="nav-text">Rules</div>
+                    <div class="nav-text" data-translate="rules">Rules</div>
                 </a>
             </div>
         </div>
@@ -75,22 +79,22 @@ export default function renderHome() {
         <!-- Crypto prices -->
         <div class="quantum-section">
             <div class="quantum-header">
-                <div class="quantum-title">Live Crypto Prices</div>
-                <div class="text-gray" style="font-size: 12px; font-weight: normal;" id="last-updated">
+                <div class="quantum-title" data-translate="live_crypto_prices">Live Crypto Prices</div>
+                <div class="text-gray" style="font-size: 12px; font-weight: normal;" id="last-updated" data-translate="updating">
                     Updating...
                 </div>
             </div>
             <div class="crypto-grid" id="crypto-prices">
                 <div style="color: #ccc; text-align: center; padding: 20px;">
-                    Loading live prices...
+                    <span data-translate="loading_data">Loading live prices...</span>
                 </div>
             </div>
         </div>
 
         <!-- Partners block -->
         <div class="partners-section">
-            <div class="section-title">Our Partners</div>
-            <img src="assets/partners.png" alt="Our Partners" style="width: 100%; border-radius: 10px;">
+            <div class="section-title" data-translate="our_partners">Our Partners</div>
+            <img src="assets/partners.png" alt="${t('our_partners')}" style="width: 100%; border-radius: 10px;">
         </div>
     `;
 }
@@ -134,7 +138,7 @@ function setupVideoPlayer() {
     playBtn.addEventListener('click', () => {
         video.play().catch(e => {
             console.log('Video play failed:', e);
-            window.showCustomAlert('Video playback failed. Please try again.');
+            window.showCustomAlert(t('video_error'));
         });
         overlay.style.display = 'none';
         video.setAttribute('controls', 'true');
@@ -179,9 +183,8 @@ function showWelcomeBanner() {
         setTimeout(() => {
             const bannerContent = `
                 <div style="text-align: center; padding: 10px;">
-                    <h3 style="color: #4e7771; margin-bottom: 15px;">Welcome to Two Sigma Quantitative (TSQ)</h3>
-                    <p style="margin-bottom: 10px; color: #333;">We strive to bring science into the financial world.</p>
-                    <p style="margin-bottom: 15px; color: #333; font-weight: bold;">First deposit bonus and referral bonus for new users (automatically credited):</p>
+                    <h3 style="color: #4e7771; margin-bottom: 15px;">${t('welcome_bonus_title')}</h3>
+                    <p style="margin-bottom: 10px; color: #333;">${t('welcome_bonus_message')}</p>
                     
                     <div style="background: #f5f5f5; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
                         <p style="margin: 5px 0; color: #333;">First deposit $50: $2 USDT (referral bonus $5 USDT)</p>
@@ -193,7 +196,7 @@ function showWelcomeBanner() {
                 </div>
             `;
             
-            window.showCustomModal('Welcome Bonus', bannerContent, () => {
+            window.showCustomModal(t('welcome_bonus_title'), bannerContent, () => {
                 localStorage.setItem('welcome_banner_shown', today);
             });
         }, 1500);
@@ -208,9 +211,9 @@ async function loadCryptoPrices() {
 
     // Check internet connection
     if (!navigator.onLine) {
-        cryptoContainer.innerHTML = '<div style="color: #ccc; text-align: center; padding: 20px;">No internet connection</div>';
+        cryptoContainer.innerHTML = `<div style="color: #ccc; text-align: center; padding: 20px;">${t('offline')}</div>`;
         if (lastUpdatedElement) {
-            lastUpdatedElement.textContent = 'Offline';
+            lastUpdatedElement.textContent = t('offline');
         }
         return;
     }
@@ -218,7 +221,7 @@ async function loadCryptoPrices() {
     try {
         // Update status
         if (lastUpdatedElement) {
-            lastUpdatedElement.textContent = 'Updating...';
+            lastUpdatedElement.textContent = t('updating');
         }
 
         // Use CoinGecko API
@@ -327,7 +330,7 @@ async function loadCryptoPrices() {
         if (lastUpdatedElement) {
             const now = new Date();
             const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            lastUpdatedElement.textContent = `Updated: ${timeString}`;
+            lastUpdatedElement.textContent = `${t('updated')} ${timeString}`;
         }
         
     } catch (error) {
@@ -374,13 +377,13 @@ async function loadCryptoPrices() {
         
         cryptoContainer.innerHTML = `
             <div style="margin-bottom: 10px; color: #f9ae3d; font-size: 12px; text-align: center;">
-                Using cached data. Live updates temporarily unavailable.
+                ${t('cached_data')}
             </div>
             ${fallbackHtml}
         `;
         
         if (lastUpdatedElement) {
-            lastUpdatedElement.textContent = 'Cached data';
+            lastUpdatedElement.textContent = t('cached_data');
         }
     }
 }

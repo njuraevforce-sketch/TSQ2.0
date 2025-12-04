@@ -1,888 +1,880 @@
-// Translation system for GLY Platform
+// Translations for GLY Platform
 export const translations = {
-    en: {
-        // Common
-        'app_name': 'GLY - Global Ledger Yield',
-        'welcome': 'Welcome',
-        'welcome_to_gly': 'Welcome to GLY',
-        'loading': 'Loading...',
-        'error': 'Error',
-        'success': 'Success',
-        'save': 'Save',
-        'cancel': 'Cancel',
-        'close': 'Close',
-        'confirm': 'Confirm',
-        'copy': 'Copy',
-        'copied': 'Copied!',
-        'yes': 'Yes',
-        'no': 'No',
-        'back': 'Back',
-        
-        // Login page
-        'username': 'Username',
-        'password': 'Password',
-        'login': 'Login',
-        'forgot_password': 'Forgot Password?',
-        'no_account': 'Don\'t have an account?',
-        'register_now': 'Register now!',
-        'login_error': 'Login error',
-        'please_fill_all': 'Please fill in all fields',
-        'invalid_credentials': 'Invalid username or password',
-        
-        // Register page
-        'register': 'Register',
-        'email': 'Email',
-        'confirm_password': 'Confirm Password',
-        'payment_password': 'Transaction Password',
-        'invite_code': 'Invitation Code',
-        'invite_code_required': 'Invitation Code (required)',
-        'already_have_account': 'Already have an account?',
-        'login_now': 'Login now!',
-        'registration_success': 'Registration successful!',
-        'registration_error': 'Error during registration',
-        'password_mismatch': 'Passwords do not match',
-        'password_length': 'Password must be at least 6 characters',
-        'invalid_invite_code': 'Invalid invitation code',
-        'username_exists': 'Username already exists',
-        
-        // Mine page
-        'balance': 'Balance',
-        'settings': 'Settings',
-        'withdrawal_address': 'Withdrawal Address',
-        'configure': 'Configure',
-        'configured': 'Configured',
-        'transaction_password': 'Transaction Password',
-        'change': 'Change',
-        'customer_service': 'Customer Service',
-        'contact': 'Contact',
-        'language': 'Language',
-        'change_password': 'Change Password',
-        'update': 'Update',
-        'logout': 'Logout',
-        'logout_confirm': 'Are you sure you want to logout?',
-        'vip': 'VIP',
-        'id': 'ID',
-        'set_address': 'Set address',
-        
-        // Calendar
-        'utc_calendar': 'UTC Calendar',
-        'january': 'January',
-        'february': 'February',
-        'march': 'March',
-        'april': 'April',
-        'may': 'May',
-        'june': 'June',
-        'july': 'July',
-        'august': 'August',
-        'september': 'September',
-        'october': 'October',
-        'november': 'November',
-        'december': 'December',
-        'sun': 'Sun',
-        'mon': 'Mon',
-        'tue': 'Tue',
-        'wed': 'Wed',
-        'thu': 'Thu',
-        'fri': 'Fri',
-        'sat': 'Sat',
-        
-        // Withdrawal address popup
-        'set_withdrawal_address': 'Set Withdrawal Address',
-        'select_network': 'Select Network',
-        'usdt_wallet_address': 'USDT Wallet Address',
-        'enter_wallet_address': 'Enter your wallet address',
-        'address_save_note': 'This address will be used for all future withdrawals on the selected network. Please double-check the address.',
-        'address_save_success': 'Withdrawal address saved successfully!',
-        'enter_valid_address': 'Please enter a valid wallet address',
-        
-        // Password change popup
-        'change_password_title': 'Change Password',
-        'current_password': 'Current Password',
-        'new_password': 'New Password',
-        'confirm_new_password': 'Confirm New Password',
-        'enter_current_password': 'Enter current password',
-        'enter_new_password': 'Enter new password',
-        'confirm_new_password_placeholder': 'Confirm new password',
-        'password_change_success': 'Password has been changed successfully!',
-        'fill_all_fields': 'Please fill in all fields',
-        'passwords_not_match': 'New passwords do not match',
-        'password_incorrect': 'Current password is incorrect',
-        
-        // Customer service popup
-        'customer_service_title': 'Customer Service',
-        'contact_support': 'Contact our 24/7 customer support:',
-        'telegram': 'Telegram',
-        'email': 'Email',
-        
-        // Home page
-        'live_crypto_prices': 'Live Crypto Prices',
-        'updated': 'Updated',
-        'cached_data': 'Cached data',
-        'offline': 'Offline',
-        'our_partners': 'Our Partners',
-        
-        // Navigation
-        'home': 'Home',
-        'company': 'Company',
-        'deposit': 'Deposit',
-        'withdraw': 'Withdraw',
-        'invite': 'Invite',
-        'team': 'Team',
-        'rules': 'Rules',
-        'get': 'Get',
-        'assets': 'Assets',
-        'mine': 'Mine',
-        
-        // Deposit page
-        'deposit_usdt': 'Deposit USDT',
-        'send_usdt_to_address': 'Send USDT to your personal deposit address',
-        'your_deposit_address': 'Your Deposit Address',
-        'deposit_instructions': 'Deposit Instructions',
-        'send_only': 'Send only',
-        'minimum_deposit': 'Minimum deposit',
-        'processing_time': 'Processing time',
-        'network': 'Network',
-        'recent_deposits': 'Recent Deposits',
-        'important': 'Important',
-        'deposit_important_notes': '1. Send only USDT to this address\n2. Do NOT send other cryptocurrencies\n3. Minimum deposit: 17 USDT\n4. Deposits are automatically credited\n5. Wrong network deposits may be lost',
-        'copy_address': 'Copy Address',
-        'no_deposit_history': 'No deposit history',
-        
-        // Withdraw page
-        'withdraw_usdt': 'Withdraw USDT',
-        'withdraw_earnings': 'Withdraw your earnings to your wallet',
-        'withdrawal_address': 'Withdrawal Address',
-        'no_saved_address': 'No saved address. Click "Set Address" below.',
-        'set_withdrawal_address_btn': 'Set Withdrawal Address',
-        'amount_usdt': 'Amount (USDT)',
-        'enter_amount': 'Enter amount',
-        'minimum_withdrawal': 'Minimum withdrawal',
-        'available_balance': 'Available Balance',
-        'withdrawal_fee': 'Withdrawal Fee',
-        'you_will_receive': 'You Will Receive',
-        'transaction_password_label': 'Transaction Password',
-        'enter_transaction_password': 'Enter transaction password',
-        'submit_withdrawal_request': 'Submit Withdrawal Request',
-        'support_message': 'To change your withdrawal address, please contact support:',
-        'recent_withdrawals': 'Recent Withdrawals',
-        'withdrawal_confirm': 'Confirm Withdrawal',
-        'withdrawal_processing_time': 'Processing time: 1-24 hours',
-        'save_address': 'Save Address',
-        'address_save_for_future': 'This address will be saved for future withdrawals. Please double-check the address.',
-        'no_withdrawal_history': 'No withdrawal history',
-        
-        // Get page
-        'auto_quantification': 'AUTO QUANTIFICATION',
-        'quantum_signals_available': 'Quantum Signals Available',
-        'vip_levels': 'VIP Levels',
-        'vip_description_1': 'Basic level with standard returns. Invest 20 USDT to start earning 2.2% daily profit.',
-        'vip_description_2': 'Enhanced returns with referral requirements. Invest 100 USDT and invite 2 friends to earn 2.8% daily.',
-        'vip_description_3': 'Premium level with team building. Invite 5 friends to unlock 3.5% daily profit.',
-        'vip_description_4': 'Advanced level with maximum benefits. Build a team of 7 referrals to earn 4.0% daily profit.',
-        'vip_description_5': 'Professional level for serious investors. Build a team of 15 referrals to earn 5.0% daily profit.',
-        'vip_description_6': 'Elite level with maximum returns. Build a team of 25 referrals to earn 6.0% daily profit.',
-        'quantification_processing': 'Processing...',
-        'no_signals': 'No quantum signals available! Please wait for daily refresh (18:00 UTC).',
-        'quantification_success': 'Quantum quantification successful! Profit:',
-        'analyzing_market': 'Analyzing market conditions...',
-        'calculating_probabilities': 'Calculating quantum probabilities...',
-        'executing_trades': 'Executing quantum trades...',
-        'quantification_complete': 'Quantum quantification complete!',
-        'profit': 'Profit',
-        
-        // Assets page
-        'total_balance': 'Total Balance',
-        'transaction_history': 'Transaction History',
-        'total_earned': 'Total Earned',
-        'total_deposits': 'Total Deposits',
-        'total_withdrawals': 'Total Withdrawals',
-        'referral_income': 'Referral Income',
-        'no_transactions': 'No transactions yet',
-        
-        // Invite page
-        'invite_friends': 'Invite Friends',
-        'earn_bonuses': 'Earn bonuses for invited friends',
-        'referral_link': 'Referral Link',
-        'invitation_statistics': 'Invitation Statistics',
-        'invited': 'Invited',
-        'active': 'Active',
-        'earned': 'Earned',
-        'your_invitation_code': 'Your Invitation Code',
-        'referral_bonuses': 'Referral Bonuses',
-        'level_1_bonus': 'Level 1: 12% of referral\'s earnings',
-        'level_2_bonus': 'Level 2: 5% of referral\'s earnings',
-        'level_3_bonus': 'Level 3: 3% of referral\'s earnings',
-        
-        // Team page
-        'income_analysis': 'Income Analysis',
-        'total_in_team': 'Total in Team',
-        'level_1': 'Level 1',
-        'level_2': 'Level 2',
-        'level_3': 'Level 3',
-        'view_team': 'View Team',
-        'hide_team': 'Hide Team',
-        'your_team': 'Your Team',
-        'no_referrals': 'No referrals',
-        'team_distribution': 'Team Distribution by Level',
-        
-        // Rules page
-        'platform_rules': 'Welcome to GLY! Platform Rules',
-        'basic_rules': 'Basic Rules',
-        'registration_bonus': 'Registration bonus: $3 (credited automatically)',
-        'min_deposit_rule': 'Minimum deposit: $17',
-        'min_withdrawal_rule': 'Minimum withdrawal: $20',
-        'funds_crediting_time': 'Funds crediting time: 0-72 hours',
-        'withdrawal_fee_rule': 'Withdrawal fee:',
-        'referral_system': 'Referral System (3 levels):',
-        'level_1_ref': 'Level 1: 12% of referral\'s earnings',
-        'level_2_ref': 'Level 2: 5% of referral\'s earnings',
-        'level_3_ref': 'Level 3: 3% of referral\'s earnings',
-        'bonuses_credited': 'Bonuses are credited immediately for each referral\'s earnings',
-        'vip_overview': 'VIP Level Overview:',
-        'vip1_desc': 'VIP1 (0-299 USDT): daily income 2.2%, 3 signals per day',
-        'vip2_desc': 'VIP2 (300-1000 USDT): daily income 2.8%, 3 signals per day, requires 2 active referrals',
-        'vip3_desc': 'VIP3 (1000-3500 USDT): daily income 3.5%, 3 signals per day, requires 5 active referrals',
-        'vip4_desc': 'VIP4 (3500-6000 USDT): daily income 4.0%, 3 signals per day, requires 8 active referrals',
-        'vip5_desc': 'VIP5 (6000-12000 USDT): daily income 5.0%, 3 signals per day, requires 15 active referrals',
-        'vip6_desc': 'VIP6 (12000-20000 USDT): daily income 6.0%, 3 signals per day, requires 25 active referrals',
-        'active_referral_rule': 'Active referral - user with balance from $20',
-        'signals_refresh': 'Signals refresh daily at 18:00 UTC',
-        'quantification_process': 'Quantification Process:',
-        'quantification_desc1': 'Each signal brings 1/3 of daily percentage',
-        'quantification_desc2': 'Income is credited to balance immediately',
-        'quantification_desc3': 'Referral bonuses are credited automatically',
-        'quantification_desc4': 'VIP level is recalculated after each quantification',
-        'participation_requirements': 'Participation Requirements:',
-        'participation_desc1': 'Registration only by invitation code',
-        'participation_desc2': 'Minimum age: 18 years',
-        'participation_desc3': 'One user - one account',
-        'participation_desc4': 'Use of VPN and proxy is prohibited',
-        'security': 'Security:',
-        'security_desc1': 'Two passwords: login and transaction',
-        'security_desc2': '2FA recommended',
-        'security_desc3': 'Do not share your passwords with third parties',
-        'security_desc4': 'Platform does not request private keys',
-        
-        // Company page
-        'about_gly': 'About GLY (Global Ledger Yield)',
-        'gly_description': 'With the continuous development of artificial intelligence (AI) technologies, more and more areas are beginning to apply AI algorithms to improve efficiency and accuracy. As a leading company in AI technology, GLY strives to create an innovative digital financial trading ecosystem through quantitative trading algorithms and blockchain technology.',
-        'foundation_history': 'Foundation and History',
-        'technological_advantages': 'GLY Technological Advantages',
-        'gly_application': 'GLY Application in Cryptocurrency Trading',
-        'gly_partnership': 'GLY Partnership',
-        'quantitative_trading_platform': 'GLY Quantitative Trading Platform',
-        'development_prospects': 'GLY Development Prospects',
-        'innovations': 'Innovations in GLY Quantitative Trading Algorithms',
-        
-        // Admin page
-        'admin_panel': 'Admin Panel',
-        'full_control_panel': 'Full control panel',
-        'users': 'Users',
-        'pending_wd': 'Pending WD',
-        'withdrawals': 'Withdrawals',
-        'transactions': 'Transactions',
-        'pending_withdrawals': 'Pending Withdrawals',
-        'refresh': 'Refresh',
-        'all_users': 'All Users',
-        'search_users': 'Search users...',
-        'all_transactions': 'All Transactions',
-        'platform_settings': 'Platform Settings',
-        'registration_bonus_setting': 'Registration Bonus',
-        'min_deposit_setting': 'Min Deposit',
-        'min_withdrawal_setting': 'Min Withdrawal',
-        'daily_signals_setting': 'Daily Signals',
-        'signals_per_day': 'Signals per day',
-        'save_settings': 'Save Settings',
-        'edit_user': 'Edit User',
-        'username_label': 'Username',
-        'balance_label': 'Balance (USDT)',
-        'vip_level_label': 'VIP Level',
-        'signals_available_label': 'Signals Available',
-        'email_label': 'Email',
-        'trc20_address': 'TRC20 Address',
-        'bep20_address': 'BEP20 Address',
-        'save_changes': 'Save Changes',
-        'transaction_details': 'Transaction Details',
-        'process_withdrawal': 'Process Withdrawal',
-        'approve': 'Approve',
-        'reject': 'Reject',
-        'user': 'User',
-        'date': 'Date',
-        'type': 'Type',
-        'status': 'Status',
-        'description': 'Description',
-        'actions': 'Actions',
-        'address': 'Address',
-        'amount': 'Amount',
-        'no_pending_withdrawals': 'No pending withdrawals',
-        'no_users_found': 'No users found',
-        'no_transactions_found': 'No transactions found',
-        'settings_saved': 'Settings saved successfully!',
-        'user_updated': 'User updated successfully!',
-        'withdrawal_approved': 'Withdrawal approved successfully!',
-        'withdrawal_rejected': 'Withdrawal rejected and funds returned to user!',
-        'transaction_id': 'Transaction ID',
-        'details': 'Details',
-        
-        // Language
-        'select_language': 'Select Language',
-        'english': 'English',
-        'french': 'French',
-        'german': 'German',
-        'arabic': 'Arabic',
-        'polish': 'Polish',
-        'russian': 'Russian',
-        'portuguese': 'Portuguese',
-        'turkish': 'Turkish',
-        'romanian': 'Romanian',
-        'uzbek': 'Uzbek',
-        'spanish': 'Spanish',
-        'italian': 'Italian',
-        'indonesian': 'Indonesian',
-        
-        // Network names
-        'trc20': 'TRC20',
-        'bep20': 'BEP20',
-        
-        // Transaction types
-        'deposit_type': 'Deposit',
-        'withdrawal_type': 'Withdrawal',
-        'quantification_type': 'Quantification',
-        'referral_type': 'Referral',
-        'registration_bonus_type': 'Registration Bonus',
-        
-        // Statuses
-        'pending_status': 'Pending',
-        'completed_status': 'Completed',
-        'cancelled_status': 'Cancelled',
-        'confirmed_status': 'Confirmed',
-        'processed_status': 'Processed',
-        
-        // Welcome banner
-        'welcome_bonus': 'Welcome Bonus',
-        'welcome_message': 'We strive to bring science into the financial world.',
-        'first_deposit_bonus': 'First deposit bonus and referral bonus for new users (automatically credited):',
-        'deposit_bonus_50': 'First deposit $50: $2 USDT (referral bonus $5 USDT)',
-        'deposit_bonus_100': 'First deposit $100: $5 USDT (referral bonus $10 USDT)',
-        'deposit_bonus_300': 'First deposit $300: $10 USDT (referral bonus $15 USDT)',
-        'deposit_bonus_500': 'First deposit $500: $20 USDT (referral bonus $30 USDT)',
-        'deposit_bonus_800': 'First deposit $800: $30 USDT (referral bonus $50 USDT)',
-        
-        // Video banner
-        'play_video': 'Play video',
-        'video_playback_failed': 'Video playback failed',
-        
-        // Months (already defined above)
-        // Days (already defined above)
-    },
+  en: {
+    // Login & Register
+    'welcome': 'Welcome',
+    'welcome_to_gly': 'Welcome to GLY',
+    'username': 'Username',
+    'email': 'Email',
+    'password': 'Password',
+    'confirm_password': 'Confirm Password',
+    'payment_password': 'Payment Password',
+    'invite_code': 'Invitation Code',
+    'invite_code_required': 'Invitation Code (required)',
+    'register': 'Register',
+    'login': 'Login',
+    'have_account': 'Already have an account?',
+    'no_account': 'Don\'t have an account?',
+    'register_now': 'Register now!',
+    'login_now': 'Login now!',
+    'loading': 'Loading...',
+    'registering': 'Registering...',
+    'validation_required': 'Please fill in all required fields',
+    'validation_password_match': 'Passwords do not match',
+    'validation_password_length': 'Password must be at least 6 characters long',
+    'validation_payment_password_length': 'Payment password must be at least 6 characters long',
+    'validation_invite_code': 'Invitation code is required for registration',
+    'error_username_exists': 'User with this username already exists',
+    'error_invalid_invite': 'Invalid invitation code',
+    'registration_success': 'Registration successful! You have received $3 USDT bonus.',
+    'login_error': 'Error during login. Please try again later.',
+    'invalid_credentials': 'Invalid username or password',
+    'database_error': 'Database connection error',
     
-    fr: {
-        // Common
-        'app_name': 'GLY - Global Ledger Yield',
-        'welcome': 'Bienvenue',
-        'welcome_to_gly': 'Bienvenue sur GLY',
-        'loading': 'Chargement...',
-        'error': 'Erreur',
-        'success': 'Succès',
-        'save': 'Sauvegarder',
-        'cancel': 'Annuler',
-        'close': 'Fermer',
-        'confirm': 'Confirmer',
-        'copy': 'Copier',
-        'copied': 'Copié!',
-        'yes': 'Oui',
-        'no': 'Non',
-        'back': 'Retour',
-        
-        // Login page
-        'username': 'Nom d\'utilisateur',
-        'password': 'Mot de passe',
-        'login': 'Connexion',
-        'forgot_password': 'Mot de passe oublié?',
-        'no_account': 'Vous n\'avez pas de compte?',
-        'register_now': 'Inscrivez-vous maintenant!',
-        'login_error': 'Erreur de connexion',
-        'please_fill_all': 'Veuillez remplir tous les champs',
-        'invalid_credentials': 'Nom d\'utilisateur ou mot de passe invalide',
-        
-        // Register page
-        'register': 'S\'inscrire',
-        'email': 'Email',
-        'confirm_password': 'Confirmer le mot de passe',
-        'payment_password': 'Mot de passe de transaction',
-        'invite_code': 'Code d\'invitation',
-        'invite_code_required': 'Code d\'invitation (requis)',
-        'already_have_account': 'Vous avez déjà un compte?',
-        'login_now': 'Connectez-vous maintenant!',
-        'registration_success': 'Inscription réussie!',
-        'registration_error': 'Erreur lors de l\'inscription',
-        'password_mismatch': 'Les mots de passe ne correspondent pas',
-        'password_length': 'Le mot de passe doit comporter au moins 6 caractères',
-        'invalid_invite_code': 'Code d\'invitation invalide',
-        'username_exists': 'Le nom d\'utilisateur existe déjà',
-        
-        // Mine page
-        'balance': 'Solde',
-        'settings': 'Paramètres',
-        'withdrawal_address': 'Adresse de retrait',
-        'configure': 'Configurer',
-        'configured': 'Configuré',
-        'transaction_password': 'Mot de passe de transaction',
-        'change': 'Changer',
-        'customer_service': 'Service client',
-        'contact': 'Contact',
-        'language': 'Langue',
-        'change_password': 'Changer le mot de passe',
-        'update': 'Mettre à jour',
-        'logout': 'Déconnexion',
-        'logout_confirm': 'Êtes-vous sûr de vouloir vous déconnecter?',
-        'vip': 'VIP',
-        'id': 'ID',
-        'set_address': 'Définir l\'adresse',
-        
-        // Calendar
-        'utc_calendar': 'Calendrier UTC',
-        'january': 'Janvier',
-        'february': 'Février',
-        'march': 'Mars',
-        'april': 'Avril',
-        'may': 'Mai',
-        'june': 'Juin',
-        'july': 'Juillet',
-        'august': 'Août',
-        'september': 'Septembre',
-        'october': 'Octobre',
-        'november': 'Novembre',
-        'december': 'Décembre',
-        'sun': 'Dim',
-        'mon': 'Lun',
-        'tue': 'Mar',
-        'wed': 'Mer',
-        'thu': 'Jeu',
-        'fri': 'Ven',
-        'sat': 'Sam',
-        
-        // Withdrawal address popup
-        'set_withdrawal_address': 'Définir l\'adresse de retrait',
-        'select_network': 'Sélectionner le réseau',
-        'usdt_wallet_address': 'Adresse du portefeuille USDT',
-        'enter_wallet_address': 'Entrez l\'adresse de votre portefeuille',
-        'address_save_note': 'Cette adresse sera utilisée pour tous les futurs retraits sur le réseau sélectionné. Veuillez vérifier l\'adresse.',
-        'address_save_success': 'Adresse de retrait enregistrée avec succès!',
-        'enter_valid_address': 'Veuillez entrer une adresse de portefeuille valide',
-        
-        // Password change popup
-        'change_password_title': 'Changer le mot de passe',
-        'current_password': 'Mot de passe actuel',
-        'new_password': 'Nouveau mot de passe',
-        'confirm_new_password': 'Confirmer le nouveau mot de passe',
-        'enter_current_password': 'Entrez le mot de passe actuel',
-        'enter_new_password': 'Entrez le nouveau mot de passe',
-        'confirm_new_password_placeholder': 'Confirmer le nouveau mot de passe',
-        'password_change_success': 'Mot de passe changé avec succès!',
-        'fill_all_fields': 'Veuillez remplir tous les champs',
-        'passwords_not_match': 'Les nouveaux mots de passe ne correspondent pas',
-        'password_incorrect': 'Le mot de passe actuel est incorrect',
-        
-        // Customer service popup
-        'customer_service_title': 'Service client',
-        'contact_support': 'Contactez notre support client 24h/24 et 7j/7:',
-        'telegram': 'Telegram',
-        'email': 'Email',
-        
-        // Home page
-        'live_crypto_prices': 'Prix crypto en direct',
-        'updated': 'Mis à jour',
-        'cached_data': 'Données en cache',
-        'offline': 'Hors ligne',
-        'our_partners': 'Nos partenaires',
-        
-        // Navigation
-        'home': 'Accueil',
-        'company': 'Entreprise',
-        'deposit': 'Dépôt',
-        'withdraw': 'Retrait',
-        'invite': 'Inviter',
-        'team': 'Équipe',
-        'rules': 'Règles',
-        'get': 'Obtenir',
-        'assets': 'Actifs',
-        'mine': 'Mon',
-        
-        // Deposit page
-        'deposit_usdt': 'Déposer USDT',
-        'send_usdt_to_address': 'Envoyez USDT à votre adresse de dépôt personnelle',
-        'your_deposit_address': 'Votre adresse de dépôt',
-        'deposit_instructions': 'Instructions de dépôt',
-        'send_only': 'Envoyez uniquement',
-        'minimum_deposit': 'Dépôt minimum',
-        'processing_time': 'Temps de traitement',
-        'network': 'Réseau',
-        'recent_deposits': 'Dépôts récents',
-        'important': 'Important',
-        'deposit_important_notes': '1. Envoyez uniquement USDT à cette adresse\n2. N\'envoyez PAS d\'autres cryptomonnaies\n3. Dépôt minimum: 17 USDT\n4. Les dépôts sont crédités automatiquement\n5. Les dépôts sur le mauvais réseau peuvent être perdus',
-        'copy_address': 'Copier l\'adresse',
-        'no_deposit_history': 'Aucun historique de dépôt',
-        
-        // Withdraw page
-        'withdraw_usdt': 'Retirer USDT',
-        'withdraw_earnings': 'Retirez vos gains vers votre portefeuille',
-        'withdrawal_address': 'Adresse de retrait',
-        'no_saved_address': 'Aucune adresse enregistrée. Cliquez sur "Définir l\'adresse" ci-dessous.',
-        'set_withdrawal_address_btn': 'Définir l\'adresse de retrait',
-        'amount_usdt': 'Montant (USDT)',
-        'enter_amount': 'Entrez le montant',
-        'minimum_withdrawal': 'Retrait minimum',
-        'available_balance': 'Solde disponible',
-        'withdrawal_fee': 'Frais de retrait',
-        'you_will_receive': 'Vous recevrez',
-        'transaction_password_label': 'Mot de passe de transaction',
-        'enter_transaction_password': 'Entrez le mot de passe de transaction',
-        'submit_withdrawal_request': 'Soumettre la demande de retrait',
-        'support_message': 'Pour changer votre adresse de retrait, veuillez contacter le support:',
-        'recent_withdrawals': 'Retraits récents',
-        'withdrawal_confirm': 'Confirmer le retrait',
-        'withdrawal_processing_time': 'Temps de traitement: 1-24 heures',
-        'save_address': 'Enregistrer l\'adresse',
-        'address_save_for_future': 'Cette adresse sera enregistrée pour les futurs retraits. Veuillez vérifier l\'adresse.',
-        'no_withdrawal_history': 'Aucun historique de retrait',
-        
-        // Get page
-        'auto_quantification': 'QUANTIFICATION AUTOMATIQUE',
-        'quantum_signals_available': 'Signaux quantiques disponibles',
-        'vip_levels': 'Niveaux VIP',
-        'vip_description_1': 'Niveau de base avec rendements standards. Investissez 20 USDT pour commencer à gagner 2.2% de profit quotidien.',
-        'vip_description_2': 'Rendements améliorés avec exigences de parrainage. Investissez 100 USDT et invitez 2 amis pour gagner 2.8% quotidien.',
-        'vip_description_3': 'Niveau premium avec constitution d\'équipe. Invitez 5 amis pour débloquer 3.5% de profit quotidien.',
-        'vip_description_4': 'Niveau avancé avec avantages maximum. Construisez une équipe de 7 filleuls pour gagner 4.0% quotidien.',
-        'vip_description_5': 'Niveau professionnel pour investisseurs sérieux. Construisez une équipe de 15 filleuls pour gagner 5.0% quotidien.',
-        'vip_description_6': 'Niveau élite avec rendements maximum. Construisez une équipe de 25 filleuls pour gagner 6.0% quotidien.',
-        'quantification_processing': 'Traitement...',
-        'no_signals': 'Aucun signal quantique disponible! Veuillez attendre l\'actualisation quotidienne (18:00 UTC).',
-        'quantification_success': 'Quantification quantique réussie! Profit:',
-        'analyzing_market': 'Analyse des conditions du marché...',
-        'calculating_probabilities': 'Calcul des probabilités quantiques...',
-        'executing_trades': 'Exécution des transactions quantiques...',
-        'quantification_complete': 'Quantification quantique terminée!',
-        'profit': 'Profit',
-        
-        // Assets page
-        'total_balance': 'Solde total',
-        'transaction_history': 'Historique des transactions',
-        'total_earned': 'Total gagné',
-        'total_deposits': 'Total des dépôts',
-        'total_withdrawals': 'Total des retraits',
-        'referral_income': 'Revenu de parrainage',
-        'no_transactions': 'Aucune transaction pour le moment',
-        
-        // Invite page
-        'invite_friends': 'Inviter des amis',
-        'earn_bonuses': 'Gagnez des bonus pour les amis invités',
-        'referral_link': 'Lien de parrainage',
-        'invitation_statistics': 'Statistiques d\'invitation',
-        'invited': 'Invités',
-        'active': 'Actifs',
-        'earned': 'Gagné',
-        'your_invitation_code': 'Votre code d\'invitation',
-        'referral_bonuses': 'Bonus de parrainage',
-        'level_1_bonus': 'Niveau 1: 12% des gains du filleul',
-        'level_2_bonus': 'Niveau 2: 5% des gains du filleul',
-        'level_3_bonus': 'Niveau 3: 3% des gains du filleul',
-        
-        // Team page
-        'income_analysis': 'Analyse des revenus',
-        'total_in_team': 'Total dans l\'équipe',
-        'level_1': 'Niveau 1',
-        'level_2': 'Niveau 2',
-        'level_3': 'Niveau 3',
-        'view_team': 'Voir l\'équipe',
-        'hide_team': 'Masquer l\'équipe',
-        'your_team': 'Votre équipe',
-        'no_referrals': 'Aucun filleul',
-        'team_distribution': 'Distribution de l\'équipe par niveau',
-        
-        // Rules page - shortened for brevity
-        'platform_rules': 'Bienvenue sur GLY! Règles de la plateforme',
-        'basic_rules': 'Règles de base',
-        'registration_bonus': 'Bonus d\'inscription: 3$ (crédité automatiquement)',
-        'min_deposit_rule': 'Dépôt minimum: 17$',
-        'min_withdrawal_rule': 'Retrait minimum: 20$',
-        'funds_crediting_time': 'Temps de créditation des fonds: 0-72 heures',
-        'withdrawal_fee_rule': 'Frais de retrait:',
-        'referral_system': 'Système de parrainage (3 niveaux):',
-        'level_1_ref': 'Niveau 1: 12% des gains du filleul',
-        'level_2_ref': 'Niveau 2: 5% des gains du filleul',
-        'level_3_ref': 'Niveau 3: 3% des gains du filleul',
-        'bonuses_credited': 'Les bonus sont crédités immédiatement pour chaque gain de filleul',
-        
-        // Company page - shortened
-        'about_gly': 'À propos de GLY (Global Ledger Yield)',
-        'gly_description': 'Avec le développement continu des technologies d\'intelligence artificielle (IA), de plus en plus de domaines commencent à appliquer des algorithmes d\'IA pour améliorer l\'efficacité et la précision. En tant que leader dans la technologie de l\'IA, GLY s\'efforce de créer un écosystème innovant de trading financier numérique grâce à des algorithmes de trading quantitatif et à la technologie blockchain.',
-        
-        // Admin page
-        'admin_panel': 'Panneau d\'administration',
-        'full_control_panel': 'Panneau de contrôle complet',
-        'users': 'Utilisateurs',
-        'pending_wd': 'Retraits en attente',
-        'withdrawals': 'Retraits',
-        'transactions': 'Transactions',
-        'pending_withdrawals': 'Retraits en attente',
-        'refresh': 'Actualiser',
-        'all_users': 'Tous les utilisateurs',
-        'search_users': 'Rechercher des utilisateurs...',
-        'all_transactions': 'Toutes les transactions',
-        'platform_settings': 'Paramètres de la plateforme',
-        'registration_bonus_setting': 'Bonus d\'inscription',
-        'min_deposit_setting': 'Dépôt minimum',
-        'min_withdrawal_setting': 'Retrait minimum',
-        'daily_signals_setting': 'Signaux quotidiens',
-        'signals_per_day': 'Signaux par jour',
-        'save_settings': 'Enregistrer les paramètres',
-        'edit_user': 'Modifier l\'utilisateur',
-        'username_label': 'Nom d\'utilisateur',
-        'balance_label': 'Solde (USDT)',
-        'vip_level_label': 'Niveau VIP',
-        'signals_available_label': 'Signaux disponibles',
-        'email_label': 'Email',
-        'trc20_address': 'Adresse TRC20',
-        'bep20_address': 'Adresse BEP20',
-        'save_changes': 'Enregistrer les modifications',
-        'transaction_details': 'Détails de la transaction',
-        'process_withdrawal': 'Traiter le retrait',
-        'approve': 'Approuver',
-        'reject': 'Rejeter',
-        'user': 'Utilisateur',
-        'date': 'Date',
-        'type': 'Type',
-        'status': 'Statut',
-        'description': 'Description',
-        'actions': 'Actions',
-        'address': 'Adresse',
-        'amount': 'Montant',
-        'no_pending_withdrawals': 'Aucun retrait en attente',
-        'no_users_found': 'Aucun utilisateur trouvé',
-        'no_transactions_found': 'Aucune transaction trouvée',
-        'settings_saved': 'Paramètres enregistrés avec succès!',
-        'user_updated': 'Utilisateur mis à jour avec succès!',
-        'withdrawal_approved': 'Retrait approuvé avec succès!',
-        'withdrawal_rejected': 'Retrait rejeté et fonds retournés à l\'utilisateur!',
-        'transaction_id': 'ID de transaction',
-        'details': 'Détails',
-        
-        // Language
-        'select_language': 'Sélectionner la langue',
-        'english': 'Anglais',
-        'french': 'Français',
-        'german': 'Allemand',
-        'arabic': 'Arabe',
-        'polish': 'Polonais',
-        'russian': 'Russe',
-        'portuguese': 'Portugais',
-        'turkish': 'Turc',
-        'romanian': 'Roumain',
-        'uzbek': 'Ouzbek',
-        'spanish': 'Espagnol',
-        'italian': 'Italien',
-        'indonesian': 'Indonésien',
-        
-        // Network names
-        'trc20': 'TRC20',
-        'bep20': 'BEP20',
-        
-        // Transaction types
-        'deposit_type': 'Dépôt',
-        'withdrawal_type': 'Retrait',
-        'quantification_type': 'Quantification',
-        'referral_type': 'Parrainage',
-        'registration_bonus_type': 'Bonus d\'inscription',
-        
-        // Statuses
-        'pending_status': 'En attente',
-        'completed_status': 'Terminé',
-        'cancelled_status': 'Annulé',
-        'confirmed_status': 'Confirmé',
-        'processed_status': 'Traité',
-        
-        // Welcome banner
-        'welcome_bonus': 'Bonus de bienvenue',
-        'welcome_message': 'Nous nous efforçons d\'apporter la science dans le monde financier.',
-        'first_deposit_bonus': 'Bonus de premier dépôt et bonus de parrainage pour les nouveaux utilisateurs (crédités automatiquement):',
-        'deposit_bonus_50': 'Premier dépôt 50$: 2$ USDT (bonus parrainage 5$ USDT)',
-        'deposit_bonus_100': 'Premier dépôt 100$: 5$ USDT (bonus parrainage 10$ USDT)',
-        'deposit_bonus_300': 'Premier dépôt 300$: 10$ USDT (bonus parrainage 15$ USDT)',
-        'deposit_bonus_500': 'Premier dépôt 500$: 20$ USDT (bonus parrainage 30$ USDT)',
-        'deposit_bonus_800': 'Premier dépôt 800$: 30$ USDT (bonus parrainage 50$ USDT)',
-        
-        // Video banner
-        'play_video': 'Lire la vidéo',
-        'video_playback_failed': 'Échec de la lecture vidéo',
-    }
+    // Home
+    'live_crypto_prices': 'Live Crypto Prices',
+    'updating': 'Updating...',
+    'updated': 'Updated:',
+    'cached_data': 'Cached data',
+    'company': 'Company',
+    'deposit': 'Deposit',
+    'withdraw': 'Withdraw',
+    'invite': 'Invite',
+    'team': 'Team',
+    'rules': 'Rules',
+    'our_partners': 'Our Partners',
+    'welcome_bonus_title': 'Welcome Bonus',
+    'welcome_bonus_message': 'First deposit bonus and referral bonus for new users (automatically credited):',
+    'video_error': 'Video playback failed. Please try again.',
+    
+    // Get/Quantification
+    'auto_quantification': 'AUTO QUANTIFICATION',
+    'quantum_signals_available': 'Quantum Signals Available',
+    'analyzing_market': 'Analyzing market conditions...',
+    'calculating_quantum': 'Calculating quantum probabilities...',
+    'executing_trades': 'Executing quantum trades...',
+    'quantum_complete': 'Quantum quantification complete!',
+    'profit': 'Profit:',
+    'no_signals': 'No quantum signals available! Please wait for daily refresh (18:00 UTC).',
+    'processing_quantification': 'PROCESSING...',
+    'quantification_successful': 'Quantum quantification successful! Profit: +{profit} USDT',
+    'vip_levels': 'VIP Levels',
+    'vip_description_1': 'Basic level with standard returns. Invest 20 USDT to start earning 2.2% daily profit.',
+    'vip_description_2': 'Enhanced returns with referral requirements. Invest 100 USDT and invite 2 friends to earn 2.8% daily.',
+    'vip_description_3': 'Premium level with team building. Invite 5 friends to unlock 3.5% daily profit.',
+    'vip_description_4': 'Advanced level with maximum benefits. Build a team of 7 referrals to earn 4.0% daily profit.',
+    'vip_description_5': 'Professional level for serious investors. Build a team of 15 referrals to earn 5.0% daily profit.',
+    'vip_description_6': 'Elite level with maximum returns. Build a team of 25 referrals to earn 6.0% daily profit.',
+    
+    // Assets
+    'total_balance': 'Total Balance',
+    'transaction_history': 'Transaction History',
+    'total_earned': 'Total Earned',
+    'total_deposits': 'Total Deposits',
+    'total_withdrawals': 'Total Withdrawals',
+    'referral_income': 'Referral Income',
+    'deposit_action': 'Deposit',
+    'withdraw_action': 'Withdraw',
+    'no_transactions': 'No transactions yet',
+    'transaction_type_deposit': 'Deposit',
+    'transaction_type_withdrawal': 'Withdrawal',
+    'transaction_type_quantification': 'Quantification Profit',
+    'transaction_type_referral': 'Referral Bonus',
+    'transaction_type_registration_bonus': 'Registration Bonus',
+    
+    // Mine/Profile
+    'settings': 'Settings',
+    'withdrawal_address': 'Withdrawal Address',
+    'transaction_password': 'Transaction Password',
+    'customer_service': 'Customer Service',
+    'language': 'Language',
+    'change_password': 'Change Password',
+    'logout': 'Logout',
+    'configure': 'Configure',
+    'configured': 'Configured',
+    'change': 'Change',
+    'contact': 'Contact',
+    'update': 'Update',
+    'set_address': 'Set address',
+    'set_withdrawal_address': 'Set Withdrawal Address',
+    'select_network': 'Select Network',
+    'usdt_wallet_address': 'USDT Wallet Address',
+    'enter_wallet_address': 'Enter your wallet address',
+    'save': 'Save',
+    'cancel': 'Cancel',
+    'current_password': 'Current Password',
+    'new_password': 'New Password',
+    'confirm_new_password': 'Confirm New Password',
+    'enter_current_password': 'Enter current password',
+    'enter_new_password': 'Enter new password',
+    'confirm_new_password_placeholder': 'Confirm new password',
+    'contact_24_7': 'Contact our 24/7 customer support:',
+    'telegram': 'Telegram',
+    'email': 'Email',
+    'copy': 'COPY',
+    'copied': 'COPIED',
+    'close': 'Close',
+    'confirm_logout': 'Confirm Logout',
+    'logout_message': 'Are you sure you want to logout?',
+    'balance': 'Balance:',
+    'id': 'ID:',
+    'copy_id': 'Copy ID',
+    'utc_calendar': 'UTC Calendar',
+    'loading_utc': 'Loading UTC time...',
+    'address_saved': 'Withdrawal address has been saved successfully!',
+    'password_changed': 'Password has been changed successfully!',
+    'current_password_incorrect': 'Current password is incorrect',
+    'language_changed': 'Language changed to {language}',
+    
+    // Team
+    'income_analysis': 'Income Analysis',
+    'total_in_team': 'Total in Team',
+    'level_1': 'Level 1',
+    'level_2': 'Level 2',
+    'level_3': 'Level 3',
+    'earned_usdt': 'Earned (USDT)',
+    'view_team': 'View Team',
+    'hide_team': 'Hide Team',
+    'your_team': 'Your Team',
+    'no_referrals': 'No referrals',
+    'team_distribution': 'Team Distribution by Level',
+    'no_team_members': 'No team members yet',
+    
+    // Rules
+    'platform_rules': 'Welcome to GLY! Platform Rules',
+    'basic_rules': 'Basic Rules',
+    'registration_bonus_rule': 'Registration bonus: $3 (credited automatically)',
+    'minimum_deposit_rule': 'Minimum deposit: $17',
+    'minimum_withdrawal_rule': 'Minimum withdrawal: $20',
+    'funds_crediting': 'Funds crediting time: 0-72 hours',
+    'withdrawal_fee': 'Withdrawal fee:',
+    'referral_system': 'Referral System (3 levels):',
+    'level_1_percent': 'Level 1: 12% of referral\'s earnings',
+    'level_2_percent': 'Level 2: 5% of referral\'s earnings',
+    'level_3_percent': 'Level 3: 3% of referral\'s earnings',
+    'bonuses_credited': 'Bonuses are credited immediately for each referral\'s earnings',
+    'vip_overview': 'VIP Level Overview:',
+    'active_referral': 'Active referral - user with balance from $20',
+    'signals_refresh': 'Signals refresh daily at 18:00 UTC',
+    'quantification_process': 'Quantification Process:',
+    'participation_requirements': 'Participation Requirements:',
+    'security': 'Security:',
+    
+    // Invite
+    'invite_friends': 'Invite Friends',
+    'earn_bonuses': 'Earn bonuses for invited friends',
+    'referral_link': 'Referral Link',
+    'invitation_statistics': 'Invitation Statistics',
+    'invited': 'Invited',
+    'active': 'Active',
+    'earned': 'Earned',
+    'your_invitation_code': 'Your Invitation Code',
+    'invitation_code': 'Invitation Code',
+    'referral_bonuses': 'Referral Bonuses',
+    'copy_referral_link': 'Copy referral link',
+    'copy_invitation_code': 'Copy invitation code',
+    
+    // Company
+    'about_gly': 'About GLY (Global Ledger Yield)',
+    'foundation_history': 'Foundation and History',
+    'gly_advantages': 'GLY Technological Advantages',
+    'gly_application': 'GLY Application in Cryptocurrency Trading',
+    'gly_partnership': 'GLY Partnership',
+    'gly_platform': 'GLY Quantitative Trading Platform',
+    'gly_prospects': 'GLY Development Prospects',
+    'gly_innovations': 'Innovations in GLY Quantitative Trading Algorithms',
+    
+    // Deposit
+    'deposit_usdt': 'Deposit USDT',
+    'send_usdt': 'Send USDT to your personal deposit address',
+    'your_deposit_address': 'Your Deposit Address',
+    'copy_address': 'Copy Address',
+    'deposit_instructions': 'Deposit Instructions',
+    'send_only': 'Send only:',
+    'minimum_deposit_amount': 'Minimum deposit:',
+    'processing_time': 'Processing time:',
+    'network': 'Network:',
+    'recent_deposits': 'Recent Deposits',
+    'important': 'Important:',
+    'important_note_1': 'Send only USDT to this address',
+    'important_note_2': 'Do NOT send other cryptocurrencies',
+    'important_note_3': 'Minimum deposit: 17 USDT',
+    'important_note_4': 'Deposits are automatically credited',
+    'important_note_5': 'Wrong network deposits may be lost',
+    'processing': 'Processing',
+    'no_deposit_history': 'No deposit history',
+    'error_loading_address': 'Error loading address',
+    'wait_for_address': 'Please wait for address to load',
+    'address_copied': 'Address copied to clipboard!',
+    
+    // Withdraw
+    'withdraw_usdt': 'Withdraw USDT',
+    'withdraw_earnings': 'Withdraw your earnings to your wallet',
+    'withdrawal_address_section': 'Withdrawal Address',
+    'enter_amount': 'Enter amount',
+    'minimum_withdrawal_amount': 'Minimum withdrawal: 20 USDT',
+    'available_balance': 'Available Balance:',
+    'withdrawal_fee_label': 'Withdrawal Fee:',
+    'you_will_receive': 'You Will Receive:',
+    'enter_transaction_password': 'Enter transaction password',
+    'submit_withdrawal': 'Submit Withdrawal Request',
+    'support_message': 'To change your withdrawal address, please contact support:',
+    'recent_withdrawals': 'Recent Withdrawals',
+    'confirm_withdrawal': 'Confirm Withdrawal',
+    'processing_time_withdrawal': 'Processing time: 1-24 hours',
+    'set_withdrawal_address_btn': 'Set Withdrawal Address',
+    'using_saved_address': 'Using saved address',
+    'no_saved_address': 'No saved address. Click "Set Address" below.',
+    'no_withdrawal_history': 'No withdrawal history',
+    'withdrawal_submitted': 'Withdrawal request submitted! You will receive {amount} USDT (fee: {fee} USDT). Processing time: 1-24 hours.',
+    'insufficient_balance': 'Insufficient balance',
+    'invalid_transaction_password': 'Invalid transaction password',
+    
+    // Common
+    'notification': 'Notification',
+    'error': 'Error',
+    'success': 'Success',
+    'confirm': 'Confirm',
+    'yes': 'Yes',
+    'no': 'No',
+    'ok': 'OK',
+    'back': 'Back',
+    'next': 'Next',
+    'prev': 'Previous',
+    'search': 'Search',
+    'filter': 'Filter',
+    'sort': 'Sort',
+    'refresh': 'Refresh',
+    'loading_data': 'Loading data...',
+    'no_data': 'No data available',
+    'error_loading': 'Error loading data',
+    'try_again': 'Try again',
+    'connection_error': 'Connection error',
+    'server_error': 'Server error',
+    'user_not_found': 'User not found',
+    'please_login': 'Please log in to continue',
+    'offline': 'Offline',
+    'online': 'Online',
+    
+    // Language names
+    'language_english': 'English',
+    'language_french': 'French',
+    'language_german': 'German',
+    'language_arabic': 'Arabic',
+    'language_polish': 'Polish',
+    'language_russian': 'Russian',
+    'language_portuguese': 'Portuguese',
+    'language_turkish': 'Turkish',
+    'language_romanian': 'Romanian',
+    'language_uzbek': 'Uzbek',
+    'language_spanish': 'Spanish',
+    'language_italian': 'Italian',
+    'language_indonesian': 'Indonesian',
+    
+    // Language modal
+    'select_language': 'Select Language',
+    'current_language': 'Current Language',
+    
+    // Admin
+    'admin_access_only': 'Admin access only',
+    'admin_panel': 'Admin Panel',
+    'total_users': 'Total Users',
+    'total_deposits_admin': 'Total Deposits',
+    'total_withdrawals_admin': 'Total Withdrawals',
+    'today_registrations': 'Today Registrations',
+    'user_management': 'User Management',
+    'search_users': 'Search users...',
+    'username_column': 'Username',
+    'email_column': 'Email',
+    'balance_column': 'Balance',
+    'vip_column': 'VIP',
+    'status_column': 'Status',
+    'actions_column': 'Actions',
+    'edit': 'Edit',
+    'delete': 'Delete',
+    'active_status': 'Active',
+    'inactive_status': 'Inactive',
+    'add_user': 'Add User',
+    'edit_user': 'Edit User',
+    'delete_user': 'Delete User',
+    'confirm_delete': 'Are you sure you want to delete this user?',
+    'user_deleted': 'User deleted successfully',
+    'user_updated': 'User updated successfully',
+    'user_added': 'User added successfully',
+  },
+  
+  fr: {
+    // Login & Register
+    'welcome': 'Bienvenue',
+    'welcome_to_gly': 'Bienvenue sur GLY',
+    'username': 'Nom d\'utilisateur',
+    'email': 'E-mail',
+    'password': 'Mot de passe',
+    'confirm_password': 'Confirmer le mot de passe',
+    'payment_password': 'Mot de passe de paiement',
+    'invite_code': 'Code d\'invitation',
+    'invite_code_required': 'Code d\'invitation (obligatoire)',
+    'register': 'S\'inscrire',
+    'login': 'Connexion',
+    'have_account': 'Vous avez déjà un compte ?',
+    'no_account': 'Vous n\'avez pas de compte ?',
+    'register_now': 'Inscrivez-vous maintenant !',
+    'login_now': 'Connectez-vous maintenant !',
+    'loading': 'Chargement...',
+    'registering': 'Inscription en cours...',
+    'validation_required': 'Veuillez remplir tous les champs obligatoires',
+    'validation_password_match': 'Les mots de passe ne correspondent pas',
+    'validation_password_length': 'Le mot de passe doit contenir au moins 6 caractères',
+    'validation_payment_password_length': 'Le mot de passe de paiement doit contenir au moins 6 caractères',
+    'validation_invite_code': 'Le code d\'invitation est obligatoire pour l\'inscription',
+    'error_username_exists': 'Un utilisateur avec ce nom d\'utilisateur existe déjà',
+    'error_invalid_invite': 'Code d\'invitation invalide',
+    'registration_success': 'Inscription réussie ! Vous avez reçu un bonus de 3 USDT.',
+    'login_error': 'Erreur lors de la connexion. Veuillez réessayer plus tard.',
+    'invalid_credentials': 'Nom d\'utilisateur ou mot de passe invalide',
+    'database_error': 'Erreur de connexion à la base de données',
+    
+    // Home
+    'live_crypto_prices': 'Prix en direct des cryptos',
+    'updating': 'Mise à jour...',
+    'updated': 'Mis à jour :',
+    'cached_data': 'Données en cache',
+    'company': 'Entreprise',
+    'deposit': 'Dépôt',
+    'withdraw': 'Retrait',
+    'invite': 'Inviter',
+    'team': 'Équipe',
+    'rules': 'Règles',
+    'our_partners': 'Nos partenaires',
+    'welcome_bonus_title': 'Bonus de bienvenue',
+    'welcome_bonus_message': 'Bonus de premier dépôt et bonus de parrainage pour les nouveaux utilisateurs (crédités automatiquement) :',
+    'video_error': 'La lecture vidéo a échoué. Veuillez réessayer.',
+    
+    // Get/Quantification
+    'auto_quantification': 'QUANTIFICATION AUTOMATIQUE',
+    'quantum_signals_available': 'Signaux quantiques disponibles',
+    'analyzing_market': 'Analyse des conditions du marché...',
+    'calculating_quantum': 'Calcul des probabilités quantiques...',
+    'executing_trades': 'Exécution des trades quantiques...',
+    'quantum_complete': 'Quantification quantique terminée !',
+    'profit': 'Profit :',
+    'no_signals': 'Aucun signal quantique disponible ! Veuillez attendre le rafraîchissement quotidien (18:00 UTC).',
+    'processing_quantification': 'TRAITEMENT...',
+    'quantification_successful': 'Quantification quantique réussie ! Profit : +{profit} USDT',
+    'vip_levels': 'Niveaux VIP',
+    'vip_description_1': 'Niveau de base avec rendements standards. Investissez 20 USDT pour commencer à gagner 2,2% de profit quotidien.',
+    'vip_description_2': 'Rendements améliorés avec exigences de parrainage. Investissez 100 USDT et invitez 2 amis pour gagner 2,8% quotidien.',
+    'vip_description_3': 'Niveau premium avec construction d\'équipe. Invitez 5 amis pour débloquer 3,5% de profit quotidien.',
+    'vip_description_4': 'Niveau avancé avec avantages maximum. Construisez une équipe de 7 filleuls pour gagner 4,0% quotidien.',
+    'vip_description_5': 'Niveau professionnel pour investisseurs sérieux. Construisez une équipe de 15 filleuls pour gagner 5,0% quotidien.',
+    'vip_description_6': 'Niveau élite avec rendements maximum. Construisez une équipe de 25 filleuls pour gagner 6,0% quotidien.',
+    
+    // Assets
+    'total_balance': 'Solde total',
+    'transaction_history': 'Historique des transactions',
+    'total_earned': 'Total gagné',
+    'total_deposits': 'Total des dépôts',
+    'total_withdrawals': 'Total des retraits',
+    'referral_income': 'Revenu de parrainage',
+    'deposit_action': 'Déposer',
+    'withdraw_action': 'Retirer',
+    'no_transactions': 'Aucune transaction',
+    'transaction_type_deposit': 'Dépôt',
+    'transaction_type_withdrawal': 'Retrait',
+    'transaction_type_quantification': 'Profit de quantification',
+    'transaction_type_referral': 'Bonus de parrainage',
+    'transaction_type_registration_bonus': 'Bonus d\'inscription',
+    
+    // Mine/Profile
+    'settings': 'Paramètres',
+    'withdrawal_address': 'Adresse de retrait',
+    'transaction_password': 'Mot de passe de transaction',
+    'customer_service': 'Service client',
+    'language': 'Langue',
+    'change_password': 'Changer le mot de passe',
+    'logout': 'Déconnexion',
+    'configure': 'Configurer',
+    'configured': 'Configuré',
+    'change': 'Changer',
+    'contact': 'Contacter',
+    'update': 'Mettre à jour',
+    'set_address': 'Définir l\'adresse',
+    'set_withdrawal_address': 'Définir l\'adresse de retrait',
+    'select_network': 'Sélectionner le réseau',
+    'usdt_wallet_address': 'Adresse du portefeuille USDT',
+    'enter_wallet_address': 'Entrez votre adresse de portefeuille',
+    'save': 'Enregistrer',
+    'cancel': 'Annuler',
+    'current_password': 'Mot de passe actuel',
+    'new_password': 'Nouveau mot de passe',
+    'confirm_new_password': 'Confirmer le nouveau mot de passe',
+    'enter_current_password': 'Entrez le mot de passe actuel',
+    'enter_new_password': 'Entrez le nouveau mot de passe',
+    'confirm_new_password_placeholder': 'Confirmez le nouveau mot de passe',
+    'contact_24_7': 'Contactez notre support client 24h/24 et 7j/7 :',
+    'telegram': 'Télégramme',
+    'email': 'E-mail',
+    'copy': 'COPIER',
+    'copied': 'COPIÉ',
+    'close': 'Fermer',
+    'confirm_logout': 'Confirmer la déconnexion',
+    'logout_message': 'Êtes-vous sûr de vouloir vous déconnecter ?',
+    'balance': 'Solde :',
+    'id': 'ID :',
+    'copy_id': 'Copier l\'ID',
+    'utc_calendar': 'Calendrier UTC',
+    'loading_utc': 'Chargement de l\'heure UTC...',
+    'address_saved': 'L\'adresse de retrait a été enregistrée avec succès !',
+    'password_changed': 'Le mot de passe a été changé avec succès !',
+    'current_password_incorrect': 'Le mot de passe actuel est incorrect',
+    'language_changed': 'Langue changée en {language}',
+    
+    // Team
+    'income_analysis': 'Analyse des revenus',
+    'total_in_team': 'Total dans l\'équipe',
+    'level_1': 'Niveau 1',
+    'level_2': 'Niveau 2',
+    'level_3': 'Niveau 3',
+    'earned_usdt': 'Gagné (USDT)',
+    'view_team': 'Voir l\'équipe',
+    'hide_team': 'Masquer l\'équipe',
+    'your_team': 'Votre équipe',
+    'no_referrals': 'Aucun filleul',
+    'team_distribution': 'Distribution de l\'équipe par niveau',
+    'no_team_members': 'Aucun membre d\'équipe pour l\'instant',
+    
+    // Rules
+    'platform_rules': 'Bienvenue sur GLY ! Règles de la plateforme',
+    'basic_rules': 'Règles de base',
+    'registration_bonus_rule': 'Bonus d\'inscription : 3 $ (crédité automatiquement)',
+    'minimum_deposit_rule': 'Dépôt minimum : 17 $',
+    'minimum_withdrawal_rule': 'Retrait minimum : 20 $',
+    'funds_crediting': 'Délai de créditation des fonds : 0-72 heures',
+    'withdrawal_fee': 'Frais de retrait :',
+    'referral_system': 'Système de parrainage (3 niveaux) :',
+    'level_1_percent': 'Niveau 1 : 12 % des gains du filleul',
+    'level_2_percent': 'Niveau 2 : 5 % des gains du filleul',
+    'level_3_percent': 'Niveau 3 : 3 % des gains du filleul',
+    'bonuses_credited': 'Les bonus sont crédités immédiatement pour chaque gain de filleul',
+    'vip_overview': 'Aperçu des niveaux VIP :',
+    'active_referral': 'Filleul actif - utilisateur avec un solde à partir de 20 $',
+    'signals_refresh': 'Rafraîchissement des signaux quotidien à 18:00 UTC',
+    'quantification_process': 'Processus de quantification :',
+    'participation_requirements': 'Exigences de participation :',
+    'security': 'Sécurité :',
+    
+    // Invite
+    'invite_friends': 'Inviter des amis',
+    'earn_bonuses': 'Gagnez des bonus pour les amis invités',
+    'referral_link': 'Lien de parrainage',
+    'invitation_statistics': 'Statistiques d\'invitation',
+    'invited': 'Invités',
+    'active': 'Actifs',
+    'earned': 'Gagné',
+    'your_invitation_code': 'Votre code d\'invitation',
+    'invitation_code': 'Code d\'invitation',
+    'referral_bonuses': 'Bonus de parrainage',
+    'copy_referral_link': 'Copier le lien de parrainage',
+    'copy_invitation_code': 'Copier le code d\'invitation',
+    
+    // Company
+    'about_gly': 'À propos de GLY (Global Ledger Yield)',
+    'foundation_history': 'Fondation et historique',
+    'gly_advantages': 'Avantages technologiques de GLY',
+    'gly_application': 'Application de GLY dans le trading de cryptomonnaies',
+    'gly_partnership': 'Partenariat GLY',
+    'gly_platform': 'Plateforme de trading quantitatif GLY',
+    'gly_prospects': 'Perspectives de développement de GLY',
+    'gly_innovations': 'Innovations dans les algorithmes de trading quantitatif GLY',
+    
+    // Deposit
+    'deposit_usdt': 'Déposer USDT',
+    'send_usdt': 'Envoyez USDT à votre adresse de dépôt personnelle',
+    'your_deposit_address': 'Votre adresse de dépôt',
+    'copy_address': 'Copier l\'adresse',
+    'deposit_instructions': 'Instructions de dépôt',
+    'send_only': 'Envoyez uniquement :',
+    'minimum_deposit_amount': 'Dépôt minimum :',
+    'processing_time': 'Délai de traitement :',
+    'network': 'Réseau :',
+    'recent_deposits': 'Dépôts récents',
+    'important': 'Important :',
+    'important_note_1': 'Envoyez uniquement USDT à cette adresse',
+    'important_note_2': 'N\'envoyez PAS d\'autres cryptomonnaies',
+    'important_note_3': 'Dépôt minimum : 17 USDT',
+    'important_note_4': 'Les dépôts sont crédités automatiquement',
+    'important_note_5': 'Les dépôts sur le mauvais réseau peuvent être perdus',
+    'processing': 'Traitement',
+    'no_deposit_history': 'Aucun historique de dépôt',
+    'error_loading_address': 'Erreur de chargement de l\'adresse',
+    'wait_for_address': 'Veuillez attendre le chargement de l\'adresse',
+    'address_copied': 'Adresse copiée dans le presse-papiers !',
+    
+    // Withdraw
+    'withdraw_usdt': 'Retirer USDT',
+    'withdraw_earnings': 'Retirez vos gains vers votre portefeuille',
+    'withdrawal_address_section': 'Adresse de retrait',
+    'enter_amount': 'Entrez le montant',
+    'minimum_withdrawal_amount': 'Retrait minimum : 20 USDT',
+    'available_balance': 'Solde disponible :',
+    'withdrawal_fee_label': 'Frais de retrait :',
+    'you_will_receive': 'Vous recevrez :',
+    'enter_transaction_password': 'Entrez le mot de passe de transaction',
+    'submit_withdrawal': 'Soumettre la demande de retrait',
+    'support_message': 'Pour changer votre adresse de retrait, contactez le support :',
+    'recent_withdrawals': 'Retraits récents',
+    'confirm_withdrawal': 'Confirmer le retrait',
+    'processing_time_withdrawal': 'Délai de traitement : 1-24 heures',
+    'set_withdrawal_address_btn': 'Définir l\'adresse de retrait',
+    'using_saved_address': 'Utilisation de l\'adresse enregistrée',
+    'no_saved_address': 'Aucune adresse enregistrée. Cliquez sur "Définir l\'adresse" ci-dessous.',
+    'no_withdrawal_history': 'Aucun historique de retrait',
+    'withdrawal_submitted': 'Demande de retrait soumise ! Vous recevrez {amount} USDT (frais : {fee} USDT). Délai de traitement : 1-24 heures.',
+    'insufficient_balance': 'Solde insuffisant',
+    'invalid_transaction_password': 'Mot de passe de transaction invalide',
+    
+    // Common
+    'notification': 'Notification',
+    'error': 'Erreur',
+    'success': 'Succès',
+    'confirm': 'Confirmer',
+    'yes': 'Oui',
+    'no': 'Non',
+    'ok': 'OK',
+    'back': 'Retour',
+    'next': 'Suivant',
+    'prev': 'Précédent',
+    'search': 'Rechercher',
+    'filter': 'Filtrer',
+    'sort': 'Trier',
+    'refresh': 'Rafraîchir',
+    'loading_data': 'Chargement des données...',
+    'no_data': 'Aucune donnée disponible',
+    'error_loading': 'Erreur de chargement des données',
+    'try_again': 'Réessayer',
+    'connection_error': 'Erreur de connexion',
+    'server_error': 'Erreur serveur',
+    'user_not_found': 'Utilisateur non trouvé',
+    'please_login': 'Veuillez vous connecter pour continuer',
+    'offline': 'Hors ligne',
+    'online': 'En ligne',
+    
+    // Language names
+    'language_english': 'Anglais',
+    'language_french': 'Français',
+    'language_german': 'Allemand',
+    'language_arabic': 'Arabe',
+    'language_polish': 'Polonais',
+    'language_russian': 'Russe',
+    'language_portuguese': 'Portugais',
+    'language_turkish': 'Turc',
+    'language_romanian': 'Roumain',
+    'language_uzbek': 'Ouzbek',
+    'language_spanish': 'Espagnol',
+    'language_italian': 'Italien',
+    'language_indonesian': 'Indonésien',
+    
+    // Language modal
+    'select_language': 'Sélectionner la langue',
+    'current_language': 'Langue actuelle',
+    
+    // Admin
+    'admin_access_only': 'Accès administrateur uniquement',
+    'admin_panel': 'Panneau d\'administration',
+    'total_users': 'Total utilisateurs',
+    'total_deposits_admin': 'Total des dépôts',
+    'total_withdrawals_admin': 'Total des retraits',
+    'today_registrations': 'Inscriptions aujourd\'hui',
+    'user_management': 'Gestion des utilisateurs',
+    'search_users': 'Rechercher des utilisateurs...',
+    'username_column': 'Nom d\'utilisateur',
+    'email_column': 'E-mail',
+    'balance_column': 'Solde',
+    'vip_column': 'VIP',
+    'status_column': 'Statut',
+    'actions_column': 'Actions',
+    'edit': 'Modifier',
+    'delete': 'Supprimer',
+    'active_status': 'Actif',
+    'inactive_status': 'Inactif',
+    'add_user': 'Ajouter un utilisateur',
+    'edit_user': 'Modifier l\'utilisateur',
+    'delete_user': 'Supprimer l\'utilisateur',
+    'confirm_delete': 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?',
+    'user_deleted': 'Utilisateur supprimé avec succès',
+    'user_updated': 'Utilisateur mis à jour avec succès',
+    'user_added': 'Utilisateur ajouté avec succès',
+  },
+  
+  // Add other languages with same structure (empty for now)
+  de: {},
+  ar: {},
+  pl: {},
+  ru: {},
+  pt: {},
+  tr: {},
+  ro: {},
+  uz: {},
+  es: {},
+  it: {},
+  id: {}
 };
 
-// Add empty objects for other languages
-const languages = ['de', 'ar', 'pl', 'ru', 'pt', 'tr', 'ro', 'uz', 'es', 'it', 'id'];
-languages.forEach(lang => {
-    if (!translations[lang]) {
-        translations[lang] = {};
-    }
-});
+// Default language
+export const defaultLanguage = 'en';
 
-// Current language
-let currentLang = 'en';
-
-// Language configuration
-export const languageNames = {
-    'en': 'English',
-    'fr': 'Français',
-    'de': 'Deutsch',
-    'ar': 'العربية',
-    'pl': 'Polski',
-    'ru': 'Русский',
-    'pt': 'Português',
-    'tr': 'Türkçe',
-    'ro': 'Română',
-    'uz': 'O\'zbekcha',
-    'es': 'Español',
-    'it': 'Italiano',
-    'id': 'Bahasa Indonesia'
+// Available languages with display names
+export const availableLanguages = {
+  en: 'English',
+  fr: 'Français',
+  de: 'Deutsch',
+  ar: 'العربية',
+  pl: 'Polski',
+  ru: 'Русский',
+  pt: 'Português',
+  tr: 'Türkçe',
+  ro: 'Română',
+  uz: 'Oʻzbekcha',
+  es: 'Español',
+  it: 'Italiano',
+  id: 'Bahasa Indonesia'
 };
 
-// Language direction (RTL support)
-export const languageDirection = {
-    'en': 'ltr',
-    'fr': 'ltr',
-    'de': 'ltr',
-    'ar': 'rtl',
-    'pl': 'ltr',
-    'ru': 'ltr',
-    'pt': 'ltr',
-    'tr': 'ltr',
-    'ro': 'ltr',
-    'uz': 'ltr',
-    'es': 'ltr',
-    'it': 'ltr',
-    'id': 'ltr'
-};
-
-// Initialize language from localStorage or browser
-export function initLanguage() {
-    const savedLang = localStorage.getItem('gly_language');
-    const browserLang = navigator.language.split('-')[0];
-    
-    if (savedLang && translations[savedLang]) {
-        currentLang = savedLang;
-    } else if (translations[browserLang]) {
-        currentLang = browserLang;
-    } else {
-        currentLang = 'en';
-    }
-    
-    // Apply language direction
-    applyLanguageDirection();
-    
-    return currentLang;
+// Translation function with parameter support
+export function t(key, lang = null, params = {}) {
+  const currentLang = lang || getCurrentLanguage();
+  const langTranslations = translations[currentLang] || translations[defaultLanguage];
+  let translation = langTranslations[key] || translations[defaultLanguage][key] || key;
+  
+  // Replace parameters
+  if (params && Object.keys(params).length > 0) {
+    Object.keys(params).forEach(param => {
+      translation = translation.replace(`{${param}}`, params[param]);
+    });
+  }
+  
+  return translation;
 }
 
-// Set language
-export function setLanguage(lang) {
-    if (translations[lang]) {
-        currentLang = lang;
-        localStorage.setItem('gly_language', lang);
-        applyLanguageDirection();
-        
-        // Dispatch language change event
-        window.dispatchEvent(new CustomEvent('languageChanged', { detail: lang }));
-        
-        return true;
-    }
-    return false;
-}
-
-// Get current language
+// Get current language from localStorage
 export function getCurrentLanguage() {
-    return currentLang;
+  return localStorage.getItem('gly_language') || defaultLanguage;
 }
 
-// Translate function
-export function t(key, defaultValue = '') {
-    const langData = translations[currentLang];
+// Set language in localStorage
+export function setLanguage(lang) {
+  if (availableLanguages[lang]) {
+    localStorage.setItem('gly_language', lang);
     
-    if (langData && langData[key]) {
-        return langData[key];
-    }
+    // Update HTML lang attribute
+    document.documentElement.lang = lang;
     
-    // Fallback to English
-    if (currentLang !== 'en' && translations['en'][key]) {
-        return translations['en'][key];
-    }
-    
-    return defaultValue || key;
-}
-
-// Apply language direction
-function applyLanguageDirection() {
-    const dir = languageDirection[currentLang] || 'ltr';
-    document.documentElement.setAttribute('dir', dir);
-    document.documentElement.setAttribute('lang', currentLang);
-    
-    // Apply RTL specific styles
-    if (dir === 'rtl') {
-        document.body.classList.add('rtl');
+    // Add RTL class for Arabic
+    if (lang === 'ar') {
+      document.documentElement.dir = 'rtl';
+      document.body.classList.add('rtl');
     } else {
-        document.body.classList.remove('rtl');
+      document.documentElement.dir = 'ltr';
+      document.body.classList.remove('rtl');
     }
-}
-
-// Format numbers according to language
-export function formatNumber(number) {
-    return new Intl.NumberFormat(currentLang).format(number);
-}
-
-// Format currency
-export function formatCurrency(amount, currency = 'USDT') {
-    return `${formatNumber(amount)} ${currency}`;
-}
-
-// Get available languages
-export function getAvailableLanguages() {
-    return Object.keys(languageNames).map(code => ({
-        code,
-        name: languageNames[code],
-        nativeName: t(`${code}_native`, languageNames[code])
-    }));
-}
-
-// Get flag emoji
-export function getFlagEmoji(countryCode) {
-    const flagMap = {
-        'en': '🇺🇸',
-        'fr': '🇫🇷',
-        'de': '🇩🇪',
-        'ar': '🇸🇦',
-        'pl': '🇵🇱',
-        'ru': '🇷🇺',
-        'pt': '🇵🇹',
-        'tr': '🇹🇷',
-        'ro': '🇷🇴',
-        'uz': '🇺🇿',
-        'es': '🇪🇸',
-        'it': '🇮🇹',
-        'id': '🇮🇩'
-    };
     
-    return flagMap[countryCode] || '🌐';
+    return true;
+  }
+  return false;
 }
 
-// Initialize on load
-initLanguage();
+// Update all translatable elements on the page
+export function updatePageLanguage(lang = null) {
+  const currentLang = lang || getCurrentLanguage();
+  
+  // Set HTML lang attribute
+  document.documentElement.lang = currentLang;
+  
+  // Update all elements with data-translate attribute
+  document.querySelectorAll('[data-translate]').forEach(element => {
+    const key = element.getAttribute('data-translate');
+    const translation = t(key, currentLang);
+    
+    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+      element.placeholder = translation;
+    } else if (element.hasAttribute('data-translate-html')) {
+      element.innerHTML = translation;
+    } else {
+      element.textContent = translation;
+    }
+  });
+  
+  // Update title attributes
+  document.querySelectorAll('[data-translate-title]').forEach(element => {
+    const key = element.getAttribute('data-translate-title');
+    element.setAttribute('title', t(key, currentLang));
+  });
+  
+  // Update alt attributes
+  document.querySelectorAll('[data-translate-alt]').forEach(element => {
+    const key = element.getAttribute('data-translate-alt');
+    element.setAttribute('alt', t(key, currentLang));
+  });
+  
+  // Update value attributes
+  document.querySelectorAll('[data-translate-value]').forEach(element => {
+    const key = element.getAttribute('data-translate-value');
+    element.value = t(key, currentLang);
+  });
+  
+  // Update language modal if open
+  updateLanguageModal(currentLang);
+  
+  return currentLang;
+}
 
-// Export to window for global access
-window.GLYTranslate = {
-    t,
-    setLanguage,
-    getCurrentLanguage,
-    getAvailableLanguages,
-    formatNumber,
-    formatCurrency,
-    getFlagEmoji
-};
+// Create language modal HTML
+export function createLanguageModal() {
+  return `
+    <div class="pop-overlay language-modal-overlay" id="language-modal" style="display: none;">
+      <div class="pop-content language-modal-content">
+        <div class="pop-header" data-translate="select_language">Select Language</div>
+        <div class="pop-body">
+          <div class="language-current" style="margin-bottom: 20px; padding: 10px; background: #f5f5f5; border-radius: 5px;">
+            <div style="font-size: 12px; color: #666;" data-translate="current_language">Current Language</div>
+            <div id="current-language-display" style="font-weight: bold; color: #4e7771; font-size: 16px;"></div>
+          </div>
+          
+          <div class="language-list">
+            ${Object.entries(availableLanguages).map(([code, name]) => `
+              <div class="language-option ${code === getCurrentLanguage() ? 'active' : ''}" data-lang="${code}">
+                <div class="language-flag">${getFlagEmoji(code)}</div>
+                <div class="language-name">${name}</div>
+                ${code === getCurrentLanguage() ? '<div class="language-check"><i class="fas fa-check"></i></div>' : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="pop-footer">
+          <button type="button" id="close-language-modal" style="background: #4e7771;" data-translate="close">Close</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Get flag emoji for language
+function getFlagEmoji(langCode) {
+  const flags = {
+    en: '🇺🇸',
+    fr: '🇫🇷',
+    de: '🇩🇪',
+    ar: '🇸🇦',
+    pl: '🇵🇱',
+    ru: '🇷🇺',
+    pt: '🇵🇹',
+    tr: '🇹🇷',
+    ro: '🇷🇴',
+    uz: '🇺🇿',
+    es: '🇪🇸',
+    it: '🇮🇹',
+    id: '🇮🇩'
+  };
+  return flags[langCode] || '🌐';
+}
+
+// Update language modal content
+function updateLanguageModal(lang) {
+  const modal = document.getElementById('language-modal');
+  if (modal) {
+    const currentDisplay = document.getElementById('current-language-display');
+    if (currentDisplay) {
+      currentDisplay.textContent = availableLanguages[lang] || lang;
+    }
+    
+    // Update active language in list
+    document.querySelectorAll('.language-option').forEach(option => {
+      const langCode = option.getAttribute('data-lang');
+      option.classList.toggle('active', langCode === lang);
+      
+      const check = option.querySelector('.language-check');
+      if (check) {
+        check.style.display = langCode === lang ? 'block' : 'none';
+      }
+    });
+  }
+}
+
+// Initialize language system
+export function initLanguageSystem() {
+  // Set initial language
+  const currentLang = getCurrentLanguage();
+  setLanguage(currentLang);
+  
+  // Add language modal to body if not exists
+  if (!document.getElementById('language-modal')) {
+    const modalHTML = createLanguageModal();
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+  }
+  
+  // Load current language
+  updatePageLanguage(currentLang);
+  
+  // Setup event listeners for language modal
+  setTimeout(() => {
+    setupLanguageModalEvents();
+  }, 100);
+}
+
+// Setup language modal event listeners
+function setupLanguageModalEvents() {
+  // Close modal button
+  const closeBtn = document.getElementById('close-language-modal');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      document.getElementById('language-modal').style.display = 'none';
+    });
+  }
+  
+  // Language options
+  document.querySelectorAll('.language-option').forEach(option => {
+    option.addEventListener('click', function() {
+      const lang = this.getAttribute('data-lang');
+      setLanguage(lang);
+      updatePageLanguage(lang);
+      
+      // Show success message
+      window.showCustomAlert(t('language_changed', lang, { language: availableLanguages[lang] }));
+      
+      // Close modal after a short delay
+      setTimeout(() => {
+        document.getElementById('language-modal').style.display = 'none';
+      }, 300);
+    });
+  });
+  
+  // Close modal when clicking outside
+  document.addEventListener('click', (event) => {
+    const modal = document.getElementById('language-modal');
+    if (modal && event.target === modal) {
+      modal.style.display = 'none';
+    }
+  });
+}
+
+// Show language modal
+export function showLanguageModal() {
+  const modal = document.getElementById('language-modal');
+  if (modal) {
+    modal.style.display = 'flex';
+    updateLanguageModal(getCurrentLanguage());
+  }
+}
+
+// Function to translate dynamic content
+export function translateContent(element, key, params = {}) {
+  if (!element) return;
+  
+  const translation = t(key, getCurrentLanguage(), params);
+  
+  if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+    element.placeholder = translation;
+  } else {
+    element.textContent = translation;
+  }
+}

@@ -8,16 +8,18 @@ export default function renderMine() {
             
             <div style="position: relative; z-index: 2; display: flex; align-items: center; margin-bottom: 20px;">
                 <div style="flex: 1;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;">
-                        <div class="profile-vip-badge" id="user-vip-level" style="background: rgba(78, 119, 113, 0.8);">VIP 1</div>
-                        <button class="copy-id-btn" id="copy-user-id" style="background: rgba(255, 255, 255, 0.2);">
-                            <i class="fas fa-copy"></i>
+                    <!-- VIP Badge -->
+                    <div class="profile-vip-badge" id="user-vip-level" style="background: rgba(78, 119, 113, 0.8); display: inline-block; margin-bottom: 10px;">VIP 1</div>
+                    
+                    <!-- ID with Copy button inline -->
+                    <div class="profile-id-copy" style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px;">
+                        <span class="profile-id" id="user-id" style="color: white; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); font-size: 14px;">ID: Loading...</span>
+                        <button class="copy-id-btn" id="copy-user-id" style="background: rgba(255, 255, 255, 0.2); border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer;">
+                            <i class="fas fa-copy" style="color: white; font-size: 12px;"></i>
                         </button>
                     </div>
-                    <div class="profile-id-copy">
-                        <span class="profile-id" id="user-id" style="color: white; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">ID: Loading...</span>
-                    </div>
-                    <div style="margin-top: 15px; color: white; font-size: 18px; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">
+                    
+                    <div style="color: white; font-size: 18px; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">
                         Balance: <span id="user-balance" style="color: #f9ae3d;">0.00</span> USDT
                     </div>
                 </div>
@@ -92,29 +94,29 @@ export default function renderMine() {
             </div>
         </div>
 
-        <!-- Popup for withdrawal address with network selection -->
+        <!-- Popup for withdrawal address with network selection - Same as deposit.js -->
         <div class="pop-overlay" id="address-popup" style="display: none;">
             <div class="pop-content">
                 <form id="address-form" onsubmit="return false;">
                     <div class="pop-header">Set Withdrawal Address</div>
                     <div class="pop-body">
-                        <!-- Network Selection -->
-                        <div class="network-selection margin-bottom">
+                        <!-- Network Selection - Same as deposit.js -->
+                        <div class="network-selection-green margin-bottom">
                             <div class="section-title-small" style="color: #333; margin-bottom: 10px; font-size: 14px;">Select Network</div>
-                            <div class="network-options">
-                                <div class="network-option active" data-network="TRC20">
-                                    <div class="network-icon">
+                            <div class="network-options-green">
+                                <div class="network-option-green active" data-network="TRC20">
+                                    <div class="network-icon-green">
                                         <img src="assets/trc20.png" alt="TRC20">
                                     </div>
-                                    <div class="network-name">TRC20</div>
-                                    <div class="network-check"><i class="fas fa-check"></i></div>
+                                    <div class="network-name-green">TRC20</div>
+                                    <div class="network-check-green"><i class="fas fa-check"></i></div>
                                 </div>
-                                <div class="network-option" data-network="BEP20">
-                                    <div class="network-icon">
+                                <div class="network-option-green" data-network="BEP20">
+                                    <div class="network-icon-green">
                                         <img src="assets/bsc20.png" alt="BEP20">
                                     </div>
-                                    <div class="network-name">BEP20</div>
-                                    <div class="network-check"><i class="fas fa-check"></i></div>
+                                    <div class="network-name-green">BEP20</div>
+                                    <div class="network-check-green"><i class="fas fa-check"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -273,10 +275,10 @@ function setupEventListeners() {
         document.getElementById('copy-telegram').addEventListener('click', copyTelegram);
         document.getElementById('copy-email').addEventListener('click', copyEmail);
         
-        // Network selection in address popup
-        document.querySelectorAll('#address-popup .network-option').forEach(option => {
+        // Network selection in address popup - using green classes
+        document.querySelectorAll('#address-popup .network-option-green').forEach(option => {
             option.addEventListener('click', function() {
-                document.querySelectorAll('#address-popup .network-option').forEach(opt => {
+                document.querySelectorAll('#address-popup .network-option-green').forEach(opt => {
                     opt.classList.remove('active');
                 });
                 this.classList.add('active');
@@ -404,8 +406,8 @@ function showAddressPopup() {
     document.getElementById('withdrawal-address-input').value = '';
     
     // Set default network to TRC20 if user has address, otherwise first option
-    const trc20Option = document.querySelector('#address-popup [data-network="TRC20"]');
-    const bep20Option = document.querySelector('#address-popup [data-network="BEP20"]');
+    const trc20Option = document.querySelector('#address-popup .network-option-green[data-network="TRC20"]');
+    const bep20Option = document.querySelector('#address-popup .network-option-green[data-network="BEP20"]');
     
     if (user.withdrawal_address_trc20) {
         trc20Option.classList.add('active');
@@ -450,7 +452,7 @@ function hideSupportPopup() {
 
 async function saveWithdrawalAddress() {
     const address = document.getElementById('withdrawal-address-input').value.trim();
-    const selectedNetwork = document.querySelector('#address-popup .network-option.active').getAttribute('data-network');
+    const selectedNetwork = document.querySelector('#address-popup .network-option-green.active').getAttribute('data-network');
     const user = window.getCurrentUser();
     
     if (!address) {

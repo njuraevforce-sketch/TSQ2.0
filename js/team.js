@@ -1,10 +1,10 @@
-// team.js
+// team.js - UPDATED with pie chart
 export default function renderTeam() {
     return `
         <div class="card padding">
             <div class="text-white text-bold text-center margin-bottom">Income Analysis</div>
             
-            <!-- New chart container -->
+            <!-- New pie chart container -->
             <div class="chart-container">
                 <canvas id="team-chart" width="526.25" height="250" style="width: 100%; height: 250px; background: none; position: relative;"></canvas>
             </div>
@@ -135,15 +135,15 @@ async function loadTeamData() {
         const teamEarnings = transactions?.reduce((sum, t) => sum + t.amount, 0) || 0;
         document.getElementById('team-earnings').textContent = teamEarnings.toFixed(2);
         
-        // Initialize chart with new style
-        initTeamChart(level1Count, level2Count, level3Count);
+        // Initialize pie chart with new style
+        initTeamPieChart(level1Count, level2Count, level3Count);
         
     } catch (error) {
         console.error('Error loading team data:', error);
     }
 }
 
-function initTeamChart(level1Count, level2Count, level3Count) {
+function initTeamPieChart(level1Count, level2Count, level3Count) {
     const canvas = document.getElementById('team-chart');
     if (!canvas) return;
 
@@ -155,77 +155,105 @@ function initTeamChart(level1Count, level2Count, level3Count) {
     // Set chart dimensions
     const chartWidth = canvas.width;
     const chartHeight = canvas.height;
-    const padding = 40;
-    const graphWidth = chartWidth - 2 * padding;
-    const graphHeight = chartHeight - 2 * padding;
+    const centerX = chartWidth / 2;
+    const centerY = chartHeight / 2;
+    const radius = Math.min(centerX, centerY) * 0.7;
     
     // Prepare data
     const data = [
         { label: 'Level 1', value: level1Count, color: '#4e7771' },
-        { label: 'Level 2', value: level2Count, color: '#3d615c' },
+        { label: 'Level 2', value: level2Count, color: '#f9ae3d' },
         { label: 'Level 3', value: level3Count, color: '#2c4b45' }
     ];
     
-    // Find max value
-    const maxValue = Math.max(...data.map(d => d.value), 1);
+    // Filter out zero values
+    const filteredData = data.filter(item => item.value > 0);
     
-    // Calculate bar properties
-    const barCount = data.length;
-    const barWidth = graphWidth / barCount * 0.6;
-    const barSpacing = graphWidth / barCount * 0.4;
-    
-    // Draw bars
-    data.forEach((item, index) => {
-        const x = padding + index * (barWidth + barSpacing) + barSpacing / 2;
-        const barHeight = (item.value / maxValue) * graphHeight;
-        const y = chartHeight - padding - barHeight;
-        
-        // Draw bar
-        ctx.fillStyle = item.color;
-        ctx.fillRect(x, y, barWidth, barHeight);
-        
-        // Draw value on top of bar
-        if (item.value > 0) {
-            ctx.fillStyle = '#fff';
-            ctx.font = '12px Helvetica Neue, Helvetica, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText(item.value, x + barWidth / 2, y - 5);
-        }
-        
-        // Draw label below bar
-        ctx.fillStyle = '#e3e3e3';
-        ctx.font = '12px Helvetica Neue, Helvetica, sans-serif';
+    // If no data, show message
+    if (filteredData.length === 0) {
+        ctx.fillStyle = '#ccc';
+        ctx.font = '14px Helvetica Neue, Helvetica, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(item.label, x + barWidth / 2, chartHeight - padding + 20);
-    });
+        ctx.fillText('No team members yet', centerX, centerY);
+        return;
+    }
     
-    // Draw Y-axis labels
-    ctx.fillStyle = '#ccc';
-    ctx.font = '10px Helvetica Neue, Helvetica, sans-serif';
-    ctx.textAlign = 'right';
+    // Calculate total
+    const total = filteredData.reduce((sum, item) => sum + item.value, 0);
     
-    // Draw 3 grid lines and labels
-    for (let i = 0; i <= 3; i++) {
-        const value = (maxValue * i / 3);
-        const y = chartHeight - padding - (graphHeight * i / 3);
+    // Draw pie chart
+    let startAngle = 0;
+    
+    filteredData.forEach((item, index) => {
+        const sliceAngle = (item.value / total) * 2 * Math.PI;
+        const endAngle = startAngle + sliceAngle;
         
-        // Draw grid line
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+        // Draw slice
         ctx.beginPath();
-        ctx.moveTo(padding, y);
-        ctx.lineTo(chartWidth - padding, y);
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.closePath();
+        
+        ctx.fillStyle = item.color;
+        ctx.fill();
+        
+        // Draw slice border
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 1;
         ctx.stroke();
         
         // Draw label
-        ctx.fillStyle = '#ccc';
-        ctx.fillText(value.toFixed(0), padding - 10, y + 3);
-    }
+        const labelAngle = startAngle + sliceAngle / 2;
+        const labelRadius = radius * 0.7;
+        const labelX = centerX + Math.cos(labelAngle) * labelRadius;
+        const labelY = centerY + Math.sin(labelAngle) * labelRadius;
+        
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 12px Helvetica Neue, Helvetica, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(item.value.toString(), labelX, labelY);
+        
+        startAngle = endAngle;
+    });
+    
+    // Draw legend
+    const legendX = 20;
+    let legendY = chartHeight - 80;
+    
+    filteredData.forEach((item, index) => {
+        // Draw color box
+        ctx.fillStyle = item.color;
+        ctx.fillRect(legendX, legendY, 15, 15);
+        
+        // Draw legend text
+        ctx.fillStyle = '#e3e3e3';
+        ctx.font = '12px Helvetica Neue, Helvetica, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        
+        const percentage = ((item.value / total) * 100).toFixed(1);
+        ctx.fillText(`${item.label}: ${item.value} (${percentage}%)`, legendX + 25, legendY + 7.5);
+        
+        legendY += 25;
+    });
+    
+    // Draw total in center
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 16px Helvetica Neue, Helvetica, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Total', centerX, centerY - 10);
+    
+    ctx.fillStyle = '#f9ae3d';
+    ctx.font = 'bold 20px Helvetica Neue, Helvetica, sans-serif';
+    ctx.fillText(total.toString(), centerX, centerY + 15);
     
     // Draw title
     ctx.fillStyle = '#fff';
     ctx.font = '14px Helvetica Neue, Helvetica, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('Team Referrals by Level', chartWidth / 2, 20);
+    ctx.fillText('Team Distribution by Level', chartWidth / 2, 20);
 }
 
 async function loadReferralsList() {

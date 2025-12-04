@@ -1,4 +1,4 @@
-// Mine section
+// Mine section - UPDATED with network selection
 export default function renderMine() {
     return `
         <!-- Profile with background image -->
@@ -58,7 +58,7 @@ export default function renderMine() {
                         <img src="assets/setting-address.png" alt="Withdrawal Address">
                     </div>
                     <div class="setting-name">Withdrawal Address</div>
-                    <div class="setting-value">Set address</div>
+                    <div class="setting-value">Configure</div>
                 </div>
                 <div class="setting-item" id="transaction-password-setting">
                     <div class="setting-icon">
@@ -92,19 +92,40 @@ export default function renderMine() {
             </div>
         </div>
 
-        <!-- Popup for withdrawal address -->
+        <!-- Popup for withdrawal address with network selection -->
         <div class="pop-overlay" id="address-popup" style="display: none;">
             <div class="pop-content">
                 <form id="address-form" onsubmit="return false;">
                     <div class="pop-header">Set Withdrawal Address</div>
                     <div class="pop-body">
+                        <!-- Network Selection -->
+                        <div class="network-selection margin-bottom">
+                            <div class="section-title-small" style="color: #333; margin-bottom: 10px; font-size: 14px;">Select Network</div>
+                            <div class="network-options">
+                                <div class="network-option active" data-network="TRC20">
+                                    <div class="network-icon">
+                                        <img src="assets/trc20.png" alt="TRC20">
+                                    </div>
+                                    <div class="network-name">TRC20</div>
+                                    <div class="network-check"><i class="fas fa-check"></i></div>
+                                </div>
+                                <div class="network-option" data-network="BEP20">
+                                    <div class="network-icon">
+                                        <img src="assets/bsc20.png" alt="BEP20">
+                                    </div>
+                                    <div class="network-name">BEP20</div>
+                                    <div class="network-check"><i class="fas fa-check"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="margin-bottom">
-                            <label style="color: #333; font-size: 14px;">USDT Wallet Address (TRC20)</label>
-                            <input type="text" id="withdrawal-address-input" placeholder="Enter your TRC20 address" 
+                            <label style="color: #333; font-size: 14px;">USDT Wallet Address</label>
+                            <input type="text" id="withdrawal-address-input" placeholder="Enter your wallet address" 
                                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
                         </div>
                         <p style="font-size: 12px; color: #666;">
-                            This address will be used for all future withdrawals. Please double-check the address.
+                            This address will be used for all future withdrawals on the selected network. Please double-check the address.
                         </p>
                     </div>
                     <div class="pop-footer">
@@ -252,6 +273,16 @@ function setupEventListeners() {
         document.getElementById('copy-telegram').addEventListener('click', copyTelegram);
         document.getElementById('copy-email').addEventListener('click', copyEmail);
         
+        // Network selection in address popup
+        document.querySelectorAll('#address-popup .network-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('#address-popup .network-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        
     } catch (error) {
         console.error('Error setting up event listeners in mine:', error);
         // Retry after 500ms
@@ -352,8 +383,13 @@ async function loadProfileData() {
         document.getElementById('user-balance').textContent = user.balance.toFixed(2);
         
         // Update withdrawal address display
-        if (user.withdrawal_address) {
-            document.querySelector('#withdrawal-address-setting .setting-value').textContent = 'Configured';
+        const settingValue = document.querySelector('#withdrawal-address-setting .setting-value');
+        if (settingValue) {
+            if (user.withdrawal_address_trc20 || user.withdrawal_address_bep20) {
+                settingValue.textContent = 'Configured';
+            } else {
+                settingValue.textContent = 'Set address';
+            }
         }
     } catch (error) {
         console.error('Error loading profile data:', error);
@@ -361,6 +397,30 @@ async function loadProfileData() {
 }
 
 function showAddressPopup() {
+    const user = window.getCurrentUser();
+    if (!user) return;
+    
+    // Clear input field
+    document.getElementById('withdrawal-address-input').value = '';
+    
+    // Set default network to TRC20 if user has address, otherwise first option
+    const trc20Option = document.querySelector('#address-popup [data-network="TRC20"]');
+    const bep20Option = document.querySelector('#address-popup [data-network="BEP20"]');
+    
+    if (user.withdrawal_address_trc20) {
+        trc20Option.classList.add('active');
+        bep20Option.classList.remove('active');
+        document.getElementById('withdrawal-address-input').value = user.withdrawal_address_trc20;
+    } else if (user.withdrawal_address_bep20) {
+        bep20Option.classList.add('active');
+        trc20Option.classList.remove('active');
+        document.getElementById('withdrawal-address-input').value = user.withdrawal_address_bep20;
+    } else {
+        // Default to TRC20
+        trc20Option.classList.add('active');
+        bep20Option.classList.remove('active');
+    }
+    
     document.getElementById('address-popup').style.display = 'flex';
 }
 
@@ -390,6 +450,7 @@ function hideSupportPopup() {
 
 async function saveWithdrawalAddress() {
     const address = document.getElementById('withdrawal-address-input').value.trim();
+    const selectedNetwork = document.querySelector('#address-popup .network-option.active').getAttribute('data-network');
     const user = window.getCurrentUser();
     
     if (!address) {
@@ -404,22 +465,33 @@ async function saveWithdrawalAddress() {
     
     try {
         // Save address in database
+        const updateData = {};
+        if (selectedNetwork === 'TRC20') {
+            updateData.withdrawal_address_trc20 = address;
+        } else {
+            updateData.withdrawal_address_bep20 = address;
+        }
+        
         const { error } = await window.supabase
             .from('users')
-            .update({ withdrawal_address: address })
+            .update(updateData)
             .eq('id', user.id);
             
         if (error) throw error;
         
         // Update user in localStorage
-        user.withdrawal_address = address;
+        Object.assign(user, updateData);
         localStorage.setItem('gly_user', JSON.stringify(user));
         
-        window.showCustomAlert('Withdrawal address has been saved successfully!');
+        window.showCustomAlert(`Withdrawal address for ${selectedNetwork} has been saved successfully!`);
         hideAddressPopup();
         
         // Update display
         document.querySelector('#withdrawal-address-setting .setting-value').textContent = 'Configured';
+        
+        // Reload profile to update data
+        loadProfileData();
+        
     } catch (error) {
         window.showCustomAlert('Error saving address: ' + error.message);
     }

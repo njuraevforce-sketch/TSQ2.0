@@ -1,4 +1,4 @@
-// Withdraw section - UPDATED
+// Withdraw section - UPDATED with same network selection as deposit.js
 export default function renderWithdraw() {
     return `
         <div class="card padding">
@@ -7,23 +7,23 @@ export default function renderWithdraw() {
                 <p style="color: #ccc;">Withdraw your earnings to your wallet</p>
             </div>
 
-            <!-- Network Selection -->
-            <div class="network-selection margin-bottom">
+            <!-- Network Selection - Same as deposit.js -->
+            <div class="network-selection-green margin-bottom">
                 <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;">Select Network</div>
-                <div class="network-options" style="display: flex; gap: 8px; justify-content: center;">
-                    <div class="network-option active" data-network="TRC20" style="flex: 0 0 auto; padding: 6px 12px; min-height: auto;">
-                        <div class="network-icon" style="width: 24px; height: 24px; margin-bottom: 4px;">
-                            <img src="assets/trc20.png" alt="TRC20" style="width: 100%; height: 100%;">
+                <div class="network-options-green">
+                    <div class="network-option-green active" data-network="TRC20">
+                        <div class="network-icon-green">
+                            <img src="assets/trc20.png" alt="TRC20">
                         </div>
-                        <div class="network-name" style="font-size: 11px;">TRC20</div>
-                        <div class="network-check" style="font-size: 10px;"><i class="fas fa-check"></i></div>
+                        <div class="network-name-green">TRC20</div>
+                        <div class="network-check-green"><i class="fas fa-check"></i></div>
                     </div>
-                    <div class="network-option" data-network="BEP20" style="flex: 0 0 auto; padding: 6px 12px; min-height: auto;">
-                        <div class="network-icon" style="width: 24px; height: 24px; margin-bottom: 4px;">
-                            <img src="assets/bsc20.png" alt="BEP20" style="width: 100%; height: 100%;">
+                    <div class="network-option-green" data-network="BEP20">
+                        <div class="network-icon-green">
+                            <img src="assets/bsc20.png" alt="BEP20">
                         </div>
-                        <div class="network-name" style="font-size: 11px;">BEP20</div>
-                        <div class="network-check" style="font-size: 10px;"><i class="fas fa-check"></i></div>
+                        <div class="network-name-green">BEP20</div>
+                        <div class="network-check-green"><i class="fas fa-check"></i></div>
                     </div>
                 </div>
             </div>
@@ -171,23 +171,23 @@ export default function renderWithdraw() {
                 <form id="set-address-form" onsubmit="return false;">
                     <div class="pop-header">Set Withdrawal Address</div>
                     <div class="pop-body">
-                        <!-- Network Selection in Modal -->
-                        <div class="network-selection margin-bottom">
-                            <div class="section-title-small" style="color: #333; margin-bottom: 8px; font-size: 13px;">Select Network</div>
-                            <div class="network-options" style="display: flex; gap: 8px; justify-content: center;">
-                                <div class="network-option active" data-network="TRC20" style="flex: 0 0 auto; padding: 6px 12px; min-height: auto;">
-                                    <div class="network-icon" style="width: 24px; height: 24px; margin-bottom: 4px;">
-                                        <img src="assets/trc20.png" alt="TRC20" style="width: 100%; height: 100%;">
+                        <!-- Network Selection in Modal - Same as deposit.js -->
+                        <div class="network-selection-green margin-bottom">
+                            <div class="section-title-small" style="color: #333; margin-bottom: 10px; font-size: 14px;">Select Network</div>
+                            <div class="network-options-green">
+                                <div class="network-option-green active" data-network="TRC20">
+                                    <div class="network-icon-green">
+                                        <img src="assets/trc20.png" alt="TRC20">
                                     </div>
-                                    <div class="network-name" style="font-size: 11px; color: #333;">TRC20</div>
-                                    <div class="network-check" style="font-size: 10px;"><i class="fas fa-check"></i></div>
+                                    <div class="network-name-green">TRC20</div>
+                                    <div class="network-check-green"><i class="fas fa-check"></i></div>
                                 </div>
-                                <div class="network-option" data-network="BEP20" style="flex: 0 0 auto; padding: 6px 12px; min-height: auto;">
-                                    <div class="network-icon" style="width: 24px; height: 24px; margin-bottom: 4px;">
-                                        <img src="assets/bsc20.png" alt="BEP20" style="width: 100%; height: 100%;">
+                                <div class="network-option-green" data-network="BEP20">
+                                    <div class="network-icon-green">
+                                        <img src="assets/bsc20.png" alt="BEP20">
                                     </div>
-                                    <div class="network-name" style="font-size: 11px; color: #333;">BEP20</div>
-                                    <div class="network-check" style="font-size: 10px;"><i class="fas fa-check"></i></div>
+                                    <div class="network-name-green">BEP20</div>
+                                    <div class="network-check-green"><i class="fas fa-check"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -232,10 +232,10 @@ export async function init() {
 }
 
 function setupEventListeners() {
-    // Network selection
-    document.querySelectorAll('.network-option').forEach(option => {
+    // Network selection - using green classes
+    document.querySelectorAll('.network-option-green').forEach(option => {
         option.addEventListener('click', function() {
-            document.querySelectorAll('.network-option').forEach(opt => {
+            document.querySelectorAll('.network-option-green').forEach(opt => {
                 opt.classList.remove('active');
             });
             this.classList.add('active');
@@ -292,7 +292,7 @@ function checkSavedAddress() {
     const user = window.getCurrentUser();
     if (!user) return;
     
-    const selectedNetwork = document.querySelector('.network-option.active').getAttribute('data-network');
+    const selectedNetwork = document.querySelector('.network-option-green.active').getAttribute('data-network');
     const addressField = document.getElementById('withdrawal-address');
     const savedMessage = document.getElementById('saved-address-message');
     const noAddressMessage = document.getElementById('no-address-message');
@@ -315,8 +315,8 @@ function checkSavedAddress() {
 
 function showSetAddressPopup() {
     // Set active network in modal to match current selection
-    const currentNetwork = document.querySelector('.network-option.active').getAttribute('data-network');
-    document.querySelectorAll('#set-address-popup .network-option').forEach(opt => {
+    const currentNetwork = document.querySelector('.network-option-green.active').getAttribute('data-network');
+    document.querySelectorAll('#set-address-popup .network-option-green').forEach(opt => {
         opt.classList.remove('active');
         if (opt.getAttribute('data-network') === currentNetwork) {
             opt.classList.add('active');
@@ -338,7 +338,7 @@ async function saveNewAddress() {
     const user = window.getCurrentUser();
     if (!user) return;
     
-    const selectedNetwork = document.querySelector('#set-address-popup .network-option.active').getAttribute('data-network');
+    const selectedNetwork = document.querySelector('#set-address-popup .network-option-green.active').getAttribute('data-network');
     const address = document.getElementById('new-withdrawal-address').value.trim();
     
     if (!address) {
@@ -387,13 +387,17 @@ function initNetworkSelection() {
     const bep20Option = document.querySelector('[data-network="BEP20"]');
     
     if (user.withdrawal_address_trc20) {
-        trc20Option.querySelector('.network-name').innerHTML += 
-            ' <span style="font-size: 10px; color: #52c41a;">(Saved)</span>';
+        const networkName = trc20Option.querySelector('.network-name-green');
+        if (networkName) {
+            networkName.innerHTML += ' <span style="font-size: 10px; color: #52c41a;">(Saved)</span>';
+        }
     }
     
     if (user.withdrawal_address_bep20) {
-        bep20Option.querySelector('.network-name').innerHTML += 
-            ' <span style="font-size: 10px; color: #52c41a;">(Saved)</span>';
+        const networkName = bep20Option.querySelector('.network-name-green');
+        if (networkName) {
+            networkName.innerHTML += ' <span style="font-size: 10px; color: #52c41a;">(Saved)</span>';
+        }
     }
 }
 
@@ -426,7 +430,7 @@ async function submitWithdrawal() {
     const user = window.getCurrentUser();
     if (!user) return;
     
-    const selectedNetwork = document.querySelector('.network-option.active').getAttribute('data-network');
+    const selectedNetwork = document.querySelector('.network-option-green.active').getAttribute('data-network');
     const address = document.getElementById('withdrawal-address').value.trim();
     const amount = parseFloat(document.getElementById('withdraw-amount').value);
     const password = document.getElementById('transaction-password').value;
@@ -478,7 +482,7 @@ async function processWithdrawal() {
     const user = window.getCurrentUser();
     if (!user) return;
     
-    const selectedNetwork = document.querySelector('.network-option.active').getAttribute('data-network');
+    const selectedNetwork = document.querySelector('.network-option-green.active').getAttribute('data-network');
     const address = document.getElementById('withdrawal-address').value.trim();
     const amount = parseFloat(document.getElementById('withdraw-amount').value);
     

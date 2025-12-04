@@ -13,10 +13,15 @@
     -webkit-touch-callout: none;
 }
 
-/* Убираем палочку выделения при касании */
+/* Убираем outline при фокусе для всех элементов */
 *:focus {
     outline: none !important;
     box-shadow: none !important;
+}
+
+/* Убираем tap-highlight на мобильных */
+* {
+    -webkit-tap-highlight-color: transparent !important;
 }
 
 /* Allow selection only in input fields */
@@ -27,10 +32,18 @@ input, textarea {
     user-select: text;
 }
 
+html {
+    touch-action: pan-y pinch-zoom;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Плавный скролл */
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    /* НОВЫЙ ФОН: темно-зеленый переходящий в светло-серый */
-    background: linear-gradient(180deg, #1a3c34 0%, #2d524a 30%, #4e7771 60%, #a0b0a8 100%) !important;
+    background: linear-gradient(180deg, #1a5f57, #1a5f57, rgba(78, 119, 113, 0.75));
     min-height: 100vh;
     color: #333;
     overflow-x: hidden;
@@ -39,12 +52,11 @@ body {
     
     /* Улучшаем скролл на мобильных */
     -webkit-overflow-scrolling: touch !important;
-    scroll-behavior: smooth !important;
-    overscroll-behavior-y: none !important;
-    touch-action: pan-y !important;
+    scroll-behavior: smooth;
+    overscroll-behavior-y: auto;
     
-    /* Disable zoom gestures */
-    touch-action: pan-x pan-y;
+    /* Отключаем ненужные поведения */
+    touch-action: pan-y;
     -webkit-text-size-adjust: none;
     text-size-adjust: none;
     
@@ -53,13 +65,12 @@ body {
     -webkit-touch-callout: none;
     
     /* Prevent pull-to-refresh on mobile */
-    overscroll-behavior-y: none;
+    overscroll-behavior-y: contain;
 }
 
 uni-page-body {
     min-height: 100vh;
-    /* НОВЫЙ ФОН */
-    background: linear-gradient(180deg, #1a3c34 0%, #2d524a 30%, #4e7771 60%, #a0b0a8 100%) !important;
+    background-image: linear-gradient(180deg, #1a5f57, #1a5f57, rgba(78, 119, 113, 0.75));
     overflow-x: hidden;
 }
 
@@ -67,8 +78,6 @@ uni-page-body {
     min-height: 100vh;
     padding-bottom: 60px;
     overflow-x: hidden;
-    /* Улучшаем скролл */
-    -webkit-overflow-scrolling: touch !important;
 }
 
 .page-content {
@@ -76,14 +85,26 @@ uni-page-body {
     overflow-x: hidden;
 }
 
+/* Плавный скролл для всех контейнеров с прокруткой */
+.page-content, .quantum-scroll-container, 
+.transaction-list-compact, .withdrawals-list,
+.deposits-list {
+    -webkit-overflow-scrolling: touch !important;
+    scroll-behavior: smooth;
+}
+
+/* Убираем outline для кнопок и ссылок при фокусе */
+button:focus, a:focus, .nav-item:focus, 
+.uni-tabbar__item:focus, .action-item:focus {
+    outline: none !important;
+    border-left-color: transparent !important;
+}
+
 /* Disable zoom on mobile */
 html {
     touch-action: manipulation;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
-    /* Улучшаем скролл */
-    -webkit-overflow-scrolling: touch !important;
-    scroll-behavior: smooth !important;
 }
 
 /* Video player styles */
@@ -111,7 +132,7 @@ html {
 .play-btn {
     width: 60px;
     height: 60px;
-    background: rgba(78, 119, 113, 0.8);
+    background: rgba(26, 95, 87, 0.8);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -123,7 +144,7 @@ html {
 }
 
 .play-btn:hover {
-    background: rgba(78, 119, 113, 1);
+    background: rgba(26, 95, 87, 1);
     transform: scale(1.1);
 }
 
@@ -153,11 +174,12 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #4e7771;
+    color: #1a5f57;
     font-size: 16px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     display: none; /* Hidden by default, shown via JS */
+    border: 1px solid #1a5f57;
 }
 
 .install-btn i { 
@@ -205,7 +227,7 @@ html {
     border-bottom: 1px solid #eee;
     font-size: 18px;
     text-align: center;
-    background: #4e7771;
+    background: linear-gradient(135deg, #1a5f57, #2a7c72);
     color: white;
 }
 
@@ -221,7 +243,7 @@ html {
 }
 
 .custom-modal-btn {
-    background: #4e7771;
+    background: linear-gradient(135deg, #1a5f57, #2a7c72);
     color: white;
     border: none;
     padding: 10px 25px;
@@ -250,7 +272,7 @@ html {
     width: 50px;
     height: 50px;
     border: 4px solid #f3f3f3;
-    border-top: 4px solid #4e7771;
+    border-top: 4px solid #1a5f57;
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-bottom: 15px;
@@ -289,7 +311,7 @@ html {
     align-items: center;
     height: 44px;
     padding: 0 15px;
-    background-color: #4e7771;
+    background: linear-gradient(180deg, #1a5f57, #2a7c72);
     position: relative;
 }
 
@@ -349,7 +371,7 @@ html {
 /* TopNull и контейнеры */
 .topNull {
     height: 150px;
-    background: #4e7771;
+    background: linear-gradient(180deg, #1a5f57, #2a7c72);
     border-radius: 0 0 40px 40px;
 }
 
@@ -487,7 +509,7 @@ html {
 }
 
 .text-cyan {
-    color: #4e7771;
+    color: #1a5f57;
 }
 
 .color-de {
@@ -522,7 +544,7 @@ html {
 
 /* Кнопки */
 .pro-btn {
-    background: #4e7771;
+    background: linear-gradient(135deg, #1a5f57, #2a7c72);
     border-radius: 10px;
     padding: 15px;
     text-align: center;
@@ -580,11 +602,6 @@ html {
     color: #fff;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
 /* Tabbar - ИСПРАВЛЕННЫЙ ДЛЯ РАВНОМЕРНОГО РАСПРЕДЕЛЕНИЯ */
 .uni-tabbar {
     position: fixed;
@@ -623,7 +640,7 @@ html {
 }
 
 .uni-tabbar__item--active {
-    color: #4e7771;
+    color: #1a5f57;
 }
 
 .uni-tabbar__item--active .uni-tabbar__icon img {
@@ -667,7 +684,7 @@ html {
 
 .notice-icon {
     font-size: 18px;
-    color: #4e7771;
+    color: #1a5f57;
     margin-right: 10px;
 }
 
@@ -787,7 +804,7 @@ html {
 }
 
 .pop-footer button {
-    background: #4e7771;
+    background: #1a5f57;
     color: white;
     border: none;
     padding: 8px 15px;
@@ -812,7 +829,7 @@ html {
 
 /* Баннер */
 .banner-section {
-    background-color: #4e7771;
+    background: linear-gradient(180deg, #1a5f57, #2a7c72);
     width: 100%;
     border-radius: 0 0 40px 40px;
     overflow: hidden;
@@ -895,7 +912,7 @@ html {
 }
 
 .quant-btn {
-    background: #4e7771;
+    background: linear-gradient(135deg, #1a5f57, #2a7c72);
     color: white;
     border: none;
     border-radius: 25px;
@@ -904,7 +921,7 @@ html {
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(78, 119, 113, 0.3);
+    box-shadow: 0 4px 15px rgba(26, 95, 87, 0.3);
     width: 100%;
     max-width: 300px;
 }
@@ -925,7 +942,7 @@ html {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background: #4e7771;
+    background: #1a5f57;
 }
 
 .signal.used {
@@ -986,7 +1003,7 @@ html {
 
 .notice-icon {
     font-size: 18px;
-    color: #4e7771;
+    color: #1a5f57;
     margin-right: 10px;
 }
 
@@ -1031,7 +1048,7 @@ html {
 
 .referral-icon {
     font-size: 24px;
-    color: #4e7771;
+    color: #1a5f57;
 }
 
 .referral-text h4 {
@@ -1048,7 +1065,7 @@ html {
 
 /* Кнопка копирования */
 .copy-btn {
-    background: #4e7771;
+    background: linear-gradient(135deg, #1a5f57, #2a7c72);
     color: white;
     border: none;
     border-radius: 8px;
@@ -1123,7 +1140,7 @@ html {
     opacity: 1;
     transform: scale(1);
     background: transparent;
-    border: 2px solid #4e7771;
+    border: 2px solid #1a5f57;
     display: flex;
 }
 
@@ -1218,7 +1235,7 @@ html {
     top: 40px;
     left: 15px;
     font-size: 14px;
-    color: #4e7771;
+    color: #1a5f57;
     background: rgba(255, 255, 255, 0.9);
     padding: 3px 8px;
     border-radius: 5px;
@@ -1231,7 +1248,7 @@ html {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background: #4e7771;
+    background: #1a5f57;
     margin: 0 5px;
 }
 
@@ -1454,7 +1471,7 @@ html {
 /* Стили для страниц авторизации */
 .login-section,
 .register-section {
-    background: linear-gradient(180deg, #1a3c34 0%, #2d524a 30%, #4e7771 60%, #a0b0a8 100%) !important;
+    background: linear-gradient(180deg, #1a5f57, #2a7c72, rgba(185, 215, 168, 0.75));
     min-height: 100vh;
     padding: 20px 15px;
     overflow-x: hidden;
@@ -1527,13 +1544,13 @@ html {
 
 .form-group input:focus {
     outline: none;
-    border-color: #4e7771;
-    box-shadow: 0 0 0 3px rgba(78, 119, 113, 0.1);
+    border-color: #1a5f57;
+    box-shadow: 0 0 0 3px rgba(26, 95, 87, 0.1);
 }
 
 .auth-button {
     width: 100%;
-    background: #4e7771;
+    background: linear-gradient(135deg, #1a5f57, #2a7c72);
     color: white;
     border: none;
     border-radius: 10px;
@@ -1563,7 +1580,7 @@ html {
 }
 
 .auth-link a {
-    color: #4e7771;
+    color: #1a5f57;
     text-decoration: none;
     font-weight: bold;
     margin-left: 5px;
@@ -1601,7 +1618,7 @@ html {
 }
 
 .copy-id-btn {
-    background: #4e7771;
+    background: #1a5f57;
     color: white;
     border: none;
     border-radius: 5px;
@@ -1687,7 +1704,7 @@ html {
 .team-stat-value {
     font-size: 24px;
     font-weight: bold;
-    color: #4e7771;
+    color: #1a5f57;
     margin-bottom: 5px;
 }
 
@@ -1723,7 +1740,7 @@ html {
 }
 
 .referral-balance {
-    color: #4e7771;
+    color: #1a5f57;
     font-size: 14px;
     font-weight: bold;
 }
@@ -1758,7 +1775,7 @@ html {
 
 .rules-list li:before {
     content: '•';
-    color: #4e7771;
+    color: #1a5f57;
     position: absolute;
     left: 0;
 }
@@ -1781,13 +1798,13 @@ html {
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 1px solid rgba(78, 119, 113, 0.3);
+    border: 1px solid rgba(26, 95, 87, 0.3);
     height: 80px;
     justify-content: center;
 }
 
 .wallet-action-compact:hover {
-    background: rgba(78, 119, 113, 0.2);
+    background: rgba(26, 95, 87, 0.2);
     transform: translateY(-2px);
 }
 
@@ -1830,7 +1847,7 @@ html {
 }
 
 .transaction-category-amount-compact {
-    color: #4e7771;
+    color: #1a5f57;
     font-size: 14px;
     font-weight: bold;
 }
@@ -1895,8 +1912,8 @@ html {
 }
 
 .network-option.active {
-    border-color: #4e7771;
-    background: rgba(78, 119, 113, 0.2);
+    border-color: #1a5f57;
+    background: rgba(26, 95, 87, 0.2);
 }
 
 .network-icon {
@@ -1996,7 +2013,7 @@ html {
 .admin-stat {
     text-align: center;
     padding: 10px 15px;
-    background: rgba(78, 119, 113, 0.3);
+    background: rgba(26, 95, 87, 0.3);
     border-radius: 8px;
     min-width: 80px;
 }
@@ -2036,8 +2053,8 @@ html {
 
 .admin-nav-item.active {
     color: white;
-    background: rgba(78, 119, 113, 0.2);
-    border-bottom-color: #4e7771;
+    background: rgba(26, 95, 87, 0.2);
+    border-bottom-color: #1a5f57;
 }
 
 .admin-nav-item i {
@@ -2074,7 +2091,7 @@ html {
 
 .admin-input-small {
     padding: 6px 10px;
-    border: 1px solid rgba(78, 119, 113, 0.5);
+    border: 1px solid rgba(26, 95, 87, 0.5);
     border-radius: 5px;
     background: rgba(0, 0, 0, 0.3);
     color: white;
@@ -2084,7 +2101,7 @@ html {
 
 .admin-select-small {
     padding: 6px 10px;
-    border: 1px solid rgba(78, 119, 113, 0.5);
+    border: 1px solid rgba(26, 95, 87, 0.5);
     border-radius: 5px;
     background: rgba(0, 0, 0, 0.3);
     color: white;
@@ -2094,7 +2111,7 @@ html {
 
 .admin-btn-small {
     padding: 6px 12px;
-    background: rgba(78, 119, 113, 0.7);
+    background: rgba(26, 95, 87, 0.7);
     border: none;
     border-radius: 5px;
     color: white;
@@ -2107,12 +2124,12 @@ html {
 }
 
 .admin-btn-small:hover {
-    background: rgba(78, 119, 113, 0.9);
+    background: rgba(26, 95, 87, 0.9);
 }
 
 .admin-btn {
     padding: 10px 20px;
-    background: #4e7771;
+    background: linear-gradient(135deg, #1a5f57, #2a7c72);
     border: none;
     border-radius: 8px;
     color: white;
@@ -2177,12 +2194,12 @@ html {
 }
 
 .admin-table th {
-    background: rgba(78, 119, 113, 0.5);
+    background: rgba(26, 95, 87, 0.5);
     color: white;
     padding: 10px;
     text-align: left;
     font-weight: bold;
-    border-bottom: 2px solid rgba(78, 119, 113, 0.8);
+    border-bottom: 2px solid rgba(26, 95, 87, 0.8);
 }
 
 .admin-table td {
@@ -2192,13 +2209,13 @@ html {
 }
 
 .admin-table tr:hover {
-    background: rgba(78, 119, 113, 0.1);
+    background: rgba(26, 95, 87, 0.1);
 }
 
 .vip-badge {
     display: inline-block;
     padding: 3px 8px;
-    background: rgba(78, 119, 113, 0.5);
+    background: rgba(26, 95, 87, 0.5);
     color: white;
     border-radius: 4px;
     font-size: 11px;
@@ -2241,7 +2258,7 @@ html {
 
 .admin-input {
     padding: 10px;
-    border: 1px solid rgba(78, 119, 113, 0.5);
+    border: 1px solid rgba(26, 95, 87, 0.5);
     border-radius: 5px;
     background: rgba(0, 0, 0, 0.3);
     color: white;
@@ -2578,7 +2595,7 @@ body.no-tabbar .uni-tabbar {
 }
 
 .calendar-nav button {
-    background: #4e7771;
+    background: #1a5f57;
     color: white;
     border: none;
     border-radius: 5px;
@@ -2622,11 +2639,11 @@ body.no-tabbar .uni-tabbar {
 }
 
 .calendar-date:hover {
-    background: rgba(78, 119, 113, 0.3);
+    background: rgba(26, 95, 87, 0.3);
 }
 
 .calendar-date.today {
-    background: #4e7771;
+    background: #1a5f57;
     color: white;
     font-weight: bold;
 }
@@ -2726,7 +2743,7 @@ body.no-tabbar .uni-tabbar {
 .profile-bg {
     position: relative;
     min-height: 150px;
-    background: linear-gradient(135deg, rgba(78, 119, 113, 0.9), rgba(42, 80, 75, 0.9));
+    background: linear-gradient(135deg, rgba(26, 95, 87, 0.9), rgba(42, 80, 75, 0.9));
     border-radius: 10px;
     overflow: hidden;
     margin-bottom: 20px;
@@ -2817,7 +2834,7 @@ body.no-tabbar .uni-tabbar {
     border-bottom: 1px solid #eee;
     font-size: 18px;
     text-align: center;
-    background: #4e7771;
+    background: linear-gradient(135deg, #1a5f57, #2a7c72);
     color: white;
 }
 
@@ -2833,7 +2850,7 @@ body.no-tabbar .uni-tabbar {
 }
 
 .pop-overlay .pop-footer button {
-    background: #4e7771;
+    background: linear-gradient(135deg, #1a5f57, #2a7c72);
     color: white;
     border: none;
     padding: 8px 20px;
@@ -2988,7 +3005,7 @@ body.no-tabbar .uni-tabbar {
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 15px;
-    border-left: 3px solid #4e7771;
+    border-left: 3px solid #1a5f57;
 }
 
 .network-selection-green {
@@ -2996,7 +3013,7 @@ body.no-tabbar .uni-tabbar {
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 15px;
-    border-left: 3px solid #4e7771;
+    border-left: 3px solid #1a5f57;
 }
 
 .network-options-green {
@@ -3015,12 +3032,12 @@ body.no-tabbar .uni-tabbar {
     cursor: pointer;
     border: 2px solid transparent;
     transition: all 0.3s ease;
-    border-left: 3px solid #4e7771;
+    border-left: 3px solid #1a5f57;
 }
 
 .network-option-green.active {
-    border-color: #4e7771;
-    background: rgba(78, 119, 113, 0.2);
+    border-color: #1a5f57;
+    background: rgba(26, 95, 87, 0.2);
     border-left: 3px solid #52c41a;
 }
 
@@ -3056,7 +3073,7 @@ body.no-tabbar .uni-tabbar {
 .input-line-green {
     background: transparent;
     border: none;
-    border-bottom: 2px solid #4e7771;
+    border-bottom: 2px solid #1a5f57;
     border-radius: 0;
     padding: 12px 40px 12px 0;
     color: white;
@@ -3086,7 +3103,7 @@ body.no-tabbar .uni-tabbar {
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 15px;
-    border-left: 3px solid #4e7771;
+    border-left: 3px solid #1a5f57;
 }
 
 .deposit-line {
@@ -3099,7 +3116,7 @@ body.no-tabbar .uni-tabbar {
 }
 
 .deposit-line:hover {
-    border-left: 2px solid #4e7771;
+    border-left: 2px solid #1a5f57;
 }
 
 .deposit-line:last-child {
@@ -3154,8 +3171,8 @@ body.no-tabbar .uni-tabbar {
 }
 
 .network-option.active {
-    border-color: #4e7771;
-    background: rgba(78, 119, 113, 0.2);
+    border-color: #1a5f57;
+    background: rgba(26, 95, 87, 0.2);
 }
 
 .network-icon {
@@ -3213,14 +3230,14 @@ body.no-tabbar .uni-tabbar {
 }
 
 .deposit-item:hover {
-    border-left: 2px solid #4e7771;
+    border-left: 2px solid #1a5f57;
 }
 
 /* Улучшенные стили для диаграммы */
 .chart-container {
     background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(78, 119, 113, 0.5);
-    border-left: 3px solid #4e7771;
+    border: 1px solid rgba(26, 95, 87, 0.5);
+    border-left: 3px solid #1a5f57;
 }
 
 /* Адаптация для мобильных экранов */
@@ -3293,7 +3310,7 @@ body.no-tabbar .uni-tabbar {
 #generate-address-btn:hover,
 #copy-address-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(78, 119, 113, 0.4);
+    box-shadow: 0 4px 12px rgba(26, 95, 87, 0.4);
 }
 
 /* Стили для loading в deposit */
@@ -3301,12 +3318,12 @@ body.no-tabbar .uni-tabbar {
     width: 40px;
     height: 40px;
     border-width: 3px;
-    border-top-color: #4e7771;
+    border-top-color: #1a5f57;
 }
 
 /* Обновленные стили для navigation в home */
 .nav-section {
-    border-left: 3px solid rgba(78, 119, 113, 0.5);
+    border-left: 3px solid rgba(26, 95, 87, 0.5);
 }
 
 .nav-item {
@@ -3315,7 +3332,270 @@ body.no-tabbar .uni-tabbar {
 }
 
 .nav-item:hover {
-    border-left: 2px solid #4e7771;
+    border-left: 2px solid #1a5f57;
+}
+/* ... (весь существующий CSS остается) ... */
+
+/* Добавляем в конец файла перед последней } */
+
+/* Стили для новой круговой диаграммы */
+.chart-container {
+    width: 100%;
+    height: 250px;
+    margin: 20px 0;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+    position: relative;
+    overflow: hidden;
+    border-left: 3px solid #1a5f57;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+    background: none;
+    position: relative;
+}
+
+/* Стили для зеленых линий в deposit */
+.deposit-address-section {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border-left: 3px solid #1a5f57;
+}
+
+.network-selection-green {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border-left: 3px solid #1a5f57;
+}
+
+.network-options-green {
+    display: flex;
+    gap: 10px;
+}
+
+.network-option-green {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    border-left: 3px solid #1a5f57;
+}
+
+.network-option-green.active {
+    border-color: #1a5f57;
+    background: rgba(26, 95, 87, 0.2);
+    border-left: 3px solid #52c41a;
+}
+
+.network-icon-green {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.network-icon-green img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.network-name-green {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.network-check-green {
+    color: #52c41a;
+    font-size: 12px;
+    opacity: 0;
+}
+
+.network-option-green.active .network-check-green {
+    opacity: 1;
+}
+
+.input-line-green {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #1a5f57;
+    border-radius: 0;
+    padding: 12px 40px 12px 0;
+    color: white;
+    font-size: 16px;
+    width: 100%;
+    outline: none;
+    margin-bottom: 0;
+    transition: border-color 0.3s ease;
+}
+
+.input-line-green::placeholder {
+    color: #ccc;
+}
+
+.input-line-green:focus {
+    border-bottom-color: #52c41a;
+    border-bottom-width: 3px;
+}
+
+.input-container-green {
+    position: relative;
+    margin-bottom: 0;
+}
+
+.deposit-info {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border-left: 3px solid #1a5f57;
+}
+
+.deposit-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 2px solid transparent;
+}
+
+.deposit-line:hover {
+    border-left: 2px solid #1a5f57;
+}
+
+.deposit-line:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Стили для списка депозитов */
+.deposits-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.deposit-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-left: 2px solid transparent;
+    padding-left: 5px;
+}
+
+.deposit-item:hover {
+    border-left: 2px solid #1a5f57;
+}
+
+/* Улучшенные стили для круговой диаграммы */
+.chart-container {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(26, 95, 87, 0.5);
+    border-left: 3px solid #1a5f57;
+}
+
+/* Адаптация для мобильных экранов */
+@media (max-width: 480px) {
+    .network-options-green {
+        flex-direction: column;
+    }
+    
+    .network-option-green {
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 10px;
+    }
+    
+    .network-icon-green {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 0;
+        margin-right: 10px;
+    }
+    
+    .network-name-green {
+        margin-bottom: 0;
+        margin-right: auto;
+    }
+    
+    .network-check-green {
+        margin-left: 5px;
+    }
+    
+    .deposit-line {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .deposit-line span:last-child {
+        margin-top: 5px;
+        align-self: flex-end;
+    }
+    
+    .chart-container {
+        height: 200px;
+        padding: 10px;
+    }
+}
+
+/* Новые стили для улучшенной UI */
+.input-line-green:disabled {
+    color: #999;
+    border-bottom-color: #666;
+}
+
+#generated-address-message i,
+#saved-address-message i {
+    margin-right: 5px;
+}
+
+#no-address-message i {
+    margin-right: 5px;
+}
+
+/* Анимация для кнопок deposit */
+#generate-address-btn:hover,
+#copy-address-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 95, 87, 0.4);
+}
+
+/* Стили для loading в deposit */
+#loading-deposit-popup .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border-width: 3px;
+    border-top-color: #1a5f57;
+}
+
+/* Обновленные стили для navigation в home */
+.nav-section {
+    border-left: 3px solid rgba(26, 95, 87, 0.5);
+}
+
+.nav-item {
+    border-left: 2px solid transparent;
+    padding-left: 5px;
+}
+
+.nav-item:hover {
+    border-left: 2px solid #1a5f57;
 }
 
 /* Улучшенные стили для сетей в модалках */
@@ -3345,8 +3625,8 @@ body.no-tabbar .uni-tabbar {
 }
 
 .network-option.active {
-    border-color: #4e7771;
-    background: rgba(78, 119, 113, 0.2);
+    border-color: #1a5f57;
+    background: rgba(26, 95, 87, 0.2);
 }
 
 .network-icon {
@@ -3376,32 +3656,4 @@ body.no-tabbar .uni-tabbar {
 
 .network-option.active .network-check {
     opacity: 1;
-}
-
-/* Улучшаем скролл для всех скроллящихся элементов */
-.conWrap, .transaction-list-compact, .deposits-list, .withdrawals-list, .referral-list {
-    -webkit-overflow-scrolling: touch !important;
-    scroll-behavior: smooth !important;
-}
-
-/* Убираем выделение при касании на кнопках и интерактивных элементах */
-button, .pro-btn, .auth-button, .nav-item, .action-item, .wallet-action-compact, 
-.network-option, .network-option-green, .admin-btn, .admin-nav-item, 
-.uni-tabbar__item, .copy-btn, .install-btn {
-    -webkit-tap-highlight-color: transparent !important;
-}
-
-/* Улучшаем поведение при скролле на iOS */
-@supports (-webkit-touch-callout: none) {
-    body {
-        /* Для iOS */
-        -webkit-overflow-scrolling: touch !important;
-        height: 100%;
-        overflow: auto;
-    }
-    
-    .page {
-        height: 100%;
-        overflow: auto;
-    }
 }

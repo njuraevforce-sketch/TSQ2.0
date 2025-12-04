@@ -1,45 +1,49 @@
 // Assets section - compact version
+import { t } from './translate.js';
+
 export default function renderAssets() {
+    const lang = localStorage.getItem('gly_language') || 'en';
+    
     return `
         <!-- Balance -->
         <div class="card padding">
             <div class="text-center">
                 <div class="balance-amount text-white" id="total-balance">0.00 USDT</div>
-                <div class="text-gray" style="font-size: 12px;">Total Balance</div>
+                <div class="text-gray" style="font-size: 12px;" data-translate="total_balance">Total Balance</div>
             </div>
 
             <!-- Deposit and Withdraw - compact -->
             <div class="wallet-actions-compact">
                 <div class="wallet-action-compact" id="deposit-btn">
-                    <img src="assets/deposit.png?v=1.0" alt="Deposit">
-                    <div class="wallet-text-compact">Deposit</div>
+                    <img src="assets/deposit.png?v=1.0" alt="${t('deposit')}">
+                    <div class="wallet-text-compact" data-translate="deposit_action">Deposit</div>
                 </div>
                 <div class="wallet-action-compact" id="withdraw-btn">
-                    <img src="assets/withdraw.png?v=1.0" alt="Withdraw">
-                    <div class="wallet-text-compact">Withdraw</div>
+                    <img src="assets/withdraw.png?v=1.0" alt="${t('withdraw')}">
+                    <div class="wallet-text-compact" data-translate="withdraw_action">Withdraw</div>
                 </div>
             </div>
         </div>
 
         <!-- Transaction History - compact -->
         <div class="card padding margin-top">
-            <div class="text-white text-bold margin-bottom" style="font-size: 14px; text-align: center;">Transaction History</div>
+            <div class="text-white text-bold margin-bottom" style="font-size: 14px; text-align: center;" data-translate="transaction_history">Transaction History</div>
             
             <div class="transaction-categories-compact">
                 <div class="transaction-category-compact">
-                    <div class="transaction-category-name-compact">Total Earned</div>
+                    <div class="transaction-category-name-compact" data-translate="total_earned">Total Earned</div>
                     <div class="transaction-category-amount-compact" id="total-earned">0.00 USDT</div>
                 </div>
                 <div class="transaction-category-compact">
-                    <div class="transaction-category-name-compact">Total Deposits</div>
+                    <div class="transaction-category-name-compact" data-translate="total_deposits">Total Deposits</div>
                     <div class="transaction-category-amount-compact" id="total-deposits">0.00 USDT</div>
                 </div>
                 <div class="transaction-category-compact">
-                    <div class="transaction-category-name-compact">Total Withdrawals</div>
+                    <div class="transaction-category-name-compact" data-translate="total_withdrawals">Total Withdrawals</div>
                     <div class="transaction-category-amount-compact" id="total-withdrawals">0.00 USDT</div>
                 </div>
                 <div class="transaction-category-compact">
-                    <div class="transaction-category-name-compact">Referral Income</div>
+                    <div class="transaction-category-name-compact" data-translate="referral_income">Referral Income</div>
                     <div class="transaction-category-amount-compact" id="referral-income">0.00 USDT</div>
                 </div>
             </div>
@@ -157,7 +161,7 @@ async function loadTransactionHistory() {
                 `;
             });
         } else {
-            html = '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">No transactions yet</div>';
+            html = `<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;" data-translate="no_transactions">${t('no_transactions')}</div>`;
         }
         
         transactionList.innerHTML = html;
@@ -170,16 +174,18 @@ async function loadTransactionHistory() {
         
     } catch (error) {
         console.error('Error loading transaction history:', error);
+        const transactionList = document.getElementById('transaction-list');
+        transactionList.innerHTML = `<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">${t('error_loading')}</div>`;
     }
 }
 
 function getTransactionType(type) {
     const types = {
-        'deposit': 'Deposit',
-        'withdrawal': 'Withdrawal',
-        'quantification': 'Quantification Profit',
-        'referral': 'Referral Bonus',
-        'registration_bonus': 'Registration Bonus'
+        'deposit': t('transaction_type_deposit'),
+        'withdrawal': t('transaction_type_withdrawal'),
+        'quantification': t('transaction_type_quantification'),
+        'referral': t('transaction_type_referral'),
+        'registration_bonus': t('transaction_type_registration_bonus')
     };
     return types[type] || type;
 }

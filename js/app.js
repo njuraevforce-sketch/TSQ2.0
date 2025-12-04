@@ -1,5 +1,5 @@
-// Main application module - UPDATED with language support
-import { initLanguage } from './translate.js';
+// Main application module - UPDATED
+import { t, initLanguageSystem, updatePageLanguage } from './translate.js';
 
 class GLYApp {
     constructor() {
@@ -8,14 +8,13 @@ class GLYApp {
         this.currentUser = null;
         this.supabase = null;
         this.deferredPrompt = null;
-        
-        // Initialize language
-        initLanguage();
-        
         this.init();
     }
 
     async init() {
+        // Initialize language system first
+        initLanguageSystem();
+        
         // Initialize Supabase
         await this.initSupabase();
         
@@ -46,11 +45,6 @@ class GLYApp {
         
         // Start deposit check interval
         this.startDepositCheck();
-        
-        // Listen for language changes
-        window.addEventListener('languageChanged', () => {
-            this.updateCurrentPageTexts();
-        });
     }
 
     async handleInviteCodeRedirect() {
@@ -228,7 +222,7 @@ class GLYApp {
         if (cleanSectionId === 'admin') {
             const user = this.currentUser || JSON.parse(localStorage.getItem('gly_user'));
             if (!user || user.username !== 'admin') {
-                window.showCustomAlert('Admin access only');
+                window.showCustomAlert(t('admin_access_only'));
                 return;
             }
         }
@@ -291,13 +285,13 @@ class GLYApp {
             this.showNavbar();
             document.body.classList.add('no-tabbar');
             
-            if (cleanSectionId === 'company') this.setNavbarTitle(window.GLYTranslate?.t('company') || 'Company', true);
-            else if (cleanSectionId === 'invite') this.setNavbarTitle(window.GLYTranslate?.t('invite') || 'Invite', true);
-            else if (cleanSectionId === 'team') this.setNavbarTitle(window.GLYTranslate?.t('team') || 'Team', true);
-            else if (cleanSectionId === 'rules') this.setNavbarTitle(window.GLYTranslate?.t('rules') || 'Rules', true);
-            else if (cleanSectionId === 'withdraw') this.setNavbarTitle(window.GLYTranslate?.t('withdraw') || 'Withdraw', true);
-            else if (cleanSectionId === 'admin') this.setNavbarTitle(window.GLYTranslate?.t('admin_panel') || 'Admin', true);
-            else if (cleanSectionId === 'deposit') this.setNavbarTitle(window.GLYTranslate?.t('deposit') || 'Deposit', true);
+            if (cleanSectionId === 'company') this.setNavbarTitle(t('company'), true);
+            else if (cleanSectionId === 'invite') this.setNavbarTitle(t('invite'), true);
+            else if (cleanSectionId === 'team') this.setNavbarTitle(t('team'), true);
+            else if (cleanSectionId === 'rules') this.setNavbarTitle(t('rules'), true);
+            else if (cleanSectionId === 'withdraw') this.setNavbarTitle(t('withdraw'), true);
+            else if (cleanSectionId === 'admin') this.setNavbarTitle(t('admin_panel'), true);
+            else if (cleanSectionId === 'deposit') this.setNavbarTitle(t('deposit'), true);
         } else {
             this.showTabbar();
             this.showNavbar();
@@ -315,11 +309,6 @@ class GLYApp {
         }
 
         this.currentSection = cleanSectionId;
-        
-        // Update texts for the new section
-        setTimeout(() => {
-            this.updateCurrentPageTexts();
-        }, 100);
     }
 
     async loadSection(sectionId) {
@@ -331,11 +320,8 @@ class GLYApp {
         }
         
         try {
-            // Add cache busting parameter to prevent caching
-            const cacheBuster = `?v=${Date.now()}`;
-            
-            // Dynamically import section module with cache busting
-            const module = await import(`./${sectionId}.js${cacheBuster}`);
+            // Use clean import without cache busting parameter to avoid MIME type error
+            const module = await import(`./${sectionId}.js`);
             
             // Call section rendering function
             if (module.default && typeof module.default === 'function') {
@@ -343,6 +329,8 @@ class GLYApp {
                 
                 // Initialize section after rendering
                 if (module.init && typeof module.init === 'function') {
+                    // Update page language before init
+                    updatePageLanguage();
                     setTimeout(() => module.init(), 0);
                 }
                 
@@ -353,47 +341,7 @@ class GLYApp {
             }
         } catch (error) {
             console.error(`Error loading section ${sectionId}:`, error);
-            sectionElement.innerHTML = `<div class="error">Error loading ${sectionId} section. Please refresh the page.</div>`;
-        }
-    }
-
-    updateCurrentPageTexts() {
-        // This function updates texts on the current page when language changes
-        if (!this.currentSection) return;
-        
-        // Update tabbar labels
-        document.querySelectorAll('.uni-tabbar__label').forEach((label, index) => {
-            switch(index) {
-                case 0: label.textContent = window.GLYTranslate?.t('home') || 'Home'; break;
-                case 1: label.textContent = window.GLYTranslate?.t('get') || 'Get'; break;
-                case 2: label.textContent = window.GLYTranslate?.t('assets') || 'Assets'; break;
-                case 3: label.textContent = window.GLYTranslate?.t('mine') || 'Mine'; break;
-            }
-        });
-        
-        // Update navbar title if needed
-        if (this.currentSection === 'company' || this.currentSection === 'invite' || 
-            this.currentSection === 'team' || this.currentSection === 'rules' ||
-            this.currentSection === 'withdraw' || this.currentSection === 'admin' ||
-            this.currentSection === 'deposit') {
-            
-            let title = '';
-            switch(this.currentSection) {
-                case 'company': title = window.GLYTranslate?.t('company') || 'Company'; break;
-                case 'invite': title = window.GLYTranslate?.t('invite') || 'Invite'; break;
-                case 'team': title = window.GLYTranslate?.t('team') || 'Team'; break;
-                case 'rules': title = window.GLYTranslate?.t('rules') || 'Rules'; break;
-                case 'withdraw': title = window.GLYTranslate?.t('withdraw') || 'Withdraw'; break;
-                case 'admin': title = window.GLYTranslate?.t('admin_panel') || 'Admin'; break;
-                case 'deposit': title = window.GLYTranslate?.t('deposit') || 'Deposit'; break;
-            }
-            
-            this.setNavbarTitle(title, true);
-        }
-        
-        // Call page-specific update function if available
-        if (window.updatePageTexts && typeof window.updatePageTexts === 'function') {
-            window.updatePageTexts();
+            sectionElement.innerHTML = `<div class="error">${t('error_loading')} ${sectionId} ${t('section')}. ${t('try_again')}</div>`;
         }
     }
 
@@ -453,7 +401,7 @@ class GLYApp {
             } else {
                 navbarContent.innerHTML = `
                     <div class="u-navbar__content__logo">
-                        <img src="assets/logo.png?v=${Date.now()}" alt="Logo">
+                        <img src="assets/logo.png" alt="Logo">
                     </div>
                     <div class="u-navbar__content__title">${title}</div>
                 `;
@@ -498,10 +446,10 @@ class GLYApp {
     }
 
     async performQuantification() {
-        if (!this.currentUser) return { success: false, message: 'User not logged in' };
+        if (!this.currentUser) return { success: false, message: t('user_not_found') };
         
         if (this.currentUser.signals_available <= 0) {
-            return { success: false, message: 'No signals available' };
+            return { success: false, message: t('no_signals') };
         }
         
         try {
@@ -536,7 +484,7 @@ class GLYApp {
             };
         } catch (error) {
             console.error('Error performing quantification:', error);
-            return { success: false, message: 'Error performing quantification' };
+            return { success: false, message: t('server_error') };
         }
     }
 
@@ -590,7 +538,7 @@ class GLYApp {
                             type: 'referral',
                             amount: referralProfit,
                             status: 'completed',
-                            description: `Referral level ${level} bonus`
+                            description: t('referral_bonus', null, { level: level })
                         }]);
                 }
             }
@@ -820,7 +768,7 @@ class GLYApp {
                 
                 // Show notification
                 if (this.currentSection === 'deposit') {
-                    window.showCustomAlert(`New deposit received: ${deposit.amount.toFixed(2)} USDT`);
+                    window.showCustomAlert(t('new_deposit_received', null, { amount: deposit.amount.toFixed(2) }));
                 }
             }
             
@@ -880,7 +828,7 @@ window.showCustomAlert = (message) => {
         return;
     }
     
-    modalHeader.textContent = window.GLYTranslate?.t('notification') || 'Notification';
+    modalHeader.textContent = t('notification');
     modalBody.innerHTML = `<p style="text-align: center;">${message}</p>`;
     
     modal.style.display = 'flex';

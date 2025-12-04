@@ -13,6 +13,12 @@
     -webkit-touch-callout: none;
 }
 
+/* Убираем палочку выделения при касании */
+*:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 /* Allow selection only in input fields */
 input, textarea {
     -webkit-user-select: text;
@@ -23,12 +29,19 @@ input, textarea {
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(180deg, #4e7771, #4e7771, rgba(185, 215, 168, 0.75));
+    /* НОВЫЙ ФОН: темно-зеленый переходящий в светло-серый */
+    background: linear-gradient(180deg, #1a3c34 0%, #2d524a 30%, #4e7771 60%, #a0b0a8 100%) !important;
     min-height: 100vh;
     color: #333;
     overflow-x: hidden;
     font-size: 16px;
     overflow-y: auto;
+    
+    /* Улучшаем скролл на мобильных */
+    -webkit-overflow-scrolling: touch !important;
+    scroll-behavior: smooth !important;
+    overscroll-behavior-y: none !important;
+    touch-action: pan-y !important;
     
     /* Disable zoom gestures */
     touch-action: pan-x pan-y;
@@ -40,12 +53,13 @@ body {
     -webkit-touch-callout: none;
     
     /* Prevent pull-to-refresh on mobile */
-    overscroll-behavior-y: contain;
+    overscroll-behavior-y: none;
 }
 
 uni-page-body {
     min-height: 100vh;
-    background-image: linear-gradient(180deg, #4e7771, #4e7771, rgba(185, 215, 168, 0.75));
+    /* НОВЫЙ ФОН */
+    background: linear-gradient(180deg, #1a3c34 0%, #2d524a 30%, #4e7771 60%, #a0b0a8 100%) !important;
     overflow-x: hidden;
 }
 
@@ -53,6 +67,8 @@ uni-page-body {
     min-height: 100vh;
     padding-bottom: 60px;
     overflow-x: hidden;
+    /* Улучшаем скролл */
+    -webkit-overflow-scrolling: touch !important;
 }
 
 .page-content {
@@ -65,6 +81,9 @@ html {
     touch-action: manipulation;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    /* Улучшаем скролл */
+    -webkit-overflow-scrolling: touch !important;
+    scroll-behavior: smooth !important;
 }
 
 /* Video player styles */
@@ -1435,7 +1454,7 @@ html {
 /* Стили для страниц авторизации */
 .login-section,
 .register-section {
-    background: linear-gradient(180deg, #4e7771, #4e7771, rgba(185, 215, 168, 0.75));
+    background: linear-gradient(180deg, #1a3c34 0%, #2d524a 30%, #4e7771 60%, #a0b0a8 100%) !important;
     min-height: 100vh;
     padding: 20px 15px;
     overflow-x: hidden;
@@ -3298,269 +3317,6 @@ body.no-tabbar .uni-tabbar {
 .nav-item:hover {
     border-left: 2px solid #4e7771;
 }
-/* ... (весь существующий CSS остается) ... */
-
-/* Добавляем в конец файла перед последней } */
-
-/* Стили для новой круговой диаграммы */
-.chart-container {
-    width: 100%;
-    height: 250px;
-    margin: 20px 0;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    padding: 15px;
-    position: relative;
-    overflow: hidden;
-    border-left: 3px solid #4e7771;
-}
-
-.chart-container canvas {
-    width: 100% !important;
-    height: 100% !important;
-    background: none;
-    position: relative;
-}
-
-/* Стили для зеленых линий в deposit */
-.deposit-address-section {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    border-left: 3px solid #4e7771;
-}
-
-.network-selection-green {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    border-left: 3px solid #4e7771;
-}
-
-.network-options-green {
-    display: flex;
-    gap: 10px;
-}
-
-.network-option-green {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 12px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: all 0.3s ease;
-    border-left: 3px solid #4e7771;
-}
-
-.network-option-green.active {
-    border-color: #4e7771;
-    background: rgba(78, 119, 113, 0.2);
-    border-left: 3px solid #52c41a;
-}
-
-.network-icon-green {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 8px;
-}
-
-.network-icon-green img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.network-name-green {
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.network-check-green {
-    color: #52c41a;
-    font-size: 12px;
-    opacity: 0;
-}
-
-.network-option-green.active .network-check-green {
-    opacity: 1;
-}
-
-.input-line-green {
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid #4e7771;
-    border-radius: 0;
-    padding: 12px 40px 12px 0;
-    color: white;
-    font-size: 16px;
-    width: 100%;
-    outline: none;
-    margin-bottom: 0;
-    transition: border-color 0.3s ease;
-}
-
-.input-line-green::placeholder {
-    color: #ccc;
-}
-
-.input-line-green:focus {
-    border-bottom-color: #52c41a;
-    border-bottom-width: 3px;
-}
-
-.input-container-green {
-    position: relative;
-    margin-bottom: 0;
-}
-
-.deposit-info {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    border-left: 3px solid #4e7771;
-}
-
-.deposit-line {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    border-left: 2px solid transparent;
-}
-
-.deposit-line:hover {
-    border-left: 2px solid #4e7771;
-}
-
-.deposit-line:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
-
-/* Стили для списка депозитов */
-.deposits-list {
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-.deposit-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    border-left: 2px solid transparent;
-    padding-left: 5px;
-}
-
-.deposit-item:hover {
-    border-left: 2px solid #4e7771;
-}
-
-/* Улучшенные стили для круговой диаграммы */
-.chart-container {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(78, 119, 113, 0.5);
-    border-left: 3px solid #4e7771;
-}
-
-/* Адаптация для мобильных экранов */
-@media (max-width: 480px) {
-    .network-options-green {
-        flex-direction: column;
-    }
-    
-    .network-option-green {
-        flex-direction: row;
-        justify-content: flex-start;
-        padding: 10px;
-    }
-    
-    .network-icon-green {
-        width: 30px;
-        height: 30px;
-        margin-bottom: 0;
-        margin-right: 10px;
-    }
-    
-    .network-name-green {
-        margin-bottom: 0;
-        margin-right: auto;
-    }
-    
-    .network-check-green {
-        margin-left: 5px;
-    }
-    
-    .deposit-line {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .deposit-line span:last-child {
-        margin-top: 5px;
-        align-self: flex-end;
-    }
-    
-    .chart-container {
-        height: 200px;
-        padding: 10px;
-    }
-}
-
-/* Новые стили для улучшенной UI */
-.input-line-green:disabled {
-    color: #999;
-    border-bottom-color: #666;
-}
-
-#generated-address-message i,
-#saved-address-message i {
-    margin-right: 5px;
-}
-
-#no-address-message i {
-    margin-right: 5px;
-}
-
-/* Анимация для кнопок deposit */
-#generate-address-btn:hover,
-#copy-address-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(78, 119, 113, 0.4);
-}
-
-/* Стили для loading в deposit */
-#loading-deposit-popup .loading-spinner {
-    width: 40px;
-    height: 40px;
-    border-width: 3px;
-    border-top-color: #4e7771;
-}
-
-/* Обновленные стили для navigation в home */
-.nav-section {
-    border-left: 3px solid rgba(78, 119, 113, 0.5);
-}
-
-.nav-item {
-    border-left: 2px solid transparent;
-    padding-left: 5px;
-}
-
-.nav-item:hover {
-    border-left: 2px solid #4e7771;
-}
 
 /* Улучшенные стили для сетей в модалках */
 .network-selection {
@@ -3620,4 +3376,32 @@ body.no-tabbar .uni-tabbar {
 
 .network-option.active .network-check {
     opacity: 1;
+}
+
+/* Улучшаем скролл для всех скроллящихся элементов */
+.conWrap, .transaction-list-compact, .deposits-list, .withdrawals-list, .referral-list {
+    -webkit-overflow-scrolling: touch !important;
+    scroll-behavior: smooth !important;
+}
+
+/* Убираем выделение при касании на кнопках и интерактивных элементах */
+button, .pro-btn, .auth-button, .nav-item, .action-item, .wallet-action-compact, 
+.network-option, .network-option-green, .admin-btn, .admin-nav-item, 
+.uni-tabbar__item, .copy-btn, .install-btn {
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Улучшаем поведение при скролле на iOS */
+@supports (-webkit-touch-callout: none) {
+    body {
+        /* Для iOS */
+        -webkit-overflow-scrolling: touch !important;
+        height: 100%;
+        overflow: auto;
+    }
+    
+    .page {
+        height: 100%;
+        overflow: auto;
+    }
 }

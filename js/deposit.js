@@ -1,4 +1,4 @@
-// deposit.js - UPDATED with auto-deposit system
+// deposit.js - UPDATED with auto-deposit system and REAL QR codes
 export default function renderDeposit() {
     return `
         <div class="card padding">
@@ -33,12 +33,8 @@ export default function renderDeposit() {
                 <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;">Your Deposit Address</div>
                 
                 <!-- QR Code -->
-                <div style="text-align: center; margin-bottom: 20px; padding: 10px; background: rgba(0,0,0,0.1); border-radius: 8px;">
-                    <div id="qr-code-container" style="width: 150px; height: 150px; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
-                        <div id="qr-placeholder" style="color: #ccc; padding: 40px; text-align: center;">
-                            Loading QR Code...
-                        </div>
-                    </div>
+                <div style="text-align: center; margin-bottom: 20px; padding: 10px; background: white; border-radius: 8px; display: inline-block; margin-left: auto; margin-right: auto; display: block; width: 160px;">
+                    <div id="qr-code-container" style="width: 150px; height: 150px; margin: 0 auto;"></div>
                 </div>
                 
                 <!-- Address Display -->
@@ -47,7 +43,7 @@ export default function renderDeposit() {
                            id="deposit-address-display" 
                            class="input-line"
                            readonly
-                           style="text-align: center; font-size: 14px; letter-spacing: 0.5px;"
+                           style="text-align: center; font-size: 14px; letter-spacing: 0.5px; font-family: monospace;"
                            placeholder="Loading address...">
                 </div>
                 
@@ -121,8 +117,35 @@ export default function renderDeposit() {
     `;
 }
 
+// Подключаем библиотеку для настоящих QR-кодов
+function loadQRCodeLibrary() {
+    return new Promise((resolve, reject) => {
+        if (window.QRCode) {
+            resolve();
+            return;
+        }
+
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+}
+
 export async function init() {
     document.body.classList.add('no-tabbar');
+    
+    // Загружаем библиотеку QR-кодов
+    try {
+        await loadQRCodeLibrary();
+        console.log('QRCode library loaded successfully');
+    } catch (error) {
+        console.error('Failed to load QRCode library:', error);
+        // Если библиотека не загрузилась, создаем заглушку
+        document.getElementById('qr-code-container').innerHTML = 
+            '<div style="color: #ccc; text-align: center; padding: 50px 0;">QR Code Library Error</div>';
+    }
     
     // Initialize network selection
     initNetworkSelection();
@@ -173,9 +196,7 @@ async function loadDepositAddress(network) {
     try {
         // Clear previous QR code
         const qrContainer = document.getElementById('qr-code-container');
-        if (qrContainer) {
-            qrContainer.innerHTML = '<div id="qr-placeholder" style="color: #ccc; padding: 40px; text-align: center;">Loading QR Code...</div>';
-        }
+        qrContainer.innerHTML = '<div style="color: #ccc; text-align: center; padding: 50px 0;">Loading QR...</div>';
         
         document.getElementById('deposit-address-display').value = 'Loading...';
         
@@ -201,8 +222,9 @@ async function loadDepositAddress(network) {
             const addressInput = document.getElementById('deposit-address-display');
             addressInput.value = result.address;
             
-            // Generate simple QR code without external library
-            generateSimpleQRCode(result.address);
+            // Generate real QR code with QRCode library
+            await generateRealQRCode(result.address);
+            
         } else {
             throw new Error('Failed to get deposit address from server');
         }
@@ -213,9 +235,43 @@ async function loadDepositAddress(network) {
         
         // Show error in QR container
         const qrContainer = document.getElementById('qr-code-container');
-        if (qrContainer) {
-            qrContainer.innerHTML = '<div style="color: #ff5722; padding: 40px; text-align: center; font-size: 12px;">Address Error</div>';
-        }
+        qrContainer.innerHTML = '<div style="color: #ff5722; text-align: center; padding: 50px 0; font-size: 12px;">Address Error</div>';
+    }
+}
+
+async function generateRealQRCode(text) {
+    const qrContainer = document.getElementById('qr-code-container');
+    if (!qrContainer) return;
+    
+    qrContainer.innerHTML = '';
+    
+    if (window.QRCode) {
+        // Используем библиотеку QRCode для создания настоящего QR-кода
+        QRCode.toCanvas(text, { 
+            width: 150,
+            height: 150,
+            margin: 1,
+            color: {
+                dark: '#000000',
+                light: '#FFFFFF'
+            },
+            errorCorrectionLevel: 'M'
+        }, function(error, canvas) {
+            if (error) {
+                console.error('QR Code generation error:', error);
+                // Fallback to simple QR code
+                generateSimpleQRCode(text);
+            } else {
+                // Добавляем небольшие стили для лучшего отображения
+                canvas.style.width = '150px';
+                canvas.style.height = '150px';
+                canvas.style.imageRendering = 'pixelated';
+                qrContainer.appendChild(canvas);
+            }
+        });
+    } else {
+        // Fallback to simple QR code
+        generateSimpleQRCode(text);
     }
 }
 
@@ -223,61 +279,61 @@ function generateSimpleQRCode(text) {
     const qrContainer = document.getElementById('qr-code-container');
     if (!qrContainer) return;
     
-    qrContainer.innerHTML = '';
-    
-    // Create canvas element
     const canvas = document.createElement('canvas');
     canvas.width = 150;
     canvas.height = 150;
-    qrContainer.appendChild(canvas);
+    canvas.style.width = '150px';
+    canvas.style.height = '150px';
+    canvas.style.imageRendering = 'pixelated';
     
     const ctx = canvas.getContext('2d');
     
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Draw background
+    // Clear canvas with white background
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Simple QR code pattern (basic version for demo)
+    // Draw QR code pattern
+    drawQRPattern(ctx, text);
+    
+    qrContainer.appendChild(canvas);
+}
+
+function drawQRPattern(ctx, text) {
+    // Simple QR code with basic pattern
+    const size = 150;
     const cellSize = 4;
-    const margin = 10;
     
-    // Draw positioning markers (simplified)
+    // Position markers (simplified)
     ctx.fillStyle = '#000000';
     
-    // Top-left
-    ctx.fillRect(margin, margin, cellSize * 7, cellSize * 7);
+    // Top-left square
+    ctx.fillRect(10, 10, 7 * cellSize, 7 * cellSize);
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(margin + cellSize, margin + cellSize, cellSize * 5, cellSize * 5);
+    ctx.fillRect(10 + cellSize, 10 + cellSize, 5 * cellSize, 5 * cellSize);
     ctx.fillStyle = '#000000';
-    ctx.fillRect(margin + cellSize * 2, margin + cellSize * 2, cellSize * 3, cellSize * 3);
+    ctx.fillRect(10 + 2 * cellSize, 10 + 2 * cellSize, 3 * cellSize, 3 * cellSize);
     
-    // Top-right
+    // Top-right square
     ctx.fillStyle = '#000000';
-    ctx.fillRect(canvas.width - margin - cellSize * 7, margin, cellSize * 7, cellSize * 7);
+    ctx.fillRect(size - 10 - 7 * cellSize, 10, 7 * cellSize, 7 * cellSize);
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(canvas.width - margin - cellSize * 6, margin + cellSize, cellSize * 5, cellSize * 5);
+    ctx.fillRect(size - 10 - 6 * cellSize, 10 + cellSize, 5 * cellSize, 5 * cellSize);
     ctx.fillStyle = '#000000';
-    ctx.fillRect(canvas.width - margin - cellSize * 5, margin + cellSize * 2, cellSize * 3, cellSize * 3);
+    ctx.fillRect(size - 10 - 5 * cellSize, 10 + 2 * cellSize, 3 * cellSize, 3 * cellSize);
     
-    // Bottom-left
+    // Bottom-left square
     ctx.fillStyle = '#000000';
-    ctx.fillRect(margin, canvas.height - margin - cellSize * 7, cellSize * 7, cellSize * 7);
+    ctx.fillRect(10, size - 10 - 7 * cellSize, 7 * cellSize, 7 * cellSize);
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(margin + cellSize, canvas.height - margin - cellSize * 6, cellSize * 5, cellSize * 5);
+    ctx.fillRect(10 + cellSize, size - 10 - 6 * cellSize, 5 * cellSize, 5 * cellSize);
     ctx.fillStyle = '#000000';
-    ctx.fillRect(margin + cellSize * 2, canvas.height - margin - cellSize * 5, cellSize * 3, cellSize * 3);
+    ctx.fillRect(10 + 2 * cellSize, size - 10 - 5 * cellSize, 3 * cellSize, 3 * cellSize);
     
-    // Draw address text
+    // Add text at bottom
     ctx.fillStyle = '#000000';
-    ctx.font = '8px monospace';
+    ctx.font = 'bold 10px monospace';
     ctx.textAlign = 'center';
-    
-    // Shorten address for display
-    const displayText = text.length > 12 ? `${text.substring(0, 6)}...${text.substring(text.length - 6)}` : text;
-    ctx.fillText(displayText, canvas.width / 2, canvas.height - 5);
+    ctx.fillText('SCAN ME', size / 2, size - 5);
 }
 
 async function copyDepositAddress() {

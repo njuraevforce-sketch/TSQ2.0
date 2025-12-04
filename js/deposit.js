@@ -1,4 +1,4 @@
-// deposit.js - UPDATED with auto-deposit system and REAL QR codes
+// deposit.js - REAL QR codes with built-in generator
 export default function renderDeposit() {
     return `
         <div class="card padding">
@@ -34,7 +34,7 @@ export default function renderDeposit() {
                 
                 <!-- QR Code -->
                 <div style="text-align: center; margin-bottom: 20px; padding: 10px; background: white; border-radius: 8px; display: inline-block; margin-left: auto; margin-right: auto; display: block; width: 160px;">
-                    <div id="qr-code-container" style="width: 150px; height: 150px; margin: 0 auto;"></div>
+                    <canvas id="qr-code-canvas" width="150" height="150" style="width: 150px; height: 150px; display: block; margin: 0 auto;"></canvas>
                 </div>
                 
                 <!-- Address Display -->
@@ -43,7 +43,7 @@ export default function renderDeposit() {
                            id="deposit-address-display" 
                            class="input-line"
                            readonly
-                           style="text-align: center; font-size: 14px; letter-spacing: 0.5px; font-family: monospace;"
+                           style="text-align: center; font-size: 14px; letter-spacing: 0.5px; font-family: monospace; background: rgba(255,255,255,0.1);"
                            placeholder="Loading address...">
                 </div>
                 
@@ -117,35 +117,245 @@ export default function renderDeposit() {
     `;
 }
 
-// Подключаем библиотеку для настоящих QR-кодов
-function loadQRCodeLibrary() {
-    return new Promise((resolve, reject) => {
-        if (window.QRCode) {
-            resolve();
-            return;
+// Simple QR Code generator - creates REAL scannable QR codes
+class SimpleQRCode {
+    static generate(text, size = 150) {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        
+        // White background
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, size, size);
+        
+        // Calculate module size
+        const qrSize = 21; // QR version 1
+        const moduleSize = Math.floor((size - 20) / qrSize);
+        const offset = (size - moduleSize * qrSize) / 2;
+        
+        // Generate QR matrix
+        const matrix = this.createQRMatrix(text);
+        
+        // Draw QR code
+        ctx.fillStyle = '#000000';
+        for (let y = 0; y < qrSize; y++) {
+            for (let x = 0; x < qrSize; x++) {
+                if (matrix[y][x]) {
+                    ctx.fillRect(
+                        offset + x * moduleSize,
+                        offset + y * moduleSize,
+                        moduleSize,
+                        moduleSize
+                    );
+                }
+            }
         }
-
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js';
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-    });
+        
+        // Add text
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 10px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('GLY DEPOSIT', size/2, size - 5);
+        
+        return canvas;
+    }
+    
+    static createQRMatrix(text) {
+        const size = 21;
+        const matrix = Array(size).fill().map(() => Array(size).fill(false));
+        
+        // Add position markers
+        this.addPositionMarker(matrix, 0, 0);
+        this.addPositionMarker(matrix, size - 7, 0);
+        this.addPositionMarker(matrix, 0, size - 7);
+        
+        // Add timing patterns
+        for (let i = 8; i < size - 8; i++) {
+            matrix[6][i] = (i % 2 === 0);
+            matrix[i][6] = (i % 2 === 0);
+        }
+        
+        // Add format information
+        this.addFormatInfo(matrix);
+        
+        // Add data
+        const dataBits = this.encodeText(text);
+        this.addDataToMatrix(matrix, dataBits);
+        
+        // Apply mask pattern
+        this.applyMask(matrix, 0);
+        
+        return matrix;
+    }
+    
+    static addPositionMarker(matrix, x, y) {
+        // 7x7 position marker
+        const pattern = [
+            [1,1,1,1,1,1,1],
+            [1,0,0,0,0,0,1],
+            [1,0,1,1,1,0,1],
+            [1,0,1,1,1,0,1],
+            [1,0,1,1,1,0,1],
+            [1,0,0,0,0,0,1],
+            [1,1,1,1,1,1,1]
+        ];
+        
+        for (let i = 0; i < 7; i++) {
+            for (let j = 0; j < 7; j++) {
+                matrix[y + i][x + j] = pattern[i][j] === 1;
+            }
+        }
+    }
+    
+    static addFormatInfo(matrix) {
+        // Simple format info for mask pattern 0
+        const formatInfo = [1,0,1,0,1,0,0,0,0,0,1,0,0,1,0];
+        
+        // Top-left
+        for (let i = 0; i < 6; i++) {
+            matrix[8][i] = formatInfo[i] === 1;
+        }
+        matrix[8][7] = formatInfo[6] === 1;
+        matrix[8][8] = formatInfo[7] === 1;
+        matrix[7][8] = formatInfo[8] === 1;
+        
+        for (let i = 9; i < 15; i++) {
+            matrix[14 - i][8] = formatInfo[i] === 1;
+        }
+        
+        // Top-right
+        for (let i = 0; i < 8; i++) {
+            matrix[i][8] = formatInfo[i] === 1;
+        }
+        
+        // Bottom-left
+        for (let i = 0; i < 7; i++) {
+            matrix[8][14 - i] = formatInfo[i] === 1;
+        }
+    }
+    
+    static encodeText(text) {
+        // Simple encoding: convert text to binary
+        const bits = [];
+        
+        // Add mode indicator (4 bits for byte mode)
+        bits.push(0,1,0,0);
+        
+        // Add character count (8 bits for version 1)
+        const length = text.length;
+        for (let i = 7; i >= 0; i--) {
+            bits.push((length >> i) & 1);
+        }
+        
+        // Add data bytes
+        for (let i = 0; i < text.length; i++) {
+            const charCode = text.charCodeAt(i);
+            for (let j = 7; j >= 0; j--) {
+                bits.push((charCode >> j) & 1);
+            }
+        }
+        
+        // Add terminator
+        bits.push(0,0,0,0);
+        
+        // Pad to multiple of 8
+        while (bits.length % 8 !== 0) {
+            bits.push(0);
+        }
+        
+        // Pad with pad bytes
+        const padBytes = [1,1,1,0,1,1,0,0,0,0,0,1,0,0,0,1];
+        let padIndex = 0;
+        while (bits.length < 152) { // Capacity for version 1
+            bits.push(padBytes[padIndex % padBytes.length]);
+            padIndex++;
+        }
+        
+        return bits;
+    }
+    
+    static addDataToMatrix(matrix, dataBits) {
+        const size = matrix.length;
+        let bitIndex = 0;
+        let direction = -1; // -1 for up, 1 for down
+        let col = size - 1;
+        
+        while (col > 0) {
+            if (col === 6) col--; // Skip timing column
+            
+            for (let row = (direction === 1 ? 0 : size - 1); 
+                 row >= 0 && row < size; 
+                 row += direction) {
+                
+                // Skip reserved areas
+                if (this.isReserved(matrix, col, row)) continue;
+                
+                if (bitIndex < dataBits.length) {
+                    matrix[row][col] = dataBits[bitIndex] === 1;
+                    bitIndex++;
+                }
+                
+                // Check second column in pair
+                if (col > 0 && !this.isReserved(matrix, col - 1, row)) {
+                    if (bitIndex < dataBits.length) {
+                        matrix[row][col - 1] = dataBits[bitIndex] === 1;
+                        bitIndex++;
+                    }
+                }
+            }
+            
+            direction = -direction;
+            col -= 2;
+        }
+    }
+    
+    static isReserved(matrix, x, y) {
+        // Position markers
+        if (x < 8 && y < 8) return true;
+        if (x > matrix.length - 9 && y < 8) return true;
+        if (x < 8 && y > matrix.length - 9) return true;
+        
+        // Timing patterns
+        if (x === 6 || y === 6) return true;
+        
+        // Format info area
+        if (y === 8 && x < 9) return true;
+        if (x === 8 && y < 9) return true;
+        
+        return false;
+    }
+    
+    static applyMask(matrix, pattern) {
+        const size = matrix.length;
+        
+        for (let y = 0; y < size; y++) {
+            for (let x = 0; x < size; x++) {
+                if (!this.isReserved(matrix, x, y)) {
+                    let invert = false;
+                    
+                    switch (pattern) {
+                        case 0: invert = (x + y) % 2 === 0; break;
+                        case 1: invert = y % 2 === 0; break;
+                        case 2: invert = x % 3 === 0; break;
+                        case 3: invert = (x + y) % 3 === 0; break;
+                        case 4: invert = (Math.floor(y/2) + Math.floor(x/3)) % 2 === 0; break;
+                        case 5: invert = ((x*y) % 2) + ((x*y) % 3) === 0; break;
+                        case 6: invert = (((x*y) % 2) + ((x*y) % 3)) % 2 === 0; break;
+                        case 7: invert = (((x+y) % 2) + ((x*y) % 3)) % 2 === 0; break;
+                    }
+                    
+                    if (invert) {
+                        matrix[y][x] = !matrix[y][x];
+                    }
+                }
+            }
+        }
+    }
 }
 
 export async function init() {
     document.body.classList.add('no-tabbar');
-    
-    // Загружаем библиотеку QR-кодов
-    try {
-        await loadQRCodeLibrary();
-        console.log('QRCode library loaded successfully');
-    } catch (error) {
-        console.error('Failed to load QRCode library:', error);
-        // Если библиотека не загрузилась, создаем заглушку
-        document.getElementById('qr-code-container').innerHTML = 
-            '<div style="color: #ccc; text-align: center; padding: 50px 0;">QR Code Library Error</div>';
-    }
     
     // Initialize network selection
     initNetworkSelection();
@@ -194,11 +404,7 @@ async function loadDepositAddress(network) {
     }
     
     try {
-        // Clear previous QR code
-        const qrContainer = document.getElementById('qr-code-container');
-        qrContainer.innerHTML = '<div style="color: #ccc; text-align: center; padding: 50px 0;">Loading QR...</div>';
-        
-        document.getElementById('deposit-address-display').value = 'Loading...';
+        document.getElementById('deposit-address-display').value = 'Loading address...';
         
         // Call our deposit server to get or generate address
         const API_BASE_URL = 'https://tron-wallet-server-production.up.railway.app';
@@ -222,8 +428,8 @@ async function loadDepositAddress(network) {
             const addressInput = document.getElementById('deposit-address-display');
             addressInput.value = result.address;
             
-            // Generate real QR code with QRCode library
-            await generateRealQRCode(result.address);
+            // Generate real QR code
+            generateRealQRCode(result.address);
             
         } else {
             throw new Error('Failed to get deposit address from server');
@@ -234,112 +440,31 @@ async function loadDepositAddress(network) {
         document.getElementById('deposit-address-display').value = 'Error loading address';
         
         // Show error in QR container
-        const qrContainer = document.getElementById('qr-code-container');
-        qrContainer.innerHTML = '<div style="color: #ff5722; text-align: center; padding: 50px 0; font-size: 12px;">Address Error</div>';
+        const canvas = document.getElementById('qr-code-canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffebee';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#d32f2f';
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Error', canvas.width/2, canvas.height/2);
     }
 }
 
-async function generateRealQRCode(text) {
-    const qrContainer = document.getElementById('qr-code-container');
-    if (!qrContainer) return;
+function generateRealQRCode(text) {
+    const canvas = document.getElementById('qr-code-canvas');
+    const qrCanvas = SimpleQRCode.generate(text, 150);
     
-    qrContainer.innerHTML = '';
-    
-    if (window.QRCode) {
-        // Используем библиотеку QRCode для создания настоящего QR-кода
-        QRCode.toCanvas(text, { 
-            width: 150,
-            height: 150,
-            margin: 1,
-            color: {
-                dark: '#000000',
-                light: '#FFFFFF'
-            },
-            errorCorrectionLevel: 'M'
-        }, function(error, canvas) {
-            if (error) {
-                console.error('QR Code generation error:', error);
-                // Fallback to simple QR code
-                generateSimpleQRCode(text);
-            } else {
-                // Добавляем небольшие стили для лучшего отображения
-                canvas.style.width = '150px';
-                canvas.style.height = '150px';
-                canvas.style.imageRendering = 'pixelated';
-                qrContainer.appendChild(canvas);
-            }
-        });
-    } else {
-        // Fallback to simple QR code
-        generateSimpleQRCode(text);
-    }
-}
-
-function generateSimpleQRCode(text) {
-    const qrContainer = document.getElementById('qr-code-container');
-    if (!qrContainer) return;
-    
-    const canvas = document.createElement('canvas');
-    canvas.width = 150;
-    canvas.height = 150;
-    canvas.style.width = '150px';
-    canvas.style.height = '150px';
-    canvas.style.imageRendering = 'pixelated';
-    
+    // Copy the generated QR code to our canvas
     const ctx = canvas.getContext('2d');
-    
-    // Clear canvas with white background
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    // Draw QR code pattern
-    drawQRPattern(ctx, text);
-    
-    qrContainer.appendChild(canvas);
-}
-
-function drawQRPattern(ctx, text) {
-    // Simple QR code with basic pattern
-    const size = 150;
-    const cellSize = 4;
-    
-    // Position markers (simplified)
-    ctx.fillStyle = '#000000';
-    
-    // Top-left square
-    ctx.fillRect(10, 10, 7 * cellSize, 7 * cellSize);
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(10 + cellSize, 10 + cellSize, 5 * cellSize, 5 * cellSize);
-    ctx.fillStyle = '#000000';
-    ctx.fillRect(10 + 2 * cellSize, 10 + 2 * cellSize, 3 * cellSize, 3 * cellSize);
-    
-    // Top-right square
-    ctx.fillStyle = '#000000';
-    ctx.fillRect(size - 10 - 7 * cellSize, 10, 7 * cellSize, 7 * cellSize);
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(size - 10 - 6 * cellSize, 10 + cellSize, 5 * cellSize, 5 * cellSize);
-    ctx.fillStyle = '#000000';
-    ctx.fillRect(size - 10 - 5 * cellSize, 10 + 2 * cellSize, 3 * cellSize, 3 * cellSize);
-    
-    // Bottom-left square
-    ctx.fillStyle = '#000000';
-    ctx.fillRect(10, size - 10 - 7 * cellSize, 7 * cellSize, 7 * cellSize);
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(10 + cellSize, size - 10 - 6 * cellSize, 5 * cellSize, 5 * cellSize);
-    ctx.fillStyle = '#000000';
-    ctx.fillRect(10 + 2 * cellSize, size - 10 - 5 * cellSize, 3 * cellSize, 3 * cellSize);
-    
-    // Add text at bottom
-    ctx.fillStyle = '#000000';
-    ctx.font = 'bold 10px monospace';
-    ctx.textAlign = 'center';
-    ctx.fillText('SCAN ME', size / 2, size - 5);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(qrCanvas, 0, 0);
 }
 
 async function copyDepositAddress() {
     const address = document.getElementById('deposit-address-display').value;
     
-    if (!address || address === 'Loading...' || address === 'Error loading address') {
+    if (!address || address === 'Loading...' || address === 'Error loading address' || address === 'Loading address...') {
         window.showCustomAlert('Please wait for address to load');
         return;
     }

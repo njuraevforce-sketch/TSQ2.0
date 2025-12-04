@@ -33,7 +33,7 @@ const urlsToCache = [
     '/assets/vipicon3.png',
     '/assets/vipicon4.png',
     '/assets/vipicon5.png',
-    '/assets/vipicon6.png',
+    '/assets/vipicon6.png'
 ];
 
 // Install event

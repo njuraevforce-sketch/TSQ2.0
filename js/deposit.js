@@ -7,23 +7,23 @@ export default function renderDeposit() {
                 <p style="color: #ccc; font-size: 14px;">Send USDT to your personal deposit address</p>
             </div>
 
-            <!-- Network Selection -->
-            <div class="network-selection margin-bottom">
+           <!-- Network Selection - Same as deposit.js -->
+            <div class="network-selection-green margin-bottom">
                 <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;">Select Network</div>
-                <div class="network-options">
-                    <div class="network-option active" data-network="TRC20">
-                        <div class="network-icon">
+                <div class="network-options-green">
+                    <div class="network-option-green active" data-network="TRC20">
+                        <div class="network-icon-green">
                             <img src="assets/trc20.png" alt="TRC20">
                         </div>
-                        <div class="network-name">TRC20</div>
-                        <div class="network-check"><i class="fas fa-check"></i></div>
+                        <div class="network-name-green">TRC20</div>
+                        <div class="network-check-green"><i class="fas fa-check"></i></div>
                     </div>
-                    <div class="network-option" data-network="BEP20">
-                        <div class="network-icon">
+                    <div class="network-option-green" data-network="BEP20">
+                        <div class="network-icon-green">
                             <img src="assets/bsc20.png" alt="BEP20">
                         </div>
-                        <div class="network-name">BEP20</div>
-                        <div class="network-check"><i class="fas fa-check"></i></div>
+                        <div class="network-name-green">BEP20</div>
+                        <div class="network-check-green"><i class="fas fa-check"></i></div>
                     </div>
                 </div>
             </div>

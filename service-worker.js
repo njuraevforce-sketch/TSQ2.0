@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gly-platform-v1.5';
+const CACHE_NAME = 'gly-platform-v1.7';
 const urlsToCache = [
     '/',
     '/index.html',

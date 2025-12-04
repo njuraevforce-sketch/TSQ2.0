@@ -1,28 +1,30 @@
 // Withdraw section - UPDATED with same network selection as deposit.js
+import { t } from './translate.js';
+
 export default function renderWithdraw() {
     return `
         <div class="card padding">
             <div style="text-align: center; margin-bottom: 20px;">
-                <h2 style="color: white;">Withdraw USDT</h2>
-                <p style="color: #ccc;">Withdraw your earnings to your wallet</p>
+                <h2 style="color: white;" data-translate="withdraw_usdt">Withdraw USDT</h2>
+                <p style="color: #ccc;" data-translate="withdraw_earnings">Withdraw your earnings to your wallet</p>
             </div>
 
             <!-- Network Selection - Same as deposit.js -->
             <div class="network-selection-green margin-bottom">
-                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;">Select Network</div>
+                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;" data-translate="select_network">Select Network</div>
                 <div class="network-options-green">
                     <div class="network-option-green active" data-network="TRC20">
                         <div class="network-icon-green">
-                            <img src="assets/trc20.png" alt="TRC20">
+                            <img src="assets/trc20.png" alt="TRC20" data-translate-alt="trc20">
                         </div>
-                        <div class="network-name-green">TRC20</div>
+                        <div class="network-name-green" data-translate="network_trc20">TRC20</div>
                         <div class="network-check-green"><i class="fas fa-check"></i></div>
                     </div>
                     <div class="network-option-green" data-network="BEP20">
                         <div class="network-icon-green">
-                            <img src="assets/bsc20.png" alt="BEP20">
+                            <img src="assets/bsc20.png" alt="BEP20" data-translate-alt="bep20">
                         </div>
-                        <div class="network-name-green">BEP20</div>
+                        <div class="network-name-green" data-translate="network_bep20">BEP20</div>
                         <div class="network-check-green"><i class="fas fa-check"></i></div>
                     </div>
                 </div>
@@ -30,63 +32,66 @@ export default function renderWithdraw() {
 
             <!-- Wallet Address - Updated -->
             <div class="wallet-address-section margin-bottom">
-                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;">Withdrawal Address</div>
+                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;" data-translate="withdrawal_address_section">Withdrawal Address</div>
                 <div class="input-container">
                     <input type="text" 
                            id="withdrawal-address" 
+                           data-translate="enter_wallet_address"
                            placeholder="Enter your wallet address" 
                            class="input-line"
                            readonly>
                 </div>
                 <div id="saved-address-message" style="display: none; font-size: 12px; color: #52c41a; margin-top: 5px;">
-                    <i class="fas fa-check-circle"></i> Using saved address
+                    <i class="fas fa-check-circle"></i> <span data-translate="using_saved_address">Using saved address</span>
                 </div>
                 <div id="no-address-message" style="display: none; font-size: 12px; color: #f9ae3d; margin-top: 5px;">
-                    <i class="fas fa-exclamation-circle"></i> No saved address. Click "Set Address" below.
+                    <i class="fas fa-exclamation-circle"></i> <span data-translate="no_saved_address">No saved address. Click "Set Address" below.</span>
                 </div>
                 <button class="pro-btn" id="set-address-btn" style="width: 100%; margin-top: 10px; background: #3d615c;">
-                    <i class="fas fa-edit"></i> Set Withdrawal Address
+                    <i class="fas fa-edit"></i> <span data-translate="set_withdrawal_address_btn">Set Withdrawal Address</span>
                 </button>
             </div>
 
             <!-- Amount -->
             <div class="amount-section margin-bottom">
-                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;">Amount (USDT)</div>
+                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;" data-translate="enter_amount">Enter amount</div>
                 <div class="input-container">
                     <input type="number" 
                            id="withdraw-amount" 
+                           data-translate="enter_amount"
                            placeholder="Enter amount" 
                            class="input-line"
                            min="20"
                            step="0.01">
                 </div>
                 <div style="font-size: 12px; color: #ccc; margin-top: 5px;">
-                    Minimum withdrawal: 20 USDT
+                    <span data-translate="minimum_withdrawal_amount">Minimum withdrawal: 20 USDT</span>
                 </div>
             </div>
 
             <!-- Balance Info -->
             <div class="balance-info margin-bottom">
                 <div class="balance-line">
-                    <span style="color: #ccc;">Available Balance:</span>
+                    <span style="color: #ccc;" data-translate="available_balance">Available Balance:</span>
                     <span id="available-balance" style="color: #fff; font-weight: bold;">0.00 USDT</span>
                 </div>
                 <div class="balance-line">
-                    <span style="color: #ccc;">Withdrawal Fee:</span>
+                    <span style="color: #ccc;" data-translate="withdrawal_fee_label">Withdrawal Fee:</span>
                     <span id="withdrawal-fee" style="color: #f9ae3d;">0.00 USDT</span>
                 </div>
                 <div class="balance-line">
-                    <span style="color: #ccc;">You Will Receive:</span>
+                    <span style="color: #ccc;" data-translate="you_will_receive">You Will Receive:</span>
                     <span id="net-amount" style="color: #52c41a; font-weight: bold;">0.00 USDT</span>
                 </div>
             </div>
 
             <!-- Transaction Password -->
             <div class="password-section margin-bottom">
-                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;">Transaction Password</div>
+                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;" data-translate="enter_transaction_password">Enter transaction password</div>
                 <div class="input-container" style="position: relative;">
                     <input type="password" 
                            id="transaction-password" 
+                           data-translate="enter_transaction_password"
                            placeholder="Enter transaction password" 
                            class="input-line"
                            style="padding-right: 40px;">
@@ -97,7 +102,7 @@ export default function renderWithdraw() {
             </div>
 
             <!-- Withdraw Button -->
-            <button class="pro-btn" id="submit-withdraw" style="width: 100%; margin-top: 20px;">
+            <button class="pro-btn" id="submit-withdraw" style="width: 100%; margin-top: 20px;" data-translate="submit_withdrawal">
                 Submit Withdrawal Request
             </button>
 
@@ -105,16 +110,16 @@ export default function renderWithdraw() {
             <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;">
                 <p style="color: #ccc; font-size: 12px; text-align: center;">
                     <i class="fas fa-info-circle" style="color: #f9ae3d; margin-right: 5px;"></i>
-                    To change your withdrawal address, please contact support: @GLYSupport
+                    <span data-translate="support_message">To change your withdrawal address, please contact support: @GLYSupport</span>
                 </p>
             </div>
 
             <!-- Recent Withdrawals -->
             <div class="margin-top">
-                <div class="text-white text-bold" style="font-size: 14px; margin-bottom: 15px;">Recent Withdrawals</div>
+                <div class="text-white text-bold" style="font-size: 14px; margin-bottom: 15px;" data-translate="recent_withdrawals">Recent Withdrawals</div>
                 <div class="withdrawals-list" id="withdrawals-list">
                     <div style="color: #ccc; text-align: center; padding: 20px;">
-                        No recent withdrawals
+                        <span data-translate="no_withdrawal_history">No withdrawal history</span>
                     </div>
                 </div>
             </div>
@@ -123,7 +128,7 @@ export default function renderWithdraw() {
         <!-- Withdrawal Confirmation Modal -->
         <div class="pop-overlay" id="withdraw-confirm-popup" style="display: none;">
             <div class="pop-content">
-                <div class="pop-header">Confirm Withdrawal</div>
+                <div class="pop-header" data-translate="confirm_withdrawal">Confirm Withdrawal</div>
                 <div class="pop-body">
                     <div style="text-align: center; margin-bottom: 20px;">
                         <div style="font-size: 48px; color: #f9ae3d;">
@@ -133,34 +138,34 @@ export default function renderWithdraw() {
                     
                     <div style="color: #333; margin-bottom: 15px;">
                         <div class="confirm-line">
-                            <span>Network:</span>
+                            <span data-translate="network">Network:</span>
                             <span id="confirm-network" style="font-weight: bold;"></span>
                         </div>
                         <div class="confirm-line">
-                            <span>Address:</span>
+                            <span data-translate="address">Address:</span>
                             <span id="confirm-address" style="font-weight: bold; font-size: 12px; word-break: break-all;"></span>
                         </div>
                         <div class="confirm-line">
-                            <span>Amount:</span>
+                            <span data-translate="amount">Amount:</span>
                             <span id="confirm-amount" style="font-weight: bold; color: #4e7771;"></span>
                         </div>
                         <div class="confirm-line">
-                            <span>Fee:</span>
+                            <span data-translate="fee">Fee:</span>
                             <span id="confirm-fee" style="font-weight: bold; color: #ff4d4f;"></span>
                         </div>
                         <div class="confirm-line">
-                            <span>You Receive:</span>
+                            <span data-translate="you_will_receive">You Receive:</span>
                             <span id="confirm-net" style="font-weight: bold; color: #52c41a;"></span>
                         </div>
                     </div>
                     
-                    <p style="font-size: 12px; color: #666; text-align: center; margin-top: 15px;">
+                    <p style="font-size: 12px; color: #666; text-align: center; margin-top: 15px;" data-translate="processing_time_withdrawal">
                         Processing time: 1-24 hours
                     </p>
                 </div>
                 <div class="pop-footer">
-                    <button type="button" id="confirm-withdraw-final" style="margin-right: 10px; background: #4e7771;">Confirm</button>
-                    <button type="button" id="cancel-withdraw-confirm" style="background: #666;">Cancel</button>
+                    <button type="button" id="confirm-withdraw-final" style="margin-right: 10px; background: #4e7771;" data-translate="confirm">Confirm</button>
+                    <button type="button" id="cancel-withdraw-confirm" style="background: #666;" data-translate="cancel">Cancel</button>
                 </div>
             </div>
         </div>
@@ -169,42 +174,43 @@ export default function renderWithdraw() {
         <div class="pop-overlay" id="set-address-popup" style="display: none;">
             <div class="pop-content">
                 <form id="set-address-form" onsubmit="return false;">
-                    <div class="pop-header">Set Withdrawal Address</div>
+                    <div class="pop-header" data-translate="set_withdrawal_address">Set Withdrawal Address</div>
                     <div class="pop-body">
                         <!-- Network Selection in Modal - Same as deposit.js -->
                         <div class="network-selection-green margin-bottom">
-                            <div class="section-title-small" style="color: #333; margin-bottom: 10px; font-size: 14px;">Select Network</div>
+                            <div class="section-title-small" style="color: #333; margin-bottom: 10px; font-size: 14px;" data-translate="select_network">Select Network</div>
                             <div class="network-options-green">
                                 <div class="network-option-green active" data-network="TRC20">
                                     <div class="network-icon-green">
-                                        <img src="assets/trc20.png" alt="TRC20">
+                                        <img src="assets/trc20.png" alt="TRC20" data-translate-alt="trc20">
                                     </div>
-                                    <div class="network-name-green">TRC20</div>
+                                    <div class="network-name-green" data-translate="network_trc20">TRC20</div>
                                     <div class="network-check-green"><i class="fas fa-check"></i></div>
                                 </div>
                                 <div class="network-option-green" data-network="BEP20">
                                     <div class="network-icon-green">
-                                        <img src="assets/bsc20.png" alt="BEP20">
+                                        <img src="assets/bsc20.png" alt="BEP20" data-translate-alt="bep20">
                                     </div>
-                                    <div class="network-name-green">BEP20</div>
+                                    <div class="network-name-green" data-translate="network_bep20">BEP20</div>
                                     <div class="network-check-green"><i class="fas fa-check"></i></div>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="margin-bottom">
-                            <label style="color: #333; font-size: 14px;">USDT Wallet Address</label>
+                            <label style="color: #333; font-size: 14px;" data-translate="usdt_wallet_address">USDT Wallet Address</label>
                             <input type="text" id="new-withdrawal-address" 
+                                   data-translate="enter_wallet_address"
                                    placeholder="Enter your wallet address" 
                                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
                         </div>
-                        <p style="font-size: 12px; color: #666;">
+                        <p style="font-size: 12px; color: #666;" data-translate="address_save_note">
                             This address will be saved for future withdrawals. Please double-check the address.
                         </p>
                     </div>
                     <div class="pop-footer">
-                        <button type="submit" id="save-new-address" style="margin-right: 10px; background: #4e7771;">Save Address</button>
-                        <button type="button" id="close-set-address" style="background: #666;">Cancel</button>
+                        <button type="submit" id="save-new-address" style="margin-right: 10px; background: #4e7771;" data-translate="save">Save Address</button>
+                        <button type="button" id="close-set-address" style="background: #666;" data-translate="cancel">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -229,6 +235,15 @@ export async function init() {
     
     // Update fee calculation when amount changes
     document.getElementById('withdraw-amount').addEventListener('input', updateFeeCalculation);
+    
+    // Update translations
+    import('./translate.js').then(module => {
+        if (module.updatePageLanguage) {
+            setTimeout(() => module.updatePageLanguage(), 100);
+        }
+    }).catch(error => {
+        console.error('Error loading translate module:', error);
+    });
 }
 
 function setupEventListeners() {
@@ -342,7 +357,7 @@ async function saveNewAddress() {
     const address = document.getElementById('new-withdrawal-address').value.trim();
     
     if (!address) {
-        window.showCustomAlert('Please enter a valid wallet address');
+        window.showCustomAlert(t('validation_required'));
         return;
     }
     
@@ -366,7 +381,7 @@ async function saveNewAddress() {
         Object.assign(user, updateData);
         localStorage.setItem('gly_user', JSON.stringify(user));
         
-        window.showCustomAlert('Withdrawal address saved successfully!');
+        window.showCustomAlert(t('address_saved'));
         hideSetAddressPopup();
         
         // Update address display
@@ -374,7 +389,7 @@ async function saveNewAddress() {
         
     } catch (error) {
         console.error('Error saving address:', error);
-        window.showCustomAlert('Error saving address: ' + error.message);
+        window.showCustomAlert(t('error') + ': ' + error.message);
     }
 }
 
@@ -389,14 +404,14 @@ function initNetworkSelection() {
     if (user.withdrawal_address_trc20) {
         const networkName = trc20Option.querySelector('.network-name-green');
         if (networkName) {
-            networkName.innerHTML += ' <span style="font-size: 10px; color: #52c41a;">(Saved)</span>';
+            networkName.innerHTML += ' <span style="font-size: 10px; color: #52c41a;">(' + t('saved') + ')</span>';
         }
     }
     
     if (user.withdrawal_address_bep20) {
         const networkName = bep20Option.querySelector('.network-name-green');
         if (networkName) {
-            networkName.innerHTML += ' <span style="font-size: 10px; color: #52c41a;">(Saved)</span>';
+            networkName.innerHTML += ' <span style="font-size: 10px; color: #52c41a;">(' + t('saved') + ')</span>';
         }
     }
 }
@@ -439,27 +454,27 @@ async function submitWithdrawal() {
     if (!address) {
         // Show set address popup if no address
         showSetAddressPopup();
-        window.showCustomAlert('Please set your withdrawal address first');
+        window.showCustomAlert(t('validation_required'));
         return;
     }
     
     if (!amount || amount < 20) {
-        window.showCustomAlert('Minimum withdrawal amount is 20 USDT');
+        window.showCustomAlert(t('minimum_withdrawal_rule'));
         return;
     }
     
     if (amount > user.balance) {
-        window.showCustomAlert('Insufficient balance');
+        window.showCustomAlert(t('insufficient_balance'));
         return;
     }
     
     if (!password) {
-        window.showCustomAlert('Please enter transaction password');
+        window.showCustomAlert(t('validation_required'));
         return;
     }
     
     if (user.payment_password !== password) {
-        window.showCustomAlert('Invalid transaction password');
+        window.showCustomAlert(t('invalid_transaction_password'));
         return;
     }
     
@@ -523,7 +538,10 @@ async function processWithdrawal() {
         document.getElementById('withdraw-confirm-popup').style.display = 'none';
         
         // Show success message
-        window.showCustomAlert(`Withdrawal request submitted! You will receive ${(amount - fee).toFixed(2)} USDT (fee: ${fee.toFixed(2)} USDT). Processing time: 1-24 hours.`);
+        window.showCustomAlert(t('withdrawal_submitted', null, { 
+            amount: (amount - fee).toFixed(2), 
+            fee: fee.toFixed(2) 
+        }));
         
         // Reset form
         document.getElementById('withdraw-amount').value = '';
@@ -539,7 +557,7 @@ async function processWithdrawal() {
         
     } catch (error) {
         console.error('Error processing withdrawal:', error);
-        window.showCustomAlert('Error processing withdrawal: ' + error.message);
+        window.showCustomAlert(t('error') + ': ' + error.message);
     }
 }
 
@@ -585,12 +603,14 @@ async function loadRecentWithdrawals() {
                 `;
             });
         } else {
-            html = '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">No withdrawal history</div>';
+            html = '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">' + t('no_withdrawal_history') + '</div>';
         }
         
         container.innerHTML = html;
         
     } catch (error) {
         console.error('Error loading withdrawals:', error);
+        const container = document.getElementById('withdrawals-list');
+        container.innerHTML = '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">' + t('error_loading') + '</div>';
     }
 }

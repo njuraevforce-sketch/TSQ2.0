@@ -341,7 +341,8 @@ export const translations = {
     'user_updated': 'User updated successfully',
     'user_added': 'User added successfully',
   },
- fr: {
+  
+   fr: {
     // Полный французский перевод
     'welcome': 'Bienvenue',
     'welcome_to_gly': 'Bienvenue sur GLY',
@@ -2307,7 +2308,8 @@ export const translations = {
     'user_deleted': 'Usuário excluído com sucesso',
     'user_updated': 'Usuário atualizado com sucesso',
     'user_added': 'Usuário adicionado com sucesso',
-  tr: {
+  },
+   tr: {
     // Турецкий перевод
     'welcome': 'Hoş geldiniz',
     'welcome_to_gly': 'GLY\'ye Hoş Geldiniz',
@@ -4272,16 +4274,36 @@ export const translations = {
     'confirm_delete': 'Apakah Anda yakin ingin menghapus pengguna ini?',
     'user_deleted': 'Pengguna berhasil dihapus',
     'user_updated': 'Pengguna berhasil diperbarui',
-    'user_added': 'Pengguna berhasil ditambahkan'
- }
+    'user_added': 'Pengguna berhasil ditambahkan',
+  },
 };
-// Функции переводов (остаются теми же, что в исходном файле)
+// Default language
+export const defaultLanguage = 'en';
+
+// Available languages with display names
+export const availableLanguages = {
+  en: 'English',
+  fr: 'Français',
+  de: 'Deutsch',
+  ar: 'العربية',
+  pl: 'Polski',
+  ru: 'Русский',
+  pt: 'Português',
+  tr: 'Türkçe',
+  ro: 'Română',
+  uz: 'Oʻzbekcha',
+  es: 'Español',
+  it: 'Italiano',
+  id: 'Bahasa Indonesia'
+};
+
+// Translation function with parameter support
 export function t(key, lang = null, params = {}) {
   const currentLang = lang || getCurrentLanguage();
   const langTranslations = translations[currentLang] || translations[defaultLanguage];
   let translation = langTranslations[key] || translations[defaultLanguage][key] || key;
   
-  // Заменяем параметры
+  // Replace parameters
   if (params && Object.keys(params).length > 0) {
     Object.keys(params).forEach(param => {
       translation = translation.replace(`{${param}}`, params[param]);
@@ -4291,18 +4313,20 @@ export function t(key, lang = null, params = {}) {
   return translation;
 }
 
+// Get current language from localStorage
 export function getCurrentLanguage() {
   return localStorage.getItem('gly_language') || defaultLanguage;
 }
 
+// Set language in localStorage
 export function setLanguage(lang) {
   if (availableLanguages[lang]) {
     localStorage.setItem('gly_language', lang);
     
-    // Обновляем атрибут lang HTML
+    // Update HTML lang attribute
     document.documentElement.lang = lang;
     
-    // Добавляем класс RTL для арабского языка
+    // Add RTL class for Arabic
     if (lang === 'ar') {
       document.documentElement.dir = 'rtl';
       document.body.classList.add('rtl');
@@ -4316,13 +4340,14 @@ export function setLanguage(lang) {
   return false;
 }
 
+// Update all translatable elements on the page
 export function updatePageLanguage(lang = null) {
   const currentLang = lang || getCurrentLanguage();
   
-  // Устанавливаем атрибут lang HTML
+  // Set HTML lang attribute
   document.documentElement.lang = currentLang;
   
-  // Обновляем все элементы с атрибутом data-translate
+  // Update all elements with data-translate attribute
   document.querySelectorAll('[data-translate]').forEach(element => {
     const key = element.getAttribute('data-translate');
     const translation = t(key, currentLang);
@@ -4336,30 +4361,31 @@ export function updatePageLanguage(lang = null) {
     }
   });
   
-  // Обновляем атрибуты title
+  // Update title attributes
   document.querySelectorAll('[data-translate-title]').forEach(element => {
     const key = element.getAttribute('data-translate-title');
     element.setAttribute('title', t(key, currentLang));
   });
   
-  // Обновляем атрибуты alt
+  // Update alt attributes
   document.querySelectorAll('[data-translate-alt]').forEach(element => {
     const key = element.getAttribute('data-translate-alt');
     element.setAttribute('alt', t(key, currentLang));
   });
   
-  // Обновляем атрибуты value
+  // Update value attributes
   document.querySelectorAll('[data-translate-value]').forEach(element => {
     const key = element.getAttribute('data-translate-value');
     element.value = t(key, currentLang);
   });
   
-  // Обновляем модальное окно выбора языка, если оно открыто
+  // Update language modal if open
   updateLanguageModal(currentLang);
   
   return currentLang;
 }
 
+// Create language modal HTML
 export function createLanguageModal() {
   return `
     <div class="pop-overlay language-modal-overlay" id="language-modal" style="display: none;">
@@ -4389,6 +4415,7 @@ export function createLanguageModal() {
   `;
 }
 
+// Get flag emoji for language
 function getFlagEmoji(langCode) {
   const flags = {
     en: '🇺🇸',
@@ -4408,6 +4435,7 @@ function getFlagEmoji(langCode) {
   return flags[langCode] || '🌐';
 }
 
+// Update language modal content
 function updateLanguageModal(lang) {
   const modal = document.getElementById('language-modal');
   if (modal) {
@@ -4416,7 +4444,7 @@ function updateLanguageModal(lang) {
       currentDisplay.textContent = availableLanguages[lang] || lang;
     }
     
-    // Обновляем активный язык в списке
+    // Update active language in list
     document.querySelectorAll('.language-option').forEach(option => {
       const langCode = option.getAttribute('data-lang');
       option.classList.toggle('active', langCode === lang);
@@ -4429,28 +4457,30 @@ function updateLanguageModal(lang) {
   }
 }
 
+// Initialize language system
 export function initLanguageSystem() {
-  // Устанавливаем начальный язык
+  // Set initial language
   const currentLang = getCurrentLanguage();
   setLanguage(currentLang);
   
-  // Добавляем модальное окно выбора языка, если его нет
+  // Add language modal to body if not exists
   if (!document.getElementById('language-modal')) {
     const modalHTML = createLanguageModal();
     document.body.insertAdjacentHTML('beforeend', modalHTML);
   }
   
-  // Загружаем текущий язык
+  // Load current language
   updatePageLanguage(currentLang);
   
-  // Настраиваем обработчики событий для модального окна
+  // Setup event listeners for language modal
   setTimeout(() => {
     setupLanguageModalEvents();
   }, 100);
 }
 
+// Setup language modal event listeners
 function setupLanguageModalEvents() {
-  // Кнопка закрытия модального окна
+  // Close modal button
   const closeBtn = document.getElementById('close-language-modal');
   if (closeBtn) {
     closeBtn.addEventListener('click', () => {
@@ -4458,24 +4488,24 @@ function setupLanguageModalEvents() {
     });
   }
   
-  // Опции языков
+  // Language options
   document.querySelectorAll('.language-option').forEach(option => {
     option.addEventListener('click', function() {
       const lang = this.getAttribute('data-lang');
       setLanguage(lang);
       updatePageLanguage(lang);
       
-      // Показываем сообщение об успехе
+      // Show success message
       window.showCustomAlert(t('language_changed', lang, { language: availableLanguages[lang] }));
       
-      // Закрываем модальное окно после небольшой задержки
+      // Close modal after a short delay
       setTimeout(() => {
         document.getElementById('language-modal').style.display = 'none';
       }, 300);
     });
   });
   
-  // Закрытие модального окна при клике снаружи
+  // Close modal when clicking outside
   document.addEventListener('click', (event) => {
     const modal = document.getElementById('language-modal');
     if (modal && event.target === modal) {
@@ -4484,6 +4514,7 @@ function setupLanguageModalEvents() {
   });
 }
 
+// Show language modal
 export function showLanguageModal() {
   const modal = document.getElementById('language-modal');
   if (modal) {
@@ -4492,6 +4523,7 @@ export function showLanguageModal() {
   }
 }
 
+// Function to translate dynamic content
 export function translateContent(element, key, params = {}) {
   if (!element) return;
   

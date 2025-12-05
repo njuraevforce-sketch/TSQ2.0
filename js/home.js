@@ -224,76 +224,38 @@ async function loadCryptoPrices() {
             lastUpdatedElement.textContent = t('updating');
         }
 
-        // Use CoinGecko API
+        // Use Binance API - single request for all symbols
+        const symbols = 'BTCUSDT,ETHUSDT,BNBUSDT,XRPUSDT,ADAUSDT,SOLUSDT,DOTUSDT,DOGEUSDT';
         const response = await fetch(
-            'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,ripple,cardano,solana,polkadot,dogecoin&vs_currencies=usd&include_24hr_change=true'
+            `https://api.binance.com/api/v3/ticker/24hr?symbols=${encodeURIComponent(JSON.stringify(symbols.split(',')))}`
         );
         
         if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
+            throw new Error(`Binance API error: ${response.status}`);
         }
         
         const data = await response.json();
         
-        // Crypto array with data
-        const cryptoData = [
-            { 
-                id: 'bitcoin', 
-                symbol: 'BTC', 
-                name: 'Bitcoin', 
-                icon: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png' 
-            },
-            { 
-                id: 'ethereum', 
-                symbol: 'ETH', 
-                name: 'Ethereum', 
-                icon: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' 
-            },
-            { 
-                id: 'binancecoin', 
-                symbol: 'BNB', 
-                name: 'Binance Coin', 
-                icon: 'https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png' 
-            },
-            { 
-                id: 'ripple', 
-                symbol: 'XRP', 
-                name: 'Ripple', 
-                icon: 'https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png' 
-            },
-            { 
-                id: 'cardano', 
-                symbol: 'ADA', 
-                name: 'Cardano', 
-                icon: 'https://assets.coingecko.com/coins/images/975/small/cardano.png' 
-            },
-            { 
-                id: 'solana', 
-                symbol: 'SOL', 
-                name: 'Solana', 
-                icon: 'https://assets.coingecko.com/coins/images/4128/small/solana.png' 
-            },
-            { 
-                id: 'polkadot', 
-                symbol: 'DOT', 
-                name: 'Polkadot', 
-                icon: 'https://assets.coingecko.com/coins/images/12171/small/polkadot.png' 
-            },
-            { 
-                id: 'dogecoin', 
-                symbol: 'DOGE', 
-                name: 'Dogecoin', 
-                icon: 'https://assets.coingecko.com/coins/images/5/small/dogecoin.png' 
-            }
-        ];
+        // Crypto array with data mapping
+        const cryptoMapping = {
+            'BTCUSDT': { symbol: 'BTC', name: 'Bitcoin', icon: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png' },
+            'ETHUSDT': { symbol: 'ETH', name: 'Ethereum', icon: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' },
+            'BNBUSDT': { symbol: 'BNB', name: 'Binance Coin', icon: 'https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png' },
+            'XRPUSDT': { symbol: 'XRP', name: 'Ripple', icon: 'https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png' },
+            'ADAUSDT': { symbol: 'ADA', name: 'Cardano', icon: 'https://assets.coingecko.com/coins/images/975/small/cardano.png' },
+            'SOLUSDT': { symbol: 'SOL', name: 'Solana', icon: 'https://assets.coingecko.com/coins/images/4128/small/solana.png' },
+            'DOTUSDT': { symbol: 'DOT', name: 'Polkadot', icon: 'https://assets.coingecko.com/coins/images/12171/small/polkadot.png' },
+            'DOGEUSDT': { symbol: 'DOGE', name: 'Dogecoin', icon: 'https://assets.coingecko.com/coins/images/5/small/dogecoin.png' }
+        };
         
         let html = '';
         
-        cryptoData.forEach(crypto => {
-            const cryptoInfo = data[crypto.id];
-            if (cryptoInfo && cryptoInfo.usd && cryptoInfo.usd_24h_change !== undefined) {
-                const price = cryptoInfo.usd;
-                const change = cryptoInfo.usd_24h_change;
+        // Process each crypto
+        data.forEach(item => {
+            const mapping = cryptoMapping[item.symbol];
+            if (mapping) {
+                const price = parseFloat(item.lastPrice);
+                const change = parseFloat(item.priceChangePercent);
                 const changeClass = change >= 0 ? 'change-positive' : 'change-negative';
                 const changeSign = change >= 0 ? '+' : '';
                 const formattedPrice = price > 1 ? 
@@ -304,10 +266,10 @@ async function loadCryptoPrices() {
                     <div class="crypto-item">
                         <div class="crypto-info">
                             <div class="crypto-icon">
-                                <img src="${crypto.icon}" alt="${crypto.name}" onerror="this.src='assets/crypto/placeholder.png'">
+                                <img src="${mapping.icon}" alt="${mapping.name}" onerror="this.src='assets/crypto/placeholder.png'">
                             </div>
                             <div>
-                                <span class="crypto-name">${crypto.name}</span>
+                                <span class="crypto-name">${mapping.name}</span>
                                 <span class="crypto-pair">/USDT</span>
                             </div>
                         </div>
@@ -320,11 +282,47 @@ async function loadCryptoPrices() {
             }
         });
         
-        if (html === '') {
-            throw new Error('No data received from API');
-        }
+        // Sort in the desired order if needed
+        const orderedHtml = [];
+        Object.keys(cryptoMapping).forEach(symbol => {
+            const item = data.find(d => d.symbol === symbol);
+            if (item) {
+                const mapping = cryptoMapping[symbol];
+                const price = parseFloat(item.lastPrice);
+                const change = parseFloat(item.priceChangePercent);
+                const changeClass = change >= 0 ? 'change-positive' : 'change-negative';
+                const changeSign = change >= 0 ? '+' : '';
+                const formattedPrice = price > 1 ? 
+                    price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) :
+                    price.toLocaleString('en-US', {minimumFractionDigits: 4, maximumFractionDigits: 4});
+                
+                orderedHtml.push(`
+                    <div class="crypto-item">
+                        <div class="crypto-info">
+                            <div class="crypto-icon">
+                                <img src="${mapping.icon}" alt="${mapping.name}" onerror="this.src='assets/crypto/placeholder.png'">
+                            </div>
+                            <div>
+                                <span class="crypto-name">${mapping.name}</span>
+                                <span class="crypto-pair">/USDT</span>
+                            </div>
+                        </div>
+                        <div class="flex align-center">
+                            <div class="crypto-price">$${formattedPrice}</div>
+                            <div class="crypto-change ${changeClass}">${changeSign}${change.toFixed(2)}%</div>
+                        </div>
+                    </div>
+                `);
+            }
+        });
         
-        cryptoContainer.innerHTML = html;
+        if (orderedHtml.length > 0) {
+            cryptoContainer.innerHTML = orderedHtml.join('');
+        } else if (html) {
+            cryptoContainer.innerHTML = html;
+        } else {
+            throw new Error('No valid data received from API');
+        }
         
         // Update last updated time
         if (lastUpdatedElement) {
@@ -377,7 +375,7 @@ async function loadCryptoPrices() {
         
         cryptoContainer.innerHTML = `
             <div style="margin-bottom: 10px; color: #f9ae3d; font-size: 12px; text-align: center;">
-                ${t('cached_data')}
+                ${t('cached_data')} ${error.message || ''}
             </div>
             ${fallbackHtml}
         `;

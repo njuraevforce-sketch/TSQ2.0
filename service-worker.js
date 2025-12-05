@@ -1,65 +1,69 @@
-const CACHE_NAME = 'gly-platform-v5.0';
+const CACHE_NAME = 'gly-platform-v5.1';
 const urlsToCache = [
     '/',
     '/index.html',
-    '/css/style.css?v=5.0',
-    '/js/app.js?v=5.0',
-    '/js/home.js?v=5.0',
-    '/js/mine.js?v=5.0',
-    '/js/assets.js?v=5.0',
-    '/js/team.js?v=5.0',
-    '/js/deposit.js?v=5.0',
-    '/js/withdraw.js?v=5.0',
+    '/css/style.css?v=5.1',
+    '/js/app.js?v=5.1',
+    '/js/home.js?v=5.1',
+    '/js/mine.js?v=5.1',
+    '/js/assets.js?v=5.1',
+    '/js/team.js?v=5.1',
+    '/js/deposit.js?v=5.1',
+    '/js/withdraw.js?v=5.1',
+    '/js/translate.js?v=5.1',
     '/manifest.json',
-    '/assets/logo.png?v=5.0',
-    '/assets/favicon.ico?v=5.0',
-    '/assets/trc20.png?v=5.0',
-    '/assets/bsc20.png?v=5.0',
-    '/assets/home.png?v=5.0',
-    '/assets/get.png?v=5.0',
-    '/assets/assets.png?v=5.0',
-    '/assets/mine.png?v=5.0',
-    '/assets/company.png?v=5.0',
-    '/assets/deposit.png?v=5.0',
-    '/assets/withdraw.png?v=5.0',
-    '/assets/invite.png?v=5.0',
-    '/assets/team.png?v=5.0',
-    '/assets/rules.png?v=5.0',
-    '/assets/avatar.png?v=5.0',
-    '/assets/setting-address.png?v=5.0',
-    '/assets/setting-password.png?v=5.0',
-    '/assets/setting-service.png?v=5.0',
-    '/assets/setting-language.png?v=5.0',
-    '/assets/setting-change-password.png?v=5.0',
-    '/assets/vip1.png?v=5.0',
-    '/assets/vip2.png?v=5.0',
-    '/assets/vip3.png?v=5.0',
-    '/assets/vip4.png?v=5.0',
-    '/assets/vip5.png?v=5.0',
-    '/assets/vip6.png?v=5.0',
-    '/assets/vipicon1.png?v=5.0',
-    '/assets/vipicon2.png?v=5.0',
-    '/assets/vipicon3.png?v=5.0',
-    '/assets/vipicon4.png?v=5.0',
-    '/assets/vipicon5.png?v=5.0',
-    '/assets/vipicon6.png?v=5.0'
+    '/assets/logo.png?v=5.1',
+    '/assets/favicon.ico?v=5.1',
+    '/assets/trc20.png?v=5.1',
+    '/assets/bsc20.png?v=5.1',
+    '/assets/home.png?v=5.1',
+    '/assets/get.png?v=5.1',
+    '/assets/assets.png?v=5.1',
+    '/assets/mine.png?v=5.1',
+    '/assets/company.png?v=5.1',
+    '/assets/deposit.png?v=5.1',
+    '/assets/withdraw.png?v=5.1',
+    '/assets/invite.png?v=5.1',
+    '/assets/team.png?v=5.1',
+    '/assets/rules.png?v=5.1',
+    '/assets/avatar.png?v=5.1',
+    '/assets/setting-address.png?v=5.1',
+    '/assets/setting-password.png?v=5.1',
+    '/assets/setting-service.png?v=5.1',
+    '/assets/setting-language.png?v=5.1',
+    '/assets/setting-change-password.png?v=5.1',
+    '/assets/vip1.png?v=5.1',
+    '/assets/vip2.png?v=5.1',
+    '/assets/vip3.png?v=5.1',
+    '/assets/vip4.png?v=5.1',
+    '/assets/vip5.png?v=5.1',
+    '/assets/vip6.png?v=5.1',
+    '/assets/vipicon1.png?v=5.1',
+    '/assets/vipicon2.png?v=5.1',
+    '/assets/vipicon3.png?v=5.1',
+    '/assets/vipicon4.png?v=5.1',
+    '/assets/vipicon5.png?v=5.1',
+    '/assets/vipicon6.png?v=5.1'
 ];
 
 // Install event - Кешируем все файлы при установке
 self.addEventListener('install', event => {
+    console.log('Service Worker installing v5.1...');
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                console.log('Cache opened for version: v5.0');
-                // Пытаемся добавить все файлы в кеш
-                return cache.addAll(urlsToCache)
-                    .then(() => {
-                        console.log('All resources have been cached');
-                    })
-                    .catch(error => {
-                        console.warn('Some resources failed to cache:', error);
-                        // Продолжаем даже если некоторые файлы не закешировались
-                    });
+                console.log('Cache opened for version: v5.1');
+                return cache.addAll(urlsToCache.map(url => {
+                    // Убираем параметры версии для запроса, чтобы избежать дублирования
+                    const cleanUrl = url.split('?')[0];
+                    return cleanUrl;
+                }))
+                .then(() => {
+                    console.log('All resources have been cached');
+                })
+                .catch(error => {
+                    console.warn('Some resources failed to cache:', error);
+                });
             })
     );
     
@@ -69,6 +73,7 @@ self.addEventListener('install', event => {
 
 // Activate event - Очищаем старые кеши
 self.addEventListener('activate', event => {
+    console.log('Service Worker activating v5.1...');
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
@@ -96,7 +101,7 @@ self.addEventListener('activate', event => {
                 clients.forEach(client => {
                     client.postMessage({
                         type: 'NEW_VERSION',
-                        version: '5.0'
+                        version: '5.1'
                     });
                 });
             });
@@ -128,22 +133,45 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // Обрабатываем запрос
+    // Для динамических файлов (CSS/JS) используем сеть сначала
+    const url = event.request.url;
+    if (url.includes('.css') || url.includes('.js')) {
+        event.respondWith(
+            fetch(event.request)
+                .then(response => {
+                    // Проверяем валидность ответа
+                    if (!response || response.status !== 200) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    // Клонируем ответ для кеширования
+                    const responseToCache = response.clone();
+
+                    // Открываем кеш и сохраняем ответ
+                    caches.open(CACHE_NAME)
+                        .then(cache => {
+                            cache.put(event.request, responseToCache);
+                        })
+                        .catch(error => {
+                            console.warn('Failed to cache response:', error);
+                        });
+
+                    return response;
+                })
+                .catch(() => {
+                    // Если сеть недоступна, используем кеш
+                    return caches.match(event.request);
+                })
+        );
+        return;
+    }
+
+    // Для статических файлов используем кеш сначала
     event.respondWith(
         caches.match(event.request)
             .then(response => {
                 // Если есть в кеше - возвращаем
                 if (response) {
-                    // Для CSS и JS файлов - проверяем версию
-                    if (event.request.url.match(/\.(css|js)$/)) {
-                        const url = new URL(event.request.url);
-                        if (url.searchParams.get('v') !== '5.0') {
-                            // Обновляем файл в фоне
-                            event.waitUntil(
-                                updateFileCache(event.request)
-                            );
-                        }
-                    }
                     return response;
                 }
 
@@ -195,33 +223,6 @@ self.addEventListener('fetch', event => {
     );
 });
 
-// Функция для обновления файлов в кеше (особенно CSS/JS)
-function updateFileCache(request) {
-    return fetch(request)
-        .then(response => {
-            // Проверяем валидность ответа
-            if (!response || response.status !== 200) {
-                throw new Error('Invalid response');
-            }
-
-            // Клонируем ответ
-            const responseToCache = response.clone();
-
-            // Обновляем кеш
-            return caches.open(CACHE_NAME)
-                .then(cache => {
-                    return cache.put(request, responseToCache);
-                });
-        })
-        .then(() => {
-            console.log('Updated cache for:', request.url);
-        })
-        .catch(error => {
-            console.log('Background file update failed:', error);
-            // Не делаем ничего при ошибке - оставляем старую версию в кеше
-        });
-}
-
 // Функция для получения заглушки для изображений
 function getImagePlaceholder(request) {
     const url = request.url;
@@ -269,14 +270,14 @@ self.addEventListener('push', event => {
         data = {
             title: 'GLY Platform',
             body: event.data ? event.data.text() : 'New notification',
-            icon: '/assets/logo.png?v=5.0'
+            icon: '/assets/logo.png?v=5.1'
         };
     }
 
     const options = {
         body: data.body || 'New notification from GLY Platform',
-        icon: data.icon || '/assets/logo.png?v=5.0',
-        badge: '/assets/logo.png?v=5.0',
+        icon: data.icon || '/assets/logo.png?v=5.1',
+        badge: '/assets/logo.png?v=5.1',
         vibrate: [100, 50, 100],
         data: {
             url: data.url || '/',
@@ -286,12 +287,12 @@ self.addEventListener('push', event => {
             {
                 action: 'open',
                 title: 'Open App',
-                icon: '/assets/logo.png?v=5.0'
+                icon: '/assets/logo.png?v=5.1'
             },
             {
                 action: 'close',
                 title: 'Close',
-                icon: '/assets/logo.png?v=5.0'
+                icon: '/assets/logo.png?v=5.1'
             }
         ]
     };
@@ -362,7 +363,7 @@ function cleanOldLocalStorage() {
     return new Promise((resolve) => {
         try {
             // Удаляем старые версии app_version
-            const versions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '4.0'];
+            const versions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '4.0', '5.0'];
             versions.forEach(version => {
                 if (localStorage.getItem('app_version') === version) {
                     localStorage.removeItem('app_version');
@@ -370,7 +371,7 @@ function cleanOldLocalStorage() {
             });
             
             // Устанавливаем новую версию
-            localStorage.setItem('app_version', '5.0');
+            localStorage.setItem('app_version', '5.1');
             
             // Очищаем кеш CSS и JS версий
             const keys = Object.keys(localStorage);
@@ -470,8 +471,8 @@ self.addEventListener('activate', event => {
             clients.forEach(client => {
                 client.postMessage({
                     type: 'FORCE_RELOAD',
-                    version: '5.0',
-                    reason: 'New version with scroll fixes'
+                    version: '5.1',
+                    reason: 'Cache updated for new files'
                 });
             });
         })

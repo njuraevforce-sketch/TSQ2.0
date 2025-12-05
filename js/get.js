@@ -274,11 +274,19 @@ async function loadUserData() {
         return;
     }
     
+    // Проверяем и обновляем сигналы при загрузке страницы
+    if (window.glyApp) {
+        await window.glyApp.checkAndUpdateSignals();
+    }
+    
+    // Обновляем данные пользователя после проверки
+    const updatedUser = window.getCurrentUser();
+    
     // Update signals display
-    updateSignalsDisplay(user.signals_available);
+    updateSignalsDisplay(updatedUser.signals_available);
     
     // Update VIP level in carousel
-    highlightCurrentVipLevel(user.vip_level);
+    highlightCurrentVipLevel(updatedUser.vip_level);
 }
 
 function updateSignalsDisplay(signalsAvailable) {

@@ -1,11 +1,11 @@
-const CACHE_NAME = 'gly-platform-v2.0';
+const CACHE_NAME = 'gly-platform-v2.1';
 const urlsToCache = [
     '/',
     '/index.html',
-    '/css/style.css?v=2.0',
+    '/css/style.css?v=2.1',
     '/js/app.js?v=2.0',
     '/manifest.json',
-    '/assets/logo.png?v=2.0',
+    '/assets/logo.png?v=2.1',
     '/assets/trc20.png',
     '/assets/bsc20.png',
     '/assets/home.png',
@@ -24,7 +24,7 @@ const urlsToCache = [
     '/assets/setting-service.png',
     '/assets/setting-language.png',
     '/assets/setting-change-password.png',
-    '/assets/vip1.png',
+    '/assets/vip1.png?v=2.1',',
     '/assets/vip2.png',
     '/assets/vip3.png',
     '/assets/vip4.png',

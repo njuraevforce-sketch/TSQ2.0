@@ -1,48 +1,48 @@
-const CACHE_NAME = 'gly-platform-v3.0';
+const CACHE_NAME = 'gly-platform-v4.0';
 const urlsToCache = [
     '/',
     '/index.html',
-    '/css/style.css?v=3.0',
-    '/js/app.js?v=3.0',
-    '/js/home.js?v=3.0',
-    '/js/mine.js?v=3.0',
-    '/js/assets.js?v=3.0',
-    '/js/team.js?v=3.0',
-    '/js/deposit.js?v=3.0',
-    '/js/withdraw.js?v=3.0',
+    '/css/style.css?v=4.0',
+    '/js/app.js?v=4.0',
+    '/js/home.js?v=4.0',
+    '/js/mine.js?v=4.0',
+    '/js/assets.js?v=4.0',
+    '/js/team.js?v=4.0',
+    '/js/deposit.js?v=4.0',
+    '/js/withdraw.js?v=4.0',
     '/manifest.json',
-    '/assets/logo.png?v=3.0',
-    '/assets/favicon.ico?v=3.0',
-    '/assets/trc20.png?v=3.0',
-    '/assets/bsc20.png?v=3.0',
-    '/assets/home.png?v=3.0',
-    '/assets/get.png?v=3.0',
-    '/assets/assets.png?v=3.0',
-    '/assets/mine.png?v=3.0',
-    '/assets/company.png?v=3.0',
-    '/assets/deposit.png?v=3.0',
-    '/assets/withdraw.png?v=3.0',
-    '/assets/invite.png?v=3.0',
-    '/assets/team.png?v=3.0',
-    '/assets/rules.png?v=3.0',
-    '/assets/avatar.png?v=3.0',
-    '/assets/setting-address.png?v=3.0',
-    '/assets/setting-password.png?v=3.0',
-    '/assets/setting-service.png?v=3.0',
-    '/assets/setting-language.png?v=3.0',
-    '/assets/setting-change-password.png?v=3.0',
-    '/assets/vip1.png?v=3.0',
-    '/assets/vip2.png?v=3.0',
-    '/assets/vip3.png?v=3.0',
-    '/assets/vip4.png?v=3.0',
-    '/assets/vip5.png?v=3.0',
-    '/assets/vip6.png?v=3.0',
-    '/assets/vipicon1.png?v=3.0',
-    '/assets/vipicon2.png?v=3.0',
-    '/assets/vipicon3.png?v=3.0',
-    '/assets/vipicon4.png?v=3.0',
-    '/assets/vipicon5.png?v=3.0',
-    '/assets/vipicon6.png?v=3.0'
+    '/assets/logo.png?v=4.0',
+    '/assets/favicon.ico?v=4.0',
+    '/assets/trc20.png?v=4.0',
+    '/assets/bsc20.png?v=4.0',
+    '/assets/home.png?v=4.0',
+    '/assets/get.png?v=4.0',
+    '/assets/assets.png?v=4.0',
+    '/assets/mine.png?v=4.0',
+    '/assets/company.png?v=4.0',
+    '/assets/deposit.png?v=4.0',
+    '/assets/withdraw.png?v=4.0',
+    '/assets/invite.png?v=4.0',
+    '/assets/team.png?v=4.0',
+    '/assets/rules.png?v=4.0',
+    '/assets/avatar.png?v=4.0',
+    '/assets/setting-address.png?v=4.0',
+    '/assets/setting-password.png?v=4.0',
+    '/assets/setting-service.png?v=4.0',
+    '/assets/setting-language.png?v=4.0',
+    '/assets/setting-change-password.png?v=4.0',
+    '/assets/vip1.png?v=4.0',
+    '/assets/vip2.png?v=4.0',
+    '/assets/vip3.png?v=4.0',
+    '/assets/vip4.png?v=4.0',
+    '/assets/vip5.png?v=4.0',
+    '/assets/vip6.png?v=4.0',
+    '/assets/vipicon1.png?v=4.0',
+    '/assets/vipicon2.png?v=4.0',
+    '/assets/vipicon3.png?v=4.0',
+    '/assets/vipicon4.png?v=4.0',
+    '/assets/vipicon5.png?v=4.0',
+    '/assets/vipicon6.png?v=4.0'
 ];
 
 // Install event - Кешируем все файлы при установке
@@ -50,7 +50,7 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                console.log('Cache opened for version: v3.0');
+                console.log('Cache opened for version: v4.0');
                 // Пытаемся добавить все файлы в кеш
                 return cache.addAll(urlsToCache)
                     .then(() => {
@@ -83,6 +83,10 @@ self.addEventListener('activate', event => {
         })
         .then(() => {
             console.log('Service worker activated and old caches cleared');
+            // Удаляем все старые версии из localStorage
+            return cleanOldLocalStorage();
+        })
+        .then(() => {
             // Запрашиваем контроль над всеми клиентами
             return self.clients.claim();
         })
@@ -119,12 +123,15 @@ self.addEventListener('fetch', event => {
             .then(response => {
                 // Если есть в кеше - возвращаем
                 if (response) {
-                    // Для изображений - возвращаем из кеша, но обновляем кеш в фоне
-                    if (event.request.url.match(/\.(png|jpg|jpeg|gif|ico|svg|webp)$/)) {
-                        // Обновляем изображение в фоне
-                        event.waitUntil(
-                            updateImageCache(event.request)
-                        );
+                    // Для CSS и JS файлов - проверяем версию
+                    if (event.request.url.match(/\.(css|js)$/)) {
+                        const url = new URL(event.request.url);
+                        if (url.searchParams.get('v') !== '4.0') {
+                            // Обновляем файл в фоне
+                            event.waitUntil(
+                                updateFileCache(event.request)
+                            );
+                        }
                     }
                     return response;
                 }
@@ -177,8 +184,8 @@ self.addEventListener('fetch', event => {
     );
 });
 
-// Функция для обновления изображений в кеше
-function updateImageCache(request) {
+// Функция для обновления файлов в кеше (особенно CSS/JS)
+function updateFileCache(request) {
     return fetch(request)
         .then(response => {
             // Проверяем валидность ответа
@@ -195,8 +202,11 @@ function updateImageCache(request) {
                     return cache.put(request, responseToCache);
                 });
         })
+        .then(() => {
+            console.log('Updated cache for:', request.url);
+        })
         .catch(error => {
-            console.log('Background image update failed:', error);
+            console.log('Background file update failed:', error);
             // Не делаем ничего при ошибке - оставляем старую версию в кеше
         });
 }
@@ -248,14 +258,14 @@ self.addEventListener('push', event => {
         data = {
             title: 'GLY Platform',
             body: event.data ? event.data.text() : 'New notification',
-            icon: '/assets/logo.png?v=3.0'
+            icon: '/assets/logo.png?v=4.0'
         };
     }
 
     const options = {
         body: data.body || 'New notification from GLY Platform',
-        icon: data.icon || '/assets/logo.png?v=3.0',
-        badge: '/assets/logo.png?v=3.0',
+        icon: data.icon || '/assets/logo.png?v=4.0',
+        badge: '/assets/logo.png?v=4.0',
         vibrate: [100, 50, 100],
         data: {
             url: data.url || '/',
@@ -265,12 +275,12 @@ self.addEventListener('push', event => {
             {
                 action: 'open',
                 title: 'Open App',
-                icon: '/assets/logo.png?v=3.0'
+                icon: '/assets/logo.png?v=4.0'
             },
             {
                 action: 'close',
                 title: 'Close',
-                icon: '/assets/logo.png?v=3.0'
+                icon: '/assets/logo.png?v=4.0'
             }
         ]
     };
@@ -332,6 +342,38 @@ if ('periodicSync' in self.registration) {
             event.waitUntil(
                 updateStaticCache()
             );
+        }
+    });
+}
+
+// Функция очистки старого localStorage
+function cleanOldLocalStorage() {
+    return new Promise((resolve) => {
+        try {
+            // Удаляем старые версии app_version
+            const versions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0'];
+            versions.forEach(version => {
+                if (localStorage.getItem('app_version') === version) {
+                    localStorage.removeItem('app_version');
+                }
+            });
+            
+            // Устанавливаем новую версию
+            localStorage.setItem('app_version', '4.0');
+            
+            // Очищаем кеш CSS и JS версий
+            const keys = Object.keys(localStorage);
+            keys.forEach(key => {
+                if (key.includes('cache_version') || key.includes('css_version') || key.includes('js_version')) {
+                    localStorage.removeItem(key);
+                }
+            });
+            
+            console.log('Old localStorage cleaned');
+            resolve();
+        } catch (error) {
+            console.log('Error cleaning localStorage:', error);
+            resolve();
         }
     });
 }
@@ -408,4 +450,18 @@ self.addEventListener('message', event => {
             );
         }
     }
+});
+
+// Force update all clients
+self.addEventListener('activate', event => {
+    event.waitUntil(
+        self.clients.matchAll().then(clients => {
+            clients.forEach(client => {
+                client.postMessage({
+                    type: 'FORCE_RELOAD',
+                    version: '4.0'
+                });
+            });
+        })
+    );
 });

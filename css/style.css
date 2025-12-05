@@ -21,27 +21,17 @@ input, textarea {
     user-select: text;
 }
 
-/* Нормализация скролла для мобильных */
-html {
-    touch-action: manipulation;
-    -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(180deg, #f5f5f5, #e0e0e0, #d0d0d0, #c0c0c0);
+    background: linear-gradient(180deg, #222222, #333333, #444444, #555555);
     min-height: 100vh;
-    color: #333;
+    color: #ffffff;
     overflow-x: hidden;
     font-size: 16px;
     overflow-y: auto;
     
-    /* Улучшенный плавный скролл */
-    -webkit-overflow-scrolling: touch !important;
-    scroll-behavior: smooth;
+    /* Плавный скролл */
+    -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
     -webkit-text-size-adjust: none;
     text-size-adjust: none;
@@ -52,46 +42,26 @@ body {
     
     /* Prevent pull-to-refresh on mobile */
     overscroll-behavior-y: none;
-    height: 100%;
-}
-
-/* Улучшение скролла для всех скроллящихся элементов */
-.u-navbar__content,
-.conWrap,
-.page-content,
-.pop-content,
-.custom-modal-content,
-.admin-table,
-.transaction-list-compact,
-.deposits-list,
-.withdrawals-list,
-.language-list,
-.calendar-grid,
-.notice-content,
-.quantum-scroll-container {
-    -webkit-overflow-scrolling: touch !important;
-    scroll-behavior: smooth;
-}
-
-/* Плавный скролл для всего документа */
-.page {
-    min-height: 100vh;
-    padding-bottom: 60px;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch !important;
+    
+    /* Smooth scrolling */
     scroll-behavior: smooth;
 }
 
 uni-page-body {
     min-height: 100vh;
-    background-image: linear-gradient(180deg, #f5f5f5, #e0e0e0, #d0d0d0, #c0c0c0);
+    background-image: linear-gradient(180deg, #222222, #333333, #444444, #555555);
+    overflow-x: hidden;
+}
+
+.page {
+    min-height: 100vh;
+    padding-bottom: 60px;
     overflow-x: hidden;
 }
 
 .page-content {
     padding: 15px;
     overflow-x: hidden;
-    -webkit-overflow-scrolling: touch !important;
 }
 
 /* Disable zoom on mobile */
@@ -99,6 +69,8 @@ html {
     touch-action: manipulation;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    /* Smooth scrolling */
+    scroll-behavior: smooth;
 }
 
 /* Video player styles */
@@ -107,7 +79,7 @@ html {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    border-radius: 0 0 40px 40px;
+    border-radius: 0 0 0 0;
 }
 
 .video-overlay {
@@ -126,7 +98,7 @@ html {
 .play-btn {
     width: 60px;
     height: 60px;
-    background: rgba(44, 44, 44, 0.8);
+    background: rgba(51, 51, 51, 0.8);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -138,7 +110,7 @@ html {
 }
 
 .play-btn:hover {
-    background: rgba(44, 44, 44, 1);
+    background: rgba(51, 51, 51, 1);
     transform: scale(1.1);
 }
 
@@ -168,7 +140,7 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #2c2c2c;
+    color: #333333;
     font-size: 16px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
@@ -220,7 +192,7 @@ html {
     border-bottom: 1px solid #eee;
     font-size: 18px;
     text-align: center;
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: linear-gradient(135deg, #333333, #444444);
     color: white;
 }
 
@@ -236,7 +208,7 @@ html {
 }
 
 .custom-modal-btn {
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: linear-gradient(135deg, #333333, #444444);
     color: white;
     border: none;
     padding: 10px 25px;
@@ -265,7 +237,7 @@ html {
     width: 50px;
     height: 50px;
     border: 4px solid #f3f3f3;
-    border-top: 4px solid #2c2c2c;
+    border-top: 4px solid #333333;
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-bottom: 15px;
@@ -304,7 +276,7 @@ html {
     align-items: center;
     height: 44px;
     padding: 0 15px;
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: #333333;
     position: relative;
 }
 
@@ -364,8 +336,8 @@ html {
 /* TopNull и контейнеры */
 .topNull {
     height: 150px;
-    background: linear-gradient(135deg, #2c2c2c, #404040);
-    border-radius: 0 0 40px 40px;
+    background: #333333;
+    border-radius: 0 0 0 0;
     position: relative;
     z-index: 0;
 }
@@ -377,19 +349,19 @@ html {
     overflow-x: hidden;
     position: relative;
     z-index: 1;
-    -webkit-overflow-scrolling: touch !important;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Карточки */
 .card {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     margin-bottom: 15px;
     overflow: hidden;
 }
 
 .box-black {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
 }
 
 .radius {
@@ -485,12 +457,12 @@ html {
 }
 
 .text-white {
-    color: #fff;
+    color: #ffffff;
     font-size: 16px;
 }
 
 .text-gray {
-    color: #aaa;
+    color: #cccccc;
     font-size: 14px;
 }
 
@@ -507,7 +479,7 @@ html {
 }
 
 .text-cyan {
-    color: #2c2c2c;
+    color: #333333;
 }
 
 .color-de {
@@ -542,7 +514,7 @@ html {
 
 /* Кнопки */
 .pro-btn {
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: #333333;
     border-radius: 10px;
     padding: 15px;
     text-align: center;
@@ -567,7 +539,7 @@ html {
 
 .navWrap > div {
     color: #e3e3e3;
-    background-color: rgba(0, 0, 0, 0.25);
+    background-color: rgba(0, 0, 0, 0.3);
     border: 1px solid #e3e3e3;
     border-left: 0;
     border-bottom: 0;
@@ -589,7 +561,7 @@ html {
     width: 20px;
     height: 20px;
     border: 2px solid #f3f3f3;
-    border-top: 2px solid #3498db;
+    border-top: 2px solid #333333;
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-right: 8px;
@@ -612,8 +584,8 @@ html {
     left: 0;
     right: 0;
     height: 60px;
-    background: white;
-    border-top: 1px solid #eee;
+    background: #333333;
+    border-top: 1px solid #444444;
     z-index: 1000;
     display: none;
     width: 100%;
@@ -634,7 +606,7 @@ html {
     align-items: center;
     justify-content: center;
     font-size: 12px;
-    color: #999;
+    color: #cccccc;
     cursor: pointer;
     height: 100%;
     padding: 5px 0;
@@ -643,11 +615,11 @@ html {
 }
 
 .uni-tabbar__item--active {
-    color: #2c2c2c;
+    color: #ffffff;
 }
 
 .uni-tabbar__item--active .uni-tabbar__icon img {
-    filter: brightness(0) saturate(100%) invert(17%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
+    filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(0deg) brightness(200%) contrast(100%);
 }
 
 .uni-tabbar__icon {
@@ -680,14 +652,14 @@ html {
 .notice-bar {
     display: flex;
     align-items: center;
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     padding: 12px 15px;
 }
 
 .notice-icon {
     font-size: 18px;
-    color: #2c2c2c;
+    color: #333333;
     margin-right: 10px;
 }
 
@@ -716,7 +688,7 @@ html {
 }
 
 .balance-card {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     padding: 20px;
     border-radius: 10px;
     color: white;
@@ -731,11 +703,12 @@ html {
     font-size: 28px;
     font-weight: bold;
     margin-bottom: 5px;
+    color: #f9ae3d;
 }
 
 .balance-profit {
     font-size: 12px;
-    color: #ccc;
+    color: #cccccc;
 }
 
 /* Действия */
@@ -750,7 +723,7 @@ html {
 }
 
 .action-item {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     padding: 15px 5px;
     border-radius: 10px;
     text-align: center;
@@ -794,7 +767,7 @@ html {
     font-weight: bold;
     border-bottom: 1px solid #eee;
     font-size: 18px;
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: #333333;
     color: white;
 }
 
@@ -809,7 +782,7 @@ html {
 }
 
 .pop-footer button {
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: #333333;
     color: white;
     border: none;
     padding: 8px 15px;
@@ -820,7 +793,7 @@ html {
 
 /* Границы */
 .border-bottom {
-    border-bottom: 1px solid #545c66;
+    border-bottom: 1px solid #666666;
 }
 
 /* СТИЛИ ДЛЯ СЕКЦИЙ */
@@ -834,9 +807,9 @@ html {
 
 /* Баннер */
 .banner-section {
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: #333333;
     width: 100%;
-    border-radius: 0 0 40px 40px;
+    border-radius: 0 0 0 0;
     overflow: hidden;
 }
 
@@ -844,7 +817,7 @@ html {
     width: 100%;
     height: 150px;
     position: relative;
-    border-radius: 0 0 40px 40px;
+    border-radius: 0 0 0 0;
     overflow: hidden;
 }
 
@@ -856,7 +829,7 @@ html {
 
 /* Навигационные иконки - ИСПРАВЛЕННЫЕ (БЕЗ ФОНА И СТИЛЕЙ) */
 .nav-section {
-    background-color: rgba(40, 40, 40, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
     padding: 15px 20px 25px;
     border-radius: 0;
     overflow: hidden;
@@ -901,7 +874,7 @@ html {
 }
 
 .nav-text {
-    color: #333;
+    color: #ffffff;
     text-align: center;
     font-size: 14px;
     font-weight: 500;
@@ -911,13 +884,13 @@ html {
 .quantum-action {
     text-align: center;
     padding: 20px;
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     margin: 15px 0;
 }
 
 .quant-btn {
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: #333333;
     color: white;
     border: none;
     border-radius: 25px;
@@ -926,13 +899,13 @@ html {
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(44, 44, 44, 0.3);
+    box-shadow: 0 4px 15px rgba(51, 51, 51, 0.3);
     width: 100%;
     max-width: 300px;
 }
 
 .quant-btn:hover {
-    background: linear-gradient(135deg, #404040, #2c2c2c);
+    background: #444444;
     transform: translateY(-2px);
 }
 
@@ -947,7 +920,7 @@ html {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background: #2c2c2c;
+    background: #333333;
 }
 
 .signal.used {
@@ -957,7 +930,7 @@ html {
 /* Квантовая статистика */
 .quantum-section {
     padding: 15px;
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     margin: 15px 0;
 }
@@ -972,7 +945,7 @@ html {
 .quantum-title {
     font-size: 16px;
     font-weight: bold;
-    color: #333;
+    color: #ffffff;
 }
 
 /* Контейнер для квантовых карточек */
@@ -980,7 +953,7 @@ html {
     overflow-x: auto;
     white-space: nowrap;
     padding: 5px 0;
-    -webkit-overflow-scrolling: touch !important;
+    -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
 }
 
@@ -1001,14 +974,14 @@ html {
 .notice-bar {
     display: flex;
     align-items: center;
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     padding: 12px 15px;
 }
 
 .notice-icon {
     font-size: 18px;
-    color: #2c2c2c;
+    color: #333333;
     margin-right: 10px;
 }
 
@@ -1034,7 +1007,7 @@ html {
 /* Реферальная ссылка */
 .referral-section {
     padding: 15px;
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     margin: 15px 0;
 }
@@ -1053,24 +1026,24 @@ html {
 
 .referral-icon {
     font-size: 24px;
-    color: #2c2c2c;
+    color: #333333;
 }
 
 .referral-text h4 {
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 4px;
-    color: #333;
+    color: #ffffff;
 }
 
 .referral-text p {
-    color: #666;
+    color: #cccccc;
     font-size: 14px;
 }
 
 /* Кнопка копирования */
 .copy-btn {
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: #333333;
     color: white;
     border: none;
     border-radius: 8px;
@@ -1085,7 +1058,7 @@ html {
 }
 
 .copy-btn:hover {
-    background: linear-gradient(135deg, #404040, #2c2c2c);
+    background: #444444;
 }
 
 /* Уровни VIP - ИСПРАВЛЕННЫЕ СТИЛИ */
@@ -1100,7 +1073,7 @@ html {
     font-weight: bold;
     margin-bottom: 15px;
     font-size: 18px;
-    color: #333;
+    color: #ffffff;
     text-align: center;
 }
 
@@ -1117,7 +1090,7 @@ html {
     border-radius: 10px;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch !important;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* VIP карточки - исправленные */
@@ -1145,7 +1118,7 @@ html {
     opacity: 1;
     transform: scale(1);
     background: transparent;
-    border: 2px solid #2c2c2c;
+    border: 2px solid #333333;
     display: flex;
 }
 
@@ -1204,7 +1177,7 @@ html {
 
 .vip-level-requirement {
     font-size: 12px;
-    color: #ccc;
+    color: #cccccc;
     z-index: 2;
     position: relative;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
@@ -1214,7 +1187,7 @@ html {
 .vip-description {
     margin-top: 15px;
     padding: 15px;
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     color: white;
     font-size: 14px;
@@ -1240,7 +1213,7 @@ html {
     top: 40px;
     left: 15px;
     font-size: 14px;
-    color: #2c2c2c;
+    color: #333333;
     background: rgba(255, 255, 255, 0.9);
     padding: 3px 8px;
     border-radius: 5px;
@@ -1253,7 +1226,7 @@ html {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background: #2c2c2c;
+    background: #333333;
     margin: 0 5px;
 }
 
@@ -1265,7 +1238,7 @@ html {
     background: rgba(0, 0, 0, 0.3);
     padding: 8px 15px;
     border-radius: 20px;
-    color: #fff;
+    color: #ffffff;
     font-weight: bold;
     display: inline-block;
 }
@@ -1278,7 +1251,7 @@ html {
 }
 
 .referral-stat {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     padding: 10px;
     border-radius: 8px;
     text-align: center;
@@ -1287,7 +1260,6 @@ html {
 .transaction-history {
     max-height: 300px;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch !important;
 }
 
 .profile-avatar {
@@ -1332,7 +1304,7 @@ html {
     align-items: center;
     justify-content: space-between;
     margin: 0;
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 0;
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
@@ -1371,7 +1343,7 @@ html {
 }
 
 .crypto-pair {
-    color: #ccc;
+    color: #cccccc;
     font-size: 12px;
     margin-left: 5px;
 }
@@ -1415,10 +1387,10 @@ html {
 .input-line {
     background: transparent;
     border: none;
-    border-bottom: 2px solid #2c2c2c;
+    border-bottom: 2px solid #52c41a;
     border-radius: 0;
     padding: 12px 40px 12px 0;
-    color: #333;
+    color: white;
     font-size: 16px;
     width: 100%;
     outline: none;
@@ -1427,11 +1399,11 @@ html {
 }
 
 .input-line::placeholder {
-    color: #666;
+    color: #cccccc;
 }
 
 .input-line:focus {
-    border-bottom-color: #555555;
+    border-bottom-color: #52c41a;
     border-bottom-width: 3px;
 }
 
@@ -1446,7 +1418,7 @@ html {
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    color: #555555;
+    color: #52c41a;
     cursor: pointer;
     background: none;
     border: none;
@@ -1473,10 +1445,11 @@ html {
     border-radius: 8px;
     margin: 10px 0;
 }
+
 /* Стили для страниц авторизации */
 .login-section,
 .register-section {
-    background: linear-gradient(180deg, #f5f5f5, #e0e0e0, #d0d0d0, #c0c0c0);
+    background: linear-gradient(180deg, #222222, #333333, #444444, #555555);
     min-height: 100vh;
     padding: 20px 15px;
     overflow-x: hidden;
@@ -1506,14 +1479,14 @@ html {
 }
 
 .auth-title h1 {
-    color: #333;
+    color: white;
     font-size: 28px;
     margin-bottom: 10px;
     font-weight: bold;
 }
 
 .auth-title p {
-    color: rgba(0,0,0,0.8);
+    color: rgba(255,255,255,0.8);
     font-size: 16px;
 }
 
@@ -1549,13 +1522,13 @@ html {
 
 .form-group input:focus {
     outline: none;
-    border-color: #2c2c2c;
-    box-shadow: 0 0 0 3px rgba(44, 44, 44, 0.1);
+    border-color: #333333;
+    box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.1);
 }
 
 .auth-button {
     width: 100%;
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: #333333;
     color: white;
     border: none;
     border-radius: 10px;
@@ -1568,7 +1541,7 @@ html {
 }
 
 .auth-button:hover {
-    background: linear-gradient(135deg, #404040, #2c2c2c);
+    background: #444444;
     transform: translateY(-2px);
 }
 
@@ -1585,7 +1558,7 @@ html {
 }
 
 .auth-link a {
-    color: #2c2c2c;
+    color: #333333;
     text-decoration: none;
     font-weight: bold;
     margin-left: 5px;
@@ -1623,7 +1596,7 @@ html {
 }
 
 .copy-id-btn {
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: #333333;
     color: white;
     border: none;
     border-radius: 5px;
@@ -1634,26 +1607,26 @@ html {
 
 .profile-id {
     font-size: 14px;
-    color: #666;
+    color: #cccccc;
 }
 
 /* Стили для новых страниц */
 /* Company page */
 .company-content {
-    color: #666;
+    color: #cccccc;
     font-size: 14px;
     line-height: 1.6;
 }
 
 .company-content h2 {
-    color: #333;
+    color: white;
     margin: 20px 0 10px;
     font-size: 18px;
 }
 
 .company-content p {
     margin-bottom: 10px;
-    color: #666;
+    color: #cccccc;
 }
 
 .company-logo {
@@ -1687,7 +1660,7 @@ html {
     width: 100%;
     height: 250px;
     margin: 20px 0;
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     padding: 15px;
 }
@@ -1700,7 +1673,7 @@ html {
 }
 
 .team-stat {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     padding: 15px;
     border-radius: 10px;
     text-align: center;
@@ -1709,13 +1682,13 @@ html {
 .team-stat-value {
     font-size: 24px;
     font-weight: bold;
-    color: #2c2c2c;
+    color: #f9ae3d;
     margin-bottom: 5px;
 }
 
 .team-stat-label {
     font-size: 12px;
-    color: #666;
+    color: #cccccc;
 }
 
 .referral-list {
@@ -1726,7 +1699,7 @@ html {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .referral-info {
@@ -1735,24 +1708,24 @@ html {
 }
 
 .referral-id {
-    color: #333;
+    color: white;
     font-size: 14px;
 }
 
 .referral-email {
-    color: #666;
+    color: #cccccc;
     font-size: 12px;
 }
 
 .referral-balance {
-    color: #2c2c2c;
+    color: #f9ae3d;
     font-size: 14px;
     font-weight: bold;
 }
 
 /* Rules page */
 .rules-content {
-    color: #666;
+    color: #cccccc;
     font-size: 14px;
     line-height: 1.5;
 }
@@ -1762,7 +1735,7 @@ html {
 }
 
 .rules-section h3 {
-    color: #333;
+    color: white;
     margin-bottom: 10px;
 }
 
@@ -1775,12 +1748,12 @@ html {
     margin-bottom: 8px;
     padding-left: 15px;
     position: relative;
-    color: #666;
+    color: #cccccc;
 }
 
 .rules-list li:before {
     content: '•';
-    color: #2c2c2c;
+    color: #333333;
     position: absolute;
     left: 0;
 }
@@ -1799,17 +1772,17 @@ html {
     align-items: center;
     width: 48%;
     padding: 10px;
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 1px solid rgba(44, 44, 44, 0.3);
+    border: 1px solid rgba(51, 51, 51, 0.3);
     height: 80px;
     justify-content: center;
 }
 
 .wallet-action-compact:hover {
-    background: rgba(44, 44, 44, 0.2);
+    background: rgba(51, 51, 51, 0.3);
     transform: translateY(-2px);
 }
 
@@ -1820,7 +1793,7 @@ html {
 }
 
 .wallet-text-compact {
-    color: #333;
+    color: white;
     font-size: 12px;
     font-weight: bold;
     text-align: center;
@@ -1834,11 +1807,11 @@ html {
 }
 
 .transaction-category-compact {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     padding: 10px;
     border-radius: 8px;
     text-align: center;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     height: 70px;
     display: flex;
     flex-direction: column;
@@ -1846,13 +1819,13 @@ html {
 }
 
 .transaction-category-name-compact {
-    color: #666;
+    color: #cccccc;
     font-size: 11px;
     margin-bottom: 5px;
 }
 
 .transaction-category-amount-compact {
-    color: #2c2c2c;
+    color: #f9ae3d;
     font-size: 14px;
     font-weight: bold;
 }
@@ -1861,14 +1834,13 @@ html {
     margin-top: 15px;
     max-height: 200px;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch !important;
 }
 
 .transaction-item {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .transaction-info {
@@ -1877,12 +1849,12 @@ html {
 }
 
 .transaction-type {
-    color: #333;
+    color: white;
     font-size: 14px;
 }
 
 .transaction-date {
-    color: #666;
+    color: #cccccc;
     font-size: 12px;
 }
 
@@ -1893,7 +1865,7 @@ html {
 
 /* Стили для withdraw страницы */
 .network-selection {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 15px;
@@ -1910,7 +1882,7 @@ html {
     flex-direction: column;
     align-items: center;
     padding: 12px;
-    background: rgba(40, 40, 40, 0.3);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     cursor: pointer;
     border: 2px solid transparent;
@@ -1918,8 +1890,8 @@ html {
 }
 
 .network-option.active {
-    border-color: #2c2c2c;
-    background: rgba(44, 44, 44, 0.2);
+    border-color: #333333;
+    background: rgba(51, 51, 51, 0.3);
 }
 
 .network-icon {
@@ -1935,14 +1907,14 @@ html {
 }
 
 .network-name {
-    color: #333;
+    color: white;
     font-size: 14px;
     font-weight: bold;
     margin-bottom: 5px;
 }
 
 .network-check {
-    color: #555555;
+    color: #52c41a;
     font-size: 12px;
     opacity: 0;
 }
@@ -1952,21 +1924,21 @@ html {
 }
 
 .wallet-address-section {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 15px;
 }
 
 .amount-section {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 15px;
 }
 
 .balance-info {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 15px;
@@ -1977,7 +1949,7 @@ html {
     justify-content: space-between;
     margin-bottom: 8px;
     padding-bottom: 8px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .balance-line:last-child {
@@ -1987,7 +1959,7 @@ html {
 }
 
 .password-section {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 15px;
@@ -1996,7 +1968,6 @@ html {
 .withdrawals-list {
     max-height: 200px;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch !important;
 }
 
 .confirm-line {
@@ -2020,7 +1991,7 @@ html {
 .admin-stat {
     text-align: center;
     padding: 10px 15px;
-    background: rgba(44, 44, 44, 0.3);
+    background: rgba(51, 51, 51, 0.3);
     border-radius: 8px;
     min-width: 80px;
 }
@@ -2034,12 +2005,12 @@ html {
 
 .admin-stat-label {
     font-size: 11px;
-    color: #666;
+    color: #cccccc;
 }
 
 .admin-nav {
     display: flex;
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     margin-bottom: 15px;
     overflow: hidden;
@@ -2052,16 +2023,16 @@ html {
     align-items: center;
     padding: 12px 5px;
     cursor: pointer;
-    color: #666;
+    color: #cccccc;
     font-size: 12px;
     transition: all 0.3s ease;
     border-bottom: 3px solid transparent;
 }
 
 .admin-nav-item.active {
-    color: #333;
-    background: rgba(44, 44, 44, 0.2);
-    border-bottom-color: #2c2c2c;
+    color: white;
+    background: rgba(51, 51, 51, 0.3);
+    border-bottom-color: #333333;
 }
 
 .admin-nav-item i {
@@ -2087,7 +2058,7 @@ html {
     align-items: center;
     margin-bottom: 15px;
     padding-bottom: 10px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .tab-actions {
@@ -2098,27 +2069,27 @@ html {
 
 .admin-input-small {
     padding: 6px 10px;
-    border: 1px solid rgba(44, 44, 44, 0.5);
+    border: 1px solid rgba(51, 51, 51, 0.5);
     border-radius: 5px;
-    background: rgba(40, 40, 40, 0.3);
-    color: #333;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
     font-size: 12px;
     min-width: 150px;
 }
 
 .admin-select-small {
     padding: 6px 10px;
-    border: 1px solid rgba(44, 44, 44, 0.5);
+    border: 1px solid rgba(51, 51, 51, 0.5);
     border-radius: 5px;
-    background: rgba(40, 40, 40, 0.3);
-    color: #333;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
     font-size: 12px;
     min-width: 120px;
 }
 
 .admin-btn-small {
     padding: 6px 12px;
-    background: rgba(44, 44, 44, 0.7);
+    background: rgba(51, 51, 51, 0.7);
     border: none;
     border-radius: 5px;
     color: white;
@@ -2131,12 +2102,12 @@ html {
 }
 
 .admin-btn-small:hover {
-    background: rgba(44, 44, 44, 0.9);
+    background: rgba(51, 51, 51, 0.9);
 }
 
 .admin-btn {
     padding: 10px 20px;
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: #333333;
     border: none;
     border-radius: 8px;
     color: white;
@@ -2152,7 +2123,7 @@ html {
 }
 
 .admin-btn:hover {
-    background: linear-gradient(135deg, #404040, #2c2c2c);
+    background: #444444;
     transform: translateY(-2px);
 }
 
@@ -2201,28 +2172,28 @@ html {
 }
 
 .admin-table th {
-    background: rgba(44, 44, 44, 0.5);
+    background: rgba(51, 51, 51, 0.5);
     color: white;
     padding: 10px;
     text-align: left;
     font-weight: bold;
-    border-bottom: 2px solid rgba(44, 44, 44, 0.8);
+    border-bottom: 2px solid rgba(51, 51, 51, 0.8);
 }
 
 .admin-table td {
     padding: 10px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    color: #666;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #cccccc;
 }
 
 .admin-table tr:hover {
-    background: rgba(44, 44, 44, 0.1);
+    background: rgba(51, 51, 51, 0.1);
 }
 
 .vip-badge {
     display: inline-block;
     padding: 3px 8px;
-    background: rgba(44, 44, 44, 0.5);
+    background: rgba(51, 51, 51, 0.5);
     color: white;
     border-radius: 4px;
     font-size: 11px;
@@ -2265,10 +2236,10 @@ html {
 
 .admin-input {
     padding: 10px;
-    border: 1px solid rgba(44, 44, 44, 0.5);
+    border: 1px solid rgba(51, 51, 51, 0.5);
     border-radius: 5px;
-    background: rgba(40, 40, 40, 0.3);
-    color: #333;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
     font-size: 14px;
     margin-top: 5px;
 }
@@ -2304,7 +2275,7 @@ html {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 /* Адаптация для мобильных экранов */
@@ -2455,18 +2426,6 @@ html {
     .admin-table td {
         padding: 6px;
     }
-    
-    /* Улучшенный скролл для мобильных */
-    body {
-        -webkit-overflow-scrolling: touch !important;
-        overscroll-behavior-y: contain;
-    }
-    
-    .page {
-        overflow-x: hidden;
-        -webkit-overflow-scrolling: touch !important;
-        overscroll-behavior-y: contain;
-    }
 }
 
 @media (max-width: 375px) {
@@ -2584,14 +2543,12 @@ body.no-tabbar .uni-tabbar {
     font-weight: bold;
     margin-bottom: 10px;
     font-size: 14px;
-    color: #333;
+    color: #ffffff;
 }
-
-/* Добавьте эти стили в конец файла style.css, перед последней закрывающей скобкой */
 
 /* Calendar стили для mine.js */
 .calendar-section {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     padding: 15px;
 }
@@ -2604,7 +2561,7 @@ body.no-tabbar .uni-tabbar {
 }
 
 .calendar-title {
-    color: #333;
+    color: white;
     font-size: 16px;
     font-weight: bold;
 }
@@ -2615,7 +2572,7 @@ body.no-tabbar .uni-tabbar {
 }
 
 .calendar-nav button {
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: #333333;
     color: white;
     border: none;
     border-radius: 5px;
@@ -2630,7 +2587,7 @@ body.no-tabbar .uni-tabbar {
 }
 
 .calendar-nav button:hover {
-    background: linear-gradient(135deg, #404040, #2c2c2c);
+    background: #444444;
 }
 
 .calendar-grid {
@@ -2643,7 +2600,7 @@ body.no-tabbar .uni-tabbar {
 .calendar-day {
     text-align: center;
     padding: 8px 0;
-    color: #666;
+    color: #cccccc;
     font-size: 12px;
     font-weight: bold;
 }
@@ -2651,7 +2608,7 @@ body.no-tabbar .uni-tabbar {
 .calendar-date {
     text-align: center;
     padding: 8px 0;
-    color: #333;
+    color: white;
     font-size: 14px;
     cursor: pointer;
     border-radius: 5px;
@@ -2659,17 +2616,17 @@ body.no-tabbar .uni-tabbar {
 }
 
 .calendar-date:hover {
-    background: rgba(44, 44, 44, 0.3);
+    background: rgba(51, 51, 51, 0.3);
 }
 
 .calendar-date.today {
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: #333333;
     color: white;
     font-weight: bold;
 }
 
 .calendar-date.other-month {
-    color: #aaa;
+    color: #666;
     cursor: default;
 }
 
@@ -2683,7 +2640,7 @@ body.no-tabbar .uni-tabbar {
     font-size: 16px;
     font-weight: bold;
     padding: 10px;
-    background: rgba(40, 40, 40, 0.3);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 8px;
 }
 
@@ -2697,14 +2654,14 @@ body.no-tabbar .uni-tabbar {
     align-items: center;
     justify-content: space-between;
     padding: 15px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    color: #333;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .setting-item:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.05);
     padding-left: 10px;
     padding-right: 10px;
     margin-left: -10px;
@@ -2739,7 +2696,7 @@ body.no-tabbar .uni-tabbar {
 
 .setting-value {
     font-size: 12px;
-    color: #666;
+    color: #cccccc;
     margin-left: 10px;
     text-align: right;
 }
@@ -2763,7 +2720,7 @@ body.no-tabbar .uni-tabbar {
 .profile-bg {
     position: relative;
     min-height: 150px;
-    background: linear-gradient(135deg, rgba(44, 44, 44, 0.9), rgba(64, 64, 64, 0.9));
+    background: linear-gradient(135deg, rgba(51, 51, 51, 0.9), rgba(68, 68, 68, 0.9));
     border-radius: 10px;
     overflow: hidden;
     margin-bottom: 20px;
@@ -2787,12 +2744,12 @@ body.no-tabbar .uni-tabbar {
 }
 
 .profile-vip-badge {
-    background: linear-gradient(135deg, #555555, #777777);
+    background: linear-gradient(135deg, #f9ae3d, #ff8c00);
     padding: 4px 12px;
     border-radius: 15px;
     font-size: 12px;
     font-weight: bold;
-    color: white;
+    color: #333;
     display: inline-block;
     margin-bottom: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
@@ -2854,7 +2811,7 @@ body.no-tabbar .uni-tabbar {
     border-bottom: 1px solid #eee;
     font-size: 18px;
     text-align: center;
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: #333333;
     color: white;
 }
 
@@ -2870,7 +2827,7 @@ body.no-tabbar .uni-tabbar {
 }
 
 .pop-overlay .pop-footer button {
-    background: linear-gradient(135deg, #2c2c2c, #404040);
+    background: #333333;
     color: white;
     border: none;
     padding: 8px 20px;
@@ -2882,7 +2839,7 @@ body.no-tabbar .uni-tabbar {
 }
 
 .pop-overlay .pop-footer button:hover {
-    background: linear-gradient(135deg, #404040, #2c2c2c);
+    background: #444444;
     transform: translateY(-2px);
 }
 
@@ -3019,21 +2976,19 @@ body.no-tabbar .uni-tabbar {
     }
 }
 
-/* СТИЛИ ДЛЯ DEPOSIT С ЧЕРНЫМИ ЛИНИЯМИ */
+/* СТИЛИ ДЛЯ DEPOSIT */
 .deposit-address-section {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 15px;
-    border-left: 3px solid #2c2c2c;
 }
 
 .network-selection-green {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 15px;
-    border-left: 3px solid #2c2c2c;
 }
 
 .network-options-green {
@@ -3047,18 +3002,16 @@ body.no-tabbar .uni-tabbar {
     flex-direction: column;
     align-items: center;
     padding: 12px;
-    background: rgba(40, 40, 40, 0.3);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     cursor: pointer;
     border: 2px solid transparent;
     transition: all 0.3s ease;
-    border-left: 3px solid #2c2c2c;
 }
 
 .network-option-green.active {
-    border-color: #2c2c2c;
-    background: rgba(44, 44, 44, 0.2);
-    border-left: 3px solid #555555;
+    border-color: #333333;
+    background: rgba(51, 51, 51, 0.3);
 }
 
 .network-icon-green {
@@ -3074,14 +3027,14 @@ body.no-tabbar .uni-tabbar {
 }
 
 .network-name-green {
-    color: #333;
+    color: white;
     font-size: 14px;
     font-weight: bold;
     margin-bottom: 5px;
 }
 
 .network-check-green {
-    color: #555555;
+    color: #52c41a;
     font-size: 12px;
     opacity: 0;
 }
@@ -3093,10 +3046,10 @@ body.no-tabbar .uni-tabbar {
 .input-line-green {
     background: transparent;
     border: none;
-    border-bottom: 2px solid #2c2c2c;
+    border-bottom: 2px solid #333333;
     border-radius: 0;
     padding: 12px 40px 12px 0;
-    color: #333;
+    color: white;
     font-size: 16px;
     width: 100%;
     outline: none;
@@ -3105,11 +3058,11 @@ body.no-tabbar .uni-tabbar {
 }
 
 .input-line-green::placeholder {
-    color: #666;
+    color: #cccccc;
 }
 
 .input-line-green:focus {
-    border-bottom-color: #555555;
+    border-bottom-color: #52c41a;
     border-bottom-width: 3px;
 }
 
@@ -3119,11 +3072,10 @@ body.no-tabbar .uni-tabbar {
 }
 
 .deposit-info {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 15px;
-    border-left: 3px solid #2c2c2c;
 }
 
 .deposit-line {
@@ -3131,12 +3083,11 @@ body.no-tabbar .uni-tabbar {
     justify-content: space-between;
     margin-bottom: 8px;
     padding-bottom: 8px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    border-left: 2px solid transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .deposit-line:hover {
-    border-left: 2px solid #2c2c2c;
+    border-left: 2px solid #333333;
 }
 
 .deposit-line:last-child {
@@ -3150,7 +3101,7 @@ body.no-tabbar .uni-tabbar {
     width: 100%;
     height: 250px;
     margin: 20px 0;
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     padding: 15px;
     position: relative;
@@ -3166,7 +3117,7 @@ body.no-tabbar .uni-tabbar {
 
 /* Стили для сетей в модалках */
 .network-selection {
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 15px;
@@ -3183,7 +3134,7 @@ body.no-tabbar .uni-tabbar {
     flex-direction: column;
     align-items: center;
     padding: 12px;
-    background: rgba(40, 40, 40, 0.3);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     cursor: pointer;
     border: 2px solid transparent;
@@ -3191,8 +3142,8 @@ body.no-tabbar .uni-tabbar {
 }
 
 .network-option.active {
-    border-color: #2c2c2c;
-    background: rgba(44, 44, 44, 0.2);
+    border-color: #333333;
+    background: rgba(51, 51, 51, 0.3);
 }
 
 .network-icon {
@@ -3208,14 +3159,14 @@ body.no-tabbar .uni-tabbar {
 }
 
 .network-name {
-    color: #333;
+    color: white;
     font-size: 14px;
     font-weight: bold;
     margin-bottom: 5px;
 }
 
 .network-check {
-    color: #555555;
+    color: #52c41a;
     font-size: 12px;
     opacity: 0;
 }
@@ -3230,7 +3181,7 @@ body.no-tabbar .uni-tabbar {
 }
 
 #set-address-btn:hover {
-    background: #3a3a3a;
+    background: #444444;
     transform: translateY(-2px);
 }
 
@@ -3238,27 +3189,24 @@ body.no-tabbar .uni-tabbar {
 .deposits-list {
     max-height: 200px;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch !important;
 }
 
 .deposit-item {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-    border-left: 2px solid transparent;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
     padding-left: 5px;
 }
 
 .deposit-item:hover {
-    border-left: 2px solid #2c2c2c;
+    border-left: 2px solid #333333;
 }
 
 /* Улучшенные стили для диаграммы */
 .chart-container {
-    background: rgba(40, 40, 40, 0.3);
-    border: 1px solid rgba(44, 44, 44, 0.5);
-    border-left: 3px solid #2c2c2c;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(51, 51, 51, 0.5);
 }
 
 /* Адаптация для мобильных экранов */
@@ -3331,7 +3279,7 @@ body.no-tabbar .uni-tabbar {
 #generate-address-btn:hover,
 #copy-address-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(44, 44, 44, 0.4);
+    box-shadow: 0 4px 12px rgba(51, 51, 51, 0.4);
 }
 
 /* Стили для loading в deposit */
@@ -3339,21 +3287,20 @@ body.no-tabbar .uni-tabbar {
     width: 40px;
     height: 40px;
     border-width: 3px;
-    border-top-color: #2c2c2c;
+    border-top-color: #333333;
 }
 
 /* Обновленные стили для navigation в home */
 .nav-section {
-    border-left: 3px solid rgba(44, 44, 44, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .nav-item {
-    border-left: 2px solid transparent;
     padding-left: 5px;
 }
 
 .nav-item:hover {
-    border-left: 2px solid #2c2c2c;
+    border-left: 2px solid #333333;
 }
 
 /* Стили для новой круговой диаграммы */
@@ -3361,12 +3308,11 @@ body.no-tabbar .uni-tabbar {
     width: 100%;
     height: 250px;
     margin: 20px 0;
-    background: rgba(40, 40, 40, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     padding: 15px;
     position: relative;
     overflow: hidden;
-    border-left: 3px solid #2c2c2c;
 }
 
 .chart-container canvas {
@@ -3374,6 +3320,297 @@ body.no-tabbar .uni-tabbar {
     height: 100% !important;
     background: none;
     position: relative;
+}
+
+/* Стили для зеленых линий в deposit */
+.deposit-address-section {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.network-selection-green {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.network-options-green {
+    display: flex;
+    gap: 10px;
+}
+
+.network-option-green {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.network-option-green.active {
+    border-color: #333333;
+    background: rgba(51, 51, 51, 0.3);
+}
+
+.network-icon-green {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.network-icon-green img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.network-name-green {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.network-check-green {
+    color: #52c41a;
+    font-size: 12px;
+    opacity: 0;
+}
+
+.network-option-green.active .network-check-green {
+    opacity: 1;
+}
+
+.input-line-green {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #333333;
+    border-radius: 0;
+    padding: 12px 40px 12px 0;
+    color: white;
+    font-size: 16px;
+    width: 100%;
+    outline: none;
+    margin-bottom: 0;
+    transition: border-color 0.3s ease;
+}
+
+.input-line-green::placeholder {
+    color: #cccccc;
+}
+
+.input-line-green:focus {
+    border-bottom-color: #52c41a;
+    border-bottom-width: 3px;
+}
+
+.input-container-green {
+    position: relative;
+    margin-bottom: 0;
+}
+
+.deposit-info {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.deposit-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.deposit-line:hover {
+    border-left: 2px solid #333333;
+}
+
+.deposit-line:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Стили для списка депозитов */
+.deposits-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.deposit-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-left: 5px;
+}
+
+.deposit-item:hover {
+    border-left: 2px solid #333333;
+}
+
+/* Улучшенные стили для круговой диаграммы */
+.chart-container {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(51, 51, 51, 0.5);
+}
+
+/* Адаптация для мобильных экранов */
+@media (max-width: 480px) {
+    .network-options-green {
+        flex-direction: column;
+    }
+    
+    .network-option-green {
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 10px;
+    }
+    
+    .network-icon-green {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 0;
+        margin-right: 10px;
+    }
+    
+    .network-name-green {
+        margin-bottom: 0;
+        margin-right: auto;
+    }
+    
+    .network-check-green {
+        margin-left: 5px;
+    }
+    
+    .deposit-line {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .deposit-line span:last-child {
+        margin-top: 5px;
+        align-self: flex-end;
+    }
+    
+    .chart-container {
+        height: 200px;
+        padding: 10px;
+    }
+}
+
+/* Новые стили для улучшенной UI */
+.input-line-green:disabled {
+    color: #999;
+    border-bottom-color: #666;
+}
+
+#generated-address-message i,
+#saved-address-message i {
+    margin-right: 5px;
+}
+
+#no-address-message i {
+    margin-right: 5px;
+}
+
+/* Анимация для кнопок deposit */
+#generate-address-btn:hover,
+#copy-address-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(51, 51, 51, 0.4);
+}
+
+/* Стили для loading в deposit */
+#loading-deposit-popup .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border-width: 3px;
+    border-top-color: #333333;
+}
+
+/* Обновленные стили для navigation в home */
+.nav-section {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.nav-item {
+    padding-left: 5px;
+}
+
+.nav-item:hover {
+    border-left: 2px solid #333333;
+}
+
+/* Улучшенные стили для сетей в модалках */
+.network-selection {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.network-options {
+    display: flex;
+    gap: 10px;
+}
+
+.network-option {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.network-option.active {
+    border-color: #333333;
+    background: rgba(51, 51, 51, 0.3);
+}
+
+.network-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.network-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.network-name {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.network-check {
+    color: #52c41a;
+    font-size: 12px;
+    opacity: 0;
+}
+
+.network-option.active .network-check {
+    opacity: 1;
 }
 
 /* Language button in top right corner */
@@ -3389,11 +3626,11 @@ body.no-tabbar .uni-tabbar {
     display: none;
     align-items: center;
     justify-content: center;
-    color: #2c2c2c;
+    color: #555555;
     font-size: 16px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    border: 1px solid #2c2c2c;
+    border: 1px solid #555555;
     transition: all 0.3s ease;
 }
 
@@ -3431,7 +3668,6 @@ body:not(.pwa-mode) .language-top-btn {
 .language-list {
     max-height: 300px;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch !important;
 }
 
 .language-option {
@@ -3452,8 +3688,8 @@ body:not(.pwa-mode) .language-top-btn {
 }
 
 .language-option.active {
-    background: rgba(44, 44, 44, 0.1);
-    border-color: #2c2c2c;
+    background: rgba(85, 85, 85, 0.1);
+    border-color: #555555;
 }
 
 .language-flag {
@@ -3470,7 +3706,7 @@ body:not(.pwa-mode) .language-top-btn {
 }
 
 .language-check {
-    color: #2c2c2c;
+    color: #555555;
     font-size: 14px;
 }
 
@@ -3530,65 +3766,26 @@ body.rtl .language-flag {
     margin-left: 15px;
 }
 
-/* Улучшенная анимация скролла */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: #2c2c2c #f5f5f5;
-}
-
-/* Для WebKit браузеров */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f5f5f5;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #2c2c2c;
-    border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #404040;
+/* Улучшение скролла для мобильных */
+body, .page-content, .conWrap, .quantum-scroll-container, .transaction-history, .deposits-list, .withdrawals-list, .transaction-list-compact {
+    /* Smooth scrolling */
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
 }
 
 /* Улучшение для iOS Safari */
 @supports (-webkit-touch-callout: none) {
-    body {
-        -webkit-overflow-scrolling: touch !important;
-        height: -webkit-fill-available;
-    }
-    
-    .page {
-        min-height: -webkit-fill-available;
-        -webkit-overflow-scrolling: touch !important;
+    body, .page-content {
+        /* Улучшение производительности скролла */
+        -webkit-overflow-scrolling: touch;
+        overflow-y: scroll;
     }
 }
 
-/* Отключение bounce эффекта на iOS */
-html.ios,
-html.ios body {
-    position: fixed;
-    overflow: hidden;
-    height: 100%;
-    width: 100%;
-}
-
-/* Улучшение скролла для Chrome на Android */
-@media (pointer: coarse) and (hover: none) {
-    body {
-        scroll-behavior: smooth;
-        -webkit-overflow-scrolling: touch !important;
-        overscroll-behavior-y: contain;
-    }
-    
-    .page-content,
-    .conWrap,
-    .card {
-        scroll-behavior: smooth;
-        -webkit-overflow-scrolling: touch !important;
+/* Улучшение для Chrome на Android */
+@supports (overflow: overlay) {
+    body, .page-content {
+        overflow-y: overlay;
     }
 }

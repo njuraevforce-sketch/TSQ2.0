@@ -1,603 +1,706 @@
-// Mine section - UPDATED with network selection
-import { t, updatePageLanguage } from './translate.js';
+// Mine section
+import { t, getCurrentLanguage, availableLanguages, setLanguage, updatePageLanguage } from './translate.js';
 
 export default function renderMine() {
-    const lang = localStorage.getItem('gly_language') || 'en';
+    const user = window.getCurrentUser();
+    if (!user) return `<div class="error">${t('please_login')}</div>`;
     
     return `
-        <!-- Profile with background image -->
-        <div class="card padding profile-bg" style="background-image: url('assets/avatar.png'); background-size: cover; background-position: center; border-radius: 10px; padding: 20px; margin-bottom: 20px; position: relative;">
-            <!-- Dark overlay for better text readability -->
-            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); border-radius: 10px; z-index: 1;"></div>
+        <div class="page-content">
+            <!-- Profile Header -->
+            <div class="profile-bg margin-bottom">
+                <div class="text-center" style="padding-top: 30px; padding-bottom: 20px;">
+                    <div class="profile-vip-badge" style="margin-bottom: 15px;" data-translate="vip_level">VIP ${user.vip_level}</div>
+                    <div class="profile-id-copy margin-bottom">
+                        <div class="profile-id" id="user-id-display" style="color: white;">${t('id')} ${user.id}</div>
+                        <button class="copy-id-btn" id="copy-id-btn" data-translate="copy_id">Copy ID</button>
+                    </div>
+                    <div class="text-xl text-white margin-bottom" style="font-size: 24px; font-weight: bold;">
+                        ${t('balance')} <span id="user-balance">${window.GLY.formatCurrency(user.balance)} USDT</span>
+                    </div>
+                </div>
+            </div>
             
-            <div style="position: relative; z-index: 2; display: flex; align-items: center; margin-bottom: 20px;">
-                <div style="flex: 1;">
-                    <!-- VIP Badge -->
-                    <div class="profile-vip-badge" id="user-vip-level" style="background: rgba(78, 119, 113, 0.8); display: inline-block; margin-bottom: 10px;">VIP 1</div>
+            <!-- Calendar Section -->
+            <div class="calendar-section margin-bottom">
+                <div class="calendar-header">
+                    <div class="calendar-title" data-translate="utc_calendar">UTC Calendar</div>
+                    <div class="calendar-nav">
+                        <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                        <div id="current-month" style="color: white; padding: 0 10px; font-size: 14px;"></div>
+                        <button id="next-month"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="calendar-grid" id="calendar-days">
+                    <!-- Days will be populated by JS -->
+                </div>
+                <div class="calendar-time text-center margin-top-sm" id="utc-time">
+                    <span data-translate="loading_utc">Loading UTC time...</span>
+                </div>
+            </div>
+            
+            <!-- Settings Section -->
+            <div class="card padding">
+                <div class="section-title-small margin-bottom" data-translate="settings">Settings</div>
+                
+                <div class="settings-list">
+                    <!-- Withdrawal Address -->
+                    <div class="setting-item" data-action="withdrawal-address">
+                        <div class="setting-icon"><i class="fas fa-wallet"></i></div>
+                        <div class="setting-name" data-translate="withdrawal_address">Withdrawal Address</div>
+                        <div class="setting-value" id="address-status" data-translate="configure">Configure</div>
+                    </div>
                     
-                    <!-- ID with Copy button inline -->
-                    <div class="profile-id-copy" style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px;">
-                        <span class="profile-id" id="user-id" style="color: white; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); font-size: 14px;">${t('id')} Loading...</span>
-                        <button class="copy-id-btn" id="copy-user-id" style="background: rgba(255, 255, 255, 0.2); border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer;" title="${t('copy_id')}">
-                            <i class="fas fa-copy" style="color: white; font-size: 12px;"></i>
-                        </button>
+                    <!-- Transaction Password -->
+                    <div class="setting-item" data-action="transaction-password">
+                        <div class="setting-icon"><i class="fas fa-lock"></i></div>
+                        <div class="setting-name" data-translate="transaction_password">Transaction Password</div>
+                        <div class="setting-value" id="password-status" data-translate="configure">Configure</div>
                     </div>
                     
-                    <div style="color: white; font-size: 18px; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">
-                        <span data-translate="balance">Balance:</span> <span id="user-balance" style="color: #f9ae3d;">0.00</span> USDT
+                    <!-- Customer Service -->
+                    <div class="setting-item" data-action="customer-service">
+                        <div class="setting-icon"><i class="fas fa-headset"></i></div>
+                        <div class="setting-name" data-translate="customer_service">Customer Service</div>
+                        <div class="setting-value"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+                    
+                    <!-- Language -->
+                    <div class="setting-item" data-action="language">
+                        <div class="setting-icon"><i class="fas fa-globe"></i></div>
+                        <div class="setting-name" data-translate="language">Language</div>
+                        <div class="setting-value" id="current-language-display">${availableLanguages[getCurrentLanguage()] || 'English'}</div>
+                    </div>
+                    
+                    <!-- Change Password -->
+                    <div class="setting-item" data-action="change-password">
+                        <div class="setting-icon"><i class="fas fa-key"></i></div>
+                        <div class="setting-name" data-translate="change_password">Change Password</div>
+                        <div class="setting-value"><i class="fas fa-chevron-right"></i></div>
                     </div>
                 </div>
+                
+                <!-- Logout Button -->
+                <button id="logout-btn" class="pro-btn margin-top-xl" style="background: transparent; border: 2px solid #ff6b6b; color: #ff6b6b;" data-translate="logout">Logout</button>
             </div>
         </div>
-
-        <!-- Calendar Block -->
-        <div class="card padding margin-top calendar-section">
-            <div class="calendar-header">
-                <div class="calendar-title" data-translate="utc_calendar">UTC Calendar</div>
-                <div class="calendar-nav">
-                    <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
-                    <button id="next-month"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-            <div class="calendar-grid" id="calendar-days">
-                <!-- Days of week -->
-                <div class="calendar-day">Sun</div>
-                <div class="calendar-day">Mon</div>
-                <div class="calendar-day">Tue</div>
-                <div class="calendar-day">Wed</div>
-                <div class="calendar-day">Thu</div>
-                <div class="calendar-day">Fri</div>
-                <div class="calendar-day">Sat</div>
-                <!-- Dates will be populated by JavaScript -->
-            </div>
-            <div class="calendar-time" id="utc-time-display" data-translate="loading_utc">
-                Loading UTC time...
-            </div>
-        </div>
-
-        <!-- Settings -->
-        <div class="card padding margin-top">
-            <div class="text-white text-bold" data-translate="settings">Settings</div>
-            <div class="settings-list">
-                <div class="setting-item" id="withdrawal-address-setting">
-                    <div class="setting-icon">
-                        <img src="assets/setting-address.png" alt="${t('withdrawal_address')}">
-                    </div>
-                    <div class="setting-name" data-translate="withdrawal_address">Withdrawal Address</div>
-                    <div class="setting-value" id="withdrawal-address-value" data-translate="configure">Configure</div>
-                </div>
-                <div class="setting-item" id="transaction-password-setting">
-                    <div class="setting-icon">
-                        <img src="assets/setting-password.png" alt="${t('transaction_password')}">
-                    </div>
-                    <div class="setting-name" data-translate="transaction_password">Transaction Password</div>
-                    <div class="setting-value" data-translate="change">Change</div>
-                </div>
-                <div class="setting-item" id="customer-service-setting">
-                    <div class="setting-icon">
-                        <img src="assets/setting-service.png" alt="${t('customer_service')}">
-                    </div>
-                    <div class="setting-name" data-translate="customer_service">Customer Service</div>
-                    <div class="setting-value" data-translate="contact">Contact</div>
-                </div>
-                <div class="setting-item" id="language-setting">
-                    <div class="setting-icon">
-                        <img src="assets/setting-language.png" alt="${t('language')}">
-                    </div>
-                    <div class="setting-name" data-translate="language">Language</div>
-                    <div class="setting-value" id="current-language-value">${t('language_english')}</div>
-                </div>
-                <div class="setting-item" id="change-password-setting">
-                    <div class="setting-icon">
-                        <img src="assets/setting-change-password.png" alt="${t('change_password')}">
-                    </div>
-                    <div class="setting-name" data-translate="change_password">Change Password</div>
-                    <div class="setting-value" data-translate="update">Update</div>
-                </div>
-                <div class="pro-btn" id="logout-btn" style="background: transparent; border: 2px solid #ff6b6b; margin-top: 10px; color: #ff6b6b; font-weight: bold;" data-translate="logout">Logout</div>
-            </div>
-        </div>
-
-        <!-- Popup for withdrawal address with network selection -->
+        
+        <!-- Popup for Withdrawal Address -->
         <div class="pop-overlay" id="address-popup" style="display: none;">
             <div class="pop-content">
-                <form id="address-form" onsubmit="return false;">
-                    <div class="pop-header" data-translate="set_withdrawal_address">Set Withdrawal Address</div>
-                    <div class="pop-body">
-                        <!-- Network Selection -->
-                        <div class="network-selection-green margin-bottom">
-                            <div class="section-title-small" style="color: #333; margin-bottom: 10px; font-size: 14px;" data-translate="select_network">Select Network</div>
-                            <div class="network-options-green">
-                                <div class="network-option-green active" data-network="TRC20">
-                                    <div class="network-icon-green">
-                                        <img src="assets/trc20.png" alt="TRC20">
-                                    </div>
-                                    <div class="network-name-green">TRC20</div>
-                                    <div class="network-check-green"><i class="fas fa-check"></i></div>
+                <div class="pop-header" data-translate="set_withdrawal_address">Set Withdrawal Address</div>
+                <div class="pop-body">
+                    <div class="network-selection margin-bottom">
+                        <div class="text-white margin-bottom-sm" data-translate="select_network">Select Network</div>
+                        <div class="network-options">
+                            <div class="network-option" data-network="trc20">
+                                <div class="network-icon">
+                                    <img src="assets/trc20.png" alt="TRC20">
                                 </div>
-                                <div class="network-option-green" data-network="BEP20">
-                                    <div class="network-icon-green">
-                                        <img src="assets/bsc20.png" alt="BEP20">
-                                    </div>
-                                    <div class="network-name-green">BEP20</div>
-                                    <div class="network-check-green"><i class="fas fa-check"></i></div>
+                                <div class="network-name" data-translate="network_trc20">TRC20</div>
+                                <div class="network-check"><i class="fas fa-check"></i></div>
+                            </div>
+                            <div class="network-option" data-network="bep20">
+                                <div class="network-icon">
+                                    <img src="assets/bep20.png" alt="BEP20">
                                 </div>
+                                <div class="network-name" data-translate="network_bep20">BEP20</div>
+                                <div class="network-check"><i class="fas fa-check"></i></div>
                             </div>
                         </div>
-                        
-                        <div class="margin-bottom">
-                            <label style="color: #333; font-size: 14px;" data-translate="usdt_wallet_address">USDT Wallet Address</label>
-                            <input type="text" id="withdrawal-address-input" data-translate="enter_wallet_address" placeholder="Enter your wallet address" 
-                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
+                    </div>
+                    
+                    <form id="address-form">
+                        <div class="form-group">
+                            <label class="text-gray" data-translate="usdt_wallet_address">USDT Wallet Address</label>
+                            <input type="text" id="wallet-address" class="input-line" placeholder="${t('enter_wallet_address')}" required>
                         </div>
-                        <p style="font-size: 12px; color: #666;">
-                            This address will be used for all future withdrawals on the selected network. Please double-check the address.
-                        </p>
-                    </div>
-                    <div class="pop-footer">
-                        <button type="submit" id="save-address" style="margin-right: 10px; background: #4e7771;" data-translate="save">Save</button>
-                        <button type="button" id="close-address" style="background: #666;" data-translate="cancel">Cancel</button>
-                    </div>
-                </form>
+                        <div class="text-gray margin-top-sm" style="font-size: 12px;" data-translate="address_save_note">
+                            This address will be saved for future withdrawals. Please double-check the address.
+                        </div>
+                    </form>
+                </div>
+                <div class="pop-footer">
+                    <button type="button" id="save-address-btn" style="background: #4e7771;" data-translate="save">Save</button>
+                    <button type="button" id="cancel-address-btn" style="background: #666;" data-translate="cancel">Cancel</button>
+                </div>
             </div>
         </div>
-
-        <!-- Popup for password change -->
-        <div class="pop-overlay" id="password-popup" style="display: none;">
-            <div class="pop-content">
-                <form id="password-change-form" onsubmit="return false;">
-                    <div class="pop-header" data-translate="change_password">Change Password</div>
-                    <div class="pop-body">
-                        <div class="margin-bottom">
-                            <label style="color: #333; font-size: 14px;" data-translate="current_password">Current Password</label>
-                            <input type="password" id="current-password" data-translate="enter_current_password" placeholder="Enter current password" 
-                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
-                        </div>
-                        <div class="margin-bottom">
-                            <label style="color: #333; font-size: 14px;" data-translate="new_password">New Password</label>
-                            <input type="password" id="new-password" data-translate="enter_new_password" placeholder="Enter new password" 
-                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
-                        </div>
-                        <div class="margin-bottom">
-                            <label style="color: #333; font-size: 14px;" data-translate="confirm_new_password">Confirm New Password</label>
-                            <input type="password" id="confirm-password" data-translate="confirm_new_password_placeholder" placeholder="Confirm new password" 
-                                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
-                        </div>
-                    </div>
-                    <div class="pop-footer">
-                        <button type="submit" id="save-password" style="margin-right: 10px; background: #4e7771;" data-translate="save">Save</button>
-                        <button type="button" id="close-password" style="background: #666;" data-translate="cancel">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Popup for customer service -->
+        
+        <!-- Popup for Customer Service -->
         <div class="pop-overlay" id="support-popup" style="display: none;">
             <div class="pop-content">
                 <div class="pop-header" data-translate="customer_service">Customer Service</div>
                 <div class="pop-body">
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <div style="font-size: 48px; color: #4e7771;">💬</div>
-                    </div>
-                    <p style="text-align: center; color: #333; margin-bottom: 15px;" data-translate="contact_24_7">
+                    <div class="text-gray margin-bottom" data-translate="contact_24_7">
                         Contact our 24/7 customer support:
-                    </p>
+                    </div>
+                    
+                    <div class="referral-section margin-bottom">
+                        <div class="referral-content">
+                            <div class="referral-info">
+                                <div class="referral-icon"><i class="fab fa-telegram"></i></div>
+                                <div class="referral-text">
+                                    <h4 data-translate="telegram">Telegram</h4>
+                                    <p>@gly_support</p>
+                                </div>
+                            </div>
+                            <button class="copy-btn" data-copy="@gly_support" data-translate="copy">COPY</button>
+                        </div>
+                    </div>
+                    
                     <div class="referral-section">
                         <div class="referral-content">
                             <div class="referral-info">
-                                <div class="referral-text">
-                                    <h4 data-translate="telegram">Telegram</h4>
-                                    <p>@GLYSupport</p>
-                                </div>
-                            </div>
-                            <button class="copy-btn" id="copy-telegram">
-                                <i class="fas fa-copy"></i> <span data-translate="copy">COPY</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="referral-section margin-top-sm">
-                        <div class="referral-content">
-                            <div class="referral-info">
+                                <div class="referral-icon"><i class="fas fa-envelope"></i></div>
                                 <div class="referral-text">
                                     <h4 data-translate="email">Email</h4>
-                                    <p>support@gly.io</p>
+                                    <p>support@gly.com</p>
                                 </div>
                             </div>
-                            <button class="copy-btn" id="copy-email">
-                                <i class="fas fa-copy"></i> <span data-translate="copy">COPY</span>
-                            </button>
+                            <button class="copy-btn" data-copy="support@gly.com" data-translate="copy">COPY</button>
                         </div>
                     </div>
                 </div>
                 <div class="pop-footer">
-                    <button id="close-support" style="background: #4e7771;" data-translate="close">Close</button>
+                    <button type="button" id="close-support-btn" style="background: #4e7771;" data-translate="close">Close</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Popup for Password Change -->
+        <div class="pop-overlay" id="password-popup" style="display: none;">
+            <div class="pop-content">
+                <div class="pop-header" data-translate="change_password">Change Password</div>
+                <div class="pop-body">
+                    <form id="password-change-form">
+                        <div class="form-group">
+                            <label class="text-gray" data-translate="current_password">Current Password</label>
+                            <input type="password" id="current-password" class="input-line" placeholder="${t('enter_current_password')}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-gray" data-translate="new_password">New Password</label>
+                            <input type="password" id="new-password" class="input-line" placeholder="${t('enter_new_password')}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-gray" data-translate="confirm_new_password">Confirm New Password</label>
+                            <input type="password" id="confirm-new-password" class="input-line" placeholder="${t('confirm_new_password_placeholder')}" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="pop-footer">
+                    <button type="button" id="save-password-btn" style="background: #4e7771;" data-translate="update">Update</button>
+                    <button type="button" id="cancel-password-btn" style="background: #666;" data-translate="cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Popup for Language Selection -->
+        <div class="pop-overlay" id="language-popup" style="display: none;">
+            <div class="pop-content">
+                <div class="pop-header" data-translate="select_language">Select Language</div>
+                <div class="pop-body" style="max-height: 400px; overflow-y: auto; padding: 0;">
+                    <div style="padding: 15px; border-bottom: 1px solid #eee;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;" data-translate="current_language">Current Language</div>
+                        <div id="current-language-text" style="font-weight: bold; color: #4e7771; font-size: 16px;">${availableLanguages[getCurrentLanguage()] || 'English'}</div>
+                    </div>
+                    
+                    <div id="language-list" style="padding: 10px 0;">
+                        ${Object.entries(availableLanguages).map(([code, name]) => {
+                            const flag = getFlagEmoji(code);
+                            const isCurrent = code === getCurrentLanguage();
+                            return `
+                                <div class="language-option ${isCurrent ? 'active' : ''}" data-lang="${code}" 
+                                     style="display: flex; align-items: center; padding: 12px 15px; cursor: pointer; transition: all 0.3s ease; 
+                                            background: ${isCurrent ? '#e6f7ff' : 'transparent'}; border-left: ${isCurrent ? '3px solid #4e7771' : '3px solid transparent'};">
+                                    <div style="font-size: 24px; margin-right: 15px; width: 30px; text-align: center;">${flag}</div>
+                                    <div style="flex: 1; font-weight: ${isCurrent ? 'bold' : 'normal'}; color: ${isCurrent ? '#4e7771' : '#333'};">${name}</div>
+                                    ${isCurrent ? '<i class="fas fa-check" style="color: #52c41a;"></i>' : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+                <div class="pop-footer">
+                    <button type="button" id="confirm-language-btn" style="background: #4e7771;" data-translate="confirm">Confirm</button>
+                    <button type="button" id="cancel-language-btn" style="background: #666;" data-translate="cancel">Cancel</button>
                 </div>
             </div>
         </div>
     `;
 }
 
+// Helper function to get flag emoji
+function getFlagEmoji(langCode) {
+    const flags = {
+        'en': '🇺🇸',
+        'fr': '🇫🇷',
+        'de': '🇩🇪',
+        'ar': '🇸🇦',
+        'pl': '🇵🇱',
+        'ru': '🇷🇺',
+        'pt': '🇵🇹',
+        'tr': '🇹🇷',
+        'ro': '🇷🇴',
+        'uz': '🇺🇿',
+        'es': '🇪🇸',
+        'it': '🇮🇹',
+        'id': '🇮🇩'
+    };
+    return flags[langCode] || '🌐';
+}
+
 export function init() {
-    // Use delay to ensure DOM is fully loaded
-    setTimeout(() => {
-        // Load profile data
-        loadProfileData();
-        
-        // Initialize calendar
-        initCalendar();
-        
-        // Setup event listeners
-        setupEventListeners();
-    }, 100);
-}
-
-function setupEventListeners() {
-    try {
-        // Settings handlers
-        document.getElementById('withdrawal-address-setting').addEventListener('click', showAddressPopup);
-        document.getElementById('transaction-password-setting').addEventListener('click', showPasswordPopup);
-        document.getElementById('customer-service-setting').addEventListener('click', showSupportPopup);
-        document.getElementById('language-setting').addEventListener('click', () => window.showLanguageModal());
-        document.getElementById('change-password-setting').addEventListener('click', showPasswordPopup);
-        document.getElementById('logout-btn').addEventListener('click', logout);
-        document.getElementById('copy-user-id').addEventListener('click', copyUserId);
-
-        // Calendar navigation
-        document.getElementById('prev-month').addEventListener('click', () => {
-            currentMonth--;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            }
-            renderCalendar(currentYear, currentMonth);
-        });
-
-        document.getElementById('next-month').addEventListener('click', () => {
-            currentMonth++;
-            if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
-            }
-            renderCalendar(currentYear, currentMonth);
-        });
-
-        // Popup handlers
-        document.getElementById('close-address').addEventListener('click', hideAddressPopup);
-        document.getElementById('save-address').addEventListener('click', (e) => {
-            e.preventDefault();
-            saveWithdrawalAddress();
-        });
-        document.getElementById('close-password').addEventListener('click', hidePasswordPopup);
-        document.getElementById('save-password').addEventListener('click', (e) => {
-            e.preventDefault();
-            changePassword();
-        });
-        document.getElementById('close-support').addEventListener('click', hideSupportPopup);
-        
-        // Copy support contacts
-        document.getElementById('copy-telegram').addEventListener('click', copyTelegram);
-        document.getElementById('copy-email').addEventListener('click', copyEmail);
-        
-        // Network selection in address popup - using green classes
-        document.querySelectorAll('#address-popup .network-option-green').forEach(option => {
-            option.addEventListener('click', function() {
-                document.querySelectorAll('#address-popup .network-option-green').forEach(opt => {
-                    opt.classList.remove('active');
-                });
-                this.classList.add('active');
-            });
-        });
-        
-    } catch (error) {
-        console.error('Error setting up event listeners in mine:', error);
-        // Retry after 500ms
-        setTimeout(setupEventListeners, 500);
-    }
-}
-
-// Calendar variables
-let currentDate = new Date();
-let currentYear = currentDate.getUTCFullYear();
-let currentMonth = currentDate.getUTCMonth();
-
-function initCalendar() {
-    // Render initial calendar
-    renderCalendar(currentYear, currentMonth);
+    document.body.classList.remove('auth-page');
     
-    // Start UTC time update
+    // Initialize calendar
+    initCalendar();
+    
+    // Update UTC time
     updateUTCTime();
     setInterval(updateUTCTime, 1000);
+    
+    // Check existing withdrawal address
+    checkWithdrawalAddress();
+    
+    // Event listeners
+    setupEventListeners();
 }
 
-function renderCalendar(year, month) {
-    const calendarGrid = document.getElementById('calendar-days');
+function initCalendar() {
+    const now = new Date();
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
     
-    // Clear existing dates (keep day headers)
-    while (calendarGrid.children.length > 7) {
-        calendarGrid.removeChild(calendarGrid.lastChild);
-    }
+    // Set current month
+    document.getElementById('current-month').textContent = `${monthNames[now.getMonth()]} ${now.getFullYear()}`;
     
-    // Get first day of month
-    const firstDay = new Date(Date.UTC(year, month, 1));
-    const firstDayIndex = firstDay.getUTCDay();
+    // Generate calendar
+    generateCalendar(now.getFullYear(), now.getMonth());
     
-    // Get last day of month
-    const lastDay = new Date(Date.UTC(year, month + 1, 0));
-    const daysInMonth = lastDay.getUTCDate();
-    
-    // Get today's date in UTC
-    const today = new Date();
-    const todayUTC = new Date(Date.UTC(
-        today.getUTCFullYear(),
-        today.getUTCMonth(),
-        today.getUTCDate()
-    ));
-    
-    // Add empty cells for days before first day
-    for (let i = 0; i < firstDayIndex; i++) {
-        const emptyCell = document.createElement('div');
-        emptyCell.className = 'calendar-date other-month';
-        emptyCell.textContent = '';
-        calendarGrid.appendChild(emptyCell);
-    }
-    
-    // Add days of month
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dateCell = document.createElement('div');
-        dateCell.className = 'calendar-date';
-        dateCell.textContent = day;
+    // Navigation buttons
+    document.getElementById('prev-month').addEventListener('click', function() {
+        const currentText = document.getElementById('current-month').textContent;
+        const [month, year] = currentText.split(' ');
+        const monthIndex = monthNames.indexOf(month);
+        const prevDate = new Date(year, monthIndex - 1, 1);
         
-        // Check if this is today
-        const cellDate = new Date(Date.UTC(year, month, day));
-        if (cellDate.getTime() === todayUTC.getTime()) {
-            dateCell.classList.add('today');
+        document.getElementById('current-month').textContent = 
+            `${monthNames[prevDate.getMonth()]} ${prevDate.getFullYear()}`;
+        generateCalendar(prevDate.getFullYear(), prevDate.getMonth());
+    });
+    
+    document.getElementById('next-month').addEventListener('click', function() {
+        const currentText = document.getElementById('current-month').textContent;
+        const [month, year] = currentText.split(' ');
+        const monthIndex = monthNames.indexOf(month);
+        const nextDate = new Date(year, monthIndex + 1, 1);
+        
+        document.getElementById('current-month').textContent = 
+            `${monthNames[nextDate.getMonth()]} ${nextDate.getFullYear()}`;
+        generateCalendar(nextDate.getFullYear(), nextDate.getMonth());
+    });
+}
+
+function generateCalendar(year, month) {
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const daysInMonth = lastDay.getDate();
+    const startingDay = firstDay.getDay();
+    
+    const daysGrid = document.getElementById('calendar-days');
+    daysGrid.innerHTML = '';
+    
+    // Day headers
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    dayNames.forEach(day => {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'calendar-day';
+        dayElement.textContent = t(day.toLowerCase(), getCurrentLanguage()) || day;
+        daysGrid.appendChild(dayElement);
+    });
+    
+    // Previous month days
+    const prevMonthLastDay = new Date(year, month, 0).getDate();
+    for (let i = 0; i < startingDay; i++) {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'calendar-date other-month';
+        dayElement.textContent = prevMonthLastDay - startingDay + i + 1;
+        daysGrid.appendChild(dayElement);
+    }
+    
+    // Current month days
+    const today = new Date();
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'calendar-date';
+        dayElement.textContent = day;
+        
+        // Check if today
+        if (today.getFullYear() === year && 
+            today.getMonth() === month && 
+            today.getDate() === day) {
+            dayElement.classList.add('today');
         }
         
-        calendarGrid.appendChild(dateCell);
+        daysGrid.appendChild(dayElement);
     }
     
-    // Update calendar title
-    const monthNames = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
-    ];
-    document.querySelector('.calendar-title').textContent = 
-        `${monthNames[month]} ${year}`;
+    // Next month days
+    const totalCells = 42; // 6 rows * 7 days
+    const remainingCells = totalCells - (startingDay + daysInMonth);
+    for (let i = 1; i <= remainingCells; i++) {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'calendar-date other-month';
+        dayElement.textContent = i;
+        daysGrid.appendChild(dayElement);
+    }
 }
 
 function updateUTCTime() {
     const now = new Date();
-    const utcTime = now.toUTCString();
-    const utcElement = document.getElementById('utc-time-display');
-    if (utcElement) {
-        utcElement.textContent = utcTime;
+    const utcTime = now.toUTCString().split(' ')[4];
+    document.getElementById('utc-time').innerHTML = `
+        <i class="fas fa-clock" style="margin-right: 8px;"></i>
+        UTC: ${utcTime}
+    `;
+}
+
+async function checkWithdrawalAddress() {
+    const user = window.getCurrentUser();
+    if (!user) return;
+    
+    try {
+        const { data: addressData } = await supabase
+            .from('withdrawal_addresses')
+            .select('*')
+            .eq('user_id', user.id)
+            .maybeSingle();
+            
+        if (addressData) {
+            document.getElementById('address-status').textContent = t('configured');
+            document.getElementById('address-status').style.color = '#52c41a';
+        }
+    } catch (error) {
+        console.error('Error checking withdrawal address:', error);
     }
 }
 
-async function loadProfileData() {
-    try {
-        const user = window.getCurrentUser();
-        if (!user) {
-            window.showSection('login');
-            return;
+function setupEventListeners() {
+    // Copy ID button
+    document.getElementById('copy-id-btn').addEventListener('click', function() {
+        const userId = window.getCurrentUser()?.id;
+        if (userId) {
+            window.GLY.copyToClipboard(userId);
+            const originalText = this.textContent;
+            this.textContent = t('copied');
+            setTimeout(() => {
+                this.textContent = originalText;
+            }, 2000);
         }
-        
-        // Update page data
-        document.getElementById('user-vip-level').textContent = `VIP ${user.vip_level}`;
-        document.getElementById('user-id').textContent = `${t('id')} ${user.id}`;
-        document.getElementById('user-balance').textContent = user.balance.toFixed(2);
-        
-        // Update withdrawal address display
-        const settingValue = document.getElementById('withdrawal-address-value');
-        if (settingValue) {
-            if (user.withdrawal_address_trc20 || user.withdrawal_address_bep20) {
-                settingValue.textContent = t('configured');
-            } else {
-                settingValue.textContent = t('set_address');
-            }
+    });
+    
+    // Settings items
+    document.querySelectorAll('.setting-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const action = this.getAttribute('data-action');
+            handleSettingAction(action);
+        });
+    });
+    
+    // Logout button
+    document.getElementById('logout-btn').addEventListener('click', function() {
+        if (confirm(t('logout_message'))) {
+            window.logout();
         }
-        
-        // Update language display
-        const currentLang = localStorage.getItem('gly_language') || 'en';
-        const languageValue = document.getElementById('current-language-value');
-        if (languageValue) {
-            languageValue.textContent = t(`language_${currentLang}`, currentLang);
-        }
-    } catch (error) {
-        console.error('Error loading profile data:', error);
+    });
+}
+
+function handleSettingAction(action) {
+    switch(action) {
+        case 'withdrawal-address':
+            showAddressPopup();
+            break;
+        case 'transaction-password':
+            showTransactionPasswordPopup();
+            break;
+        case 'customer-service':
+            showCustomerServicePopup();
+            break;
+        case 'language':
+            showLanguagePopup();
+            break;
+        case 'change-password':
+            showChangePasswordPopup();
+            break;
     }
 }
 
 function showAddressPopup() {
-    const user = window.getCurrentUser();
-    if (!user) return;
+    const popup = document.getElementById('address-popup');
+    popup.style.display = 'flex';
     
-    // Clear input field
-    document.getElementById('withdrawal-address-input').value = '';
+    // Network selection
+    const networkOptions = popup.querySelectorAll('.network-option');
+    networkOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            networkOptions.forEach(opt => opt.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
     
-    // Set default network to TRC20 if user has address, otherwise first option
-    const trc20Option = document.querySelector('#address-popup .network-option-green[data-network="TRC20"]');
-    const bep20Option = document.querySelector('#address-popup .network-option-green[data-network="BEP20"]');
+    // Set default network
+    networkOptions[0].classList.add('active');
     
-    if (user.withdrawal_address_trc20) {
-        trc20Option.classList.add('active');
-        bep20Option.classList.remove('active');
-        document.getElementById('withdrawal-address-input').value = user.withdrawal_address_trc20;
-    } else if (user.withdrawal_address_bep20) {
-        bep20Option.classList.add('active');
-        trc20Option.classList.remove('active');
-        document.getElementById('withdrawal-address-input').value = user.withdrawal_address_bep20;
-    } else {
-        // Default to TRC20
-        trc20Option.classList.add('active');
-        bep20Option.classList.remove('active');
-    }
-    
-    document.getElementById('address-popup').style.display = 'flex';
-}
-
-function hideAddressPopup() {
-    document.getElementById('address-popup').style.display = 'none';
-    document.getElementById('withdrawal-address-input').value = '';
-}
-
-function showPasswordPopup() {
-    document.getElementById('password-popup').style.display = 'flex';
-}
-
-function hidePasswordPopup() {
-    document.getElementById('password-popup').style.display = 'none';
-    document.getElementById('current-password').value = '';
-    document.getElementById('new-password').value = '';
-    document.getElementById('confirm-password').value = '';
-}
-
-function showSupportPopup() {
-    document.getElementById('support-popup').style.display = 'flex';
-}
-
-function hideSupportPopup() {
-    document.getElementById('support-popup').style.display = 'none';
-}
-
-async function saveWithdrawalAddress() {
-    const address = document.getElementById('withdrawal-address-input').value.trim();
-    const selectedNetwork = document.querySelector('#address-popup .network-option-green.active').getAttribute('data-network');
-    const user = window.getCurrentUser();
-    
-    if (!address) {
-        window.showCustomAlert(t('validation_required'));
-        return;
-    }
-    
-    if (!user) {
-        window.showCustomAlert(t('user_not_found'));
-        return;
-    }
-    
-    try {
-        // Save address in database
-        const updateData = {};
-        if (selectedNetwork === 'TRC20') {
-            updateData.withdrawal_address_trc20 = address;
-        } else {
-            updateData.withdrawal_address_bep20 = address;
+    // Save button
+    document.getElementById('save-address-btn').onclick = async function() {
+        const network = popup.querySelector('.network-option.active').getAttribute('data-network');
+        const address = document.getElementById('wallet-address').value.trim();
+        const user = window.getCurrentUser();
+        
+        if (!address) {
+            window.showCustomAlert(t('enter_wallet_address'));
+            return;
         }
         
-        const { error } = await window.supabase
-            .from('users')
-            .update(updateData)
-            .eq('id', user.id);
+        if (!user) return;
+        
+        // Show loading
+        const originalText = this.textContent;
+        this.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${t('saving')}`;
+        this.disabled = true;
+        
+        try {
+            // Check if address already exists
+            const { data: existingAddress } = await supabase
+                .from('withdrawal_addresses')
+                .select('id')
+                .eq('user_id', user.id)
+                .maybeSingle();
+                
+            if (existingAddress) {
+                // Update existing address
+                const { error } = await supabase
+                    .from('withdrawal_addresses')
+                    .update({
+                        network: network,
+                        address: address,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('user_id', user.id);
+                    
+                if (error) throw error;
+            } else {
+                // Create new address
+                const { error } = await supabase
+                    .from('withdrawal_addresses')
+                    .insert([{
+                        user_id: user.id,
+                        network: network,
+                        address: address,
+                        created_at: new Date().toISOString()
+                    }]);
+                    
+                if (error) throw error;
+            }
             
-        if (error) throw error;
-        
-        // Update user in localStorage
-        Object.assign(user, updateData);
-        localStorage.setItem('gly_user', JSON.stringify(user));
-        
-        window.showCustomAlert(t('address_saved'));
-        hideAddressPopup();
-        
-        // Update display
-        document.getElementById('withdrawal-address-value').textContent = t('configured');
-        
-        // Reload profile to update data
-        loadProfileData();
-        
-    } catch (error) {
-        window.showCustomAlert(`${t('error')}: ${error.message}`);
-    }
-}
-
-async function changePassword() {
-    const currentPassword = document.getElementById('current-password').value;
-    const newPassword = document.getElementById('new-password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
-    const user = window.getCurrentUser();
-    
-    if (!user) {
-        window.showCustomAlert(t('user_not_found'));
-        return;
-    }
-    
-    if (!currentPassword || !newPassword || !confirmPassword) {
-        window.showCustomAlert(t('validation_required'));
-        return;
-    }
-    
-    if (newPassword !== confirmPassword) {
-        window.showCustomAlert(t('validation_password_match'));
-        return;
-    }
-    
-    if (newPassword.length < 6) {
-        window.showCustomAlert(t('validation_password_length'));
-        return;
-    }
-    
-    // Check current password
-    if (user.password !== currentPassword) {
-        window.showCustomAlert(t('current_password_incorrect'));
-        return;
-    }
-    
-    try {
-        // Update password in database
-        const { error } = await window.supabase
-            .from('users')
-            .update({ password: newPassword })
-            .eq('id', user.id);
+            // Update UI
+            document.getElementById('address-status').textContent = t('configured');
+            document.getElementById('address-status').style.color = '#52c41a';
             
-        if (error) throw error;
+            // Show success message
+            window.showCustomAlert(t('address_saved'));
+            
+            // Close popup
+            popup.style.display = 'none';
+            document.getElementById('wallet-address').value = '';
+            
+        } catch (error) {
+            console.error('Error saving address:', error);
+            window.showCustomAlert(t('server_error'));
+        } finally {
+            // Restore button
+            this.textContent = originalText;
+            this.disabled = false;
+        }
+    };
+    
+    // Cancel button
+    document.getElementById('cancel-address-btn').onclick = function() {
+        popup.style.display = 'none';
+        document.getElementById('wallet-address').value = '';
+    };
+}
+
+function showTransactionPasswordPopup() {
+    window.showCustomModal(
+        t('transaction_password'),
+        `<p>${t('transaction_password')} ${t('configured')}</p>`
+    );
+}
+
+function showCustomerServicePopup() {
+    const popup = document.getElementById('support-popup');
+    popup.style.display = 'flex';
+    
+    // Copy buttons
+    popup.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const text = this.getAttribute('data-copy');
+            window.GLY.copyToClipboard(text);
+            
+            const originalText = this.textContent;
+            this.textContent = t('copied');
+            setTimeout(() => {
+                this.textContent = originalText;
+            }, 2000);
+        });
+    });
+    
+    // Close button
+    document.getElementById('close-support-btn').onclick = function() {
+        popup.style.display = 'none';
+    };
+}
+
+function showChangePasswordPopup() {
+    const popup = document.getElementById('password-popup');
+    popup.style.display = 'flex';
+    
+    // Save button
+    document.getElementById('save-password-btn').onclick = async function() {
+        const currentPassword = document.getElementById('current-password').value;
+        const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-new-password').value;
+        const user = window.getCurrentUser();
         
-        // Update user in localStorage
-        user.password = newPassword;
-        localStorage.setItem('gly_user', JSON.stringify(user));
+        if (!currentPassword || !newPassword || !confirmPassword) {
+            window.showCustomAlert(t('validation_required'));
+            return;
+        }
         
-        window.showCustomAlert(t('password_changed'));
-        hidePasswordPopup();
-    } catch (error) {
-        window.showCustomAlert(`${t('error')}: ${error.message}`);
-    }
+        if (newPassword !== confirmPassword) {
+            window.showCustomAlert(t('validation_password_match'));
+            return;
+        }
+        
+        if (newPassword.length < 6) {
+            window.showCustomAlert(t('validation_password_length'));
+            return;
+        }
+        
+        // Check current password
+        if (user.password !== currentPassword) {
+            window.showCustomAlert(t('current_password_incorrect'));
+            return;
+        }
+        
+        // Show loading
+        const originalText = this.textContent;
+        this.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${t('updating')}`;
+        this.disabled = true;
+        
+        try {
+            // Update password
+            const { error } = await supabase
+                .from('users')
+                .update({ password: newPassword })
+                .eq('id', user.id);
+                
+            if (error) throw error;
+            
+            // Update local user
+            user.password = newPassword;
+            localStorage.setItem('gly_user', JSON.stringify(user));
+            
+            // Show success message
+            window.showCustomAlert(t('password_changed'));
+            
+            // Close popup
+            popup.style.display = 'none';
+            document.getElementById('current-password').value = '';
+            document.getElementById('new-password').value = '';
+            document.getElementById('confirm-new-password').value = '';
+            
+        } catch (error) {
+            console.error('Error changing password:', error);
+            window.showCustomAlert(t('server_error'));
+        } finally {
+            // Restore button
+            this.textContent = originalText;
+            this.disabled = false;
+        }
+    };
+    
+    // Cancel button
+    document.getElementById('cancel-password-btn').onclick = function() {
+        popup.style.display = 'none';
+        document.getElementById('current-password').value = '';
+        document.getElementById('new-password').value = '';
+        document.getElementById('confirm-new-password').value = '';
+    };
 }
 
-function copyUserId() {
-    const userId = document.getElementById('user-id').textContent.replace(`${t('id')} `, '');
-    window.GLY.copyToClipboard(userId).then(() => {
-        const copyBtn = document.getElementById('copy-user-id');
-        const originalHtml = copyBtn.innerHTML;
-        copyBtn.innerHTML = '<i class="fas fa-check"></i>';
-        setTimeout(() => {
-            copyBtn.innerHTML = originalHtml;
-        }, 2000);
+function showLanguagePopup() {
+    const popup = document.getElementById('language-popup');
+    popup.style.display = 'flex';
+    
+    const currentLang = getCurrentLanguage();
+    
+    // Update current language text
+    document.getElementById('current-language-text').textContent = availableLanguages[currentLang] || 'English';
+    
+    // Language selection
+    const languageOptions = popup.querySelectorAll('.language-option');
+    languageOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            // Remove active class from all options
+            languageOptions.forEach(opt => {
+                opt.classList.remove('active');
+                opt.style.background = 'transparent';
+                opt.style.borderLeft = '3px solid transparent';
+                opt.style.fontWeight = 'normal';
+                opt.style.color = '#333';
+            });
+            
+            // Add active class to selected option
+            this.classList.add('active');
+            this.style.background = '#e6f7ff';
+            this.style.borderLeft = '3px solid #4e7771';
+            this.style.fontWeight = 'bold';
+            this.style.color = '#4e7771';
+            
+            // Update current language text
+            const lang = this.getAttribute('data-lang');
+            document.getElementById('current-language-text').textContent = availableLanguages[lang] || 'English';
+            
+            // Store selected language
+            popup.dataset.selectedLang = lang;
+        });
     });
-}
-
-function copyTelegram() {
-    window.GLY.copyToClipboard('@GLYSupport').then(() => {
-        const copyBtn = document.getElementById('copy-telegram');
-        const originalText = copyBtn.innerHTML;
-        copyBtn.innerHTML = `<i class="fas fa-check"></i> ${t('copied')}`;
-        setTimeout(() => {
-            copyBtn.innerHTML = originalText;
-        }, 2000);
-    });
-}
-
-function copyEmail() {
-    window.GLY.copyToClipboard('support@gly.io').then(() => {
-        const copyBtn = document.getElementById('copy-email');
-        const originalText = copyBtn.innerHTML;
-        copyBtn.innerHTML = `<i class="fas fa-check"></i> ${t('copied')}`;
-        setTimeout(() => {
-            copyBtn.innerHTML = originalText;
-        }, 2000);
-    });
-}
-
-function logout() {
-    window.showCustomModal(t('confirm_logout'), t('logout_message'), () => {
-        window.logout();
-    });
+    
+    // Confirm button
+    document.getElementById('confirm-language-btn').onclick = function() {
+        const selectedLang = popup.dataset.selectedLang || currentLang;
+        
+        // Save language
+        setLanguage(selectedLang);
+        
+        // Update page language
+        updatePageLanguage(selectedLang);
+        
+        // Update display in settings
+        document.getElementById('current-language-display').textContent = availableLanguages[selectedLang] || 'English';
+        
+        // Show success message
+        window.showCustomAlert(t('language_changed', selectedLang, { language: availableLanguages[selectedLang] || 'English' }));
+        
+        // Close popup
+        popup.style.display = 'none';
+    };
+    
+    // Cancel button
+    document.getElementById('cancel-language-btn').onclick = function() {
+        popup.style.display = 'none';
+    };
 }

@@ -162,6 +162,7 @@ class GLYApp {
                         localStorage.setItem('gly_user', JSON.stringify(data));
                         
                         await this.checkAndUpdateSignals();
+                        await this.updateVipLevel(); // Проверяем VIP уровень при загрузке
                     }
                 } catch (error) {
                     console.warn('Auth check error:', error);
@@ -236,6 +237,11 @@ class GLYApp {
         // Debug function for active referrals
         window.getActiveReferralsCount = async (userId) => {
             return await this.getActiveReferralsCount(userId);
+        };
+        
+        // Функция для принудительного обновления VIP уровня
+        window.forceUpdateVipLevel = async () => {
+            return await this.updateVipLevel();
         };
     }
 
@@ -488,6 +494,9 @@ class GLYApp {
                     description: `${type.charAt(0).toUpperCase() + type.slice(1)} ${amount > 0 ? '+' : ''}${amount} USDT`
                 }]);
             
+            // Обновляем VIP уровень после изменения баланса
+            await this.updateVipLevel();
+            
             return true;
         } catch (error) {
             console.error('Error updating balance:', error);
@@ -578,6 +587,9 @@ class GLYApp {
                             .from('users')
                             .update({ balance: newBalance })
                             .eq('id', referrerId);
+                            
+                        // Обновляем VIP уровень реферера
+                        await this.updateVipLevelForUser(referrerId);
                     }
                     
                     // Create transaction
@@ -594,6 +606,78 @@ class GLYApp {
             }
         } catch (error) {
             console.error('Error distributing referral profit:', error);
+        }
+    }
+
+    async updateVipLevelForUser(userId) {
+        try {
+            // Используем правильный запрос для подсчёта активных рефералов (только с балансом ≥ 20 USDT)
+            const { data: activeReferrals, error: refError } = await this.supabase
+                .from('referrals')
+                .select(`
+                    referred:users!referred_id (
+                        balance
+                    )
+                `)
+                .eq('referrer_id', userId)
+                .eq('level', 1)
+                .gte('referred.balance', 20);  // ТОЛЬКО рефералы с балансом ≥ 20 USDT
+                
+            if (refError) throw refError;
+            
+            const activeRefs = activeReferrals?.length || 0;
+            
+            // Получаем данные пользователя
+            const { data: user, error: userError } = await this.supabase
+                .from('users')
+                .select('balance, vip_level')
+                .eq('id', userId)
+                .maybeSingle();
+                
+            if (userError) throw userError;
+            
+            const userBalance = user.balance;
+            const currentVipLevel = user.vip_level;
+            
+            // Определяем новый VIP уровень на основе баланса и АКТИВНЫХ рефералов
+            let newVipLevel = 1;
+            
+            // Проверяем условия ДЛЯ КАЖДОГО уровня отдельно (не каскадно)
+            if (userBalance >= 12000 && activeRefs >= 25) {
+                newVipLevel = 6;
+            } else if (userBalance >= 6000 && activeRefs >= 15) {
+                newVipLevel = 5;
+            } else if (userBalance >= 3500 && activeRefs >= 8) {
+                newVipLevel = 4;
+            } else if (userBalance >= 1000 && activeRefs >= 5) {
+                newVipLevel = 3;
+            } else if (userBalance >= 300 && activeRefs >= 2) {
+                newVipLevel = 2;
+            }
+            
+            // Если уровень изменился
+            if (newVipLevel !== currentVipLevel) {
+                const { error } = await this.supabase
+                    .from('users')
+                    .update({ vip_level: newVipLevel })
+                    .eq('id', userId);
+                    
+                if (!error) {
+                    console.log(`VIP level updated for user ${userId}: ${currentVipLevel} -> ${newVipLevel}`);
+                    
+                    // Если это текущий пользователь, обновляем локальные данные
+                    if (this.currentUser && this.currentUser.id === userId) {
+                        this.currentUser.vip_level = newVipLevel;
+                        localStorage.setItem('gly_user', JSON.stringify(this.currentUser));
+                    }
+                    
+                    return true;
+                }
+            }
+            return false;
+        } catch (error) {
+            console.error('Error updating VIP level for user:', error);
+            return false;
         }
     }
 
@@ -863,6 +947,9 @@ class GLYApp {
             if (this.currentUser && this.currentUser.id === deposit.user_id) {
                 this.currentUser.balance = newBalance;
                 localStorage.setItem('gly_user', JSON.stringify(this.currentUser));
+                
+                // Обновляем VIP уровень после депозита
+                await this.updateVipLevel();
                 
                 // Show notification
                 if (this.currentSection === 'deposit') {

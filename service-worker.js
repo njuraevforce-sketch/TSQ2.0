@@ -24,7 +24,7 @@ const urlsToCache = [
     '/assets/setting-service.png',
     '/assets/setting-language.png',
     '/assets/setting-change-password.png',
-    '/assets/vip1.png?v=2.1',',
+    '/assets/vip1.png?v=2.1',
     '/assets/vip2.png',
     '/assets/vip3.png',
     '/assets/vip4.png',

@@ -4273,7 +4273,8 @@ export const translations = {
     'user_deleted': 'Pengguna berhasil dihapus',
     'user_updated': 'Pengguna berhasil diperbarui',
     'user_added': 'Pengguna berhasil ditambahkan'
-},
+ }
+};
 // Функции переводов (остаются теми же, что в исходном файле)
 export function t(key, lang = null, params = {}) {
   const currentLang = lang || getCurrentLanguage();

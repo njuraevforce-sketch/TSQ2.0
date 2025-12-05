@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" href="assets/logo.png">
     
     <!-- Cache busting version for CSS -->
-    <link rel="stylesheet" href="css/style.css?v=1.9">
+    <link rel="stylesheet" href="css/style.css?v=2.0">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -71,6 +71,28 @@
         }
         
         .install-btn i { margin-top: 2px; }
+        
+        /* Language button */
+        .language-btn {
+            position: fixed;
+            top: 10px;
+            right: 50px;
+            z-index: 1001;
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: #4e7771;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 1px solid #4e7771;
+        }
+        
+        .language-btn i { margin-top: 0; }
         
         /* Disable zoom gestures */
         body {
@@ -357,6 +379,11 @@
         <i class="fas fa-download"></i>
     </div>
     
+    <!-- Language Button -->
+    <div class="language-btn" id="language-global-btn">
+        <i class="fas fa-globe"></i>
+    </div>
+    
     <!-- Custom Loading Overlay -->
     <div class="loading-overlay" id="loading-overlay">
         <div class="loading-spinner"></div>
@@ -410,25 +437,25 @@
         <div class="uni-tabbar__bd">
             <div class="uni-tabbar__item" data-section="home">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/home.png?v=1.9" alt="Home" data-translate-alt="home">
+                    <img src="assets/home.png?v=2.0" alt="Home" data-translate-alt="home">
                 </div>
                 <div class="uni-tabbar__label" data-translate="home">Home</div>
             </div>
             <div class="uni-tabbar__item" data-section="get">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/get.png?v=1.9" alt="Get" data-translate-alt="get">
+                    <img src="assets/get.png?v=2.0" alt="Get" data-translate-alt="get">
                 </div>
                 <div class="uni-tabbar__label" data-translate="get">Get</div>
             </div>
             <div class="uni-tabbar__item" data-section="assets">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/assets.png?v=1.9" alt="Assets" data-translate-alt="assets">
+                    <img src="assets/assets.png?v=2.0" alt="Assets" data-translate-alt="assets">
                 </div>
                 <div class="uni-tabbar__label" data-translate="assets">Assets</div>
             </div>
             <div class="uni-tabbar__item" data-section="mine">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/mine.png?v=1.9" alt="Mine" data-translate-alt="mine">
+                    <img src="assets/mine.png?v=2.0" alt="Mine" data-translate-alt="mine">
                 </div>
                 <div class="uni-tabbar__label" data-translate="mine">Mine</div>
             </div>
@@ -436,7 +463,7 @@
     </div>
 
     <!-- Load Scripts with cache busting -->
-    <script src="js/app.js?v=1.9" type="module"></script>
+    <script src="js/app.js?v=2.0" type="module"></script>
     
     <script>
         // Service Worker for better caching control
@@ -451,7 +478,7 @@
         }
         
         // Clear cache on new version
-        const currentVersion = '1.9';
+        const currentVersion = '2.0';
         const lastVersion = localStorage.getItem('app_version');
         
         if (lastVersion !== currentVersion) {
@@ -559,6 +586,11 @@
         
         // Listen for language changes
         window.addEventListener('languageChanged', updateDirection);
+        
+        // Global language button handler
+        document.getElementById('language-global-btn').addEventListener('click', function() {
+            window.showLanguageModal();
+        });
     </script>
 </body>
 </html>

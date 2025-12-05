@@ -4272,10 +4272,9 @@ export const translations = {
     'confirm_delete': 'Apakah Anda yakin ingin menghapus pengguna ini?',
     'user_deleted': 'Pengguna berhasil dihapus',
     'user_updated': 'Pengguna berhasil diperbarui',
-    'user_added': 'Pengguna berhasil ditambahkan',
+    'user_added': 'Pengguna berhasil ditambahkan'
   },
 };
-
 // Функции переводов (остаются теми же, что в исходном файле)
 export function t(key, lang = null, params = {}) {
   const currentLang = lang || getCurrentLanguage();

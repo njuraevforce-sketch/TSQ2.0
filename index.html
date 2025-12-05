@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" href="assets/logo.png">
     
     <!-- Cache busting version for CSS -->
-    <link rel="stylesheet" href="css/style.css?v=4.0">
+    <link rel="stylesheet" href="css/style.css?v=2.0">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -448,25 +448,25 @@
         <div class="uni-tabbar__bd">
             <div class="uni-tabbar__item" data-section="home">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/home.png?v=4.0" alt="Home" data-translate-alt="home">
+                    <img src="assets/home.png?v=2.0" alt="Home" data-translate-alt="home">
                 </div>
                 <div class="uni-tabbar__label" data-translate="home">Home</div>
             </div>
             <div class="uni-tabbar__item" data-section="get">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/get.png?v=4.0" alt="Get" data-translate-alt="get">
+                    <img src="assets/get.png?v=2.0" alt="Get" data-translate-alt="get">
                 </div>
                 <div class="uni-tabbar__label" data-translate="get">Get</div>
             </div>
             <div class="uni-tabbar__item" data-section="assets">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/assets.png?v=4.0" alt="Assets" data-translate-alt="assets">
+                    <img src="assets/assets.png?v=2.0" alt="Assets" data-translate-alt="assets">
                 </div>
                 <div class="uni-tabbar__label" data-translate="assets">Assets</div>
             </div>
             <div class="uni-tabbar__item" data-section="mine">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/mine.png?v=4.0" alt="Mine" data-translate-alt="mine">
+                    <img src="assets/mine.png?v=2.0" alt="Mine" data-translate-alt="mine">
                 </div>
                 <div class="uni-tabbar__label" data-translate="mine">Mine</div>
             </div>
@@ -474,7 +474,7 @@
     </div>
 
     <!-- Load Scripts with cache busting -->
-    <script src="js/app.js?v=4.0" type="module"></script>
+    <script src="js/app.js?v=2.0" type="module"></script>
     
     <script>
         // Service Worker for better caching control
@@ -489,7 +489,7 @@
         }
         
         // Clear cache on new version
-        const currentVersion = '4.0';
+        const currentVersion = '2.0';
         const lastVersion = localStorage.getItem('app_version');
         
         if (lastVersion !== currentVersion) {
@@ -617,6 +617,12 @@
                 document.body.style.webkitOverflowScrolling = 'touch';
             }
             
+            // Гарантируем что контейнеры имеют правильную высоту
+            setTimeout(() => {
+                document.querySelector('.page').style.height = '100%';
+                document.querySelector('.page-content').style.minHeight = 'calc(100vh - 60px)';
+            }, 100);
+            
             console.log('Scroll fix applied');
         });
         
@@ -632,27 +638,6 @@
             
             console.log('Final scroll fix applied');
         }, 1000);
-        
-        // ==== ФИКС ОШИБКИ 623: Проверяем наличие элементов перед изменением ====
-        function safeStyleUpdate() {
-            const body = document.body;
-            if (body) {
-                body.style.overflow = 'auto';
-                body.style.webkitOverflowScrolling = 'touch';
-                
-                // Принудительный рефлоу для активации скролла
-                body.style.display = 'none';
-                body.offsetHeight; // триггер рефлоу
-                body.style.display = '';
-                
-                console.log('Safe style update applied');
-            } else {
-                console.warn('Body element not found for style update');
-            }
-        }
-        
-        // Заменяем проблемный setTimeout
-        setTimeout(safeStyleUpdate, 1000);
     </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"372e2855022844e48873bd7a26355bf2","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>

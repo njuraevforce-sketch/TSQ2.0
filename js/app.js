@@ -153,15 +153,19 @@ class GLYApp {
                         
                     if (error) {
                         console.warn('Could not fetch user data:', error);
+                        await this.checkAndUpdateSignals();
                         return;
                     }
                     
                     if (data) {
                         this.currentUser = data;
                         localStorage.setItem('gly_user', JSON.stringify(data));
+                        
+                        await this.checkAndUpdateSignals();
                     }
                 } catch (error) {
                     console.warn('Auth check error:', error);
+                    await this.checkAndUpdateSignals();
                 }
             } catch (e) {
                 console.error('Error parsing stored user:', e);
@@ -649,11 +653,13 @@ class GLYApp {
         
         const now = new Date();
         const utcHour = now.getUTCHours();
+        const utcMinute = now.getUTCMinutes();
         const today = now.toISOString().split('T')[0];
         const lastUpdate = this.currentUser.last_signal_update?.split('T')[0];
         
-        // If it's 18:00 UTC and not updated today
-        if (utcHour >= 18 && today !== lastUpdate) {
+        // Если сегодняшняя дата отличается от даты последнего обновления
+        // И текущее время уже после 18:00 UTC (≥ 18:00)
+        if (today !== lastUpdate && (utcHour > 18 || (utcHour === 18 && utcMinute >= 0))) {
             try {
                 // Update signals
                 const { error } = await this.supabase
@@ -671,6 +677,11 @@ class GLYApp {
                     
                     // Update VIP level
                     await this.updateVipLevel();
+                    
+                    // Show notification if user is on get or home page
+                    if (this.currentSection === 'get' || this.currentSection === 'home') {
+                        window.showCustomAlert(t('signals_reset_alert'));
+                    }
                 }
             } catch (error) {
                 console.error('Error updating signals:', error);

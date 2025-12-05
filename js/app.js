@@ -232,6 +232,11 @@ class GLYApp {
                 module.updatePageLanguage(lang);
             });
         };
+        
+        // Debug function for active referrals
+        window.getActiveReferralsCount = async (userId) => {
+            return await this.getActiveReferralsCount(userId);
+        };
     }
 
     async showSection(sectionId) {
@@ -638,6 +643,26 @@ class GLYApp {
         return chain;
     }
 
+    async getActiveReferralsCount(userId) {
+        try {
+            const { data: activeReferrals, error } = await this.supabase
+                .from('referrals')
+                .select(`
+                    referred:users!referred_id (
+                        balance
+                    )
+                `)
+                .eq('referrer_id', userId)
+                .eq('level', 1)
+                .gte('referred.balance', 20);
+                
+            return activeReferrals?.length || 0;
+        } catch (error) {
+            console.error('Error getting active referrals count:', error);
+            return 0;
+        }
+    }
+
     startSignalUpdateCheck() {
         // Check every minute if signals need to be updated
         setInterval(() => {
@@ -693,7 +718,7 @@ class GLYApp {
         if (!this.currentUser) return;
         
         try {
-            // Get count of ACTIVE level 1 referrals (balance ≥ 20 USDT)
+            // Используем правильный запрос для подсчёта активных рефералов (только с балансом ≥ 20 USDT)
             const { data: activeReferrals, error: refError } = await this.supabase
                 .from('referrals')
                 .select(`
@@ -703,22 +728,35 @@ class GLYApp {
                 `)
                 .eq('referrer_id', this.currentUser.id)
                 .eq('level', 1)
-                .gte('referred.balance', 20);
+                .gte('referred.balance', 20);  // ТОЛЬКО рефералы с балансом ≥ 20 USDT
                 
             if (refError) throw refError;
             
             const activeRefs = activeReferrals?.length || 0;
             
-            // Determine new VIP level based on balance and ACTIVE referrals
+            // Логи для отладки
+            console.log(`Active referrals (balance ≥ 20): ${activeRefs}`);
+            console.log(`User balance: ${this.currentUser.balance}`);
+            
+            // Определяем новый VIP уровень на основе баланса и АКТИВНЫХ рефералов
             let newVipLevel = 1;
             
-            if (this.currentUser.balance >= 300 && activeRefs >= 2) newVipLevel = 2;
-            if (this.currentUser.balance >= 1000 && activeRefs >= 5) newVipLevel = 3;
-            if (this.currentUser.balance >= 3500 && activeRefs >= 8) newVipLevel = 4;
-            if (this.currentUser.balance >= 6000 && activeRefs >= 15) newVipLevel = 5;
-            if (this.currentUser.balance >= 12000 && activeRefs >= 25) newVipLevel = 6;
+            // Проверяем условия ДЛЯ КАЖДОГО уровня отдельно (не каскадно)
+            if (this.currentUser.balance >= 12000 && activeRefs >= 25) {
+                newVipLevel = 6;
+            } else if (this.currentUser.balance >= 6000 && activeRefs >= 15) {
+                newVipLevel = 5;
+            } else if (this.currentUser.balance >= 3500 && activeRefs >= 8) {
+                newVipLevel = 4;
+            } else if (this.currentUser.balance >= 1000 && activeRefs >= 5) {
+                newVipLevel = 3;
+            } else if (this.currentUser.balance >= 300 && activeRefs >= 2) {
+                newVipLevel = 2;
+            }
             
-            // If level changed
+            console.log(`New VIP level determined: ${newVipLevel}`);
+            
+            // Если уровень изменился
             if (newVipLevel !== this.currentUser.vip_level) {
                 const { error } = await this.supabase
                     .from('users')
@@ -728,6 +766,11 @@ class GLYApp {
                 if (!error) {
                     this.currentUser.vip_level = newVipLevel;
                     localStorage.setItem('gly_user', JSON.stringify(this.currentUser));
+                    
+                    // Уведомление об изменении уровня
+                    if (this.currentSection === 'get' || this.currentSection === 'home') {
+                        window.showCustomAlert(t('vip_level_upgraded', null, { level: newVipLevel }));
+                    }
                 }
             }
         } catch (error) {

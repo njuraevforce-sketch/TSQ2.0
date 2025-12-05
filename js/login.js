@@ -1,13 +1,18 @@
 // Login section
-import { t } from './translate.js';
+import { t, showLanguageModal } from './translate.js';
 
 export default function renderLogin() {
     const lang = localStorage.getItem('gly_language') || 'en';
     
     return `
         <!-- Login form -->
-        <div class="card padding" style="margin-top: 20px; background: transparent; box-shadow: none;">
-            <div style="text-align: left; margin-bottom: 30px; display: flex; align-items: center;">
+        <div class="card padding" style="margin-top: 20px; background: transparent; box-shadow: none; position: relative;">
+            <!-- Language button in top right -->
+            <div class="language-globe-btn" id="language-btn-login" style="position: absolute; top: 20px; right: 20px; z-index: 10; width: 40px; height: 40px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.3);">
+                <i class="fas fa-globe" style="color: white; font-size: 18px;"></i>
+            </div>
+            
+            <div style="text-align: left; margin-bottom: 30px; display: flex; align-items: center; margin-top: 20px;">
                 <img src="assets/logo.png" alt="GLY Logo" style="width: 80px; height: 80px; border-radius: 20px; margin-right: 20px;">
                 <div>
                     <h2 style="color: white; margin-bottom: 5px; font-size: 28px;" data-translate="welcome">Welcome</h2>
@@ -42,6 +47,11 @@ export default function renderLogin() {
 
 export function init() {
     document.body.classList.add('auth-page');
+    
+    // Language button handler - use the same modal as in mine
+    document.getElementById('language-btn-login').addEventListener('click', () => {
+        showLanguageModal();
+    });
     
     // Password visibility toggle handler
     document.getElementById('toggle-password').addEventListener('click', function() {

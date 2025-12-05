@@ -277,6 +277,9 @@ async function loadUserData() {
     // Проверяем и обновляем сигналы при загрузке страницы
     if (window.glyApp) {
         await window.glyApp.checkAndUpdateSignals();
+        
+        // ПРИНУДИТЕЛЬНО ОБНОВЛЯЕМ VIP УРОВЕНЬ ПРИ КАЖДОЙ ЗАГРУЗКЕ
+        await window.glyApp.updateVipLevel();
     }
     
     // Обновляем данные пользователя после проверки
@@ -292,6 +295,7 @@ async function loadUserData() {
     if (window.getActiveReferralsCount) {
         const activeRefs = await window.getActiveReferralsCount(updatedUser.id);
         console.log(`DEBUG: User ${updatedUser.username} has ${activeRefs} active referrals (balance ≥ 20 USDT)`);
+        console.log(`Current VIP level: ${updatedUser.vip_level}`);
     }
 }
 
@@ -323,6 +327,9 @@ function highlightCurrentVipLevel(userVipLevel) {
         if (level === userVipLevel) {
             card.style.border = '2px solid #52c41a';
             card.style.boxShadow = '0 0 10px rgba(82, 196, 26, 0.5)';
+        } else {
+            card.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+            card.style.boxShadow = 'none';
         }
     });
 }
@@ -364,6 +371,10 @@ async function startQuantification() {
         
         // Update signals display
         updateSignalsDisplay(result.signals_left);
+        
+        // Update VIP level display after quantification
+        const updatedUser = window.getCurrentUser();
+        highlightCurrentVipLevel(updatedUser.vip_level);
         
         // Hide process after 3 seconds
         setTimeout(() => {
@@ -433,3 +444,11 @@ function updateUTCTime() {
         utcElement.textContent = `UTC: ${utcTime}`;
     }
 }
+
+// Глобальная функция для обновления VIP уровня (может быть вызвана из других модулей)
+window.updateVipLevelDisplay = function() {
+    const user = window.getCurrentUser();
+    if (user) {
+        highlightCurrentVipLevel(user.vip_level);
+    }
+};

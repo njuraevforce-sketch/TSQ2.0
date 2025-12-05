@@ -611,21 +611,27 @@ class GLYApp {
 
     async updateVipLevelForUser(userId) {
         try {
-            // Используем правильный запрос для подсчёта активных рефералов (только с балансом ≥ 20 USDT)
-            const { data: activeReferrals, error: refError } = await this.supabase
+            // ПРАВИЛЬНЫЙ ЗАПРОС: получаем всех рефералов уровня 1, затем фильтруем по балансу в коде
+            const { data: referrals, error: refError } = await this.supabase
                 .from('referrals')
                 .select(`
+                    id,
+                    referred_id,
                     referred:users!referred_id (
                         balance
                     )
                 `)
                 .eq('referrer_id', userId)
-                .eq('level', 1)
-                .gte('referred.balance', 20);  // ТОЛЬКО рефералы с балансом ≥ 20 USDT
+                .eq('level', 1);
                 
             if (refError) throw refError;
             
-            const activeRefs = activeReferrals?.length || 0;
+            // ФИЛЬТРУЕМ В КОДЕ: только рефералы с балансом ≥ 20 USDT
+            const activeReferrals = referrals?.filter(ref => 
+                ref.referred && ref.referred.balance >= 20
+            ) || [];
+            
+            const activeRefs = activeReferrals.length;
             
             // Получаем данные пользователя
             const { data: user, error: userError } = await this.supabase
@@ -729,18 +735,26 @@ class GLYApp {
 
     async getActiveReferralsCount(userId) {
         try {
-            const { data: activeReferrals, error } = await this.supabase
+            const { data: referrals, error } = await this.supabase
                 .from('referrals')
                 .select(`
+                    id,
+                    referred_id,
                     referred:users!referred_id (
                         balance
                     )
                 `)
                 .eq('referrer_id', userId)
-                .eq('level', 1)
-                .gte('referred.balance', 20);
+                .eq('level', 1);
                 
-            return activeReferrals?.length || 0;
+            if (error) throw error;
+            
+            // ФИЛЬТРУЕМ В КОДЕ
+            const activeReferrals = referrals?.filter(ref => 
+                ref.referred && ref.referred.balance >= 20
+            ) || [];
+            
+            return activeReferrals.length;
         } catch (error) {
             console.error('Error getting active referrals count:', error);
             return 0;
@@ -802,23 +816,33 @@ class GLYApp {
         if (!this.currentUser) return;
         
         try {
-            // Используем правильный запрос для подсчёта активных рефералов (только с балансом ≥ 20 USDT)
-            const { data: activeReferrals, error: refError } = await this.supabase
+            // ПРАВИЛЬНЫЙ ЗАПРОС: получаем всех рефералов уровня 1, затем фильтруем по балансу в коде
+            const { data: referrals, error: refError } = await this.supabase
                 .from('referrals')
                 .select(`
+                    id,
+                    referred_id,
                     referred:users!referred_id (
+                        id,
+                        username,
                         balance
                     )
                 `)
                 .eq('referrer_id', this.currentUser.id)
-                .eq('level', 1)
-                .gte('referred.balance', 20);  // ТОЛЬКО рефералы с балансом ≥ 20 USDT
+                .eq('level', 1);
                 
             if (refError) throw refError;
             
-            const activeRefs = activeReferrals?.length || 0;
+            // ФИЛЬТРУЕМ В КОДЕ: только рефералы с балансом ≥ 20 USDT
+            const activeReferrals = referrals?.filter(ref => 
+                ref.referred && ref.referred.balance >= 20
+            ) || [];
+            
+            const activeRefs = activeReferrals.length;
             
             // Логи для отладки
+            console.log('All referrals:', referrals);
+            console.log('Active referrals (balance ≥ 20):', activeReferrals);
             console.log(`Active referrals (balance ≥ 20): ${activeRefs}`);
             console.log(`User balance: ${this.currentUser.balance}`);
             
@@ -838,7 +862,7 @@ class GLYApp {
                 newVipLevel = 2;
             }
             
-            console.log(`New VIP level determined: ${newVipLevel}`);
+            console.log(`Current VIP: ${this.currentUser.vip_level}, New VIP level determined: ${newVipLevel}`);
             
             // Если уровень изменился
             if (newVipLevel !== this.currentUser.vip_level) {

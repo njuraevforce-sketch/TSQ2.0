@@ -287,6 +287,12 @@ async function loadUserData() {
     
     // Update VIP level in carousel
     highlightCurrentVipLevel(updatedUser.vip_level);
+    
+    // ДЛЯ ОТЛАДКИ: Проверяем активных рефералов
+    if (window.getActiveReferralsCount) {
+        const activeRefs = await window.getActiveReferralsCount(updatedUser.id);
+        console.log(`DEBUG: User ${updatedUser.username} has ${activeRefs} active referrals (balance ≥ 20 USDT)`);
+    }
 }
 
 function updateSignalsDisplay(signalsAvailable) {

@@ -187,8 +187,8 @@ class GLYApp {
             this.showSection(sectionId);
         };
 
-        window.setNavbarTitle = (title) => {
-            this.setNavbarTitle(title);
+        window.setNavbarTitle = (title, showBackButton = false) => {
+            this.setNavbarTitle(title, showBackButton);
         };
 
         window.showBackButton = (show = true) => {
@@ -209,6 +209,24 @@ class GLYApp {
 
         window.logout = () => {
             this.logout();
+        };
+        
+        // Language system functions
+        window.showLanguageModal = () => {
+            import('./translate.js').then(module => {
+                module.showLanguageModal();
+            });
+        };
+
+        window.getCurrentLanguage = () => {
+            return localStorage.getItem('gly_language') || 'en';
+        };
+
+        window.setLanguage = (lang) => {
+            import('./translate.js').then(module => {
+                module.setLanguage(lang);
+                module.updatePageLanguage(lang);
+            });
         };
     }
 
@@ -277,6 +295,9 @@ class GLYApp {
             this.hideTabbar();
             this.hideNavbar();
             document.body.classList.add('auth-page');
+            
+            // Show language button in top right corner
+            this.showLanguageButton();
         } else if (cleanSectionId === 'company' || cleanSectionId === 'invite' || 
                    cleanSectionId === 'team' || cleanSectionId === 'rules' ||
                    cleanSectionId === 'withdraw' || cleanSectionId === 'admin' ||
@@ -284,6 +305,9 @@ class GLYApp {
             this.hideTabbar();
             this.showNavbar();
             document.body.classList.add('no-tabbar');
+            
+            // Hide language button
+            this.hideLanguageButton();
             
             if (cleanSectionId === 'company') this.setNavbarTitle(t('company'), true);
             else if (cleanSectionId === 'invite') this.setNavbarTitle(t('invite'), true);
@@ -298,6 +322,9 @@ class GLYApp {
             document.body.classList.remove('no-tabbar');
             this.setNavbarTitle('', false);
             
+            // Hide language button
+            this.hideLanguageButton();
+            
             // Set active tab
             document.querySelectorAll('.uni-tabbar__item').forEach(item => {
                 item.classList.remove('uni-tabbar__item--active');
@@ -309,6 +336,20 @@ class GLYApp {
         }
 
         this.currentSection = cleanSectionId;
+    }
+
+    showLanguageButton() {
+        const languageBtn = document.getElementById('language-btn-top');
+        if (languageBtn) {
+            languageBtn.style.display = 'flex';
+        }
+    }
+
+    hideLanguageButton() {
+        const languageBtn = document.getElementById('language-btn-top');
+        if (languageBtn) {
+            languageBtn.style.display = 'none';
+        }
     }
 
     async loadSection(sectionId) {
@@ -725,6 +766,9 @@ class GLYApp {
     }
 
     async processAutoDeposit(deposit) {
+        const user = window.getCurrentUser();
+        if (!user) return;
+        
         try {
             // Update user balance
             const newBalance = user.balance + deposit.amount;

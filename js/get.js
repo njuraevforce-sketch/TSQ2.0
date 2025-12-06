@@ -36,13 +36,13 @@ export default function renderGet() {
                 <div class="process-step" id="profit-result" style="display: none; color: #52c41a; font-weight: bold;"></div>
             </div>
 
-            <!-- VIP cards - ВЕРТИКАЛЬНАЯ КАРУСЕЛЬ -->
+            <!-- VIP cards - НОВАЯ ВЕРТИКАЛЬНАЯ КАРУСЕЛЬ -->
             <div class="vip-section">
                 <div class="section-title" data-translate="vip_levels">VIP Levels</div>
                 <div class="uni-swiper-wrapper" id="vip-swiper-wrapper">
                     <div class="uni-swiper-slides" id="vip-swiper-slides">
                         <!-- VIP 1 -->
-                        <div class="uni-swiper-slide-frame" style="transform: translate(0px, 0%) translateZ(0px);">
+                        <div class="uni-swiper-slide-frame">
                             <div class="uni-swiper-item">
                                 <div class="swiper-itemWrap flex flex-direction justify-between padding" style="background: url('assets/vip1.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
                                     <div class="text-bold text-xxl">VIP1</div>
@@ -65,7 +65,7 @@ export default function renderGet() {
                             </div>
                         </div>
                         <!-- VIP 2 -->
-                        <div class="uni-swiper-slide-frame" style="transform: translate(0px, 100%) translateZ(0px);">
+                        <div class="uni-swiper-slide-frame">
                             <div class="uni-swiper-item">
                                 <div class="swiper-itemWrap flex flex-direction justify-between padding" style="background: url('assets/vip2.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
                                     <div class="text-bold text-xxl">VIP2</div>
@@ -88,7 +88,7 @@ export default function renderGet() {
                             </div>
                         </div>
                         <!-- VIP 3 -->
-                        <div class="uni-swiper-slide-frame" style="transform: translate(0px, 200%) translateZ(0px);">
+                        <div class="uni-swiper-slide-frame">
                             <div class="uni-swiper-item">
                                 <div class="swiper-itemWrap flex flex-direction justify-between padding" style="background: url('assets/vip3.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
                                     <div class="text-bold text-xxl">VIP3</div>
@@ -111,7 +111,7 @@ export default function renderGet() {
                             </div>
                         </div>
                         <!-- VIP 4 -->
-                        <div class="uni-swiper-slide-frame" style="transform: translate(0px, 300%) translateZ(0px);">
+                        <div class="uni-swiper-slide-frame">
                             <div class="uni-swiper-item">
                                 <div class="swiper-itemWrap flex flex-direction justify-between padding" style="background: url('assets/vip4.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
                                     <div class="text-bold text-xxl">VIP4</div>
@@ -134,7 +134,7 @@ export default function renderGet() {
                             </div>
                         </div>
                         <!-- VIP 5 -->
-                        <div class="uni-swiper-slide-frame" style="transform: translate(0px, 400%) translateZ(0px);">
+                        <div class="uni-swiper-slide-frame">
                             <div class="uni-swiper-item">
                                 <div class="swiper-itemWrap flex flex-direction justify-between padding" style="background: url('assets/vip5.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
                                     <div class="text-bold text-xxl">VIP5</div>
@@ -157,7 +157,7 @@ export default function renderGet() {
                             </div>
                         </div>
                         <!-- VIP 6 -->
-                        <div class="uni-swiper-slide-frame" style="transform: translate(0px, 500%) translateZ(0px);">
+                        <div class="uni-swiper-slide-frame">
                             <div class="uni-swiper-item">
                                 <div class="swiper-itemWrap flex flex-direction justify-between padding" style="background: url('assets/vip6.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
                                     <div class="text-bold text-xxl">VIP6</div>
@@ -224,20 +224,19 @@ export async function init() {
 
 function initVipCarousel() {
     const slidesContainer = document.getElementById('vip-swiper-slides');
-    const slideFrames = document.querySelectorAll('.uni-swiper-slide-frame');
     const indicators = document.querySelectorAll('.vip-indicator');
     const prevBtn = document.getElementById('vip-prev-btn');
     const nextBtn = document.getElementById('vip-next-btn');
     const description = document.getElementById('vip-description');
     
-    if (!slidesContainer || slideFrames.length === 0 || !description) {
+    if (!slidesContainer || indicators.length === 0 || !description) {
         console.error('Carousel elements not found');
         return;
     }
     
     let currentIndex = 0;
     const totalSlides = 6;
-    const slideHeight = 100; // 100% per slide
+    const slideHeight = 250; // высота слайда в пикселях
     
     const vipDescriptions = [
         t('vip_description_1'),
@@ -251,8 +250,8 @@ function initVipCarousel() {
     function updateCarousel() {
         console.log('Updating carousel to index:', currentIndex);
         
-        // Update slides position by moving the container
-        slidesContainer.style.transform = `translateY(-${currentIndex * slideHeight}%)`;
+        // Update slides position
+        slidesContainer.style.transform = `translate(0px, ${-currentIndex * slideHeight}px)`;
         
         // Update indicators
         indicators.forEach((indicator, index) => {
@@ -265,11 +264,12 @@ function initVipCarousel() {
         // Update description
         if (vipDescriptions[currentIndex]) {
             description.textContent = vipDescriptions[currentIndex];
+            console.log('Description updated:', vipDescriptions[currentIndex]);
         }
         
         // Update button states
-        if (prevBtn) prevBtn.disabled = currentIndex === 0;
-        if (nextBtn) nextBtn.disabled = currentIndex === totalSlides - 1;
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex === totalSlides - 1;
         
         // Update lock icons based on user's VIP level
         updateLockIcons();
@@ -282,26 +282,28 @@ function initVipCarousel() {
         const userVipLevel = user.vip_level || 1;
         
         // Update lock icons for all slides
-        slideFrames.forEach((slideFrame, index) => {
-            const lockIcon = slideFrame.querySelector('.u-icon__icon i');
-            const lockIconDiv = slideFrame.querySelector('.u-icon__icon');
+        for (let i = 0; i < totalSlides; i++) {
+            const slideIndex = i;
+            const slideFrame = slidesContainer.children[slideIndex];
+            if (!slideFrame) continue;
             
-            if (lockIcon && lockIconDiv) {
-                // Check if this level is unlocked (index < userVipLevel)
-                // Note: index 0 = VIP1, userVipLevel 1 = VIP1
-                if (index < userVipLevel) {
-                    // Already unlocked levels (including current)
+            const lockIcon = slideFrame.querySelector('.u-icon__icon i');
+            if (lockIcon) {
+                if (slideIndex < userVipLevel - 1) {
+                    // Already unlocked levels (below current)
                     lockIcon.className = 'fas fa-lock-open';
                     lockIcon.style.color = '#4CAF50';
-                    lockIconDiv.style.color = '#4CAF50';
+                } else if (slideIndex === userVipLevel - 1) {
+                    // Current level
+                    lockIcon.className = 'fas fa-lock-open';
+                    lockIcon.style.color = '#4CAF50';
                 } else {
                     // Locked levels (above current)
                     lockIcon.className = 'fas fa-lock';
                     lockIcon.style.color = '#cccccc';
-                    lockIconDiv.style.color = '#cccccc';
                 }
             }
-        });
+        }
     }
     
     function goToSlide(index) {
@@ -328,8 +330,8 @@ function initVipCarousel() {
     updateCarousel();
     
     // Event listeners for buttons
-    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
     
     // Event listeners for indicators
     indicators.forEach((indicator, index) => {
@@ -342,17 +344,14 @@ function initVipCarousel() {
     let touchStartY = 0;
     let touchEndY = 0;
     
-    const wrapper = document.getElementById('vip-swiper-wrapper');
-    if (wrapper) {
-        wrapper.addEventListener('touchstart', (e) => {
-            touchStartY = e.changedTouches[0].screenY;
-        });
-        
-        wrapper.addEventListener('touchend', (e) => {
-            touchEndY = e.changedTouches[0].screenY;
-            handleSwipe();
-        });
-    }
+    slidesContainer.addEventListener('touchstart', (e) => {
+        touchStartY = e.changedTouches[0].screenY;
+    });
+    
+    slidesContainer.addEventListener('touchend', (e) => {
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe();
+    });
     
     function handleSwipe() {
         const swipeThreshold = 50;
@@ -396,6 +395,8 @@ async function loadUserData() {
     // Проверяем и обновляем сигналы при загрузке страницы
     if (window.glyApp) {
         await window.glyApp.checkAndUpdateSignals();
+        
+        // ПРИНУДИТЕЛЬНО ОБНОВЛЯЕМ VIP УРОВЕНЬ ПРИ КАЖДОЙ ЗАГРУЗКЕ
         await window.glyApp.updateVipLevel();
     }
     
@@ -408,10 +409,10 @@ async function loadUserData() {
     // Update VIP level in carousel
     highlightCurrentVipLevel(updatedUser.vip_level);
     
-    // ДЛЯ ОТЛАДКИ
+    // ДЛЯ ОТЛАДКИ: Проверяем активных рефералов
     if (window.getActiveReferralsCount) {
         const activeRefs = await window.getActiveReferralsCount(updatedUser.id);
-        console.log(`DEBUG: User ${updatedUser.username} has ${activeRefs} active referrals`);
+        console.log(`DEBUG: User ${updatedUser.username} has ${activeRefs} active referrals (balance ≥ 20 USDT)`);
         console.log(`Current VIP level: ${updatedUser.vip_level}`);
     }
 }
@@ -439,11 +440,8 @@ function updateSignalsDisplay(signalsAvailable) {
 
 function highlightCurrentVipLevel(userVipLevel) {
     // Go to the slide corresponding to user's VIP level
-    // Note: VIP level 1 = index 0
-    const targetIndex = Math.max(0, Math.min(userVipLevel - 1, 5));
-    
     if (window.goToVipSlide) {
-        window.goToVipSlide(targetIndex);
+        window.goToVipSlide(userVipLevel - 1); // VIP level 1 corresponds to index 0
     }
     
     // Update lock icons
@@ -563,7 +561,7 @@ function updateUTCTime() {
     }
 }
 
-// Глобальная функция для обновления VIP уровня
+// Глобальная функция для обновления VIP уровня (может быть вызвана из других модулей)
 window.updateVipLevelDisplay = function() {
     const user = window.getCurrentUser();
     if (user) {

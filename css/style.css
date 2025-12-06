@@ -3612,9 +3612,8 @@ img {
         height: auto;
     }
 }
-/* Добавить в конец файла style.css */
 
-/* Carousel styles */
+/* Carousel styles - FIXED */
 .carousel-container {
     position: relative;
     width: 100%;
@@ -3627,12 +3626,14 @@ img {
     display: flex;
     height: 100%;
     transition: transform 0.5s ease-in-out;
+    will-change: transform;
 }
 
 .carousel-slide {
-    min-width: 100%;
+    flex: 0 0 100%;
     height: 100%;
     position: relative;
+    min-width: 100%;
 }
 
 .carousel-slide img {
@@ -3665,19 +3666,11 @@ img {
     background-color: #fff;
 }
 
-/* Amount selection styles */
-.amount-selection {
-    background: rgba(54, 69, 79, 0.8);
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    border-left: 3px solid #36454f;
-}
-
+/* Amount selection styles - компактные кнопки */
 .amount-options {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 15px;
 }
 
@@ -3685,13 +3678,17 @@ img {
     background: rgba(0, 0, 0, 0.3);
     border: 2px solid transparent;
     border-radius: 8px;
-    padding: 12px 5px;
+    padding: 8px 5px;
     color: white;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .amount-option:hover {
@@ -3702,6 +3699,11 @@ img {
     background: rgba(78, 119, 113, 0.8);
     border-color: #4CAF50;
     transform: scale(1.05);
+}
+
+/* Убираем кнопки навигации карусели */
+.carousel-btn {
+    display: none !important;
 }
 
 /* Fix для прокрутки на home и mine */
@@ -3758,6 +3760,13 @@ body:not(.no-tabbar) .page {
 @media (max-width: 480px) {
     .amount-options {
         grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+    
+    .amount-option {
+        padding: 6px 3px;
+        font-size: 13px;
+        height: 36px;
     }
     
     .carousel-container {
@@ -3766,17 +3775,17 @@ body:not(.no-tabbar) .page {
 }
 
 @media (max-width: 375px) {
-    .carousel-container {
-        height: 130px;
+    .amount-options {
+        gap: 5px;
     }
     
     .amount-option {
-        padding: 10px 5px;
-        font-size: 14px;
+        padding: 5px 2px;
+        font-size: 12px;
+        height: 34px;
     }
-}
-
-/* Убираем кнопки навигации карусели */
-.carousel-btn {
-    display: none !important;
+    
+    .carousel-container {
+        height: 130px;
+    }
 }

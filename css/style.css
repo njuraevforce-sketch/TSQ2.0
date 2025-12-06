@@ -1110,7 +1110,7 @@ html {
 .custom-vip-carousel {
     position: relative;
     width: 345px;
-    height: 150px;
+    height: 150px; /* 130px карточка + 20px предпросмотр следующей */
     overflow: hidden;
     border-radius: 10px;
     margin: 0 auto 15px;
@@ -1125,17 +1125,12 @@ html {
 }
 
 .vip-slide {
-    flex: 0 0 130px;
+    flex: 0 0 130px; /* высота карточки */
     height: 130px;
-    margin-bottom: 20px;
     padding: 0;
     box-sizing: border-box;
     display: flex;
-    align-items: flex-start; /* Карточка вверху */
-}
-
-.vip-slide:last-child {
-    margin-bottom: 0;
+    align-items: flex-start;
 }
 
 .vip-card {
@@ -1216,7 +1211,7 @@ html {
     border-left: 3px solid #FFD700;
 }
 
-/* Блок с деталями VIP уровня - ТОЧНО ТАКОЙ ЖЕ КАК ОПИСАНИЕ */
+/* Блок с деталями VIP уровня */
 .vip-details {
     margin-top: 10px;
     padding: 15px;
@@ -1229,7 +1224,6 @@ html {
     border-left: 3px solid #4CAF50;
 }
 
-/* Детали в виде списка (как обычный текст) */
 .details-content {
     color: white;
     font-size: 14px;
@@ -1303,6 +1297,11 @@ html {
     
     .vip-status {
         font-size: 13px;
+    }
+    
+    .vip-slide {
+        flex: 0 0 125px;
+        height: 125px;
     }
 }
 

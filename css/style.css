@@ -1087,7 +1087,10 @@ html {
     background: #5a6b76;
 }
 
-/* Уровни VIP - ОБНОВЛЕННЫЕ ЦВЕТА */
+/* =========================================== */
+/* НОВЫЕ СТИЛИ ДЛЯ ВЕРТИКАЛЬНОЙ КАРУСЕЛИ VIP */
+/* =========================================== */
+
 .vip-section {
     padding: 15px;
     background: transparent;
@@ -1103,175 +1106,152 @@ html {
     text-align: center;
 }
 
-/* НОВЫЕ СТИЛИ ДЛЯ КАРУСЕЛИ КАК В ПРИМЕРЕ */
-.vip-swiper-container {
+/* ВЕРТИКАЛЬНАЯ КАРУСЕЛЬ - НОВЫЕ СТИЛИ */
+.uni-swiper-wrapper {
     position: relative;
     width: 100%;
-    height: 400px;
-    margin: 15px 0;
+    height: 250px;
     overflow: hidden;
     border-radius: 15px;
+    margin-bottom: 15px;
     background: rgba(0, 0, 0, 0.2);
 }
 
-.vip-swiper-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    display: flex;
-    transition-property: transform;
-    box-sizing: content-box;
-}
-
-.vip-swiper-slide {
+.uni-swiper-slides {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    flex-shrink: 0;
-    transform: translateY(0) translateZ(0);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.vip-swiper-slide-frame {
-    width: 100%;
-    height: 100%;
-    transform: translateY(0%) translateZ(0px);
-}
-
-.vip-slide-item {
+.uni-swiper-slide-frame {
     position: absolute;
     width: 100%;
     height: 100%;
-    transform: translateY(0%) translateZ(0px);
+    transition: transform 0.5s ease;
 }
 
-.vip-slide-content {
+.uni-swiper-item {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
-    background-position: 0% 0% !important;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.swiper-itemWrap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Текст внутри карточки VIP */
+.swiper-itemWrap .text-bold.text-xxl {
+    font-size: 28px;
+    font-weight: 900;
     color: white;
-    border-radius: 15px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    margin-bottom: 5px;
 }
 
-.vip-slide-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.vip-slide-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.vip-slide-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.swiper-itemWrap .flex.align-center {
     font-size: 14px;
-    color: #fff;
+    color: rgba(255,255,255,0.9);
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
 }
 
-.vip-status-icon {
+/* Иконки замков */
+.u-icon {
+    margin-right: 8px;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
 }
 
-.vip-status-icon i {
-    font-size: 16px;
-    line-height: 16px;
-    font-weight: normal;
-    color: #606266;
+.u-icon__icon {
+    font-size: 18px;
+    color: #FFD700;
 }
 
-.vip-slide-icon {
+.uicon-lock-opened-fill {
+    color: #4CAF50 !important;
+}
+
+.uicon-lock-fill {
+    color: #cccccc !important;
+}
+
+/* Изображения в карточках */
+.swiperPo {
     position: absolute;
     right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 100px;
-    height: 100px;
-    z-index: 10;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.vip-slide-icon img {
-    width: 100px !important;
-    height: 100px !important;
-    object-fit: contain;
-    display: block !important;
-    visibility: visible !important;
-    background: transparent !important;
-    border: none !important;
-}
-
-.vip-slide-info {
-    margin-top: auto;
-    text-align: left;
+    bottom: 20px;
+    width: 120px;
+    height: 120px;
     z-index: 2;
-    position: relative;
 }
 
-.vip-range {
+.swiperPo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0;
+    background: transparent;
+}
+
+/* Дополнительные текстовые элементы */
+.vip-level-name {
     font-size: 16px;
     font-weight: bold;
-    margin-bottom: 5px;
     color: white;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    margin-top: auto;
+    margin-bottom: 5px;
 }
 
-.vip-details {
+.vip-level-requirement {
     font-size: 12px;
-    color: #ccc;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    padding: 0;
+    color: rgba(255,255,255,0.8);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
 }
 
-.vip-percent-badge {
+/* Проценты и требования слева */
+.vip-percent-left {
     position: absolute;
-    top: 15px;
-    left: 15px;
-    font-size: 20px;
-    font-weight: bold;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    font-weight: 900;
     color: #FFD700;
-    background: transparent;
-    padding: 0;
-    border-radius: 0;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
     z-index: 3;
 }
 
-.vip-level-badge {
+.vip-requirement-left {
     position: absolute;
-    top: 40px;
-    left: 15px;
+    top: 50px;
+    left: 20px;
     font-size: 14px;
-    color: #ffffff;
+    color: white;
     background: rgba(54, 69, 79, 0.9);
-    padding: 3px 8px;
-    border-radius: 5px;
+    padding: 5px 10px;
+    border-radius: 8px;
     font-weight: bold;
     z-index: 3;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
+/* Описание VIP уровней */
 .vip-description {
     margin-top: 15px;
     padding: 15px;
@@ -1280,32 +1260,73 @@ html {
     color: white;
     font-size: 14px;
     text-align: center;
+    line-height: 1.5;
 }
 
-/* Индикаторы карусели */
-.vip-swiper-indicators {
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    right: 0;
+/* Индикаторы карусели (точки) */
+.vip-indicators {
     display: flex;
     justify-content: center;
+    margin-top: 15px;
     gap: 8px;
-    z-index: 100;
 }
 
 .vip-indicator {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.4);
-    transition: all 0.3s ease;
+    background: rgba(255,255,255,0.3);
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .vip-indicator.active {
     background: #FFD700;
     transform: scale(1.2);
+}
+
+/* Кнопки навигации карусели */
+.vip-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: rgba(54, 69, 79, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 100;
+    border: 2px solid rgba(255,255,255,0.2);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.vip-nav-btn:hover {
+    background: #5a6b76;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.vip-nav-btn.prev {
+    left: 10px;
+}
+
+.vip-nav-btn.next {
+    right: 10px;
+}
+
+.vip-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.vip-nav-btn:disabled:hover {
+    background: rgba(54, 69, 79, 0.9);
+    transform: translateY(-50%);
 }
 
 /* Дополнительные стили */
@@ -1319,6 +1340,15 @@ html {
 
 .quantum-signal.used {
     background: #666;
+}
+
+.vip-level-badge {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 15px;
+    border-radius: 20px;
+    color: #fff;
+    font-weight: bold;
+    display: inline-block;
 }
 
 .referral-stats {
@@ -2412,19 +2442,33 @@ html {
         font-size: 16px;
     }
     
-    /* Исправления для VIP карусели на мобильных */
-    .vip-swiper-container {
-        height: 350px;
+    /* Адаптация для вертикальной карусели на мобильных */
+    .uni-swiper-wrapper {
+        height: 220px;
     }
     
-    .vip-slide-icon {
-        width: 80px;
-        height: 80px;
+    .swiperPo {
+        width: 100px;
+        height: 100px;
+        right: 15px;
+        bottom: 15px;
     }
     
-    .vip-slide-icon img {
-        width: 80px !important;
-        height: 80px !important;
+    .swiper-itemWrap .text-bold.text-xxl {
+        font-size: 24px;
+    }
+    
+    .vip-percent-left {
+        font-size: 20px;
+        top: 15px;
+        left: 15px;
+    }
+    
+    .vip-requirement-left {
+        font-size: 12px;
+        top: 40px;
+        left: 15px;
+        padding: 4px 8px;
     }
     
     .pop-content {
@@ -2560,6 +2604,30 @@ html {
         width: 45px;
         height: 45px;
         font-size: 18px;
+    }
+    
+    /* Вертикальная карусель на очень маленьких экранах */
+    .uni-swiper-wrapper {
+        height: 200px;
+    }
+    
+    .swiperPo {
+        width: 80px;
+        height: 80px;
+        right: 10px;
+        bottom: 10px;
+    }
+    
+    .swiper-itemWrap {
+        padding: 15px;
+    }
+    
+    .swiper-itemWrap .text-bold.text-xxl {
+        font-size: 22px;
+    }
+    
+    .swiper-itemWrap .flex.align-center {
+        font-size: 12px;
     }
 }
 
@@ -3300,7 +3368,7 @@ body.no-tabbar .uni-tabbar {
 
 /* Улучшенные стили для диаграммы */
 .chart-container {
-    background: rgba(54, 69,79, 0.8);
+    background: rgba(54, 69, 79, 0.8);
     border: 1px solid rgba(54, 69, 79, 0.9);
     border-left: 3px solid #FFD700;
 }
@@ -3455,7 +3523,7 @@ body.no-tabbar .uni-tabbar {
 .balance-amount,
 .color-balance,
 .team-stat-value,
-.vip-percent-badge,
+.vip-percent-left,
 .calendar-time,
 .setting-value,
 .referral-balance,
@@ -3481,7 +3549,7 @@ body.no-tabbar .uni-tabbar {
 .text-xxl,
 .balance-title,
 .quantum-title,
-.vip-slide-title,
+.vip-level-name,
 .crypto-name,
 .crypto-price {
     text-shadow: 0 1px 2px rgba(0,0,0,0.3);
@@ -3491,7 +3559,6 @@ body.no-tabbar .uni-tabbar {
 .notice-bar,
 .balance-card,
 .referral-section,
-.vip-slide-content.active,
 .profile-bg {
     background: rgba(54, 69, 79, 0.9) !important;
     backdrop-filter: blur(10px);

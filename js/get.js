@@ -9,14 +9,56 @@ export default function renderGet() {
     // Рассчитываем начальную позицию карусели (чтобы активная карточка была первой)
     const startTranslate = -((currentVipLevel - 1) * 100); // смещение в %
     
-    // VIP уровни данные
+    // VIP уровни данные с путями к изображениям
     const vipLevelsData = [
-        { level: 1, percent: '2.2%', name: '0-299 USDT', requirement: '2.2% daily, 3 signals' },
-        { level: 2, percent: '2.8%', name: '300-1000 USDT', requirement: '2.8% daily, 3 signals, 2 refs' },
-        { level: 3, percent: '3.5%', name: '1000-3500 USDT', requirement: '3.5% daily, 3 signals, 5 refs' },
-        { level: 4, percent: '4.0%', name: '3500-6000 USDT', requirement: '4.0% daily, 3 signals, 8 refs' },
-        { level: 5, percent: '5.0%', name: '6000-12000 USDT', requirement: '5.0% daily, 3 signals, 15 refs' },
-        { level: 6, percent: '6.0%', name: '12000-20000 USDT', requirement: '6.0% daily, 3 signals, 25 refs' }
+        { 
+            level: 1, 
+            percent: '2.2%', 
+            name: '0-299 USDT', 
+            requirement: '2.2% daily, 3 signals',
+            icon: `assets/vipicon1.png?v=${Date.now()}`,
+            bg: `assets/vip1.png?v=${Date.now()}`
+        },
+        { 
+            level: 2, 
+            percent: '2.8%', 
+            name: '300-1000 USDT', 
+            requirement: '2.8% daily, 3 signals, 2 refs',
+            icon: `assets/vipicon2.png?v=${Date.now()}`,
+            bg: `assets/vip2.png?v=${Date.now()}`
+        },
+        { 
+            level: 3, 
+            percent: '3.5%', 
+            name: '1000-3500 USDT', 
+            requirement: '3.5% daily, 3 signals, 5 refs',
+            icon: `assets/vipicon3.png?v=${Date.now()}`,
+            bg: `assets/vip3.png?v=${Date.now()}`
+        },
+        { 
+            level: 4, 
+            percent: '4.0%', 
+            name: '3500-6000 USDT', 
+            requirement: '4.0% daily, 3 signals, 8 refs',
+            icon: `assets/vipicon4.png?v=${Date.now()}`,
+            bg: `assets/vip4.png?v=${Date.now()}`
+        },
+        { 
+            level: 5, 
+            percent: '5.0%', 
+            name: '6000-12000 USDT', 
+            requirement: '5.0% daily, 3 signals, 15 refs',
+            icon: `assets/vipicon5.png?v=${Date.now()}`,
+            bg: `assets/vip5.png?v=${Date.now()}`
+        },
+        { 
+            level: 6, 
+            percent: '6.0%', 
+            name: '12000-20000 USDT', 
+            requirement: '6.0% daily, 3 signals, 25 refs',
+            icon: `assets/vipicon6.png?v=${Date.now()}`,
+            bg: `assets/vip6.png?v=${Date.now()}`
+        }
     ];
     
     // Генерируем VIP карточки
@@ -45,9 +87,9 @@ export default function renderGet() {
                             <div class="vip-percent-left">${vip.percent}</div>
                             <div class="vip-requirement-left">VIP ${vip.level}</div>
                             <div class="vip-icon-wrapper">
-                                <img src="assets/vipicon${vip.level}.png?v=${Date.now()}" alt="VIP ${vip.level}" class="vip-icon">
+                                <img src="${vip.icon}" alt="VIP ${vip.level}" class="vip-icon">
                             </div>
-                            <img src="assets/vip${vip.level}.png?v=${Date.now()}" alt="VIP ${vip.level}" class="vip-bg-img">
+                            <img src="${vip.bg}" alt="VIP ${vip.level}" class="vip-bg-img">
                             <div class="vip-level-name">${vip.name}</div>
                             <div class="vip-level-requirement">${vip.requirement}</div>
                         </div>

@@ -199,85 +199,99 @@ export async function init() {
 function initVipCarousel() {
     const carousel = document.getElementById('vip-carousel');
     const track = document.getElementById('vip-track');
-    const indicators = document.querySelectorAll('.indicator');
-    const prevBtn = document.getElementById('vip-prev');
-    const nextBtn = document.getElementById('vip-next');
-    const description = document.getElementById('vip-description');
-    const details = document.getElementById('vip-details');
+    const slides = document.querySelectorAll('.vip-slide');
     
-    if (!carousel || !track || !description || !details) {
+    if (!carousel || !track || !slides.length) {
         console.error('Carousel elements not found');
         return;
     }
     
+    const totalSlides = slides.length;
+    const slideHeight = 130; // Высота одной карточки в пикселях
+    const previewHeight = 20; // Высота предпросмотра следующей карточки
     let currentIndex = 0;
-    const totalSlides = 6;
     
-    const vipDescriptions = [
-        t('vip_description_1'),
-        t('vip_description_2'),
-        t('vip_description_3'),
-        t('vip_description_4'),
-        t('vip_description_5'),
-        t('vip_description_6')
-    ];
+    // Устанавливаем начальную позицию
+    updateCarouselPosition();
     
-    const vipDetails = [
-        {
-            percent: '2.2%',
-            range: '0-299 USDT',
-            signals: '3 signals',
-            refs: '0 refs'
-        },
-        {
-            percent: '2.8%',
-            range: '300-1000 USDT',
-            signals: '3 signals',
-            refs: '2 refs'
-        },
-        {
-            percent: '3.5%',
-            range: '1000-3500 USDT',
-            signals: '3 signals',
-            refs: '5 refs'
-        },
-        {
-            percent: '4.0%',
-            range: '3500-6000 USDT',
-            signals: '3 signals',
-            refs: '8 refs'
-        },
-        {
-            percent: '5.0%',
-            range: '6000-12000 USDT',
-            signals: '3 signals',
-            refs: '15 refs'
-        },
-        {
-            percent: '6.0%',
-            range: '12000-20000 USDT',
-            signals: '3 signals',
-            refs: '25 refs'
-        }
-    ];
+    // Переменные для отслеживания свайпа
+    let startY = 0;
+    let currentY = 0;
+    let isSwiping = false;
+    let animationFrameId = null;
     
-    // Обновление отображения
-    function updateCarousel() {
-        console.log('Updating carousel to index:', currentIndex);
-        
-        // Перемещаем трек
-        track.style.transform = `translateY(${-currentIndex * 100}%)`;
-        
-        // Обновляем индикаторы
-        indicators.forEach((indicator, index) => {
-            indicator.classList.remove('active');
+    // Обновление позиции карусели
+    function updateCarouselPosition() {
+        // Сдвигаем трек вверх на количество текущих карточек
+        const offset = -(currentIndex * slideHeight);
+        track.style.transform = `translateY(${offset}px)`;
+        updateActiveSlide();
+        updateVipDescription();
+    }
+    
+    // Обновление активного слайда
+    function updateActiveSlide() {
+        slides.forEach((slide, index) => {
+            slide.classList.remove('active', 'sliding-up', 'sliding-down');
             if (index === currentIndex) {
-                indicator.classList.add('active');
+                slide.classList.add('active');
             }
         });
+    }
+    
+    // Обновление описания VIP уровня
+    function updateVipDescription() {
+        const vipDescriptions = [
+            t('vip_description_1'),
+            t('vip_description_2'),
+            t('vip_description_3'),
+            t('vip_description_4'),
+            t('vip_description_5'),
+            t('vip_description_6')
+        ];
+        
+        const vipDetails = [
+            {
+                percent: '2.2%',
+                range: '0-299 USDT',
+                signals: '3 signals',
+                refs: '0 refs'
+            },
+            {
+                percent: '2.8%',
+                range: '300-1000 USDT',
+                signals: '3 signals',
+                refs: '2 refs'
+            },
+            {
+                percent: '3.5%',
+                range: '1000-3500 USDT',
+                signals: '3 signals',
+                refs: '5 refs'
+            },
+            {
+                percent: '4.0%',
+                range: '3500-6000 USDT',
+                signals: '3 signals',
+                refs: '8 refs'
+            },
+            {
+                percent: '5.0%',
+                range: '6000-12000 USDT',
+                signals: '3 signals',
+                refs: '15 refs'
+            },
+            {
+                percent: '6.0%',
+                range: '12000-20000 USDT',
+                signals: '3 signals',
+                refs: '25 refs'
+            }
+        ];
         
         // Обновляем описание
-        if (vipDescriptions[currentIndex]) {
+        const description = document.getElementById('vip-description');
+        if (description && vipDescriptions[currentIndex]) {
             description.textContent = vipDescriptions[currentIndex];
         }
         
@@ -289,10 +303,6 @@ function initVipCarousel() {
             document.getElementById('detail-signals').textContent = detail.signals;
             document.getElementById('detail-refs').textContent = detail.refs;
         }
-        
-        // Обновляем состояние кнопок
-        if (prevBtn) prevBtn.disabled = currentIndex === 0;
-        if (nextBtn) nextBtn.disabled = currentIndex === totalSlides - 1;
         
         // Обновляем иконки замков
         updateLockIcons();
@@ -342,75 +352,187 @@ function initVipCarousel() {
         });
     }
     
+    // Переход к следующей карточке
+    function nextSlide() {
+        if (currentIndex < totalSlides - 1) {
+            // Анимация перехода
+            slides[currentIndex].classList.add('sliding-up');
+            currentIndex++;
+            slides[currentIndex].classList.add('sliding-down');
+            updateCarouselPosition();
+            
+            // Сброс анимации через 300ms
+            setTimeout(() => {
+                slides.forEach(slide => {
+                    slide.classList.remove('sliding-up', 'sliding-down');
+                });
+            }, 300);
+        }
+    }
+    
+    // Переход к предыдущей карточке
+    function prevSlide() {
+        if (currentIndex > 0) {
+            // Анимация перехода
+            slides[currentIndex].classList.add('sliding-down');
+            currentIndex--;
+            slides[currentIndex].classList.add('sliding-up');
+            updateCarouselPosition();
+            
+            // Сброс анимации через 300ms
+            setTimeout(() => {
+                slides.forEach(slide => {
+                    slide.classList.remove('sliding-up', 'sliding-down');
+                });
+            }, 300);
+        }
+    }
+    
     // Переход к конкретному слайду
     function goToSlide(index) {
         if (index < 0 || index >= totalSlides) return;
+        
+        // Определяем направление анимации
+        if (index > currentIndex) {
+            slides[currentIndex].classList.add('sliding-up');
+            slides[index].classList.add('sliding-down');
+        } else if (index < currentIndex) {
+            slides[currentIndex].classList.add('sliding-down');
+            slides[index].classList.add('sliding-up');
+        }
+        
         currentIndex = index;
-        updateCarousel();
+        updateCarouselPosition();
+        
+        // Сброс анимации через 300ms
+        setTimeout(() => {
+            slides.forEach(slide => {
+                slide.classList.remove('sliding-up', 'sliding-down');
+            });
+        }, 300);
     }
     
-    // Следующий слайд
-    function nextSlide() {
-        if (currentIndex < totalSlides - 1) {
-            currentIndex++;
-            updateCarousel();
-        }
-    }
-    
-    // Предыдущий слайд
-    function prevSlide() {
-        if (currentIndex > 0) {
-            currentIndex--;
-            updateCarousel();
-        }
-    }
-    
-    // Инициализация
-    updateCardBackgrounds();
-    updateCarousel();
-    
-    // Обработчики событий для кнопок (оставлены на случай если понадобятся)
-    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-    
-    // Обработчики для индикаторов
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => goToSlide(index));
-    });
-    
-    // СВАЙП для мобильных устройств
-    let touchStartY = 0;
-    let touchEndY = 0;
-    
+    // Обработчики для свайпа на мобильных устройствах
     carousel.addEventListener('touchstart', (e) => {
-        touchStartY = e.touches[0].clientY;
+        startY = e.touches[0].clientY;
+        currentY = startY;
+        isSwiping = true;
+        track.style.transition = 'none';
+        
+        // Отменяем анимацию если она есть
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
     }, { passive: true });
     
     carousel.addEventListener('touchmove', (e) => {
-        touchEndY = e.touches[0].clientY;
-    }, { passive: true });
+        if (!isSwiping) return;
+        
+        currentY = e.touches[0].clientY;
+        const diff = currentY - startY;
+        
+        // Ограничиваем максимальное смещение
+        const maxDiff = slideHeight / 2;
+        const boundedDiff = Math.max(-maxDiff, Math.min(maxDiff, diff));
+        
+        // Применяем промежуточное смещение при свайпе
+        const currentOffset = -(currentIndex * slideHeight);
+        track.style.transform = `translateY(${currentOffset + boundedDiff}px)`;
+        
+        e.preventDefault();
+    }, { passive: false });
     
     carousel.addEventListener('touchend', () => {
-        const swipeThreshold = 50;
-        const diffY = touchStartY - touchEndY;
+        if (!isSwiping) return;
         
-        if (Math.abs(diffY) > swipeThreshold) {
-            if (diffY > 0) {
-                // Свайп вверх - следующий слайд
-                nextSlide();
-            } else {
-                // Свайп вниз - предыдущий слайд
+        const diff = currentY - startY;
+        const threshold = 40; // Порог для смены слайда
+        
+        if (Math.abs(diff) > threshold) {
+            if (diff > 0) {
+                // Свайп вниз - к предыдущей карточке
                 prevSlide();
+            } else {
+                // Свайп вверх - к следующей карточке
+                nextSlide();
             }
+        } else {
+            // Возвращаемся к текущей карточке
+            updateCarouselPosition();
+        }
+        
+        // Восстанавливаем плавную анимацию
+        track.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+        isSwiping = false;
+    });
+    
+    // Обработчики для десктопа
+    let mouseStartY = 0;
+    let mouseCurrentY = 0;
+    let mouseIsSwiping = false;
+    
+    carousel.addEventListener('mousedown', (e) => {
+        mouseStartY = e.clientY;
+        mouseCurrentY = mouseStartY;
+        mouseIsSwiping = true;
+        track.style.transition = 'none';
+        carousel.style.cursor = 'grabbing';
+    });
+    
+    carousel.addEventListener('mousemove', (e) => {
+        if (!mouseIsSwiping) return;
+        
+        mouseCurrentY = e.clientY;
+        const diff = mouseCurrentY - mouseStartY;
+        
+        // Ограничиваем максимальное смещение
+        const maxDiff = slideHeight / 2;
+        const boundedDiff = Math.max(-maxDiff, Math.min(maxDiff, diff));
+        
+        // Применяем промежуточное смещение
+        const currentOffset = -(currentIndex * slideHeight);
+        track.style.transform = `translateY(${currentOffset + boundedDiff}px)`;
+    });
+    
+    carousel.addEventListener('mouseup', () => {
+        if (!mouseIsSwiping) return;
+        
+        const diff = mouseCurrentY - mouseStartY;
+        const threshold = 40;
+        
+        if (Math.abs(diff) > threshold) {
+            if (diff > 0) {
+                prevSlide();
+            } else {
+                nextSlide();
+            }
+        } else {
+            updateCarouselPosition();
+        }
+        
+        track.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+        mouseIsSwiping = false;
+        carousel.style.cursor = 'grab';
+    });
+    
+    carousel.addEventListener('mouseleave', () => {
+        if (mouseIsSwiping) {
+            track.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            updateCarouselPosition();
+            mouseIsSwiping = false;
+            carousel.style.cursor = 'grab';
         }
     });
     
+    // Инициализация курсора
+    carousel.style.cursor = 'grab';
+    
     // Навигация с клавиатуры
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowDown' && currentIndex < totalSlides - 1) {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
             e.preventDefault();
             nextSlide();
-        } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
             e.preventDefault();
             prevSlide();
         }
@@ -418,13 +540,21 @@ function initVipCarousel() {
     
     // Адаптация при изменении размера окна
     window.addEventListener('resize', () => {
-        track.style.transform = `translateY(${-currentIndex * 100}%)`;
+        updateCarouselPosition();
         updateCardBackgrounds();
     });
     
+    // Инициализация
+    updateCardBackgrounds();
+    updateActiveSlide();
+    updateVipDescription();
+    
     // Экспортируем функции для внешнего использования
     window.goToVipSlide = goToSlide;
-    window.updateVipCarousel = updateCarousel;
+    window.updateVipCarousel = () => {
+        updateCarouselPosition();
+        updateVipDescription();
+    };
     window.updateVipLockIcons = updateLockIcons;
 }
 

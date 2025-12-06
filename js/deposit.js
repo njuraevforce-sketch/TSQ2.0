@@ -6,7 +6,6 @@ export default function renderDeposit() {
         <div class="card padding">
             <div style="text-align: center; margin-bottom: 20px;">
                 <h2 style="color: white;" data-translate="deposit_usdt">Deposit USDT</h2>
-                <p style="color: #ccc; font-size: 14px;" data-translate="select_deposit_amount">Select deposit amount and network</p>
             </div>
 
             <!-- Amount Selection - UPDATED: удален заголовок, компактные кнопки -->

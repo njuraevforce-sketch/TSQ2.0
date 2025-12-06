@@ -3742,54 +3742,55 @@ body:not(.no-tabbar) .page {
     .custom-vip-carousel {
         width: 100%;
         max-width: 345px;
-        height: 150px;
+        height: 150px; /* Одинаковая высота на всех устройствах */
     }
     
     .custom-vip-carousel .vip-card {
         width: 100%;
         max-width: 345px;
-        height: 130px;
+        height: 130px; /* Одинаковая высота на всех устройствах */
     }
     
     .custom-vip-carousel .vip-title {
-        font-size: 22px;
+        font-size: 24px; /* Одинаковый размер */
     }
     
     .custom-vip-carousel .vip-image {
-        width: 90px;
-        height: 90px;
-    }
-}
-
-@media (max-width: 375px) {
-    .custom-vip-carousel {
-        height: 145px;
+        width: 100px; /* Одинаковый размер */
+        height: 100px;
     }
     
-    .custom-vip-carousel .vip-card {
-        height: 125px;
-    }
-    
-    .custom-vip-carousel .vip-title {
-        font-size: 20px;
-    }
-    
-    .custom-vip-carousel .vip-image {
-        width: 85px;
-        height: 85px;
-        right: 15px;
-    }
-    
-    .custom-vip-carousel .vip-status {
-        font-size: 13px;
-    }
-    
-    .custom-vip-carousel .vip-slide {
-        flex: 0 0 125px;
-        height: 125px;
-    }
-    
-    .custom-vip-carousel .carousel-track {
-        height: calc(125px * 6 + 20px);
+    /* Для очень маленьких экранов можно немного уменьшить */
+    @media (max-width: 375px) {
+        .custom-vip-carousel {
+            height: 145px;
+        }
+        
+        .custom-vip-carousel .vip-card {
+            height: 125px;
+        }
+        
+        .custom-vip-carousel .vip-title {
+            font-size: 22px;
+        }
+        
+        .custom-vip-carousel .vip-image {
+            width: 90px;
+            height: 90px;
+            right: 15px;
+        }
+        
+        .custom-vip-carousel .vip-status {
+            font-size: 13px;
+        }
+        
+        .custom-vip-carousel .vip-slide {
+            flex: 0 0 125px;
+            height: 125px;
+        }
+        
+        .custom-vip-carousel .carousel-track {
+            height: calc(125px * 6 + 20px);
+        }
     }
 }

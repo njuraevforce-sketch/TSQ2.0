@@ -36,7 +36,7 @@ export default function renderGet() {
                 <div class="process-step" id="profit-result" style="display: none; color: #52c41a; font-weight: bold;"></div>
             </div>
 
-            <!-- VIP cards - КАСТОМНЫЙ ВЕРТИКАЛЬНЫЙ СЛАЙДЕР -->
+            <!-- VIP cards - ОБНОВЛЕННАЯ ВЕРТИКАЛЬНАЯ КАРУСЕЛЬ -->
             <div class="vip-section">
                 <div class="section-title" data-translate="vip_levels">VIP Levels</div>
                 
@@ -46,13 +46,15 @@ export default function renderGet() {
                         <!-- VIP 1 -->
                         <div class="vip-slide active" data-vip="1">
                             <div class="vip-card">
-                                <div class="vip-icon">
-                                    <img src="assets/vipicon1.png?v=${Date.now()}" alt="VIP 1 Icon">
+                                <div class="vip-header">
+                                    <div class="vip-title">VIP1</div>
+                                    <div class="vip-status">
+                                        <i class="fas fa-lock-open" style="color: #4CAF50;"></i>
+                                        <span>Unlocked</span>
+                                    </div>
                                 </div>
-                                <div class="vip-title">VIP1</div>
-                                <div class="vip-status">
-                                    <i class="fas fa-lock-open" style="color: #4CAF50;"></i>
-                                    <span data-translate="unlocked">Unlocked</span>
+                                <div class="vip-image">
+                                    <img src="assets/vipicon1.png?v=${Date.now()}" alt="VIP 1">
                                 </div>
                             </div>
                         </div>
@@ -60,13 +62,15 @@ export default function renderGet() {
                         <!-- VIP 2 -->
                         <div class="vip-slide" data-vip="2">
                             <div class="vip-card">
-                                <div class="vip-icon">
-                                    <img src="assets/vipicon2.png?v=${Date.now()}" alt="VIP 2 Icon">
+                                <div class="vip-header">
+                                    <div class="vip-title">VIP2</div>
+                                    <div class="vip-status">
+                                        <i class="fas fa-lock" style="color: #cccccc;"></i>
+                                        <span>Locked</span>
+                                    </div>
                                 </div>
-                                <div class="vip-title">VIP2</div>
-                                <div class="vip-status">
-                                    <i class="fas fa-lock" style="color: #cccccc;"></i>
-                                    <span data-translate="locked">Locked</span>
+                                <div class="vip-image">
+                                    <img src="assets/vipicon2.png?v=${Date.now()}" alt="VIP 2">
                                 </div>
                             </div>
                         </div>
@@ -74,13 +78,15 @@ export default function renderGet() {
                         <!-- VIP 3 -->
                         <div class="vip-slide" data-vip="3">
                             <div class="vip-card">
-                                <div class="vip-icon">
-                                    <img src="assets/vipicon3.png?v=${Date.now()}" alt="VIP 3 Icon">
+                                <div class="vip-header">
+                                    <div class="vip-title">VIP3</div>
+                                    <div class="vip-status">
+                                        <i class="fas fa-lock" style="color: #cccccc;"></i>
+                                        <span>Locked</span>
+                                    </div>
                                 </div>
-                                <div class="vip-title">VIP3</div>
-                                <div class="vip-status">
-                                    <i class="fas fa-lock" style="color: #cccccc;"></i>
-                                    <span data-translate="locked">Locked</span>
+                                <div class="vip-image">
+                                    <img src="assets/vipicon3.png?v=${Date.now()}" alt="VIP 3">
                                 </div>
                             </div>
                         </div>
@@ -88,13 +94,15 @@ export default function renderGet() {
                         <!-- VIP 4 -->
                         <div class="vip-slide" data-vip="4">
                             <div class="vip-card">
-                                <div class="vip-icon">
-                                    <img src="assets/vipicon4.png?v=${Date.now()}" alt="VIP 4 Icon">
+                                <div class="vip-header">
+                                    <div class="vip-title">VIP4</div>
+                                    <div class="vip-status">
+                                        <i class="fas fa-lock" style="color: #cccccc;"></i>
+                                        <span>Locked</span>
+                                    </div>
                                 </div>
-                                <div class="vip-title">VIP4</div>
-                                <div class="vip-status">
-                                    <i class="fas fa-lock" style="color: #cccccc;"></i>
-                                    <span data-translate="locked">Locked</span>
+                                <div class="vip-image">
+                                    <img src="assets/vipicon4.png?v=${Date.now()}" alt="VIP 4">
                                 </div>
                             </div>
                         </div>
@@ -102,13 +110,15 @@ export default function renderGet() {
                         <!-- VIP 5 -->
                         <div class="vip-slide" data-vip="5">
                             <div class="vip-card">
-                                <div class="vip-icon">
-                                    <img src="assets/vipicon5.png?v=${Date.now()}" alt="VIP 5 Icon">
+                                <div class="vip-header">
+                                    <div class="vip-title">VIP5</div>
+                                    <div class="vip-status">
+                                        <i class="fas fa-lock" style="color: #cccccc;"></i>
+                                        <span>Locked</span>
+                                    </div>
                                 </div>
-                                <div class="vip-title">VIP5</div>
-                                <div class="vip-status">
-                                    <i class="fas fa-lock" style="color: #cccccc;"></i>
-                                    <span data-translate="locked">Locked</span>
+                                <div class="vip-image">
+                                    <img src="assets/vipicon5.png?v=${Date.now()}" alt="VIP 5">
                                 </div>
                             </div>
                         </div>
@@ -116,34 +126,18 @@ export default function renderGet() {
                         <!-- VIP 6 -->
                         <div class="vip-slide" data-vip="6">
                             <div class="vip-card">
-                                <div class="vip-icon">
-                                    <img src="assets/vipicon6.png?v=${Date.now()}" alt="VIP 6 Icon">
+                                <div class="vip-header">
+                                    <div class="vip-title">VIP6</div>
+                                    <div class="vip-status">
+                                        <i class="fas fa-lock" style="color: #cccccc;"></i>
+                                        <span>Locked</span>
+                                    </div>
                                 </div>
-                                <div class="vip-title">VIP6</div>
-                                <div class="vip-status">
-                                    <i class="fas fa-lock" style="color: #cccccc;"></i>
-                                    <span data-translate="locked">Locked</span>
+                                <div class="vip-image">
+                                    <img src="assets/vipicon6.png?v=${Date.now()}" alt="VIP 6">
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Навигационные кнопки (скрыты) -->
-                    <button class="carousel-btn prev" id="vip-prev" style="display: none;">
-                        <i class="fas fa-chevron-up"></i>
-                    </button>
-                    <button class="carousel-btn next" id="vip-next" style="display: none;">
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    
-                    <!-- Индикаторы (скрыты) -->
-                    <div class="carousel-indicators" id="vip-indicators" style="display: none;">
-                        <span class="indicator active" data-index="0"></span>
-                        <span class="indicator" data-index="1"></span>
-                        <span class="indicator" data-index="2"></span>
-                        <span class="indicator" data-index="3"></span>
-                        <span class="indicator" data-index="4"></span>
-                        <span class="indicator" data-index="5"></span>
                     </div>
                 </div>
                 
@@ -153,70 +147,28 @@ export default function renderGet() {
                 </div>
                 
                 <!-- Детали VIP уровня -->
-                <div class="vip-details-section active" id="vip-details-1">
-                    <h4 data-translate="vip_conditions">VIP Conditions</h4>
-                    <ul class="vip-details-list">
-                        <li data-translate="vip1_condition1">Deposit range: 0-299 USDT</li>
-                        <li data-translate="vip1_condition2">Daily profit: 2.2%</li>
-                        <li data-translate="vip1_condition3">Quantum signals: 3 per day</li>
-                        <li data-translate="vip1_condition4">Minimum withdrawal: 10 USDT</li>
-                        <li data-translate="vip1_condition5">Withdrawal fee: 1%</li>
-                    </ul>
-                </div>
-                
-                <div class="vip-details-section" id="vip-details-2">
-                    <h4 data-translate="vip_conditions">VIP Conditions</h4>
-                    <ul class="vip-details-list">
-                        <li data-translate="vip2_condition1">Deposit range: 300-1000 USDT</li>
-                        <li data-translate="vip2_condition2">Daily profit: 2.8%</li>
-                        <li data-translate="vip2_condition3">Quantum signals: 3 per day</li>
-                        <li data-translate="vip2_condition4">Referrals required: 2 active</li>
-                        <li data-translate="vip2_condition5">Minimum withdrawal: 20 USDT</li>
-                    </ul>
-                </div>
-                
-                <div class="vip-details-section" id="vip-details-3">
-                    <h4 data-translate="vip_conditions">VIP Conditions</h4>
-                    <ul class="vip-details-list">
-                        <li data-translate="vip3_condition1">Deposit range: 1000-3500 USDT</li>
-                        <li data-translate="vip3_condition2">Daily profit: 3.5%</li>
-                        <li data-translate="vip3_condition3">Quantum signals: 3 per day</li>
-                        <li data-translate="vip3_condition4">Referrals required: 5 active</li>
-                        <li data-translate="vip3_condition5">Withdrawal processing: 24 hours</li>
-                    </ul>
-                </div>
-                
-                <div class="vip-details-section" id="vip-details-4">
-                    <h4 data-translate="vip_conditions">VIP Conditions</h4>
-                    <ul class="vip-details-list">
-                        <li data-translate="vip4_condition1">Deposit range: 3500-6000 USDT</li>
-                        <li data-translate="vip4_condition2">Daily profit: 4.0%</li>
-                        <li data-translate="vip4_condition3">Quantum signals: 3 per day</li>
-                        <li data-translate="vip4_condition4">Referrals required: 8 active</li>
-                        <li data-translate="vip4_condition5">Withdrawal processing: 12 hours</li>
-                    </ul>
-                </div>
-                
-                <div class="vip-details-section" id="vip-details-5">
-                    <h4 data-translate="vip_conditions">VIP Conditions</h4>
-                    <ul class="vip-details-list">
-                        <li data-translate="vip5_condition1">Deposit range: 6000-12000 USDT</li>
-                        <li data-translate="vip5_condition2">Daily profit: 5.0%</li>
-                        <li data-translate="vip5_condition3">Quantum signals: 3 per day</li>
-                        <li data-translate="vip5_condition4">Referrals required: 15 active</li>
-                        <li data-translate="vip5_condition5">Withdrawal processing: 6 hours</li>
-                    </ul>
-                </div>
-                
-                <div class="vip-details-section" id="vip-details-6">
-                    <h4 data-translate="vip_conditions">VIP Conditions</h4>
-                    <ul class="vip-details-list">
-                        <li data-translate="vip6_condition1">Deposit range: 12000-20000 USDT</li>
-                        <li data-translate="vip6_condition2">Daily profit: 6.0%</li>
-                        <li data-translate="vip6_condition3">Quantum signals: 3 per day</li>
-                        <li data-translate="vip6_condition4">Referrals required: 25 active</li>
-                        <li data-translate="vip6_condition5">Withdrawal processing: Instant</li>
-                    </ul>
+                <div class="vip-details-card" id="vip-details">
+                    <div class="details-header">
+                        <span data-translate="vip_details">VIP Details</span>
+                    </div>
+                    <div class="details-content" id="vip-details-content">
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="daily_profit">Daily Profit:</span>
+                            <span class="detail-value" id="detail-profit">2.2%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="deposit_range">Deposit Range:</span>
+                            <span class="detail-value" id="detail-range">0-299 USDT</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="signals_available">Signals Available:</span>
+                            <span class="detail-value" id="detail-signals">3</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="referrals_required">Referrals Required:</span>
+                            <span class="detail-value" id="detail-refs">0</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -244,12 +196,9 @@ export async function init() {
 function initVipCarousel() {
     const carousel = document.getElementById('vip-carousel');
     const track = document.getElementById('vip-track');
-    const indicators = document.querySelectorAll('.indicator');
-    const prevBtn = document.getElementById('vip-prev');
-    const nextBtn = document.getElementById('vip-next');
     const description = document.getElementById('vip-description');
     
-    if (!carousel || !track || indicators.length === 0 || !description) {
+    if (!carousel || !track || !description) {
         console.error('Carousel elements not found');
         return;
     }
@@ -266,6 +215,45 @@ function initVipCarousel() {
         t('vip_description_6')
     ];
     
+    const vipDetails = [
+        {
+            profit: '2.2%',
+            range: '0-299 USDT',
+            signals: '3',
+            refs: '0'
+        },
+        {
+            profit: '2.8%',
+            range: '300-1000 USDT',
+            signals: '3',
+            refs: '2'
+        },
+        {
+            profit: '3.5%',
+            range: '1000-3500 USDT',
+            signals: '3',
+            refs: '5'
+        },
+        {
+            profit: '4.0%',
+            range: '3500-6000 USDT',
+            signals: '3',
+            refs: '8'
+        },
+        {
+            profit: '5.0%',
+            range: '6000-12000 USDT',
+            signals: '3',
+            refs: '15'
+        },
+        {
+            profit: '6.0%',
+            range: '12000-20000 USDT',
+            signals: '3',
+            refs: '25'
+        }
+    ];
+    
     // Обновление отображения
     function updateCarousel() {
         console.log('Updating carousel to index:', currentIndex);
@@ -273,44 +261,31 @@ function initVipCarousel() {
         // Перемещаем трек
         track.style.transform = `translateY(${-currentIndex * 100}%)`;
         
-        // Обновляем индикаторы (скрыты, но логика остается)
-        indicators.forEach((indicator, index) => {
-            indicator.classList.remove('active');
-            if (index === currentIndex) {
-                indicator.classList.add('active');
-            }
-        });
-        
         // Обновляем описание
         if (vipDescriptions[currentIndex]) {
             description.textContent = vipDescriptions[currentIndex];
         }
         
-        // Обновляем детали VIP уровня
+        // Обновляем детали
         updateVipDetails(currentIndex);
-        
-        // Обновляем состояние кнопок (скрыты, но логика остается)
-        if (prevBtn) prevBtn.disabled = currentIndex === 0;
-        if (nextBtn) nextBtn.disabled = currentIndex === totalSlides - 1;
         
         // Обновляем иконки замков
         updateLockIcons();
     }
     
-    // Добавьте новую функцию для обновления деталей VIP
+    // Новая функция для обновления деталей
     function updateVipDetails(index) {
-        // Скрываем все блоки с деталями
-        for (let i = 1; i <= 6; i++) {
-            const detailsSection = document.getElementById(`vip-details-${i}`);
-            if (detailsSection) {
-                detailsSection.classList.remove('active');
-            }
-        }
+        const details = vipDetails[index];
+        const profitEl = document.getElementById('detail-profit');
+        const rangeEl = document.getElementById('detail-range');
+        const signalsEl = document.getElementById('detail-signals');
+        const refsEl = document.getElementById('detail-refs');
         
-        // Показываем блок с деталями для текущего уровня
-        const currentDetails = document.getElementById(`vip-details-${index + 1}`);
-        if (currentDetails) {
-            currentDetails.classList.add('active');
+        if (profitEl && details) {
+            profitEl.textContent = details.profit;
+            rangeEl.textContent = details.range;
+            signalsEl.textContent = details.signals;
+            refsEl.textContent = details.refs;
         }
     }
     
@@ -331,12 +306,12 @@ function initVipCarousel() {
                     // Разблокированные уровни
                     statusIcon.className = 'fas fa-lock-open';
                     statusIcon.style.color = '#4CAF50';
-                    statusText.textContent = t('unlocked');
+                    statusText.textContent = 'Unlocked';
                 } else {
                     // Заблокированные уровни
                     statusIcon.className = 'fas fa-lock';
                     statusIcon.style.color = '#cccccc';
-                    statusText.textContent = t('locked');
+                    statusText.textContent = 'Locked';
                 }
             }
         });
@@ -367,15 +342,6 @@ function initVipCarousel() {
     
     // Инициализация
     updateCarousel();
-    
-    // Обработчики событий для кнопок (скрыты, но логика остается)
-    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-    
-    // Обработчики для индикаторов (скрыты, но логика остается)
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => goToSlide(index));
-    });
     
     // СВАЙП для мобильных устройств
     let touchStartY = 0;

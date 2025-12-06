@@ -1,4 +1,4 @@
-// Get section
+// Get section - ОБНОВЛЕННАЯ VIP КАРУСЕЛЬ
 import { t } from './translate.js';
 
 export default function renderGet() {
@@ -36,7 +36,7 @@ export default function renderGet() {
                 <div class="process-step" id="profit-result" style="display: none; color: #52c41a; font-weight: bold;"></div>
             </div>
 
-            <!-- VIP cards - ОБНОВЛЕННАЯ ВЕРТИКАЛЬНАЯ КАРУСЕЛЬ -->
+            <!-- VIP cards - ОБНОВЛЕННАЯ КАРУСЕЛЬ -->
             <div class="vip-section">
                 <div class="section-title" data-translate="vip_levels">VIP Levels</div>
                 
@@ -50,11 +50,11 @@ export default function renderGet() {
                                     <div class="vip-title">VIP1</div>
                                     <div class="vip-status">
                                         <i class="fas fa-lock-open" style="color: #4CAF50;"></i>
-                                        <span>Unlocked</span>
+                                        <span>${t('unlocked')}</span>
                                     </div>
                                 </div>
-                                <div class="vip-image">
-                                    <img src="assets/vipicon1.png?v=${Date.now()}" alt="VIP 1">
+                                <div class="vip-image-bg" style="background-image: url('assets/vip1.png?v=${Date.now()}')">
+                                    <img src="assets/vipicon1.png?v=${Date.now()}" alt="VIP 1" class="vip-icon">
                                 </div>
                             </div>
                         </div>
@@ -66,11 +66,11 @@ export default function renderGet() {
                                     <div class="vip-title">VIP2</div>
                                     <div class="vip-status">
                                         <i class="fas fa-lock" style="color: #cccccc;"></i>
-                                        <span>Locked</span>
+                                        <span>${t('locked')}</span>
                                     </div>
                                 </div>
-                                <div class="vip-image">
-                                    <img src="assets/vipicon2.png?v=${Date.now()}" alt="VIP 2">
+                                <div class="vip-image-bg" style="background-image: url('assets/vip2.png?v=${Date.now()}')">
+                                    <img src="assets/vipicon2.png?v=${Date.now()}" alt="VIP 2" class="vip-icon">
                                 </div>
                             </div>
                         </div>
@@ -82,11 +82,11 @@ export default function renderGet() {
                                     <div class="vip-title">VIP3</div>
                                     <div class="vip-status">
                                         <i class="fas fa-lock" style="color: #cccccc;"></i>
-                                        <span>Locked</span>
+                                        <span>${t('locked')}</span>
                                     </div>
                                 </div>
-                                <div class="vip-image">
-                                    <img src="assets/vipicon3.png?v=${Date.now()}" alt="VIP 3">
+                                <div class="vip-image-bg" style="background-image: url('assets/vip3.png?v=${Date.now()}')">
+                                    <img src="assets/vipicon3.png?v=${Date.now()}" alt="VIP 3" class="vip-icon">
                                 </div>
                             </div>
                         </div>
@@ -98,11 +98,11 @@ export default function renderGet() {
                                     <div class="vip-title">VIP4</div>
                                     <div class="vip-status">
                                         <i class="fas fa-lock" style="color: #cccccc;"></i>
-                                        <span>Locked</span>
+                                        <span>${t('locked')}</span>
                                     </div>
                                 </div>
-                                <div class="vip-image">
-                                    <img src="assets/vipicon4.png?v=${Date.now()}" alt="VIP 4">
+                                <div class="vip-image-bg" style="background-image: url('assets/vip4.png?v=${Date.now()}')">
+                                    <img src="assets/vipicon4.png?v=${Date.now()}" alt="VIP 4" class="vip-icon">
                                 </div>
                             </div>
                         </div>
@@ -114,11 +114,11 @@ export default function renderGet() {
                                     <div class="vip-title">VIP5</div>
                                     <div class="vip-status">
                                         <i class="fas fa-lock" style="color: #cccccc;"></i>
-                                        <span>Locked</span>
+                                        <span>${t('locked')}</span>
                                     </div>
                                 </div>
-                                <div class="vip-image">
-                                    <img src="assets/vipicon5.png?v=${Date.now()}" alt="VIP 5">
+                                <div class="vip-image-bg" style="background-image: url('assets/vip5.png?v=${Date.now()}')">
+                                    <img src="assets/vipicon5.png?v=${Date.now()}" alt="VIP 5" class="vip-icon">
                                 </div>
                             </div>
                         </div>
@@ -130,43 +130,148 @@ export default function renderGet() {
                                     <div class="vip-title">VIP6</div>
                                     <div class="vip-status">
                                         <i class="fas fa-lock" style="color: #cccccc;"></i>
-                                        <span>Locked</span>
+                                        <span>${t('locked')}</span>
                                     </div>
                                 </div>
-                                <div class="vip-image">
-                                    <img src="assets/vipicon6.png?v=${Date.now()}" alt="VIP 6">
+                                <div class="vip-image-bg" style="background-image: url('assets/vip6.png?v=${Date.now()}')">
+                                    <img src="assets/vipicon6.png?v=${Date.now()}" alt="VIP 6" class="vip-icon">
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Навигационные кнопки - СКРЫТЫ -->
+                    <button class="carousel-btn prev" id="vip-prev" style="display: none;">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                    <button class="carousel-btn next" id="vip-next" style="display: none;">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <!-- Индикаторы - СКРЫТЫ -->
+                    <div class="carousel-indicators" id="vip-indicators" style="display: none;">
+                        <span class="indicator active" data-index="0"></span>
+                        <span class="indicator" data-index="1"></span>
+                        <span class="indicator" data-index="2"></span>
+                        <span class="indicator" data-index="3"></span>
+                        <span class="indicator" data-index="4"></span>
+                        <span class="indicator" data-index="5"></span>
+                    </div>
                 </div>
                 
-                <!-- Описание VIP уровня -->
+                <!-- Блок с описанием уровня -->
                 <div class="vip-description" id="vip-description">
                     ${t('vip_description_1')}
                 </div>
                 
-                <!-- Детали VIP уровня -->
-                <div class="vip-details-card" id="vip-details">
-                    <div class="details-header">
-                        <span data-translate="vip_details">VIP Details</span>
-                    </div>
-                    <div class="details-content" id="vip-details-content">
+                <!-- НОВЫЙ блок с деталями уровня -->
+                <div class="vip-details-block" id="vip-details-block">
+                    <div class="details-content active" data-vip="1">
                         <div class="detail-item">
                             <span class="detail-label" data-translate="daily_profit">Daily Profit:</span>
-                            <span class="detail-value" id="detail-profit">2.2%</span>
+                            <span class="detail-value">2.2%</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label" data-translate="deposit_range">Deposit Range:</span>
-                            <span class="detail-value" id="detail-range">0-299 USDT</span>
+                            <span class="detail-value">0-299 USDT</span>
                         </div>
                         <div class="detail-item">
-                            <span class="detail-label" data-translate="signals_available">Signals Available:</span>
-                            <span class="detail-value" id="detail-signals">3</span>
+                            <span class="detail-label" data-translate="signals_per_day">Signals per day:</span>
+                            <span class="detail-value">3</span>
                         </div>
                         <div class="detail-item">
-                            <span class="detail-label" data-translate="referrals_required">Referrals Required:</span>
-                            <span class="detail-value" id="detail-refs">0</span>
+                            <span class="detail-label" data-translate="referrals_required">Active Referrals Required:</span>
+                            <span class="detail-value">0</span>
+                        </div>
+                    </div>
+                    <div class="details-content" data-vip="2">
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="daily_profit">Daily Profit:</span>
+                            <span class="detail-value">2.8%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="deposit_range">Deposit Range:</span>
+                            <span class="detail-value">300-1000 USDT</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="signals_per_day">Signals per day:</span>
+                            <span class="detail-value">3</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="referrals_required">Active Referrals Required:</span>
+                            <span class="detail-value">2</span>
+                        </div>
+                    </div>
+                    <div class="details-content" data-vip="3">
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="daily_profit">Daily Profit:</span>
+                            <span class="detail-value">3.5%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="deposit_range">Deposit Range:</span>
+                            <span class="detail-value">1000-3500 USDT</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="signals_per_day">Signals per day:</span>
+                            <span class="detail-value">3</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="referrals_required">Active Referrals Required:</span>
+                            <span class="detail-value">5</span>
+                        </div>
+                    </div>
+                    <div class="details-content" data-vip="4">
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="daily_profit">Daily Profit:</span>
+                            <span class="detail-value">4.0%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="deposit_range">Deposit Range:</span>
+                            <span class="detail-value">3500-6000 USDT</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="signals_per_day">Signals per day:</span>
+                            <span class="detail-value">3</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="referrals_required">Active Referrals Required:</span>
+                            <span class="detail-value">8</span>
+                        </div>
+                    </div>
+                    <div class="details-content" data-vip="5">
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="daily_profit">Daily Profit:</span>
+                            <span class="detail-value">5.0%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="deposit_range">Deposit Range:</span>
+                            <span class="detail-value">6000-12000 USDT</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="signals_per_day">Signals per day:</span>
+                            <span class="detail-value">3</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="referrals_required">Active Referrals Required:</span>
+                            <span class="detail-value">15</span>
+                        </div>
+                    </div>
+                    <div class="details-content" data-vip="6">
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="daily_profit">Daily Profit:</span>
+                            <span class="detail-value">6.0%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="deposit_range">Deposit Range:</span>
+                            <span class="detail-value">12000-20000 USDT</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="signals_per_day">Signals per day:</span>
+                            <span class="detail-value">3</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label" data-translate="referrals_required">Active Referrals Required:</span>
+                            <span class="detail-value">25</span>
                         </div>
                     </div>
                 </div>
@@ -197,8 +302,9 @@ function initVipCarousel() {
     const carousel = document.getElementById('vip-carousel');
     const track = document.getElementById('vip-track');
     const description = document.getElementById('vip-description');
+    const detailsBlock = document.getElementById('vip-details-block');
     
-    if (!carousel || !track || !description) {
+    if (!carousel || !track || !description || !detailsBlock) {
         console.error('Carousel elements not found');
         return;
     }
@@ -215,45 +321,6 @@ function initVipCarousel() {
         t('vip_description_6')
     ];
     
-    const vipDetails = [
-        {
-            profit: '2.2%',
-            range: '0-299 USDT',
-            signals: '3',
-            refs: '0'
-        },
-        {
-            profit: '2.8%',
-            range: '300-1000 USDT',
-            signals: '3',
-            refs: '2'
-        },
-        {
-            profit: '3.5%',
-            range: '1000-3500 USDT',
-            signals: '3',
-            refs: '5'
-        },
-        {
-            profit: '4.0%',
-            range: '3500-6000 USDT',
-            signals: '3',
-            refs: '8'
-        },
-        {
-            profit: '5.0%',
-            range: '6000-12000 USDT',
-            signals: '3',
-            refs: '15'
-        },
-        {
-            profit: '6.0%',
-            range: '12000-20000 USDT',
-            signals: '3',
-            refs: '25'
-        }
-    ];
-    
     // Обновление отображения
     function updateCarousel() {
         console.log('Updating carousel to index:', currentIndex);
@@ -266,27 +333,11 @@ function initVipCarousel() {
             description.textContent = vipDescriptions[currentIndex];
         }
         
-        // Обновляем детали
-        updateVipDetails(currentIndex);
+        // Обновляем блок с деталями
+        updateDetailsBlock(currentIndex + 1);
         
         // Обновляем иконки замков
         updateLockIcons();
-    }
-    
-    // Новая функция для обновления деталей
-    function updateVipDetails(index) {
-        const details = vipDetails[index];
-        const profitEl = document.getElementById('detail-profit');
-        const rangeEl = document.getElementById('detail-range');
-        const signalsEl = document.getElementById('detail-signals');
-        const refsEl = document.getElementById('detail-refs');
-        
-        if (profitEl && details) {
-            profitEl.textContent = details.profit;
-            rangeEl.textContent = details.range;
-            signalsEl.textContent = details.signals;
-            refsEl.textContent = details.refs;
-        }
     }
     
     function updateLockIcons() {
@@ -306,15 +357,29 @@ function initVipCarousel() {
                     // Разблокированные уровни
                     statusIcon.className = 'fas fa-lock-open';
                     statusIcon.style.color = '#4CAF50';
-                    statusText.textContent = 'Unlocked';
+                    statusText.textContent = t('unlocked');
                 } else {
                     // Заблокированные уровни
                     statusIcon.className = 'fas fa-lock';
                     statusIcon.style.color = '#cccccc';
-                    statusText.textContent = 'Locked';
+                    statusText.textContent = t('locked');
                 }
             }
         });
+    }
+    
+    function updateDetailsBlock(vipLevel) {
+        // Скрываем все блоки с деталями
+        const allDetails = document.querySelectorAll('.details-content');
+        allDetails.forEach(detail => {
+            detail.classList.remove('active');
+        });
+        
+        // Показываем нужный блок
+        const activeDetail = document.querySelector(`.details-content[data-vip="${vipLevel}"]`);
+        if (activeDetail) {
+            activeDetail.classList.add('active');
+        }
     }
     
     // Переход к конкретному слайду

@@ -1106,15 +1106,14 @@ html {
     text-align: center;
 }
 
-/* КАСТОМНЫЙ ВЕРТИКАЛЬНЫЙ СЛАЙДЕР VIP - 345x150 */
+/* КАСТОМНЫЙ ВЕРТИКАЛЬНЫЙ СЛАЙДЕР VIP */
 .custom-vip-carousel {
     position: relative;
     width: 100%;
-    max-width: 345px;
     height: 150px;
     overflow: hidden;
-    border-radius: 15px;
-    margin: 0 auto 10px;
+    border-radius: 10px;
+    margin: 0 auto 15px;
     background: transparent;
     box-shadow: none;
 }
@@ -1126,53 +1125,90 @@ html {
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Каждый слайд - 345x130 */
 .vip-slide {
-    flex: 0 0 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    flex: 0 0 130px;
+    height: 130px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    position: relative;
 }
 
-/* Карточка - 345x130 без рамок */
 .vip-card {
-    width: 345px;
     height: 130px;
+    width: 100%;
     border-radius: 0;
-    padding: 15px;
+    padding: 0;
+    margin: 0;
     position: relative;
     overflow: hidden;
     box-shadow: none;
     border: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    background: transparent !important;
 }
 
-.vip-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+/* Иконка VIP сверху справа */
+.vip-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    z-index: 10;
 }
 
+.vip-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+/* Название VIP сверху слева */
 .vip-title {
-    font-size: 32px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
     font-weight: 900;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    color: #FFD700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    z-index: 10;
 }
 
+/* Статус VIP в левом нижнем углу */
 .vip-status {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
     display: flex;
     align-items: center;
     gap: 8px;
     color: white;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 4px 8px;
+    border-radius: 5px;
 }
 
-/* Скрываем стрелки */
+.vip-status i {
+    font-size: 12px;
+}
+
+/* Скрываем лишние элементы */
+.vip-content,
+.vip-requirement,
+.vip-info,
+.vip-percent,
+.vip-range,
+.vip-details {
+    display: none !important;
+}
+
+/* Скрываем стрелки навигации */
 .carousel-btn {
     display: none !important;
 }
@@ -1182,7 +1218,85 @@ html {
     display: none !important;
 }
 
-/* Блок с описанием VIP уровня */
+/* Фоновое изображение для карточки */
+.vip-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 130px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+}
+
+/* Устанавливаем фоновые изображения для каждой карточки */
+.vip-slide[data-vip="1"]::before {
+    background-image: url('assets/vipicon1.png?v=' + Date.now());
+}
+
+.vip-slide[data-vip="2"]::before {
+    background-image: url('assets/vipicon2.png?v=' + Date.now());
+}
+
+.vip-slide[data-vip="3"]::before {
+    background-image: url('assets/vipicon3.png?v=' + Date.now());
+}
+
+.vip-slide[data-vip="4"]::before {
+    background-image: url('assets/vipicon4.png?v=' + Date.now());
+}
+
+.vip-slide[data-vip="5"]::before {
+    background-image: url('assets/vipicon5.png?v=' + Date.now());
+}
+
+.vip-slide[data-vip="6"]::before {
+    background-image: url('assets/vipicon6.png?v=' + Date.now());
+}
+
+/* Блок с деталями VIP */
+.vip-details-section {
+    margin-top: 15px;
+    padding: 15px;
+    background: rgba(54, 69, 79, 0.8);
+    border-radius: 10px;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.5;
+    display: none;
+}
+
+.vip-details-section.active {
+    display: block;
+}
+
+.vip-details-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+.vip-details-list li {
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+    color: #ffffff;
+}
+
+.vip-details-list li:before {
+    content: '•';
+    color: #FFD700;
+    position: absolute;
+    left: 0;
+    font-size: 18px;
+}
+
+/* Блок с описанием */
 .vip-description {
     margin-top: 15px;
     padding: 15px;
@@ -1192,33 +1306,6 @@ html {
     font-size: 14px;
     text-align: center;
     line-height: 1.5;
-    margin-bottom: 15px;
-    border-left: 3px solid #FFD700;
-}
-
-/* Блок с деталями VIP уровня */
-.vip-details-section {
-    margin-top: 10px;
-    background: rgba(54, 69, 79, 0.8);
-    border-radius: 10px;
-    padding: 15px;
-    border-left: 3px solid #4CAF50;
-}
-
-.vip-details-title {
-    font-weight: bold;
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #fff;
-    text-align: center;
-}
-
-.vip-details-content {
-    color: #ffffff;
-    font-size: 14px;
-    line-height: 1.6;
-    text-align: center;
-    white-space: pre-line;
 }
 
 /* Дополнительные стили */
@@ -2336,27 +2423,29 @@ html {
     
     /* Адаптация для вертикальной карусели на мобильных */
     .custom-vip-carousel {
-        height: 140px;
-        max-width: 320px;
+        height: 150px;
     }
     
-    .vip-card {
-        width: 320px;
+    .vip-slide {
+        flex: 0 0 120px;
+        height: 120px;
+    }
+    
+    .vip-slide::before {
         height: 120px;
     }
     
     .vip-title {
-        font-size: 28px;
+        font-size: 20px;
     }
     
     .vip-status {
-        font-size: 12px;
+        font-size: 10px;
     }
     
-    .vip-description,
-    .vip-details-section {
-        padding: 12px;
-        font-size: 13px;
+    .vip-icon {
+        width: 35px;
+        height: 35px;
     }
     
     .pop-content {
@@ -2496,28 +2585,25 @@ html {
     
     /* Вертикальная карусель на очень маленьких экранах */
     .custom-vip-carousel {
-        height: 130px;
-        max-width: 300px;
+        height: 140px;
     }
     
-    .vip-card {
-        width: 300px;
+    .vip-slide {
+        flex: 0 0 110px;
         height: 110px;
-        padding: 12px;
+    }
+    
+    .vip-slide::before {
+        height: 110px;
     }
     
     .vip-title {
-        font-size: 24px;
+        font-size: 18px;
     }
     
-    .vip-status {
-        font-size: 11px;
-    }
-    
-    .vip-description,
-    .vip-details-section {
-        padding: 10px;
-        font-size: 12px;
+    .vip-icon {
+        width: 30px;
+        height: 30px;
     }
 }
 
@@ -2583,6 +2669,7 @@ body.no-tabbar .uni-tabbar {
     font-size: 14px;
     color: #fff;
 }
+/* Добавьте эти стили в конец файла style.css, перед последней закрывающей скобкой */
 
 /* Calendar стили для mine.js */
 .calendar-section {
@@ -2937,6 +3024,84 @@ body.no-tabbar .uni-tabbar {
     margin: 0;
     color: #ccc;
     font-size: 12px;
+}
+
+/* Мобильная адаптация для mine */
+@media (max-width: 480px) {
+    .profile-bg {
+        min-height: 130px;
+        padding: 15px;
+    }
+    
+    #user-balance {
+        font-size: 20px;
+    }
+    
+    .calendar-grid {
+        gap: 3px;
+    }
+    
+    .calendar-date {
+        padding: 6px 0;
+        font-size: 12px;
+    }
+    
+    .calendar-day {
+        font-size: 10px;
+        padding: 6px 0;
+    }
+    
+    .calendar-time {
+        font-size: 14px;
+        padding: 8px;
+    }
+    
+    .setting-item {
+        padding: 12px 0;
+    }
+    
+    .setting-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+    }
+    
+    .setting-name {
+        font-size: 13px;
+    }
+    
+    .setting-value {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 375px) {
+    .profile-bg {
+        min-height: 120px;
+        padding: 12px;
+    }
+    
+    #user-balance {
+        font-size: 18px;
+    }
+    
+    .profile-vip-badge {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+    
+    .profile-id {
+        font-size: 12px;
+    }
+    
+    .calendar-grid {
+        gap: 2px;
+    }
+    
+    .calendar-date {
+        padding: 4px 0;
+        font-size: 11px;
+    }
 }
 
 /* СТИЛИ ДЛЯ DEPOSIT С ТЕМНЫМИ ЛИНИЯМИ */

@@ -50,18 +50,7 @@ export default function renderGet() {
                                     <div class="vip-title">VIP1</div>
                                     <div class="vip-status">
                                         <i class="fas fa-lock-open" style="color: #4CAF50;"></i>
-                                        <span>Unlocked</span>
-                                    </div>
-                                </div>
-                                <div class="vip-content">
-                                    <div class="vip-percent">2.2%</div>
-                                    <div class="vip-requirement">VIP 1</div>
-                                    <div class="vip-image">
-                                        <img src="assets/vipicon1.png?v=${Date.now()}" alt="VIP 1">
-                                    </div>
-                                    <div class="vip-info">
-                                        <div class="vip-range">0-299 USDT</div>
-                                        <div class="vip-details">2.2% daily, 3 signals</div>
+                                        <span data-translate="unlocked">Unlocked</span>
                                     </div>
                                 </div>
                             </div>
@@ -74,18 +63,7 @@ export default function renderGet() {
                                     <div class="vip-title">VIP2</div>
                                     <div class="vip-status">
                                         <i class="fas fa-lock" style="color: #cccccc;"></i>
-                                        <span>Locked</span>
-                                    </div>
-                                </div>
-                                <div class="vip-content">
-                                    <div class="vip-percent">2.8%</div>
-                                    <div class="vip-requirement">VIP 2</div>
-                                    <div class="vip-image">
-                                        <img src="assets/vipicon2.png?v=${Date.now()}" alt="VIP 2">
-                                    </div>
-                                    <div class="vip-info">
-                                        <div class="vip-range">300-1000 USDT</div>
-                                        <div class="vip-details">2.8% daily, 3 signals, 2 refs</div>
+                                        <span data-translate="locked">Locked</span>
                                     </div>
                                 </div>
                             </div>
@@ -98,18 +76,7 @@ export default function renderGet() {
                                     <div class="vip-title">VIP3</div>
                                     <div class="vip-status">
                                         <i class="fas fa-lock" style="color: #cccccc;"></i>
-                                        <span>Locked</span>
-                                    </div>
-                                </div>
-                                <div class="vip-content">
-                                    <div class="vip-percent">3.5%</div>
-                                    <div class="vip-requirement">VIP 3</div>
-                                    <div class="vip-image">
-                                        <img src="assets/vipicon3.png?v=${Date.now()}" alt="VIP 3">
-                                    </div>
-                                    <div class="vip-info">
-                                        <div class="vip-range">1000-3500 USDT</div>
-                                        <div class="vip-details">3.5% daily, 3 signals, 5 refs</div>
+                                        <span data-translate="locked">Locked</span>
                                     </div>
                                 </div>
                             </div>
@@ -122,18 +89,7 @@ export default function renderGet() {
                                     <div class="vip-title">VIP4</div>
                                     <div class="vip-status">
                                         <i class="fas fa-lock" style="color: #cccccc;"></i>
-                                        <span>Locked</span>
-                                    </div>
-                                </div>
-                                <div class="vip-content">
-                                    <div class="vip-percent">4.0%</div>
-                                    <div class="vip-requirement">VIP 4</div>
-                                    <div class="vip-image">
-                                        <img src="assets/vipicon4.png?v=${Date.now()}" alt="VIP 4">
-                                    </div>
-                                    <div class="vip-info">
-                                        <div class="vip-range">3500-6000 USDT</div>
-                                        <div class="vip-details">4.0% daily, 3 signals, 8 refs</div>
+                                        <span data-translate="locked">Locked</span>
                                     </div>
                                 </div>
                             </div>
@@ -146,18 +102,7 @@ export default function renderGet() {
                                     <div class="vip-title">VIP5</div>
                                     <div class="vip-status">
                                         <i class="fas fa-lock" style="color: #cccccc;"></i>
-                                        <span>Locked</span>
-                                    </div>
-                                </div>
-                                <div class="vip-content">
-                                    <div class="vip-percent">5.0%</div>
-                                    <div class="vip-requirement">VIP 5</div>
-                                    <div class="vip-image">
-                                        <img src="assets/vipicon5.png?v=${Date.now()}" alt="VIP 5">
-                                    </div>
-                                    <div class="vip-info">
-                                        <div class="vip-range">6000-12000 USDT</div>
-                                        <div class="vip-details">5.0% daily, 3 signals, 15 refs</div>
+                                        <span data-translate="locked">Locked</span>
                                     </div>
                                 </div>
                             </div>
@@ -170,34 +115,23 @@ export default function renderGet() {
                                     <div class="vip-title">VIP6</div>
                                     <div class="vip-status">
                                         <i class="fas fa-lock" style="color: #cccccc;"></i>
-                                        <span>Locked</span>
-                                    </div>
-                                </div>
-                                <div class="vip-content">
-                                    <div class="vip-percent">6.0%</div>
-                                    <div class="vip-requirement">VIP 6</div>
-                                    <div class="vip-image">
-                                        <img src="assets/vipicon6.png?v=${Date.now()}" alt="VIP 6">
-                                    </div>
-                                    <div class="vip-info">
-                                        <div class="vip-range">12000-20000 USDT</div>
-                                        <div class="vip-details">6.0% daily, 3 signals, 25 refs</div>
+                                        <span data-translate="locked">Locked</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Навигационные кнопки -->
-                    <button class="carousel-btn prev" id="vip-prev">
+                    <!-- Навигационные кнопки (скрыты) -->
+                    <button class="carousel-btn prev" id="vip-prev" style="display: none;">
                         <i class="fas fa-chevron-up"></i>
                     </button>
-                    <button class="carousel-btn next" id="vip-next">
+                    <button class="carousel-btn next" id="vip-next" style="display: none;">
                         <i class="fas fa-chevron-down"></i>
                     </button>
                     
-                    <!-- Индикаторы -->
-                    <div class="carousel-indicators" id="vip-indicators">
+                    <!-- Индикаторы (скрыты) -->
+                    <div class="carousel-indicators" id="vip-indicators" style="display: none;">
                         <span class="indicator active" data-index="0"></span>
                         <span class="indicator" data-index="1"></span>
                         <span class="indicator" data-index="2"></span>
@@ -207,8 +141,17 @@ export default function renderGet() {
                     </div>
                 </div>
                 
+                <!-- Описание VIP уровня -->
                 <div class="vip-description" id="vip-description">
                     ${t('vip_description_1')}
+                </div>
+                
+                <!-- Детали VIP уровня -->
+                <div class="vip-details-section">
+                    <div class="vip-details-title" data-translate="vip_details">VIP Details</div>
+                    <div class="vip-details-content" id="vip-details">
+                        ${t('vip_details_1')}
+                    </div>
                 </div>
             </div>
         </div>
@@ -236,12 +179,10 @@ export async function init() {
 function initVipCarousel() {
     const carousel = document.getElementById('vip-carousel');
     const track = document.getElementById('vip-track');
-    const indicators = document.querySelectorAll('.indicator');
-    const prevBtn = document.getElementById('vip-prev');
-    const nextBtn = document.getElementById('vip-next');
     const description = document.getElementById('vip-description');
+    const details = document.getElementById('vip-details');
     
-    if (!carousel || !track || indicators.length === 0 || !description) {
+    if (!carousel || !track || !description || !details) {
         console.error('Carousel elements not found');
         return;
     }
@@ -258,6 +199,15 @@ function initVipCarousel() {
         t('vip_description_6')
     ];
     
+    const vipDetails = [
+        t('vip_details_1'),
+        t('vip_details_2'),
+        t('vip_details_3'),
+        t('vip_details_4'),
+        t('vip_details_5'),
+        t('vip_details_6')
+    ];
+    
     // Обновление отображения
     function updateCarousel() {
         console.log('Updating carousel to index:', currentIndex);
@@ -265,22 +215,15 @@ function initVipCarousel() {
         // Перемещаем трек
         track.style.transform = `translateY(${-currentIndex * 100}%)`;
         
-        // Обновляем индикаторы
-        indicators.forEach((indicator, index) => {
-            indicator.classList.remove('active');
-            if (index === currentIndex) {
-                indicator.classList.add('active');
-            }
-        });
-        
         // Обновляем описание
         if (vipDescriptions[currentIndex]) {
             description.textContent = vipDescriptions[currentIndex];
         }
         
-        // Обновляем состояние кнопок
-        if (prevBtn) prevBtn.disabled = currentIndex === 0;
-        if (nextBtn) nextBtn.disabled = currentIndex === totalSlides - 1;
+        // Обновляем детали
+        if (vipDetails[currentIndex]) {
+            details.textContent = vipDetails[currentIndex];
+        }
         
         // Обновляем иконки замков
         updateLockIcons();
@@ -303,12 +246,12 @@ function initVipCarousel() {
                     // Разблокированные уровни
                     statusIcon.className = 'fas fa-lock-open';
                     statusIcon.style.color = '#4CAF50';
-                    statusText.textContent = 'Unlocked';
+                    statusText.textContent = t('unlocked');
                 } else {
                     // Заблокированные уровни
                     statusIcon.className = 'fas fa-lock';
                     statusIcon.style.color = '#cccccc';
-                    statusText.textContent = 'Locked';
+                    statusText.textContent = t('locked');
                 }
             }
         });
@@ -339,15 +282,6 @@ function initVipCarousel() {
     
     // Инициализация
     updateCarousel();
-    
-    // Обработчики событий для кнопок
-    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-    
-    // Обработчики для индикаторов
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => goToSlide(index));
-    });
     
     // СВАЙП для мобильных устройств
     let touchStartY = 0;

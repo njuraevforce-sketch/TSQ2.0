@@ -3619,3 +3619,328 @@ img {
         height: auto;
     }
 }
+/* =========================================== */
+/* ВЕРТИКАЛЬНАЯ КАРУСЕЛЬ VIP - ИСПРАВЛЕННЫЕ СТИЛИ */
+/* =========================================== */
+
+.vip-section {
+    padding: 15px;
+    background: transparent;
+    border-radius: 10px;
+    margin: 15px 0;
+}
+
+.section-title {
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #fff;
+    text-align: center;
+}
+
+/* ВЕРТИКАЛЬНАЯ КАРУСЕЛЬ - ОСНОВНОЙ КОНТЕЙНЕР */
+.uni-swiper-wrapper {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    overflow: hidden !important;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.uni-swiper-slides {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    height: 600% !important; /* 6 слайдов по 100% каждый */
+}
+
+.uni-swiper-slide-frame {
+    position: absolute;
+    width: 100%;
+    height: 16.6666% !important; /* 1/6 высоты контейнера */
+    transform: translateZ(0px);
+}
+
+.uni-swiper-item {
+    position: absolute;
+    width: 100%;
+    height: 100% !important;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.swiper-itemWrap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Текст внутри карточки VIP */
+.swiper-itemWrap .text-bold.text-xxl {
+    font-size: 28px;
+    font-weight: 900;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    margin-bottom: 5px;
+}
+
+.swiper-itemWrap .flex.align-center {
+    font-size: 14px;
+    color: rgba(255,255,255,0.9);
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+}
+
+/* Иконки замков */
+.vip-section .u-icon {
+    margin-right: 8px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.vip-section .u-icon__icon {
+    font-size: 18px;
+    color: #FFD700;
+}
+
+.vip-section .uicon-lock-opened-fill {
+    color: #4CAF50 !important;
+}
+
+.vip-section .uicon-lock-fill {
+    color: #cccccc !important;
+}
+
+/* Изображения в карточках */
+.vip-section .swiperPo {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: 120px;
+    height: 120px;
+    z-index: 2;
+}
+
+.vip-section .swiperPo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0;
+    background: transparent;
+}
+
+/* Дополнительные текстовые элементы */
+.vip-section .vip-level-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    margin-top: auto;
+    margin-bottom: 5px;
+}
+
+.vip-section .vip-level-requirement {
+    font-size: 12px;
+    color: rgba(255,255,255,0.8);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+
+/* Проценты и требования слева */
+.vip-section .vip-percent-left {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    font-weight: 900;
+    color: #FFD700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    z-index: 3;
+}
+
+.vip-section .vip-requirement-left {
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    font-size: 14px;
+    color: white;
+    background: rgba(54, 69, 79, 0.9);
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    z-index: 3;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Описание VIP уровней */
+.vip-section .vip-description {
+    margin-top: 15px;
+    padding: 15px;
+    background: rgba(54, 69, 79, 0.8);
+    border-radius: 10px;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* Индикаторы карусели (точки) */
+.vip-section .vip-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 8px;
+}
+
+.vip-section .vip-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.vip-section .vip-indicator.active {
+    background: #FFD700;
+    transform: scale(1.2);
+}
+
+/* Кнопки навигации карусели */
+.vip-section .vip-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: rgba(54, 69, 79, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 100;
+    border: 2px solid rgba(255,255,255,0.2);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.vip-section .vip-nav-btn:hover {
+    background: #5a6b76;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.vip-section .vip-nav-btn.prev {
+    left: 10px;
+}
+
+.vip-section .vip-nav-btn.next {
+    right: 10px;
+}
+
+.vip-section .vip-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.vip-section .vip-nav-btn:disabled:hover {
+    background: rgba(54, 69, 79, 0.9);
+    transform: translateY(-50%);
+}
+
+/* Убираем старые стили для горизонтальной карусели */
+.vip-carousel-container,
+.vip-carousel,
+.vip-card,
+.vip-bg-img,
+.vip-icon-wrapper,
+.vip-icon {
+    display: none !important;
+}
+
+/* Скрываем старые элементы управления */
+.vip-carousel-controls {
+    display: none !important;
+}
+
+/* Мобильная адаптация для вертикальной карусели */
+@media (max-width: 480px) {
+    .vip-section .uni-swiper-wrapper {
+        height: 220px;
+    }
+    
+    .vip-section .swiperPo {
+        width: 100px;
+        height: 100px;
+        right: 15px;
+        bottom: 15px;
+    }
+    
+    .vip-section .swiper-itemWrap .text-bold.text-xxl {
+        font-size: 24px;
+    }
+    
+    .vip-section .vip-percent-left {
+        font-size: 20px;
+        top: 15px;
+        left: 15px;
+    }
+    
+    .vip-section .vip-requirement-left {
+        font-size: 12px;
+        top: 40px;
+        left: 15px;
+        padding: 4px 8px;
+    }
+}
+
+@media (max-width: 375px) {
+    .vip-section .uni-swiper-wrapper {
+        height: 200px;
+    }
+    
+    .vip-section .swiperPo {
+        width: 80px;
+        height: 80px;
+        right: 10px;
+        bottom: 10px;
+    }
+    
+    .vip-section .swiper-itemWrap {
+        padding: 15px;
+    }
+    
+    .vip-section .swiper-itemWrap .text-bold.text-xxl {
+        font-size: 22px;
+    }
+    
+    .vip-section .swiper-itemWrap .flex.align-center {
+        font-size: 12px;
+    }
+}
+
+/* Анимация для перехода слайдов */
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}

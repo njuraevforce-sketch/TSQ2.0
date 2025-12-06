@@ -145,7 +145,6 @@ export default function renderDeposit() {
                     <div style="margin-top: 20px; padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
                         <p style="color: #ffccbc; font-size: 11px; margin: 5px 0;">
                             <i class="fas fa-info-circle" style="color: #4CAF50; margin-right: 5px;"></i>
-                            <span data-translate="deposit_popup_note">Send exactly the selected amount to this address using the selected network</span>
                         </p>
                     </div>
                 </div>

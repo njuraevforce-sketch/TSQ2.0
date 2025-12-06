@@ -36,168 +36,176 @@ export default function renderGet() {
                 <div class="process-step" id="profit-result" style="display: none; color: #52c41a; font-weight: bold;"></div>
             </div>
 
-            <!-- VIP cards - НОВАЯ ВЕРТИКАЛЬНАЯ КАРУСЕЛЬ -->
+            <!-- VIP cards - КАСТОМНЫЙ ВЕРТИКАЛЬНЫЙ СЛАЙДЕР -->
             <div class="vip-section">
                 <div class="section-title" data-translate="vip_levels">VIP Levels</div>
-                <div class="uni-swiper-wrapper" id="vip-swiper-wrapper">
-                    <div class="uni-swiper-slides" id="vip-swiper-slides">
+                
+                <!-- Обертка слайдера -->
+                <div class="custom-vip-carousel" id="vip-carousel">
+                    <div class="carousel-track" id="vip-track">
                         <!-- VIP 1 -->
-                        <div class="uni-swiper-slide-frame">
-                            <div class="uni-swiper-item">
-                                <div class="swiper-itemWrap flex flex-direction justify-between padding" style="background: url('assets/vip1.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
-                                    <div class="text-bold text-xxl">VIP1</div>
-                                    <div class="flex align-center">
-                                        <div class="u-icon u-icon--right">
-                                            <div class="u-icon__icon uicon-lock-opened-fill" style="font-size: 16px; line-height: 16px; font-weight: normal; top: 0px; color: #4CAF50;">
-                                                <i class="fas fa-lock-open"></i>
-                                            </div>
-                                        </div>
-                                        Unlocked this level
+                        <div class="vip-slide active" data-vip="1">
+                            <div class="vip-card" style="background: linear-gradient(135deg, #4e7771, #6b9b94);">
+                                <div class="vip-header">
+                                    <div class="vip-title">VIP1</div>
+                                    <div class="vip-status">
+                                        <i class="fas fa-lock-open" style="color: #4CAF50;"></i>
+                                        <span>Unlocked</span>
                                     </div>
-                                    <div class="vip-percent-left">2.2%</div>
-                                    <div class="vip-requirement-left">VIP 1</div>
-                                    <div class="swiperPo">
-                                        <img src="assets/vipicon1.png?v=${Date.now()}" alt="VIP 1" draggable="false">
+                                </div>
+                                <div class="vip-content">
+                                    <div class="vip-percent">2.2%</div>
+                                    <div class="vip-requirement">VIP 1</div>
+                                    <div class="vip-image">
+                                        <img src="assets/vipicon1.png?v=${Date.now()}" alt="VIP 1">
                                     </div>
-                                    <div class="vip-level-name">0-299 USDT</div>
-                                    <div class="vip-level-requirement">2.2% daily, 3 signals</div>
+                                    <div class="vip-info">
+                                        <div class="vip-range">0-299 USDT</div>
+                                        <div class="vip-details">2.2% daily, 3 signals</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        
                         <!-- VIP 2 -->
-                        <div class="uni-swiper-slide-frame">
-                            <div class="uni-swiper-item">
-                                <div class="swiper-itemWrap flex flex-direction justify-between padding" style="background: url('assets/vip2.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
-                                    <div class="text-bold text-xxl">VIP2</div>
-                                    <div class="flex align-center">
-                                        <div class="u-icon u-icon--right">
-                                            <div class="u-icon__icon uicon-lock-fill" style="font-size: 16px; line-height: 16px; font-weight: normal; top: 0px; color: #cccccc;">
-                                                <i class="fas fa-lock"></i>
-                                            </div>
-                                        </div>
-                                        Unlocked this level
+                        <div class="vip-slide" data-vip="2">
+                            <div class="vip-card" style="background: linear-gradient(135deg, #5a6b76, #8a969e);">
+                                <div class="vip-header">
+                                    <div class="vip-title">VIP2</div>
+                                    <div class="vip-status">
+                                        <i class="fas fa-lock" style="color: #cccccc;"></i>
+                                        <span>Locked</span>
                                     </div>
-                                    <div class="vip-percent-left">2.8%</div>
-                                    <div class="vip-requirement-left">VIP 2</div>
-                                    <div class="swiperPo">
-                                        <img src="assets/vipicon2.png?v=${Date.now()}" alt="VIP 2" draggable="false">
+                                </div>
+                                <div class="vip-content">
+                                    <div class="vip-percent">2.8%</div>
+                                    <div class="vip-requirement">VIP 2</div>
+                                    <div class="vip-image">
+                                        <img src="assets/vipicon2.png?v=${Date.now()}" alt="VIP 2">
                                     </div>
-                                    <div class="vip-level-name">300-1000 USDT</div>
-                                    <div class="vip-level-requirement">2.8% daily, 3 signals, 2 refs</div>
+                                    <div class="vip-info">
+                                        <div class="vip-range">300-1000 USDT</div>
+                                        <div class="vip-details">2.8% daily, 3 signals, 2 refs</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        
                         <!-- VIP 3 -->
-                        <div class="uni-swiper-slide-frame">
-                            <div class="uni-swiper-item">
-                                <div class="swiper-itemWrap flex flex-direction justify-between padding" style="background: url('assets/vip3.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
-                                    <div class="text-bold text-xxl">VIP3</div>
-                                    <div class="flex align-center">
-                                        <div class="u-icon u-icon--right">
-                                            <div class="u-icon__icon uicon-lock-fill" style="font-size: 16px; line-height: 16px; font-weight: normal; top: 0px; color: #cccccc;">
-                                                <i class="fas fa-lock"></i>
-                                            </div>
-                                        </div>
-                                        Unlocked this level
+                        <div class="vip-slide" data-vip="3">
+                            <div class="vip-card" style="background: linear-gradient(135deg, #6b5a76, #968a9e);">
+                                <div class="vip-header">
+                                    <div class="vip-title">VIP3</div>
+                                    <div class="vip-status">
+                                        <i class="fas fa-lock" style="color: #cccccc;"></i>
+                                        <span>Locked</span>
                                     </div>
-                                    <div class="vip-percent-left">3.5%</div>
-                                    <div class="vip-requirement-left">VIP 3</div>
-                                    <div class="swiperPo">
-                                        <img src="assets/vipicon3.png?v=${Date.now()}" alt="VIP 3" draggable="false">
+                                </div>
+                                <div class="vip-content">
+                                    <div class="vip-percent">3.5%</div>
+                                    <div class="vip-requirement">VIP 3</div>
+                                    <div class="vip-image">
+                                        <img src="assets/vipicon3.png?v=${Date.now()}" alt="VIP 3">
                                     </div>
-                                    <div class="vip-level-name">1000-3500 USDT</div>
-                                    <div class="vip-level-requirement">3.5% daily, 3 signals, 5 refs</div>
+                                    <div class="vip-info">
+                                        <div class="vip-range">1000-3500 USDT</div>
+                                        <div class="vip-details">3.5% daily, 3 signals, 5 refs</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        
                         <!-- VIP 4 -->
-                        <div class="uni-swiper-slide-frame">
-                            <div class="uni-swiper-item">
-                                <div class="swiper-itemWrap flex flex-direction justify-between padding" style="background: url('assets/vip4.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
-                                    <div class="text-bold text-xxl">VIP4</div>
-                                    <div class="flex align-center">
-                                        <div class="u-icon u-icon--right">
-                                            <div class="u-icon__icon uicon-lock-fill" style="font-size: 16px; line-height: 16px; font-weight: normal; top: 0px; color: #cccccc;">
-                                                <i class="fas fa-lock"></i>
-                                            </div>
-                                        </div>
-                                        Unlocked this level
+                        <div class="vip-slide" data-vip="4">
+                            <div class="vip-card" style="background: linear-gradient(135deg, #765a5a, #9e8a8a);">
+                                <div class="vip-header">
+                                    <div class="vip-title">VIP4</div>
+                                    <div class="vip-status">
+                                        <i class="fas fa-lock" style="color: #cccccc;"></i>
+                                        <span>Locked</span>
                                     </div>
-                                    <div class="vip-percent-left">4.0%</div>
-                                    <div class="vip-requirement-left">VIP 4</div>
-                                    <div class="swiperPo">
-                                        <img src="assets/vipicon4.png?v=${Date.now()}" alt="VIP 4" draggable="false">
+                                </div>
+                                <div class="vip-content">
+                                    <div class="vip-percent">4.0%</div>
+                                    <div class="vip-requirement">VIP 4</div>
+                                    <div class="vip-image">
+                                        <img src="assets/vipicon4.png?v=${Date.now()}" alt="VIP 4">
                                     </div>
-                                    <div class="vip-level-name">3500-6000 USDT</div>
-                                    <div class="vip-level-requirement">4.0% daily, 3 signals, 8 refs</div>
+                                    <div class="vip-info">
+                                        <div class="vip-range">3500-6000 USDT</div>
+                                        <div class="vip-details">4.0% daily, 3 signals, 8 refs</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        
                         <!-- VIP 5 -->
-                        <div class="uni-swiper-slide-frame">
-                            <div class="uni-swiper-item">
-                                <div class="swiper-itemWrap flex flex-direction justify-between padding" style="background: url('assets/vip5.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
-                                    <div class="text-bold text-xxl">VIP5</div>
-                                    <div class="flex align-center">
-                                        <div class="u-icon u-icon--right">
-                                            <div class="u-icon__icon uicon-lock-fill" style="font-size: 16px; line-height: 16px; font-weight: normal; top: 0px; color: #cccccc;">
-                                                <i class="fas fa-lock"></i>
-                                            </div>
-                                        </div>
-                                        Unlocked this level
+                        <div class="vip-slide" data-vip="5">
+                            <div class="vip-card" style="background: linear-gradient(135deg, #5a765a, #8a9e8a);">
+                                <div class="vip-header">
+                                    <div class="vip-title">VIP5</div>
+                                    <div class="vip-status">
+                                        <i class="fas fa-lock" style="color: #cccccc;"></i>
+                                        <span>Locked</span>
                                     </div>
-                                    <div class="vip-percent-left">5.0%</div>
-                                    <div class="vip-requirement-left">VIP 5</div>
-                                    <div class="swiperPo">
-                                        <img src="assets/vipicon5.png?v=${Date.now()}" alt="VIP 5" draggable="false">
+                                </div>
+                                <div class="vip-content">
+                                    <div class="vip-percent">5.0%</div>
+                                    <div class="vip-requirement">VIP 5</div>
+                                    <div class="vip-image">
+                                        <img src="assets/vipicon5.png?v=${Date.now()}" alt="VIP 5">
                                     </div>
-                                    <div class="vip-level-name">6000-12000 USDT</div>
-                                    <div class="vip-level-requirement">5.0% daily, 3 signals, 15 refs</div>
+                                    <div class="vip-info">
+                                        <div class="vip-range">6000-12000 USDT</div>
+                                        <div class="vip-details">5.0% daily, 3 signals, 15 refs</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        
                         <!-- VIP 6 -->
-                        <div class="uni-swiper-slide-frame">
-                            <div class="uni-swiper-item">
-                                <div class="swiper-itemWrap flex flex-direction justify-between padding" style="background: url('assets/vip6.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
-                                    <div class="text-bold text-xxl">VIP6</div>
-                                    <div class="flex align-center">
-                                        <div class="u-icon u-icon--right">
-                                            <div class="u-icon__icon uicon-lock-fill" style="font-size: 16px; line-height: 16px; font-weight: normal; top: 0px; color: #cccccc;">
-                                                <i class="fas fa-lock"></i>
-                                            </div>
-                                        </div>
-                                        Unlocked this level
+                        <div class="vip-slide" data-vip="6">
+                            <div class="vip-card" style="background: linear-gradient(135deg, #765a76, #9e8a9e);">
+                                <div class="vip-header">
+                                    <div class="vip-title">VIP6</div>
+                                    <div class="vip-status">
+                                        <i class="fas fa-lock" style="color: #cccccc;"></i>
+                                        <span>Locked</span>
                                     </div>
-                                    <div class="vip-percent-left">6.0%</div>
-                                    <div class="vip-requirement-left">VIP 6</div>
-                                    <div class="swiperPo">
-                                        <img src="assets/vipicon6.png?v=${Date.now()}" alt="VIP 6" draggable="false">
+                                </div>
+                                <div class="vip-content">
+                                    <div class="vip-percent">6.0%</div>
+                                    <div class="vip-requirement">VIP 6</div>
+                                    <div class="vip-image">
+                                        <img src="assets/vipicon6.png?v=${Date.now()}" alt="VIP 6">
                                     </div>
-                                    <div class="vip-level-name">12000-20000 USDT</div>
-                                    <div class="vip-level-requirement">6.0% daily, 3 signals, 25 refs</div>
+                                    <div class="vip-info">
+                                        <div class="vip-range">12000-20000 USDT</div>
+                                        <div class="vip-details">6.0% daily, 3 signals, 25 refs</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Навигационные кнопки -->
+                    <button class="carousel-btn prev" id="vip-prev">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                    <button class="carousel-btn next" id="vip-next">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <!-- Индикаторы -->
+                    <div class="carousel-indicators" id="vip-indicators">
+                        <span class="indicator active" data-index="0"></span>
+                        <span class="indicator" data-index="1"></span>
+                        <span class="indicator" data-index="2"></span>
+                        <span class="indicator" data-index="3"></span>
+                        <span class="indicator" data-index="4"></span>
+                        <span class="indicator" data-index="5"></span>
+                    </div>
                 </div>
-                
-                <!-- Индикаторы и навигация -->
-                <div class="vip-indicators" id="vip-indicators">
-                    <div class="vip-indicator active" data-index="0"></div>
-                    <div class="vip-indicator" data-index="1"></div>
-                    <div class="vip-indicator" data-index="2"></div>
-                    <div class="vip-indicator" data-index="3"></div>
-                    <div class="vip-indicator" data-index="4"></div>
-                    <div class="vip-indicator" data-index="5"></div>
-                </div>
-                
-                <button class="vip-nav-btn prev" id="vip-prev-btn">
-                    <i class="fas fa-chevron-up"></i>
-                </button>
-                <button class="vip-nav-btn next" id="vip-next-btn">
-                    <i class="fas fa-chevron-down"></i>
-                </button>
                 
                 <div class="vip-description" id="vip-description">
                     ${t('vip_description_1')}
@@ -219,24 +227,27 @@ export async function init() {
     await loadUserData();
     
     // Quantification button handler
-    document.getElementById('quant-btn').addEventListener('click', startQuantification);
+    const quantBtn = document.getElementById('quant-btn');
+    if (quantBtn) {
+        quantBtn.addEventListener('click', startQuantification);
+    }
 }
 
 function initVipCarousel() {
-    const slidesContainer = document.getElementById('vip-swiper-slides');
-    const indicators = document.querySelectorAll('.vip-indicator');
-    const prevBtn = document.getElementById('vip-prev-btn');
-    const nextBtn = document.getElementById('vip-next-btn');
+    const carousel = document.getElementById('vip-carousel');
+    const track = document.getElementById('vip-track');
+    const indicators = document.querySelectorAll('.indicator');
+    const prevBtn = document.getElementById('vip-prev');
+    const nextBtn = document.getElementById('vip-next');
     const description = document.getElementById('vip-description');
     
-    if (!slidesContainer || indicators.length === 0 || !description) {
+    if (!carousel || !track || indicators.length === 0 || !description) {
         console.error('Carousel elements not found');
         return;
     }
     
     let currentIndex = 0;
     const totalSlides = 6;
-    const slideHeight = 250; // высота слайда в пикселях
     
     const vipDescriptions = [
         t('vip_description_1'),
@@ -247,13 +258,14 @@ function initVipCarousel() {
         t('vip_description_6')
     ];
     
+    // Обновление отображения
     function updateCarousel() {
         console.log('Updating carousel to index:', currentIndex);
         
-        // Update slides position
-        slidesContainer.style.transform = `translate(0px, ${-currentIndex * slideHeight}px)`;
+        // Перемещаем трек
+        track.style.transform = `translateY(${-currentIndex * 100}%)`;
         
-        // Update indicators
+        // Обновляем индикаторы
         indicators.forEach((indicator, index) => {
             indicator.classList.remove('active');
             if (index === currentIndex) {
@@ -261,17 +273,16 @@ function initVipCarousel() {
             }
         });
         
-        // Update description
+        // Обновляем описание
         if (vipDescriptions[currentIndex]) {
             description.textContent = vipDescriptions[currentIndex];
-            console.log('Description updated:', vipDescriptions[currentIndex]);
         }
         
-        // Update button states
-        prevBtn.disabled = currentIndex === 0;
-        nextBtn.disabled = currentIndex === totalSlides - 1;
+        // Обновляем состояние кнопок
+        if (prevBtn) prevBtn.disabled = currentIndex === 0;
+        if (nextBtn) nextBtn.disabled = currentIndex === totalSlides - 1;
         
-        // Update lock icons based on user's VIP level
+        // Обновляем иконки замков
         updateLockIcons();
     }
     
@@ -281,37 +292,36 @@ function initVipCarousel() {
         
         const userVipLevel = user.vip_level || 1;
         
-        // Update lock icons for all slides
-        for (let i = 0; i < totalSlides; i++) {
-            const slideIndex = i;
-            const slideFrame = slidesContainer.children[slideIndex];
-            if (!slideFrame) continue;
+        // Обновляем иконки замков для всех слайдов
+        const slides = document.querySelectorAll('.vip-slide');
+        slides.forEach((slide, index) => {
+            const statusIcon = slide.querySelector('.vip-status i');
+            const statusText = slide.querySelector('.vip-status span');
             
-            const lockIcon = slideFrame.querySelector('.u-icon__icon i');
-            if (lockIcon) {
-                if (slideIndex < userVipLevel - 1) {
-                    // Already unlocked levels (below current)
-                    lockIcon.className = 'fas fa-lock-open';
-                    lockIcon.style.color = '#4CAF50';
-                } else if (slideIndex === userVipLevel - 1) {
-                    // Current level
-                    lockIcon.className = 'fas fa-lock-open';
-                    lockIcon.style.color = '#4CAF50';
+            if (statusIcon && statusText) {
+                if (index + 1 <= userVipLevel) {
+                    // Разблокированные уровни
+                    statusIcon.className = 'fas fa-lock-open';
+                    statusIcon.style.color = '#4CAF50';
+                    statusText.textContent = 'Unlocked';
                 } else {
-                    // Locked levels (above current)
-                    lockIcon.className = 'fas fa-lock';
-                    lockIcon.style.color = '#cccccc';
+                    // Заблокированные уровни
+                    statusIcon.className = 'fas fa-lock';
+                    statusIcon.style.color = '#cccccc';
+                    statusText.textContent = 'Locked';
                 }
             }
-        }
+        });
     }
     
+    // Переход к конкретному слайду
     function goToSlide(index) {
         if (index < 0 || index >= totalSlides) return;
         currentIndex = index;
         updateCarousel();
     }
     
+    // Следующий слайд
     function nextSlide() {
         if (currentIndex < totalSlides - 1) {
             currentIndex++;
@@ -319,6 +329,7 @@ function initVipCarousel() {
         }
     }
     
+    // Предыдущий слайд
     function prevSlide() {
         if (currentIndex > 0) {
             currentIndex--;
@@ -326,49 +337,46 @@ function initVipCarousel() {
         }
     }
     
-    // Initialize carousel
+    // Инициализация
     updateCarousel();
     
-    // Event listeners for buttons
-    prevBtn.addEventListener('click', prevSlide);
-    nextBtn.addEventListener('click', nextSlide);
+    // Обработчики событий для кнопок
+    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
     
-    // Event listeners for indicators
+    // Обработчики для индикаторов
     indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => {
-            goToSlide(index);
-        });
+        indicator.addEventListener('click', () => goToSlide(index));
     });
     
-    // Touch events for swipe
+    // СВАЙП для мобильных устройств
     let touchStartY = 0;
     let touchEndY = 0;
     
-    slidesContainer.addEventListener('touchstart', (e) => {
-        touchStartY = e.changedTouches[0].screenY;
-    });
+    carousel.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+    }, { passive: true });
     
-    slidesContainer.addEventListener('touchend', (e) => {
-        touchEndY = e.changedTouches[0].screenY;
-        handleSwipe();
-    });
+    carousel.addEventListener('touchmove', (e) => {
+        touchEndY = e.touches[0].clientY;
+    }, { passive: true });
     
-    function handleSwipe() {
+    carousel.addEventListener('touchend', () => {
         const swipeThreshold = 50;
         const diffY = touchStartY - touchEndY;
         
         if (Math.abs(diffY) > swipeThreshold) {
-            if (diffY > 0 && currentIndex < totalSlides - 1) {
-                // Swipe up - go to next
+            if (diffY > 0) {
+                // Свайп вверх - следующий слайд
                 nextSlide();
-            } else if (diffY < 0 && currentIndex > 0) {
-                // Swipe down - go to previous
+            } else {
+                // Свайп вниз - предыдущий слайд
                 prevSlide();
             }
         }
-    }
+    });
     
-    // Keyboard navigation
+    // Навигация с клавиатуры
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowDown' && currentIndex < totalSlides - 1) {
             e.preventDefault();
@@ -379,7 +387,12 @@ function initVipCarousel() {
         }
     });
     
-    // Expose functions for external use
+    // Адаптация при изменении размера окна
+    window.addEventListener('resize', () => {
+        track.style.transform = `translateY(${-currentIndex * 100}%)`;
+    });
+    
+    // Экспортируем функции для внешнего использования
     window.goToVipSlide = goToSlide;
     window.updateVipCarousel = updateCarousel;
     window.updateVipLockIcons = updateLockIcons;
@@ -396,7 +409,7 @@ async function loadUserData() {
     if (window.glyApp) {
         await window.glyApp.checkAndUpdateSignals();
         
-        // ПРИНУДИТЕЛЬНО ОБНОВЛЯЕМ VIP УРОВЕНЬ ПРИ КАЖДОЙ ЗАГРУЗКЕ
+        // Обновляем VIP уровень
         await window.glyApp.updateVipLevel();
     }
     
@@ -409,7 +422,7 @@ async function loadUserData() {
     // Update VIP level in carousel
     highlightCurrentVipLevel(updatedUser.vip_level);
     
-    // ДЛЯ ОТЛАДКИ: Проверяем активных рефералов
+    // ДЛЯ ОТЛАДКИ
     if (window.getActiveReferralsCount) {
         const activeRefs = await window.getActiveReferralsCount(updatedUser.id);
         console.log(`DEBUG: User ${updatedUser.username} has ${activeRefs} active referrals (balance ≥ 20 USDT)`);
@@ -561,7 +574,7 @@ function updateUTCTime() {
     }
 }
 
-// Глобальная функция для обновления VIP уровня (может быть вызвана из других модулей)
+// Глобальная функция для обновления VIP уровня
 window.updateVipLevelDisplay = function() {
     const user = window.getCurrentUser();
     if (user) {

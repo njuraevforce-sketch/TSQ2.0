@@ -11,13 +11,13 @@ export default function renderHome() {
                 <div class="carousel-container" id="carousel-container">
                     <div class="carousel-track" id="carousel-track">
                         <div class="carousel-slide active">
-                            <img src="assets/banner.png" alt="${t('banner_1')}" data-translate-alt="banner1" loading="lazy">
+                            <img src="assets/banner.png" alt="${t('banner_1')}" data-translate-alt="banner1">
                         </div>
                         <div class="carousel-slide">
-                            <img src="assets/banner1.png" alt="${t('banner_2')}" data-translate-alt="banner2" loading="lazy">
+                            <img src="assets/banner1.png" alt="${t('banner_2')}" data-translate-alt="banner2">
                         </div>
                         <div class="carousel-slide">
-                            <img src="assets/banner2.png" alt="${t('banner_3')}" data-translate-alt="banner3" loading="lazy">
+                            <img src="assets/banner2.png" alt="${t('banner_3')}" data-translate-alt="banner3">
                         </div>
                     </div>
                     <div class="carousel-indicators" id="carousel-indicators">
@@ -136,27 +136,80 @@ function initCarousel() {
     
     if (!track || slides.length === 0) return;
     
+    // Preload all images
+    const imageUrls = [
+        'assets/banner.png',
+        'assets/banner1.png', 
+        'assets/banner2.png'
+    ];
+    
+    // Force load all images
+    imageUrls.forEach(url => {
+        const img = new Image();
+        img.src = url;
+        console.log('Preloading image:', url);
+    });
+    
     let currentIndex = 0;
     const totalSlides = slides.length;
     let autoSlideInterval;
+    let isTransitioning = false;
     
     // Function to update carousel position
     function updateCarousel() {
-        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        if (isTransitioning) return;
         
-        // Update indicators
-        indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === currentIndex);
-        });
+        isTransitioning = true;
         
-        // Update slide classes
+        // Hide all slides first
         slides.forEach((slide, index) => {
-            slide.classList.toggle('active', index === currentIndex);
+            slide.style.opacity = '0';
+            slide.style.transition = 'opacity 0.5s ease';
         });
+        
+        // Show current slide
+        setTimeout(() => {
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            
+            slides[currentIndex].style.opacity = '1';
+            
+            // Update indicators
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentIndex);
+            });
+            
+            // Update slide classes
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentIndex);
+            });
+            
+            // Force load image for current slide
+            const currentImg = slides[currentIndex].querySelector('img');
+            if (currentImg) {
+                currentImg.style.display = 'block';
+                if (!currentImg.complete) {
+                    currentImg.onload = function() {
+                        console.log(`Image ${currentIndex} loaded`);
+                        isTransitioning = false;
+                    };
+                    currentImg.onerror = function() {
+                        console.error(`Error loading image ${currentIndex}`);
+                        this.src = 'assets/banner.png'; // fallback
+                        isTransitioning = false;
+                    };
+                } else {
+                    isTransitioning = false;
+                }
+            } else {
+                isTransitioning = false;
+            }
+        }, 100);
     }
     
     // Function to go to specific slide
     function goToSlide(index) {
+        if (isTransitioning) return;
+        
         currentIndex = (index + totalSlides) % totalSlides;
         updateCarousel();
     }
@@ -170,12 +223,88 @@ function initCarousel() {
     function startAutoSlide() {
         clearInterval(autoSlideInterval);
         autoSlideInterval = setInterval(() => {
-            nextSlide();
+            if (!isTransitioning) {
+                nextSlide();
+            }
         }, 5000); // Change slide every 5 seconds
     }
     
+    // Initialize
+    updateCarousel();
+    
+    // Force load all images initially
+    setTimeout(() => {
+        slides.forEach((slide, index) => {
+            const img = slide.querySelector('img');
+            if (img) {
+                // Remove lazy loading
+                img.loading = 'eager';
+                img.style.display = 'block';
+                
+                // Ensure image is loaded
+                if (!img.complete) {
+                    const tempImg = new Image();
+                    tempImg.src = img.src;
+                    tempImg.onload = function() {
+                        console.log(`Initial load of image ${index} complete`);
+                        img.style.opacity = '1';
+                    };
+                    tempImg.onerror = function() {
+                        console.error(`Initial load failed for image ${index}`);
+                        img.src = 'assets/banner.png';
+                    };
+                }
+            }
+        });
+        
+        // Show first slide
+        slides[0].style.opacity = '1';
+    }, 500);
+    
     // Start auto sliding
     startAutoSlide();
+    
+    // Pause on hover
+    const container = document.getElementById('carousel-container');
+    if (container) {
+        container.addEventListener('mouseenter', () => {
+            clearInterval(autoSlideInterval);
+        });
+        
+        container.addEventListener('mouseleave', () => {
+            startAutoSlide();
+        });
+    }
+    
+    // Touch support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    if (container) {
+        container.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        container.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+    }
+    
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
+        
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                // Swipe left - next slide
+                nextSlide();
+            } else {
+                // Swipe right - previous slide
+                goToSlide(currentIndex - 1);
+            }
+        }
+    }
 }
 
 function showWelcomeBanner() {

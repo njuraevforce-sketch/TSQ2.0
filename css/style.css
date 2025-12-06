@@ -1115,13 +1115,19 @@ html {
     border-radius: 10px;
     margin: 0 auto 15px;
     background: rgba(0, 0, 0, 0.1);
+    cursor: grab;
+}
+
+.custom-vip-carousel:active {
+    cursor: grabbing;
 }
 
 .carousel-track {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: calc(130px * 6 + 20px); /* 6 карточек по 130px + 20px предпросмотр */
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
 }
 
 .vip-slide {
@@ -1131,19 +1137,28 @@ html {
     box-sizing: border-box;
     display: flex;
     align-items: flex-start;
+    position: relative;
+    transition: opacity 0.3s ease;
+}
+
+.vip-slide.active .vip-card {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 
 .vip-card {
     width: 345px;
     height: 130px;
     border-radius: 10px;
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     border: none;
+    transition: box-shadow 0.3s ease;
 }
 
 .vip-title {
@@ -1154,6 +1169,7 @@ html {
     font-weight: 900;
     color: white;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    z-index: 2;
 }
 
 .vip-status {
@@ -1167,6 +1183,7 @@ html {
     font-size: 14px;
     font-weight: 500;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    z-index: 2;
 }
 
 .vip-image {
@@ -1179,6 +1196,7 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 2;
 }
 
 .vip-image img {
@@ -1246,6 +1264,25 @@ html {
     margin-left: 5px;
 }
 
+/* Анимация для переключения слайдов */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.vip-slide.sliding-up {
+    animation: slideUp 0.3s ease;
+}
+
+.vip-slide.sliding-down {
+    animation: slideDown 0.3s ease;
+}
+
 /* Адаптация для мобильных экранов */
 @media (max-width: 480px) {
     .custom-vip-carousel {
@@ -1302,6 +1339,10 @@ html {
     .vip-slide {
         flex: 0 0 125px;
         height: 125px;
+    }
+    
+    .carousel-track {
+        height: calc(125px * 6 + 20px);
     }
 }
 

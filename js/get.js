@@ -3,101 +3,6 @@ import { t } from './translate.js';
 
 export default function renderGet() {
     const lang = localStorage.getItem('gly_language') || 'en';
-    const user = JSON.parse(localStorage.getItem('gly_user')) || {};
-    const currentVipLevel = user.vip_level || 1;
-    
-    // Рассчитываем начальную позицию карусели (чтобы активная карточка была первой)
-    const startTranslate = -((currentVipLevel - 1) * 100); // смещение в %
-    
-    // VIP уровни данные с путями к изображениям (БЕЗ параметра кеширования)
-    const vipLevelsData = [
-        { 
-            level: 1, 
-            percent: '2.2%', 
-            name: '0-299 USDT', 
-            requirement: '2.2% daily, 3 signals',
-            icon: 'assets/vipicon1.png',
-            bg: 'assets/vip1.png'
-        },
-        { 
-            level: 2, 
-            percent: '2.8%', 
-            name: '300-1000 USDT', 
-            requirement: '2.8% daily, 3 signals, 2 refs',
-            icon: 'assets/vipicon2.png',
-            bg: 'assets/vip2.png'
-        },
-        { 
-            level: 3, 
-            percent: '3.5%', 
-            name: '1000-3500 USDT', 
-            requirement: '3.5% daily, 3 signals, 5 refs',
-            icon: 'assets/vipicon3.png',
-            bg: 'assets/vip3.png'
-        },
-        { 
-            level: 4, 
-            percent: '4.0%', 
-            name: '3500-6000 USDT', 
-            requirement: '4.0% daily, 3 signals, 8 refs',
-            icon: 'assets/vipicon4.png',
-            bg: 'assets/vip4.png'
-        },
-        { 
-            level: 5, 
-            percent: '5.0%', 
-            name: '6000-12000 USDT', 
-            requirement: '5.0% daily, 3 signals, 15 refs',
-            icon: 'assets/vipicon5.png',
-            bg: 'assets/vip5.png'
-        },
-        { 
-            level: 6, 
-            percent: '6.0%', 
-            name: '12000-20000 USDT', 
-            requirement: '6.0% daily, 3 signals, 25 refs',
-            icon: 'assets/vipicon6.png',
-            bg: 'assets/vip6.png'
-        }
-    ];
-    
-    // Генерируем VIP карточки
-    let vipCardsHTML = '';
-    vipLevelsData.forEach((vip, index) => {
-        const isCurrentLevel = vip.level === currentVipLevel;
-        const lockIcon = vip.level <= currentVipLevel ? 'fa-lock-open' : 'fa-lock';
-        const lockText = vip.level <= currentVipLevel ? t('unlocked_this_level') : t('locked');
-        const translateY = index * 100; // каждая карточка на 100% ниже предыдущей
-        
-        vipCardsHTML += `
-            <div class="vip-swiper-item" data-level="${vip.level}" 
-                 style="position: absolute; width: 100%; height: 100%; transform: translate(0px, ${translateY}%) translateZ(0px);">
-                <div class="vip-card-container ${isCurrentLevel ? 'active' : ''}">
-                    <div class="vip-card">
-                        <div class="vip-card-header">
-                            <div class="text-bold text-xxl">VIP${vip.level}</div>
-                            <div class="flex align-center">
-                                <div class="lock-icon">
-                                    <i class="fas ${lockIcon}"></i>
-                                </div>
-                                <span class="lock-text">${lockText}</span>
-                            </div>
-                        </div>
-                        <div class="vip-card-content">
-                            <div class="vip-percent-left">${vip.percent}</div>
-                            <div class="vip-requirement-left">VIP ${vip.level}</div>
-                            <div class="vip-icon-wrapper">
-                                <img src="${vip.icon}" alt="VIP ${vip.level}" class="vip-icon">
-                            </div>
-                            <img src="${vip.bg}" alt="VIP ${vip.level}" class="vip-bg-img">
-                            <div class="vip-level-name">${vip.name}</div>
-                            <div class="vip-level-requirement">${vip.requirement}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
     
     return `
         <div class="card padding">
@@ -131,18 +36,143 @@ export default function renderGet() {
                 <div class="process-step" id="profit-result" style="display: none; color: #52c41a; font-weight: bold;"></div>
             </div>
 
-            <!-- VIP cards - НОВАЯ КАРУСЕЛЬ -->
+            <!-- VIP carousel (NEW VERSION) -->
             <div class="vip-section">
                 <div class="section-title" data-translate="vip_levels">VIP Levels</div>
-                <div class="vip-carousel-new-container">
-                    <div class="vip-swiper-wrapper">
-                        <div class="vip-swiper-slides" id="vip-swiper-slides" 
-                             style="left: 0px; right: 0px; bottom: 0px;">
-                            ${vipCardsHTML}
+                
+                <div class="vip-carousel-container">
+                    <!-- VIP Carousel wrapper -->
+                    <div class="uni-swiper-wrapper" id="vip-carousel-wrapper">
+                        <div class="uni-swiper-slides" id="vip-carousel">
+                            <!-- VIP 1 -->
+                            <div class="vip-card" data-level="1">
+                                <div class="vip-card-inner">
+                                    <div class="vip-card-header">
+                                        <div class="vip-level-name">VIP1</div>
+                                        <div class="vip-status">
+                                            <i class="fas fa-lock"></i>
+                                            <span data-translate="locked">Locked</span>
+                                        </div>
+                                    </div>
+                                    <div class="vip-icon-wrapper">
+                                        <img src="assets/vipicon1.png?v=${Date.now()}" alt="VIP 1" class="vip-icon">
+                                    </div>
+                                    <div class="vip-details">
+                                        <div class="vip-amount-range">0-299 USDT</div>
+                                        <div class="vip-percent">2.2% daily</div>
+                                        <div class="vip-signals">3 quantum signals</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- VIP 2 -->
+                            <div class="vip-card" data-level="2">
+                                <div class="vip-card-inner">
+                                    <div class="vip-card-header">
+                                        <div class="vip-level-name">VIP2</div>
+                                        <div class="vip-status">
+                                            <i class="fas fa-lock"></i>
+                                            <span data-translate="locked">Locked</span>
+                                        </div>
+                                    </div>
+                                    <div class="vip-icon-wrapper">
+                                        <img src="assets/vipicon2.png?v=${Date.now()}" alt="VIP 2" class="vip-icon">
+                                    </div>
+                                    <div class="vip-details">
+                                        <div class="vip-amount-range">300-1000 USDT</div>
+                                        <div class="vip-percent">2.8% daily</div>
+                                        <div class="vip-signals">3 signals, 2 active refs</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- VIP 3 -->
+                            <div class="vip-card" data-level="3">
+                                <div class="vip-card-inner">
+                                    <div class="vip-card-header">
+                                        <div class="vip-level-name">VIP3</div>
+                                        <div class="vip-status">
+                                            <i class="fas fa-lock"></i>
+                                            <span data-translate="locked">Locked</span>
+                                        </div>
+                                    </div>
+                                    <div class="vip-icon-wrapper">
+                                        <img src="assets/vipicon3.png?v=${Date.now()}" alt="VIP 3" class="vip-icon">
+                                    </div>
+                                    <div class="vip-details">
+                                        <div class="vip-amount-range">1000-3500 USDT</div>
+                                        <div class="vip-percent">3.5% daily</div>
+                                        <div class="vip-signals">3 signals, 5 active refs</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- VIP 4 -->
+                            <div class="vip-card" data-level="4">
+                                <div class="vip-card-inner">
+                                    <div class="vip-card-header">
+                                        <div class="vip-level-name">VIP4</div>
+                                        <div class="vip-status">
+                                            <i class="fas fa-lock"></i>
+                                            <span data-translate="locked">Locked</span>
+                                        </div>
+                                    </div>
+                                    <div class="vip-icon-wrapper">
+                                        <img src="assets/vipicon4.png?v=${Date.now()}" alt="VIP 4" class="vip-icon">
+                                    </div>
+                                    <div class="vip-details">
+                                        <div class="vip-amount-range">3500-6000 USDT</div>
+                                        <div class="vip-percent">4.0% daily</div>
+                                        <div class="vip-signals">3 signals, 8 active refs</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- VIP 5 -->
+                            <div class="vip-card" data-level="5">
+                                <div class="vip-card-inner">
+                                    <div class="vip-card-header">
+                                        <div class="vip-level-name">VIP5</div>
+                                        <div class="vip-status">
+                                            <i class="fas fa-lock"></i>
+                                            <span data-translate="locked">Locked</span>
+                                        </div>
+                                    </div>
+                                    <div class="vip-icon-wrapper">
+                                        <img src="assets/vipicon5.png?v=${Date.now()}" alt="VIP 5" class="vip-icon">
+                                    </div>
+                                    <div class="vip-details">
+                                        <div class="vip-amount-range">6000-12000 USDT</div>
+                                        <div class="vip-percent">5.0% daily</div>
+                                        <div class="vip-signals">3 signals, 15 active refs</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- VIP 6 -->
+                            <div class="vip-card" data-level="6">
+                                <div class="vip-card-inner">
+                                    <div class="vip-card-header">
+                                        <div class="vip-level-name">VIP6</div>
+                                        <div class="vip-status">
+                                            <i class="fas fa-lock"></i>
+                                            <span data-translate="locked">Locked</span>
+                                        </div>
+                                    </div>
+                                    <div class="vip-icon-wrapper">
+                                        <img src="assets/vipicon6.png?v=${Date.now()}" alt="VIP 6" class="vip-icon">
+                                    </div>
+                                    <div class="vip-details">
+                                        <div class="vip-amount-range">12000-20000 USDT</div>
+                                        <div class="vip-percent">6.0% daily</div>
+                                        <div class="vip-signals">3 signals, 25 active refs</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- Блок с описанием (остается снизу как было) -->
+                
                 <div class="vip-description" id="vip-description">
                     ${t('vip_description_1')}
                 </div>
@@ -167,19 +197,19 @@ export async function init() {
 }
 
 function initVipCarousel() {
-    const swiperSlides = document.getElementById('vip-swiper-slides');
-    const vipItems = document.querySelectorAll('.vip-swiper-item');
+    const carouselWrapper = document.getElementById('vip-carousel-wrapper');
+    const carousel = document.getElementById('vip-carousel');
+    const cards = document.querySelectorAll('.vip-card');
     const description = document.getElementById('vip-description');
     
-    if (!swiperSlides || vipItems.length === 0 || !description) {
+    if (!carousel || cards.length === 0 || !description) {
         console.error('Carousel elements not found');
         return;
     }
     
-    const user = window.getCurrentUser();
-    const currentVipLevel = user ? user.vip_level : 1;
-    let currentIndex = currentVipLevel - 1; // Начинаем с текущего уровня пользователя
-    const totalSlides = vipItems.length;
+    let currentIndex = 0;
+    let startX = 0;
+    let isDragging = false;
     
     const vipDescriptions = [
         t('vip_description_1'),
@@ -190,173 +220,149 @@ function initVipCarousel() {
         t('vip_description_6')
     ];
     
-    // Функция обновления карусели
-    function updateCarousel(index) {
-        console.log('Updating carousel to index:', index);
-        
-        // Обновляем активный класс у карточек
-        vipItems.forEach((item, i) => {
-            const cardContainer = item.querySelector('.vip-card-container');
-            const vipLevel = parseInt(item.getAttribute('data-level'));
-            const isCurrentUserLevel = vipLevel === user.vip_level;
-            
-            if (cardContainer) {
-                if (i === index) {
-                    cardContainer.classList.add('active');
-                } else {
-                    cardContainer.classList.remove('active');
-                }
-                
-                // Обновляем рамку для текущего уровня пользователя
-                const vipCard = cardContainer.querySelector('.vip-card');
-                if (vipCard) {
-                    if (isCurrentUserLevel) {
-                        vipCard.style.border = '2px solid #52c41a';
-                        vipCard.style.boxShadow = '0 0 10px rgba(82, 196, 26, 0.5)';
-                    } else {
-                        vipCard.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-                        vipCard.style.boxShadow = 'none';
-                    }
-                }
-            }
-            
-            // Обновляем иконки замков
-            const lockIcon = item.querySelector('.lock-icon i');
-            const lockText = item.querySelector('.lock-text');
-            
-            if (lockIcon) {
-                lockIcon.className = vipLevel <= user.vip_level ? 'fas fa-lock-open' : 'fas fa-lock';
-            }
-            
-            if (lockText) {
-                lockText.textContent = vipLevel <= user.vip_level ? t('unlocked_this_level') : t('locked');
-            }
+    // Set initial card positions
+    function updateCarouselPositions() {
+        cards.forEach((card, index) => {
+            card.style.transform = `translateX(${(index - currentIndex) * 100}%)`;
+            card.style.opacity = index === currentIndex ? '1' : '0.5';
+            card.style.pointerEvents = index === currentIndex ? 'auto' : 'none';
         });
-        
-        // Обновляем позицию слайдера
-        const translateY = -index * 100; // смещаем на -100% за каждый шаг
-        vipItems.forEach(item => {
-            item.style.transform = `translate(0px, ${parseInt(item.style.transform.match(/translate\(0px, (\d+)%\)/)?.[1] || 0) + translateY}%) translateZ(0px)`;
-        });
-        
-        // Обновляем описание
-        if (vipDescriptions[index]) {
-            description.textContent = vipDescriptions[index];
-            console.log('Description updated:', vipDescriptions[index]);
-        }
     }
     
-    // Инициализируем карусель с текущим уровнем
-    updateCarousel(currentIndex);
+    // Update carousel based on current index
+    function updateCarousel() {
+        // Update cards
+        cards.forEach((card, index) => {
+            card.classList.remove('active');
+            if (index === currentIndex) {
+                card.classList.add('active');
+            }
+        });
+        
+        // Update description
+        if (vipDescriptions[currentIndex]) {
+            description.textContent = vipDescriptions[currentIndex];
+        }
+        
+        // Update positions
+        updateCarouselPositions();
+    }
     
-    // Переменные для свайпа
-    let startY = 0;
-    let isDragging = false;
-    let startTranslate = -currentIndex * 100;
+    // Initialize carousel with user's current VIP level
+    function initializeWithUserLevel() {
+        const user = window.getCurrentUser();
+        if (user && user.vip_level) {
+            // Find card with matching level (data-level starts from 1)
+            const userLevelIndex = user.vip_level - 1; // Convert to 0-based index
+            if (userLevelIndex >= 0 && userLevelIndex < cards.length) {
+                currentIndex = userLevelIndex;
+                
+                // Update unlocked status for cards up to user's level
+                cards.forEach((card, index) => {
+                    const level = parseInt(card.getAttribute('data-level'));
+                    const statusEl = card.querySelector('.vip-status');
+                    if (statusEl) {
+                        if (level <= user.vip_level) {
+                            statusEl.innerHTML = '<i class="fas fa-lock-open"></i> <span data-translate="unlocked_this_level">Unlocked this level</span>';
+                        } else {
+                            statusEl.innerHTML = '<i class="fas fa-lock"></i> <span data-translate="locked">Locked</span>';
+                        }
+                    }
+                });
+            }
+        }
+        
+        updateCarousel();
+    }
     
-    // Обработчики мыши
-    swiperSlides.addEventListener('mousedown', (e) => {
+    // Call initialization
+    initializeWithUserLevel();
+    
+    // Touch events for mobile swipe
+    carouselWrapper.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
         isDragging = true;
-        startY = e.clientY;
-        startTranslate = -currentIndex * 100;
+    });
+    
+    carouselWrapper.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
         e.preventDefault();
     });
     
-    document.addEventListener('mousemove', (e) => {
+    carouselWrapper.addEventListener('touchend', (e) => {
         if (!isDragging) return;
+        isDragging = false;
         
-        const diffY = e.clientY - startY;
-        const newTranslate = startTranslate + (diffY / swiperSlides.offsetHeight) * 100;
+        const endX = e.changedTouches[0].clientX;
+        const diffX = startX - endX;
+        const threshold = 50;
         
-        // Применяем временное смещение
-        vipItems.forEach(item => {
-            item.style.transition = 'none';
-            item.style.transform = `translate(0px, ${parseInt(item.style.transform.match(/translate\(0px, (\d+)%\)/)?.[1] || 0) + newTranslate}%) translateZ(0px)`;
-        });
+        if (Math.abs(diffX) > threshold) {
+            if (diffX > 0 && currentIndex < cards.length - 1) {
+                // Swipe left, go to next
+                currentIndex++;
+            } else if (diffX < 0 && currentIndex > 0) {
+                // Swipe right, go to previous
+                currentIndex--;
+            }
+            updateCarousel();
+        }
+    });
+    
+    // Mouse drag events for desktop
+    carouselWrapper.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.pageX;
+        carouselWrapper.style.cursor = 'grabbing';
+    });
+    
+    carouselWrapper.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
     });
     
     document.addEventListener('mouseup', (e) => {
         if (!isDragging) return;
         isDragging = false;
+        carouselWrapper.style.cursor = 'grab';
         
-        const endY = e.clientY;
-        const diffY = endY - startY;
+        const endX = e.pageX;
+        const diffX = startX - endX;
+        const threshold = 50;
         
-        // Определяем направление свайпа
-        if (Math.abs(diffY) > 50) {
-            if (diffY > 0 && currentIndex > 0) {
-                // Свайп вниз - перейти к предыдущему слайду
-                currentIndex--;
-            } else if (diffY < 0 && currentIndex < totalSlides - 1) {
-                // Свайп вверх - перейти к следующему слайду
+        if (Math.abs(diffX) > threshold) {
+            if (diffX > 0 && currentIndex < cards.length - 1) {
                 currentIndex++;
-            }
-        }
-        
-        updateCarousel(currentIndex);
-    });
-    
-    // Обработчики тач-событий для мобильных устройств
-    swiperSlides.addEventListener('touchstart', (e) => {
-        isDragging = true;
-        startY = e.touches[0].clientY;
-        startTranslate = -currentIndex * 100;
-        e.preventDefault();
-    });
-    
-    document.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
-        
-        const diffY = e.touches[0].clientY - startY;
-        const newTranslate = startTranslate + (diffY / swiperSlides.offsetHeight) * 100;
-        
-        // Применяем временное смещение
-        vipItems.forEach(item => {
-            item.style.transition = 'none';
-            item.style.transform = `translate(0px, ${parseInt(item.style.transform.match(/translate\(0px, (\d+)%\)/)?.[1] || 0) + newTranslate}%) translateZ(0px)`;
-        });
-        e.preventDefault();
-    });
-    
-    document.addEventListener('touchend', (e) => {
-        if (!isDragging) return;
-        isDragging = false;
-        
-        const endY = e.changedTouches[0].clientY;
-        const diffY = endY - startY;
-        
-        // Определяем направление свайпа
-        if (Math.abs(diffY) > 50) {
-            if (diffY > 0 && currentIndex > 0) {
+            } else if (diffX < 0 && currentIndex > 0) {
                 currentIndex--;
-            } else if (diffY < 0 && currentIndex < totalSlides - 1) {
-                currentIndex++;
             }
+            updateCarousel();
         }
-        
-        updateCarousel(currentIndex);
     });
     
-    // Клик по карточкам для переключения
-    vipItems.forEach((item, index) => {
-        item.addEventListener('click', () => {
+    // Click navigation for cards (optional)
+    cards.forEach((card, index) => {
+        card.addEventListener('click', (e) => {
             if (index !== currentIndex) {
                 currentIndex = index;
-                updateCarousel(currentIndex);
+                updateCarousel();
             }
         });
     });
     
-    // Навигация с клавиатуры для тестирования
+    // Keyboard navigation for testing
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowUp' && currentIndex > 0) {
-            currentIndex--;
-            updateCarousel(currentIndex);
-        } else if (e.key === 'ArrowDown' && currentIndex < totalSlides - 1) {
+        if (e.key === 'ArrowRight' && currentIndex < cards.length - 1) {
             currentIndex++;
-            updateCarousel(currentIndex);
+            updateCarousel();
+        } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
         }
     });
+    
+    // Update positions on resize
+    window.addEventListener('resize', updateCarouselPositions);
 }
 
 async function loadUserData() {
@@ -366,29 +372,17 @@ async function loadUserData() {
         return;
     }
     
-    // Проверяем и обновляем сигналы при загрузке страницы
+    // Check and update signals
     if (window.glyApp) {
         await window.glyApp.checkAndUpdateSignals();
-        
-        // ПРИНУДИТЕЛЬНО ОБНОВЛЯЕМ VIP УРОВЕНЬ ПРИ КАЖДОЙ ЗАГРУЗКЕ
         await window.glyApp.updateVipLevel();
     }
     
-    // Обновляем данные пользователя после проверки
-    const updatedUser = window.getCurrentUser();
-    
     // Update signals display
-    updateSignalsDisplay(updatedUser.signals_available);
+    updateSignalsDisplay(user.signals_available);
     
-    // Update VIP level in carousel
-    highlightCurrentVipLevel(updatedUser.vip_level);
-    
-    // ДЛЯ ОТЛАДКИ: Проверяем активных рефералов
-    if (window.getActiveReferralsCount) {
-        const activeRefs = await window.getActiveReferralsCount(updatedUser.id);
-        console.log(`DEBUG: User ${updatedUser.username} has ${activeRefs} active referrals (balance ≥ 20 USDT)`);
-        console.log(`Current VIP level: ${updatedUser.vip_level}`);
-    }
+    // Update VIP status in carousel
+    updateVipStatusInCarousel(user.vip_level);
 }
 
 function updateSignalsDisplay(signalsAvailable) {
@@ -412,71 +406,33 @@ function updateSignalsDisplay(signalsAvailable) {
     });
 }
 
-function highlightCurrentVipLevel(userVipLevel) {
-    const vipItems = document.querySelectorAll('.vip-swiper-item');
-    const swiperSlides = document.getElementById('vip-swiper-slides');
-    
-    if (!vipItems.length || !swiperSlides) return;
-    
-    // Устанавливаем текущий индекс
-    const currentIndex = userVipLevel - 1;
-    const vipDescriptions = [
-        t('vip_description_1'),
-        t('vip_description_2'),
-        t('vip_description_3'),
-        t('vip_description_4'),
-        t('vip_description_5'),
-        t('vip_description_6')
-    ];
-    
-    // Обновляем активную карточку
-    vipItems.forEach((item, index) => {
-        const cardContainer = item.querySelector('.vip-card-container');
-        const lockIcon = item.querySelector('.lock-icon i');
-        const lockText = item.querySelector('.lock-text');
-        const vipLevel = parseInt(item.getAttribute('data-level'));
+function updateVipStatusInCarousel(userVipLevel) {
+    const cards = document.querySelectorAll('.vip-card');
+    cards.forEach(card => {
+        const level = parseInt(card.getAttribute('data-level'));
+        const statusEl = card.querySelector('.vip-status');
         
-        if (cardContainer) {
-            if (vipLevel === userVipLevel) {
-                cardContainer.classList.add('active');
-                // Зеленая рамка для текущего уровня
-                const vipCard = cardContainer.querySelector('.vip-card');
-                if (vipCard) {
-                    vipCard.style.border = '2px solid #52c41a';
-                    vipCard.style.boxShadow = '0 0 10px rgba(82, 196, 26, 0.5)';
-                }
+        if (statusEl) {
+            if (level <= userVipLevel) {
+                statusEl.innerHTML = '<i class="fas fa-lock-open"></i> <span data-translate="unlocked_this_level">Unlocked this level</span>';
+                card.classList.add('unlocked');
+                card.classList.remove('locked');
             } else {
-                cardContainer.classList.remove('active');
-                const vipCard = cardContainer.querySelector('.vip-card');
-                if (vipCard) {
-                    vipCard.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-                    vipCard.style.boxShadow = 'none';
-                }
+                statusEl.innerHTML = '<i class="fas fa-lock"></i> <span data-translate="locked">Locked</span>';
+                card.classList.add('locked');
+                card.classList.remove('unlocked');
             }
         }
         
-        // Обновляем иконки замков
-        if (lockIcon) {
-            lockIcon.className = vipLevel <= userVipLevel ? 'fas fa-lock-open' : 'fas fa-lock';
-        }
-        
-        if (lockText) {
-            lockText.textContent = vipLevel <= userVipLevel ? t('unlocked_this_level') : t('locked');
+        // Highlight current level
+        if (level === userVipLevel) {
+            card.style.border = '2px solid #4CAF50';
+            card.style.boxShadow = '0 0 15px rgba(76, 175, 80, 0.3)';
+        } else {
+            card.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+            card.style.boxShadow = 'none';
         }
     });
-    
-    // Обновляем позицию карусели
-    vipItems.forEach((item, index) => {
-        const translateY = index * 100 - (currentIndex * 100);
-        item.style.transform = `translate(0px, ${translateY}%) translateZ(0px)`;
-        item.style.transition = 'transform 0.3s ease';
-    });
-    
-    // Обновляем описание
-    const description = document.getElementById('vip-description');
-    if (description && vipDescriptions[currentIndex]) {
-        description.textContent = vipDescriptions[currentIndex];
-    }
 }
 
 async function startQuantification() {
@@ -515,11 +471,11 @@ async function startQuantification() {
         profitResult.style.display = 'block';
         
         // Update signals display
-        updateSignalsDisplay(result.signals_left);
-        
-        // Update VIP level display after quantification
         const updatedUser = window.getCurrentUser();
-        highlightCurrentVipLevel(updatedUser.vip_level);
+        updateSignalsDisplay(updatedUser.signals_available);
+        
+        // Update VIP status in carousel
+        updateVipStatusInCarousel(updatedUser.vip_level);
         
         // Hide process after 3 seconds
         setTimeout(() => {
@@ -590,10 +546,10 @@ function updateUTCTime() {
     }
 }
 
-// Глобальная функция для обновления VIP уровня (может быть вызвана из других модулей)
+// Global function for updating VIP level display
 window.updateVipLevelDisplay = function() {
     const user = window.getCurrentUser();
     if (user) {
-        highlightCurrentVipLevel(user.vip_level);
+        updateVipStatusInCarousel(user.vip_level);
     }
 };

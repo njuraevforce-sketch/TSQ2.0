@@ -119,7 +119,6 @@ export default function renderDeposit() {
                             <span id="deposit-popup-amount">0</span> USDT
                         </div>
                         <div style="color: #ccc; font-size: 14px;" id="deposit-popup-network">Network: TRC20</div>
-                        <div style="color: #52c41a; font-size: 12px; margin-top: 5px;" data-translate="scan_qr_or_copy">Scan QR code or copy address below</div>
                     </div>
                     
                     <!-- QR Code -->

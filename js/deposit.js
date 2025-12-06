@@ -6,7 +6,32 @@ export default function renderDeposit() {
         <div class="card padding">
             <div style="text-align: center; margin-bottom: 20px;">
                 <h2 style="color: white;" data-translate="deposit_usdt">Deposit USDT</h2>
-                <p style="color: #ccc; font-size: 14px;" data-translate="send_usdt">Send USDT to your personal deposit address</p>
+                <p style="color: #ccc; font-size: 14px;" data-translate="select_deposit_amount">Select deposit amount and network</p>
+            </div>
+
+            <!-- Amount Selection -->
+            <div class="amount-selection margin-bottom">
+                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;" data-translate="quick_amounts">Quick Amounts (USDT)</div>
+                <div class="amount-options">
+                    <button type="button" class="amount-option" data-amount="20">20</button>
+                    <button type="button" class="amount-option" data-amount="50">50</button>
+                    <button type="button" class="amount-option" data-amount="100">100</button>
+                    <button type="button" class="amount-option" data-amount="200">200</button>
+                    <button type="button" class="amount-option" data-amount="500">500</button>
+                    <button type="button" class="amount-option" data-amount="1000">1000</button>
+                </div>
+                
+                <div class="input-container" style="margin-top: 15px;">
+                    <input type="number" 
+                           id="deposit-amount" 
+                           class="input-line"
+                           placeholder="${t('enter_custom_amount')}"
+                           min="17"
+                           step="0.01"
+                           style="text-align: center; font-size: 16px;"
+                           data-translate-placeholder="enter_custom_amount">
+                    <div style="color: #ccc; font-size: 12px; text-align: center; margin-top: 5px;" data-translate="minimum_17_usdt">Minimum: 17 USDT</div>
+                </div>
             </div>
 
             <!-- Network Selection -->
@@ -30,34 +55,13 @@ export default function renderDeposit() {
                 </div>
             </div>
 
-            <!-- Deposit Address Section -->
-            <div class="deposit-address-section">
-                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;" data-translate="your_deposit_address">Your Deposit Address</div>
-                
-                <!-- QR Code -->
-                <div style="text-align: center; margin-bottom: 20px; padding: 10px; background: white; border-radius: 8px; display: inline-block; margin-left: auto; margin-right: auto; display: block; width: 160px;">
-                    <canvas id="qr-code-canvas" width="150" height="150" style="width: 150px; height: 150px; display: block; margin: 0 auto;"></canvas>
-                </div>
-                
-                <!-- Address Display -->
-                <div class="input-container" style="margin-bottom: 15px;">
-                    <input type="text" 
-                           id="deposit-address-display" 
-                           class="input-line"
-                           readonly
-                           style="text-align: center; font-size: 14px; letter-spacing: 0.5px; font-family: monospace; background: rgba(255,255,255,0.1);"
-                           data-translate="wait_for_address"
-                           placeholder="Loading address...">
-                </div>
-                
-                <!-- Copy button -->
-                <button class="pro-btn" id="copy-address-btn" style="width: 100%; background: #4e7771; border: none; padding: 12px; font-size: 14px;">
-                    <i class="fas fa-copy"></i> <span data-translate="copy_address">Copy Address</span>
-                </button>
-            </div>
+            <!-- Deposit Button -->
+            <button class="pro-btn" id="deposit-btn" style="width: 100%; background: #4e7771; border: none; padding: 12px; font-size: 16px; font-weight: bold;">
+                <i class="fas fa-wallet"></i> <span data-translate="deposit">Deposit</span>
+            </button>
 
             <!-- Deposit Info -->
-            <div class="deposit-info">
+            <div class="deposit-info margin-top">
                 <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;" data-translate="deposit_instructions">Deposit Instructions</div>
                 
                 <div class="deposit-line">
@@ -82,7 +86,7 @@ export default function renderDeposit() {
             </div>
 
             <!-- Recent Deposits -->
-            <div class="margin-top">
+            <div class="margin-top" style="margin-bottom: 80px;">
                 <div class="text-white text-bold" style="font-size: 14px; margin-bottom: 15px;" data-translate="recent_deposits">Recent Deposits</div>
                 <div class="deposits-list" id="deposits-list">
                     <div style="color: #ccc; text-align: center; padding: 20px;">
@@ -102,6 +106,55 @@ export default function renderDeposit() {
                     <span data-translate="important_note_4">4. Deposits are automatically credited</span><br>
                     <span data-translate="important_note_5">5. Wrong network deposits may be lost</span>
                 </p>
+            </div>
+        </div>
+
+        <!-- Deposit QR Code Popup -->
+        <div class="pop-overlay" id="deposit-qr-popup" style="display: none;">
+            <div class="pop-content">
+                <div class="pop-header" data-translate="deposit_usdt">Deposit USDT</div>
+                <div class="pop-body">
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <div style="color: #fff; font-size: 18px; font-weight: bold; margin-bottom: 5px;">
+                            <span id="deposit-popup-amount">0</span> USDT
+                        </div>
+                        <div style="color: #ccc; font-size: 14px;" id="deposit-popup-network">Network: TRC20</div>
+                        <div style="color: #52c41a; font-size: 12px; margin-top: 5px;" data-translate="scan_qr_or_copy">Scan QR code or copy address below</div>
+                    </div>
+                    
+                    <!-- QR Code -->
+                    <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px; display: inline-block; margin-left: auto; margin-right: auto; display: block; width: 180px;">
+                        <canvas id="qr-code-canvas" width="170" height="170" style="width: 170px; height: 170px; display: block; margin: 0 auto;"></canvas>
+                    </div>
+                    
+                    <!-- Address Display -->
+                    <div class="input-container" style="margin-bottom: 15px;">
+                        <div class="section-title-small" style="color: #fff; margin-bottom: 5px; font-size: 12px;" data-translate="your_deposit_address">Your Deposit Address</div>
+                        <input type="text" 
+                               id="deposit-address-display" 
+                               class="input-line"
+                               readonly
+                               style="text-align: center; font-size: 13px; letter-spacing: 0.5px; font-family: monospace; background: rgba(255,255,255,0.1); padding: 10px;"
+                               data-translate="loading_address"
+                               placeholder="Loading address...">
+                    </div>
+                    
+                    <!-- Copy button -->
+                    <button class="pro-btn" id="copy-address-btn" style="width: 100%; background: #4e7771; border: none; padding: 12px; font-size: 14px; margin-top: 10px;">
+                        <i class="fas fa-copy"></i> <span data-translate="copy_address">Copy Address</span>
+                    </button>
+                    
+                    <!-- Instructions -->
+                    <div style="margin-top: 20px; padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                        <p style="color: #ffccbc; font-size: 11px; margin: 5px 0;">
+                            <i class="fas fa-info-circle" style="color: #4CAF50; margin-right: 5px;"></i>
+                            <span data-translate="deposit_popup_note">Send exactly the selected amount to this address using the selected network</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="pop-footer">
+                    <button id="close-qr-popup" style="background: #666; width: 100%;" data-translate="close">Close</button>
+                </div>
             </div>
         </div>
 
@@ -360,11 +413,11 @@ class SimpleQRCode {
 export async function init() {
     document.body.classList.add('no-tabbar');
     
+    // Initialize amount selection
+    initAmountSelection();
+    
     // Initialize network selection
     initNetworkSelection();
-    
-    // Load initial deposit address for TRC20
-    await loadDepositAddress('TRC20');
     
     // Load recent deposits
     await loadRecentDeposits();
@@ -383,9 +436,22 @@ export async function init() {
 }
 
 function setupEventListeners() {
+    // Amount selection
+    document.querySelectorAll('.amount-option').forEach(option => {
+        option.addEventListener('click', function() {
+            document.querySelectorAll('.amount-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            this.classList.add('active');
+            
+            const amount = this.getAttribute('data-amount');
+            document.getElementById('deposit-amount').value = amount;
+        });
+    });
+    
     // Network selection
     document.querySelectorAll('.network-option').forEach(option => {
-        option.addEventListener('click', async function() {
+        option.addEventListener('click', function() {
             document.querySelectorAll('.network-option').forEach(opt => {
                 opt.classList.remove('active');
             });
@@ -393,14 +459,28 @@ function setupEventListeners() {
             
             const network = this.getAttribute('data-network');
             document.getElementById('selected-network-display').textContent = network;
-            
-            // Load address for selected network
-            await loadDepositAddress(network);
         });
     });
     
-    // Copy address button
+    // Deposit button
+    document.getElementById('deposit-btn').addEventListener('click', showDepositQR);
+    
+    // Close QR popup
+    document.getElementById('close-qr-popup').addEventListener('click', () => {
+        document.getElementById('deposit-qr-popup').style.display = 'none';
+    });
+    
+    // Copy address button (in popup)
     document.getElementById('copy-address-btn').addEventListener('click', copyDepositAddress);
+}
+
+function initAmountSelection() {
+    // Set first amount as active by default
+    const firstAmount = document.querySelector('.amount-option');
+    if (firstAmount) {
+        firstAmount.classList.add('active');
+        document.getElementById('deposit-amount').value = firstAmount.getAttribute('data-amount');
+    }
 }
 
 function initNetworkSelection() {
@@ -408,19 +488,32 @@ function initNetworkSelection() {
     document.getElementById('selected-network-display').textContent = 'TRC20';
 }
 
-async function loadDepositAddress(network) {
+async function showDepositQR() {
+    const amount = parseFloat(document.getElementById('deposit-amount').value);
+    const network = document.querySelector('.network-option.active').getAttribute('data-network');
     const user = window.getCurrentUser();
+    
     if (!user) {
         window.showSection('login');
         return;
     }
     
+    // Validate amount
+    if (!amount || isNaN(amount) || amount < 17) {
+        window.showCustomAlert(t('validation_minimum_deposit'));
+        return;
+    }
+    
+    // Show loading
+    document.getElementById('loading-deposit-popup').style.display = 'flex';
+    
     try {
-        document.getElementById('deposit-address-display').value = t('loading_data');
+        // Update popup info
+        document.getElementById('deposit-popup-amount').textContent = amount;
+        document.getElementById('deposit-popup-network').textContent = `${t('network')}: ${network}`;
         
-        // Call our deposit server to get or generate address
+        // Get deposit address
         const API_BASE_URL = 'https://tron-wallet-server-production.up.railway.app';
-        
         const response = await fetch(`${API_BASE_URL}/api/deposit/generate?user_id=${user.id}&network=${network.toLowerCase()}`, {
             method: 'POST',
             headers: {
@@ -436,36 +529,30 @@ async function loadDepositAddress(network) {
         const result = await response.json();
         
         if (result.success && result.address) {
-            // Display address
+            // Hide loading and show deposit QR popup
+            document.getElementById('loading-deposit-popup').style.display = 'none';
+            
+            // Display address and generate QR code
             const addressInput = document.getElementById('deposit-address-display');
             addressInput.value = result.address;
-            
-            // Generate real QR code
             generateRealQRCode(result.address);
             
+            // Show QR code popup
+            document.getElementById('deposit-qr-popup').style.display = 'flex';
         } else {
             throw new Error(t('error_loading_address'));
         }
         
     } catch (error) {
         console.error('Error loading deposit address:', error);
-        document.getElementById('deposit-address-display').value = t('error_loading_address');
-        
-        // Show error in QR container
-        const canvas = document.getElementById('qr-code-canvas');
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#ffebee';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#d32f2f';
-        ctx.font = '12px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText(t('error'), canvas.width/2, canvas.height/2);
+        document.getElementById('loading-deposit-popup').style.display = 'none';
+        window.showCustomAlert(t('error_loading_address'));
     }
 }
 
 function generateRealQRCode(text) {
     const canvas = document.getElementById('qr-code-canvas');
-    const qrCanvas = SimpleQRCode.generate(text, 150);
+    const qrCanvas = SimpleQRCode.generate(text, 170);
     
     // Copy the generated QR code to our canvas
     const ctx = canvas.getContext('2d');
@@ -476,7 +563,7 @@ function generateRealQRCode(text) {
 async function copyDepositAddress() {
     const address = document.getElementById('deposit-address-display').value;
     
-    if (!address || address === t('loading_data') || address === t('error_loading_address') || address === t('wait_for_address')) {
+    if (!address || address === t('loading_data') || address === t('error_loading_address') || address === t('loading_address')) {
         window.showCustomAlert(t('wait_for_address'));
         return;
     }

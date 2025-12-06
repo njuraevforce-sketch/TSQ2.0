@@ -3606,194 +3606,177 @@ img {
     }
 }
 
-/* NEW VIP CAROUSEL STYLES */
-.uni-swiper-wrapper {
+/* НОВЫЕ СТИЛИ ДЛЯ VIP КАРУСЕЛИ КАК В ПРИМЕРЕ */
+.vip-swiper-container {
     position: relative;
     width: 100%;
     height: 200px;
-    overflow: hidden;
     margin: 15px 0;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.uni-swiper-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 .uni-swiper-slides {
     position: absolute;
-    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     display: flex;
+    flex-direction: column;
     transition: transform 0.3s ease;
 }
 
-.vip-card {
-    min-width: 100%;
-    height: 180px;
-    background: linear-gradient(135deg, #36454f, #5a6b76);
-    border-radius: 15px;
-    padding: 20px;
-    position: relative;
-    transition: all 0.3s ease;
-    transform: translateX(100%);
-    opacity: 0.5;
-    pointer-events: none;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.vip-card.active {
-    transform: translateX(0) !important;
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.vip-card.unlocked {
-    border-left: 3px solid #4CAF50;
-}
-
-.vip-card.locked {
-    border-left: 3px solid #ff4d4f;
-}
-
-.vip-card-inner {
-    display: flex;
-    flex-direction: column;
+.uni-swiper-slide-frame {
+    width: 100%;
     height: 100%;
+    flex-shrink: 0;
+}
+
+.uni-swiper-item {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.swiper-itemWrap {
     position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat !important;
+}
+
+.swiper-itemWrap .text-bold {
+    font-size: 24px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    z-index: 2;
+    position: relative;
+}
+
+.swiper-itemWrap .flex.align-center {
+    font-size: 14px;
+    color: white;
+    z-index: 2;
+    position: relative;
+    margin-top: 5px;
+}
+
+.swiperPo {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;
+    height: 100px;
     z-index: 2;
 }
 
-.vip-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.vip-level-name {
-    font-size: 24px;
-    font-weight: bold;
-    color: #FFD700;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.vip-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    color: #ccc;
-}
-
-.vip-status i {
-    font-size: 16px;
-}
-
-.vip-status .fa-lock-open {
-    color: #4CAF50;
-}
-
-.vip-status .fa-lock {
-    color: #ff4d4f;
-}
-
-.vip-icon-wrapper {
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-    width: 80px;
-    height: 80px;
-    z-index: 1;
-}
-
-.vip-icon {
+.swiperPo img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
-.vip-details {
-    margin-top: auto;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    border-left: 2px solid #FFD700;
+/* Кнопки навигации для карусели */
+.vip-carousel-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
 }
 
-.vip-amount-range {
-    font-size: 16px;
-    font-weight: bold;
+.vip-nav-btn {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.vip-nav-btn.active {
+    background: white;
+    transform: scale(1.2);
+}
+
+/* Индикатор текущего уровня */
+.current-vip-indicator {
+    text-align: center;
+    margin-top: 10px;
     color: white;
-    margin-bottom: 5px;
-}
-
-.vip-percent {
     font-size: 14px;
-    color: #4CAF50;
-    font-weight: 600;
-    margin-bottom: 5px;
+    font-weight: bold;
 }
 
-.vip-signals {
-    font-size: 12px;
+.current-vip-indicator .vip-level {
+    color: #FFD700;
+    font-weight: bold;
+}
+
+/* Стили для иконок замков */
+.u-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5px;
+}
+
+.u-icon__icon {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 16px;
+}
+
+.uicon-lock-opened-fill::before {
+    content: "\f3c1";
+    color: #52c41a;
+}
+
+.uicon-lock-fill::before {
+    content: "\f023";
     color: #ccc;
 }
 
-/* Responsive adjustments */
+/* Адаптация для мобильных */
 @media (max-width: 480px) {
-    .uni-swiper-wrapper {
-        height: 170px;
+    .vip-swiper-container {
+        height: 180px;
     }
     
-    .vip-card {
-        height: 150px;
-        padding: 15px;
-    }
-    
-    .vip-level-name {
-        font-size: 20px;
-    }
-    
-    .vip-icon-wrapper {
-        width: 60px;
-        height: 60px;
+    .swiperPo {
+        width: 80px;
+        height: 80px;
         right: 15px;
     }
     
-    .vip-amount-range {
-        font-size: 14px;
+    .swiper-itemWrap .text-bold {
+        font-size: 20px;
     }
     
-    .vip-percent {
+    .swiper-itemWrap .flex.align-center {
         font-size: 12px;
-    }
-    
-    .vip-signals {
-        font-size: 10px;
     }
 }
 
 @media (max-width: 375px) {
-    .uni-swiper-wrapper {
-        height: 150px;
+    .vip-swiper-container {
+        height: 160px;
     }
     
-    .vip-card {
-        height: 130px;
-        padding: 12px;
-    }
-    
-    .vip-level-name {
-        font-size: 18px;
-    }
-    
-    .vip-status {
-        font-size: 12px;
-    }
-    
-    .vip-icon-wrapper {
-        width: 50px;
-        height: 50px;
+    .swiperPo {
+        width: 70px;
+        height: 70px;
+        right: 10px;
     }
 }

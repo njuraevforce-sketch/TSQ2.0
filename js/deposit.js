@@ -29,7 +29,6 @@ export default function renderDeposit() {
                            step="0.01"
                            style="text-align: center; font-size: 16px;"
                            data-translate-placeholder="enter_custom_amount">
-                    <div style="color: #ccc; font-size: 12px; text-align: center; margin-top: 5px;" data-translate="minimum_17_usdt">Minimum: 17 USDT</div>
                 </div>
             </div>
 

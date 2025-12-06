@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" href="assets/logo.png">
     
     <!-- Cache busting version for CSS -->
-   <link rel="stylesheet" href="css/style.css?v=5.0">
+    <link rel="stylesheet" href="css/style.css?v=5.1">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -447,7 +447,7 @@
     </div>
 
     <!-- Load Scripts with cache busting -->
-    <script src="js/app.js?v=5.0" type="module"></script>
+    <script src="js/app.js?v=5.1" type="module"></script>
     
     <script>
         // Service Worker for better caching control
@@ -462,7 +462,7 @@
         }
         
         // Clear cache on new version
-        const currentVersion = '5.0';
+        const currentVersion = '5.1';
         const lastVersion = localStorage.getItem('app_version');
         
         if (lastVersion !== currentVersion) {

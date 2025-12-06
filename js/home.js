@@ -7,24 +7,22 @@ export default function renderHome() {
     return `
         <!-- Image Carousel -->
         <div class="banner-section">
-            <div class="banner">
-                <div class="carousel-container" id="carousel-container">
-                    <div class="carousel-track" id="carousel-track">
-                        <div class="carousel-slide">
-                            <img src="assets/banner.png" alt="${t('banner_1')}" data-translate-alt="banner1" loading="eager">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="assets/banner1.png" alt="${t('banner_2')}" data-translate-alt="banner2" loading="eager">
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="assets/banner2.png" alt="${t('banner_3')}" data-translate-alt="banner3" loading="eager">
-                        </div>
+            <div class="carousel-container" id="carousel-container">
+                <div class="carousel-track" id="carousel-track">
+                    <div class="carousel-slide">
+                        <img src="assets/banner.png" alt="${t('banner_1')}" data-translate-alt="banner1" loading="eager">
                     </div>
-                    <div class="carousel-indicators" id="carousel-indicators">
-                        <span class="indicator active" data-index="0"></span>
-                        <span class="indicator" data-index="1"></span>
-                        <span class="indicator" data-index="2"></span>
+                    <div class="carousel-slide">
+                        <img src="assets/banner1.png" alt="${t('banner_2')}" data-translate-alt="banner2" loading="eager">
                     </div>
+                    <div class="carousel-slide">
+                        <img src="assets/banner2.png" alt="${t('banner_3')}" data-translate-alt="banner3" loading="eager">
+                    </div>
+                </div>
+                <div class="carousel-indicators" id="carousel-indicators">
+                    <span class="indicator active" data-index="0"></span>
+                    <span class="indicator" data-index="1"></span>
+                    <span class="indicator" data-index="2"></span>
                 </div>
             </div>
         </div>
@@ -145,38 +143,29 @@ function initCarousel() {
     
     console.log('Carousel initialized with', totalSlides, 'slides');
     
-    // Предзагрузка изображений
-    function preloadImages() {
-        slides.forEach((slide, index) => {
-            const img = slide.querySelector('img');
-            if (img) {
-                const image = new Image();
-                image.src = img.src;
-                image.onload = () => {
-                    console.log(`Image ${index + 1} loaded:`, img.src);
-                };
-                image.onerror = () => {
-                    console.error(`Error loading image ${index + 1}:`, img.src);
-                };
-            }
-        });
-    }
+    // Проверка загрузки изображений
+    slides.forEach((slide, index) => {
+        const img = slide.querySelector('img');
+        if (img) {
+            img.onload = () => {
+                console.log(`✅ Изображение ${index + 1} загружено:`, img.src);
+                slide.style.opacity = '1'; // Гарантируем видимость
+            };
+            img.onerror = () => {
+                console.error(`❌ Ошибка загрузки изображения ${index + 1}:`, img.src);
+                slide.innerHTML = `<div style="width:100%;height:100%;background:#ff0000;color:white;display:flex;align-items:center;justify-content:center;">ERROR: ${img.src}</div>`;
+            };
+        }
+    });
     
     // Обновление позиции карусели
     function updateCarousel() {
-        console.log('Updating carousel to index:', currentIndex);
-        
         // Сдвигаем трек
         track.style.transform = `translateX(-${currentIndex * 100}%)`;
         
         // Обновляем индикаторы
         indicators.forEach((indicator, index) => {
             indicator.classList.toggle('active', index === currentIndex);
-        });
-        
-        // Обновляем классы слайдов (для CSS анимации, если нужно)
-        slides.forEach((slide, index) => {
-            slide.classList.toggle('active', index === currentIndex);
         });
     }
     
@@ -251,32 +240,9 @@ function initCarousel() {
         }
     }
     
-    // Навигация с клавиатуры
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') {
-            nextSlide();
-            resetAutoSlide();
-        } else if (e.key === 'ArrowLeft') {
-            goToSlide(currentIndex - 1);
-            resetAutoSlide();
-        }
-    });
-    
     // Инициализация
-    preloadImages();
     updateCarousel();
     startAutoSlide();
-    
-    // Пауза при наведении (если не на touch устройстве)
-    if (track && !('ontouchstart' in window)) {
-        track.addEventListener('mouseenter', () => {
-            clearInterval(autoSlideInterval);
-        });
-        
-        track.addEventListener('mouseleave', () => {
-            startAutoSlide();
-        });
-    }
     
     // Логирование для отладки
     console.log('Carousel initialized:', {
@@ -285,6 +251,14 @@ function initCarousel() {
         indicators: indicators.length,
         currentIndex: currentIndex
     });
+    
+    // Гарантируем видимость всех слайдов через 1 секунду
+    setTimeout(() => {
+        slides.forEach(slide => {
+            slide.style.opacity = '1';
+            slide.style.display = 'block';
+        });
+    }, 1000);
 }
 
 function showWelcomeBanner() {

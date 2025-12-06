@@ -1125,12 +1125,17 @@ html {
 }
 
 .vip-slide {
-    flex: 0 0 100%;
-    height: 100%;
+    flex: 0 0 130px;
+    height: 130px;
+    margin-bottom: 20px;
     padding: 0;
     box-sizing: border-box;
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start; /* Карточка вверху */
+}
+
+.vip-slide:last-child {
+    margin-bottom: 0;
 }
 
 .vip-card {
@@ -1211,7 +1216,7 @@ html {
     border-left: 3px solid #FFD700;
 }
 
-/* Блок с деталями VIP уровня */
+/* Блок с деталями VIP уровня - ТОЧНО ТАКОЙ ЖЕ КАК ОПИСАНИЕ */
 .vip-details {
     margin-top: 10px;
     padding: 15px;
@@ -1219,34 +1224,32 @@ html {
     border-radius: 10px;
     color: white;
     font-size: 14px;
+    text-align: center;
+    line-height: 1.5;
     border-left: 3px solid #4CAF50;
 }
 
+/* Детали в виде списка (как обычный текст) */
 .details-content {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    color: white;
+    font-size: 14px;
+    line-height: 1.8;
+    text-align: center;
 }
 
 .detail-item {
-    display: flex;
-    flex-direction: column;
-    padding: 8px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    border-left: 2px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 8px;
+    display: block;
 }
 
 .detail-label {
-    font-size: 12px;
-    color: #ccc;
-    margin-bottom: 5px;
+    color: #FFD700;
+    font-weight: bold;
 }
 
 .detail-value {
-    font-size: 14px;
-    font-weight: bold;
-    color: #FFD700;
+    color: #ffffff;
+    margin-left: 5px;
 }
 
 /* Адаптация для мобильных экранов */
@@ -1272,20 +1275,10 @@ html {
         height: 90px;
     }
     
-    .details-content {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-    
-    .detail-item {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    .detail-label {
-        margin-bottom: 0;
-        margin-right: 10px;
+    .vip-description,
+    .vip-details {
+        padding: 12px;
+        font-size: 13px;
     }
 }
 
@@ -1309,12 +1302,6 @@ html {
     }
     
     .vip-status {
-        font-size: 13px;
-    }
-    
-    .vip-description,
-    .vip-details {
-        padding: 12px;
         font-size: 13px;
     }
 }

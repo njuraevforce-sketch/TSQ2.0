@@ -65,6 +65,10 @@ export const translations = {
     'vip_description_4': 'Advanced level with maximum benefits. Build a team of 7 referrals to earn 4.0% daily profit.',
     'vip_description_5': 'Professional level for serious investors. Build a team of 15 referrals to earn 5.0% daily profit.',
     'vip_description_6': 'Elite level with maximum returns. Build a team of 25 referrals to earn 6.0% daily profit.',
+     'daily_percent': 'Daily Percent:',
+        'deposit_range': 'Deposit Range:',
+        'signals_count': 'Signals:',
+        'referrals_required': 'Referrals Required:',
     
     // Assets
     'total_balance': 'Total Balance',
@@ -405,7 +409,11 @@ export const translations = {
     'vip_description_4': 'Niveau avancé avec avantages maximum. Construisez une équipe de 7 filleuls pour gagner 4,0% quotidien.',
     'vip_description_5': 'Niveau professionnel pour investisseurs sérieux. Construisez une équipe de 15 filleuls pour gagner 5,0% quotidien.',
     'vip_description_6': 'Niveau élite avec rendements maximum. Construisez une équipe de 25 filleuls pour gagner 6,0% quotidien.',
-    
+    'daily_percent': 'Pourcentage Quotidien :',
+        'deposit_range': 'Plage de Dépôt :',
+        'signals_count': 'Signaux :',
+        'referrals_required': 'Parrainages Requis :',
+     
     'total_balance': 'Solde total',
     'transaction_history': 'Historique des transactions',
     'total_earned': 'Total gagné',
@@ -733,6 +741,10 @@ export const translations = {
     'vip_description_4': 'Fortgeschrittene Stufe mit maximalen Vorteilen. Bauen Sie ein Team von 7 Empfehlungen auf, um 4,0% täglich zu verdienen.',
     'vip_description_5': 'Professionelle Stufe für ernsthafte Investoren. Bauen Sie ein Team von 15 Empfehlungen auf, um 5,0% täglich zu verdienen.',
     'vip_description_6': 'Elite-Stufe mit maximaler Rendite. Bauen Sie ein Team von 25 Empfehlungen auf, um 6,0% täglich zu verdienen.',
+     'daily_percent': 'Täglicher Prozentsatz:',
+        'deposit_range': 'Einzahlungsbereich:',
+        'signals_count': 'Signale:',
+        'referrals_required': 'Empfehlungen Erforderlich:',
     
     'total_balance': 'Gesamtguthaben',
     'transaction_history': 'Transaktionsverlauf',
@@ -1061,6 +1073,10 @@ export const translations = {
     'vip_description_4': 'مستوى متقدم بأقصى الفوائد. ابنِ فريقًا من 7 أحالات لكسب 4.0% يوميًا.',
     'vip_description_5': 'مستوى احترافي للمستثمرين الجادين. ابنِ فريقًا من 15 إحالة لكسب 5.0% يوميًا.',
     'vip_description_6': 'مستوى النخبة بأقصى العوائد. ابنِ فريقًا من 25 إحالة لكسب 6.0% يوميًا.',
+           'daily_percent': 'النسبة اليومية:',
+        'deposit_range': 'نطاق الإيداع:',
+        'signals_count': 'الإشارات:',
+        'referrals_required': 'الإحالات المطلوبة:',
     
     'total_balance': 'الرصيد الإجمالي',
     'transaction_history': 'سجل المعاملات',
@@ -1389,6 +1405,10 @@ export const translations = {
     'vip_description_4': 'Zaawansowany poziom z maksymalnymi korzyściami. Zbuduj zespół z 7 poleconych, aby zarabiać 4,0% dziennie.',
     'vip_description_5': 'Poziom profesjonalny dla poważnych inwestorów. Zbuduj zespół z 15 poleconych, aby zarabiać 5,0% dziennie.',
     'vip_description_6': 'Poziom elity z maksymalnymi zyskami. Zbuduj zespół z 25 poleconych, aby zarabiać 6,0% dziennie.',
+           'daily_percent': 'Dzienny procent:',
+        'deposit_range': 'Zakres depozytu:',
+        'signals_count': 'Sygnały:',
+        'referrals_required': 'Wymagane polecenia:',
     
     'total_balance': 'Całkowite saldo',
     'transaction_history': 'Historia transakcji',
@@ -1717,6 +1737,10 @@ export const translations = {
     'vip_description_4': 'Продвинутый уровень с максимальными преимуществами. Постройте команду из 7 рефералов, чтобы получать 4,0% ежедневно.',
     'vip_description_5': 'Профессиональный уровень для серьезных инвесторов. Постройте команду из 15 рефералов, чтобы получать 5,0% ежедневно.',
     'vip_description_6': 'Элитный уровень с максимальной доходностью. Постройте команду из 25 рефералов, чтобы получать 6,0% ежедневно.',
+        'daily_percent': 'Ежедневный процент:',
+        'deposit_range': 'Диапазон депозита:',
+        'signals_count': 'Сигналы:',
+        'referrals_required': 'Требуются рефералы:',
     
     'total_balance': 'Общий баланс',
     'transaction_history': 'История транзакций',
@@ -2045,6 +2069,10 @@ export const translations = {
     'vip_description_4': 'Nível avançado com benefícios máximos. Construa uma equipe de 7 indicados para ganhar 4,0% diário.',
     'vip_description_5': 'Nível profissional para investidores sérios. Construa uma equipe de 15 indicados para ganhar 5,0% diário.',
     'vip_description_6': 'Nível elite com retornos máximos. Construa uma equipe de 25 indicados para ganhar 6,0% diário.',
+        'daily_percent': 'Percentual Diário:',
+        'deposit_range': 'Faixa de Depósito:',
+        'signals_count': 'Sinais:',
+        'referrals_required': 'Indicações Necessárias:',
     
     'total_balance': 'Saldo total',
     'transaction_history': 'Histórico de transações',
@@ -2372,7 +2400,11 @@ export const translations = {
     'vip_description_4': 'Maksimum faydalarla gelişmiş seviye. Günlük %4,0 kazanmak için 7 referanstan oluşan bir takım oluşturun.',
     'vip_description_5': 'Ciddi yatırımcılar için profesyonel seviye. Günlük %5,0 kazanmak için 15 referanstan oluşan bir takım oluşturun.',
     'vip_description_6': 'Maksimum getirilerle elit seviye. Günlük %6,0 kazanmak için 25 referanstan oluşan bir takım oluşturun.',
-    
+        'daily_percent': 'Günlük Yüzde:',
+        'deposit_range': 'Depozito Aralığı:',
+        'signals_count': 'Sinyaller:',
+        'referrals_required': 'Gerekli Yönlendirmeler:',
+     
     'total_balance': 'Toplam Bakiye',
     'transaction_history': 'İşlem Geçmişi',
     'total_earned': 'Toplam Kazanç',
@@ -2700,6 +2732,10 @@ export const translations = {
     'vip_description_4': 'Nivel avansat cu beneficii maxime. Construiți o echipă de 7 persoane recomandate pentru a câștiga 4,0% zilnic.',
     'vip_description_5': 'Nivel profesional pentru investitori serioși. Construiți o echipă de 15 persoane recomandate pentru a câștiga 5,0% zilnic.',
     'vip_description_6': 'Nivel elită cu randamente maxime. Construiți o echipă de 25 persoane recomandate pentru a câștiga 6,0% zilnic.',
+        'daily_percent': 'Procent Zilnic:',
+        'deposit_range': 'Interval Depozit:',
+        'signals_count': 'Semnale:',
+        'referrals_required': 'Recomandări Necesare:',
     
     'total_balance': 'Sold total',
     'transaction_history': 'Istoric tranzacții',
@@ -3028,6 +3064,10 @@ export const translations = {
     'vip_description_4': 'Maksimal imtiyozlar bilan ilg\'or daraja. Kundalik 4,0% topish uchun 7 ta tavsiyadan iborat jamoa quring.',
     'vip_description_5': 'Jiddiy investorlar uchun professional daraja. Kundalik 5,0% topish uchun 15 ta tavsiyadan iborat jamoa quring.',
     'vip_description_6': 'Maksimal daromadli elita daraja. Kundalik 6,0% topish uchun 25 ta tavsiyadan iborat jamoa quring.',
+        'daily_percent': 'Kunlik foiz:',
+        'deposit_range': 'Depozit Oralig\'i:',
+        'signals_count': 'Signallar:',
+        'referrals_required': 'Talab qilinadigan takliflar:',
     
     'total_balance': 'Umumiy balans',
     'transaction_history': 'Tranzaksiya tarixi',
@@ -3356,6 +3396,10 @@ export const translations = {
     'vip_description_4': 'Nivel avanzado con beneficios máximos. Construya un equipo de 7 referidos para ganar 4,0% diario.',
     'vip_description_5': 'Nivel profesional para inversores serios. Construya un equipo de 15 referidos para ganar 5,0% diario.',
     'vip_description_6': 'Nivel élite con rendimientos máximos. Construya un equipo de 25 referidos para ganar 6,0% diario.',
+        'daily_percent': 'Porcentaje Diario:',
+        'deposit_range': 'Rango de Depósito:',
+        'signals_count': 'Señales:',
+        'referrals_required': 'Referidos Requeridos:',
     
     'total_balance': 'Saldo total',
     'transaction_history': 'Historial de transacciones',
@@ -3684,6 +3728,10 @@ export const translations = {
     'vip_description_4': 'Livello avanzato con vantaggi massimi. Costruisci una squadra di 7 referral per guadagnare il 4,0% giornaliero.',
     'vip_description_5': 'Livello professionale per investitori seri. Costruisci una squadra di 15 referral per guadagnare il 5,0% giornaliero.',
     'vip_description_6': 'Livello elite con rendimenti massimi. Costruisci una squadra di 25 referral per guadagnare il 6,0% giornaliero.',
+        'daily_percent': 'Percentuale Giornaliera:',
+        'deposit_range': 'Intervallo di Deposito:',
+        'signals_count': 'Segnali:',
+        'referrals_required': 'Referral Richiesti:',
     
     'total_balance': 'Saldo totale',
     'transaction_history': 'Cronologia transazioni',
@@ -4012,6 +4060,10 @@ export const translations = {
     'vip_description_4': 'Level lanjutan dengan manfaat maksimum. Bangun tim dari 7 referal untuk mendapatkan 4,0% harian.',
     'vip_description_5': 'Level profesional untuk investor serius. Bangun tim dari 15 referal untuk mendapatkan 5,0% harian.',
     'vip_description_6': 'Level elit dengan pengembalian maksimum. Bangun tim dari 25 referal untuk mendapatkan 6,0% harian.',
+        'daily_percent': 'Persen Harian:',
+        'deposit_range': 'Rentang Deposit:',
+        'signals_count': 'Sinyal:',
+        'referrals_required': 'Referral Diperlukan:',
     
     'total_balance': 'Total Saldo',
     'transaction_history': 'Riwayat Transaksi',

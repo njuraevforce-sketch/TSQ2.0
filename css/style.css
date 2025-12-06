@@ -1106,152 +1106,206 @@ html {
     text-align: center;
 }
 
-/* ВЕРТИКАЛЬНАЯ КАРУСЕЛЬ - НОВЫЕ СТИЛИ */
-.uni-swiper-wrapper {
+/* КАСТОМНЫЙ ВЕРТИКАЛЬНЫЙ СЛАЙДЕР VIP */
+.custom-vip-carousel {
     position: relative;
     width: 100%;
-    height: 250px;
+    height: 300px;
     overflow: hidden;
     border-radius: 15px;
-    margin-bottom: 15px;
+    margin: 0 auto 20px;
     background: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-.uni-swiper-slides {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.uni-swiper-slide-frame {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.5s ease;
-}
-
-.uni-swiper-item {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.swiper-itemWrap {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
+.carousel-track {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 20px;
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vip-slide {
+    flex: 0 0 100%;
+    height: 100%;
+    padding: 15px;
     box-sizing: border-box;
 }
 
-/* Текст внутри карточки VIP */
-.swiper-itemWrap .text-bold.text-xxl {
-    font-size: 28px;
+.vip-card {
+    height: 100%;
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.vip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.vip-title {
+    font-size: 32px;
     font-weight: 900;
     color: white;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    margin-bottom: 5px;
 }
 
-.swiper-itemWrap .flex.align-center {
-    font-size: 14px;
-    color: rgba(255,255,255,0.9);
-    margin-top: 5px;
+.vip-status {
     display: flex;
     align-items: center;
-}
-
-/* Иконки замков */
-.u-icon {
-    margin-right: 8px;
-    display: inline-flex;
-    align-items: center;
-}
-
-.u-icon__icon {
-    font-size: 18px;
-    color: #FFD700;
-}
-
-.uicon-lock-opened-fill {
-    color: #4CAF50 !important;
-}
-
-.uicon-lock-fill {
-    color: #cccccc !important;
-}
-
-/* Изображения в карточках */
-.swiperPo {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    width: 120px;
-    height: 120px;
-    z-index: 2;
-}
-
-.swiperPo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 0;
-    background: transparent;
-}
-
-/* Дополнительные текстовые элементы */
-.vip-level-name {
-    font-size: 16px;
-    font-weight: bold;
+    gap: 8px;
     color: white;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-    margin-top: auto;
-    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: 500;
 }
 
-.vip-level-requirement {
-    font-size: 12px;
-    color: rgba(255,255,255,0.8);
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+.vip-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
-/* Проценты и требования слева */
-.vip-percent-left {
+.vip-percent {
     position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 24px;
+    top: 0;
+    left: 0;
+    font-size: 28px;
     font-weight: 900;
     color: #FFD700;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-    z-index: 3;
 }
 
-.vip-requirement-left {
+.vip-requirement {
     position: absolute;
-    top: 50px;
-    left: 20px;
-    font-size: 14px;
+    top: 40px;
+    left: 0;
+    font-size: 16px;
     color: white;
     background: rgba(54, 69, 79, 0.9);
-    padding: 5px 10px;
+    padding: 6px 12px;
     border-radius: 8px;
     font-weight: bold;
-    z-index: 3;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
-/* Описание VIP уровней */
+.vip-image {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vip-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+.vip-info {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 120px;
+}
+
+.vip-range {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+.vip-details {
+    font-size: 14px;
+    color: rgba(255,255,255,0.9);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+
+/* Кнопки навигации */
+.carousel-btn {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    background: rgba(54, 69, 79, 0.9);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
+
+.carousel-btn:hover {
+    background: #5a6b76;
+    transform: translateX(-50%) scale(1.1);
+}
+
+.carousel-btn.prev {
+    top: 10px;
+}
+
+.carousel-btn.next {
+    bottom: 10px;
+}
+
+.carousel-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.carousel-btn:disabled:hover {
+    background: rgba(54, 69, 79, 0.9);
+    transform: translateX(-50%) scale(1);
+}
+
+/* Индикаторы */
+.carousel-indicators {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+}
+
+.indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.indicator.active {
+    background: #FFD700;
+    transform: scale(1.2);
+}
+
 .vip-description {
     margin-top: 15px;
     padding: 15px;
@@ -1261,72 +1315,6 @@ html {
     font-size: 14px;
     text-align: center;
     line-height: 1.5;
-}
-
-/* Индикаторы карусели (точки) */
-.vip-indicators {
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
-    gap: 8px;
-}
-
-.vip-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.3);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.vip-indicator.active {
-    background: #FFD700;
-    transform: scale(1.2);
-}
-
-/* Кнопки навигации карусели */
-.vip-nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    background: rgba(54, 69, 79, 0.9);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    z-index: 100;
-    border: 2px solid rgba(255,255,255,0.2);
-    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
-}
-
-.vip-nav-btn:hover {
-    background: #5a6b76;
-    transform: translateY(-50%) scale(1.1);
-}
-
-.vip-nav-btn.prev {
-    left: 10px;
-}
-
-.vip-nav-btn.next {
-    right: 10px;
-}
-
-.vip-nav-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-}
-
-.vip-nav-btn:disabled:hover {
-    background: rgba(54, 69, 79, 0.9);
-    transform: translateY(-50%);
 }
 
 /* Дополнительные стили */
@@ -2443,32 +2431,29 @@ html {
     }
     
     /* Адаптация для вертикальной карусели на мобильных */
-    .uni-swiper-wrapper {
-        height: 220px;
+    .custom-vip-carousel {
+        height: 260px;
     }
     
-    .swiperPo {
-        width: 100px;
-        height: 100px;
-        right: 15px;
-        bottom: 15px;
+    .vip-title {
+        font-size: 28px;
     }
     
-    .swiper-itemWrap .text-bold.text-xxl {
+    .vip-percent {
         font-size: 24px;
     }
     
-    .vip-percent-left {
-        font-size: 20px;
-        top: 15px;
-        left: 15px;
+    .vip-image {
+        width: 100px;
+        height: 100px;
     }
     
-    .vip-requirement-left {
-        font-size: 12px;
-        top: 40px;
-        left: 15px;
-        padding: 4px 8px;
+    .vip-range {
+        font-size: 16px;
+    }
+    
+    .vip-details {
+        font-size: 13px;
     }
     
     .pop-content {
@@ -2607,27 +2592,21 @@ html {
     }
     
     /* Вертикальная карусель на очень маленьких экранах */
-    .uni-swiper-wrapper {
-        height: 200px;
+    .custom-vip-carousel {
+        height: 240px;
     }
     
-    .swiperPo {
-        width: 80px;
-        height: 80px;
-        right: 10px;
-        bottom: 10px;
-    }
-    
-    .swiper-itemWrap {
+    .vip-card {
         padding: 15px;
     }
     
-    .swiper-itemWrap .text-bold.text-xxl {
-        font-size: 22px;
+    .vip-title {
+        font-size: 24px;
     }
     
-    .swiper-itemWrap .flex.align-center {
-        font-size: 12px;
+    .vip-image {
+        width: 90px;
+        height: 90px;
     }
 }
 

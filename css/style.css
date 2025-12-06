@@ -1103,209 +1103,173 @@ html {
     text-align: center;
 }
 
-/* НОВАЯ VIP КАРУСЕЛЬ (ВЕРТИКАЛЬНЫЙ СЛАЙДЕР) */
-.vip-carousel-new-container {
+/* НОВЫЕ СТИЛИ ДЛЯ КАРУСЕЛИ КАК В ПРИМЕРЕ */
+.vip-swiper-container {
     position: relative;
-    height: 180px;
-    overflow: hidden;
+    width: 100%;
+    height: 400px;
     margin: 15px 0;
-    border-radius: 10px;
-    background: rgba(54, 69, 79, 0.3);
+    overflow: hidden;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .vip-swiper-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
-    overflow: hidden;
-}
-
-.vip-swiper-slides {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    will-change: transform;
-    transition: transform 0.3s ease;
-}
-
-.vip-swiper-item {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    transition: transform 0.3s ease;
-}
-
-.vip-card-container {
-    width: 100%;
-    height: 100%;
-    transition: all 0.3s ease;
-    opacity: 0.7;
-    transform: scale(0.95);
-}
-
-.vip-card-container.active {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.vip-card {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    overflow: hidden;
-    background: linear-gradient(135deg, #36454f, #5a6b76);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.vip-card-header {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    z-index: 10;
+    z-index: 1;
     display: flex;
+    transition-property: transform;
+    box-sizing: content-box;
+}
+
+.vip-swiper-slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    transform: translateY(0) translateZ(0);
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.vip-swiper-slide-frame {
+    width: 100%;
+    height: 100%;
+    transform: translateY(0%) translateZ(0px);
+}
+
+.vip-slide-item {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: translateY(0%) translateZ(0px);
+}
+
+.vip-slide-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat !important;
+    background-position: 0% 0% !important;
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: flex-start;
+    padding: 20px;
+    color: white;
+    border-radius: 15px;
 }
 
-.vip-card-header .text-xxl {
-    font-size: 18px;
-    color: #FFD700;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.vip-card-header .flex {
+.vip-slide-header {
+    display: flex;
     align-items: center;
-    gap: 5px;
+    justify-content: space-between;
 }
 
-.lock-icon {
-    width: 16px;
-    height: 16px;
+.vip-slide-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.vip-slide-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #fff;
+}
+
+.vip-status-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+}
+
+.vip-status-icon i {
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: normal;
+    color: #606266;
+}
+
+.vip-slide-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;
+    height: 100px;
+    z-index: 10;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.lock-icon i {
-    font-size: 14px;
-    color: #52c41a;
+.vip-slide-icon img {
+    width: 100px !important;
+    height: 100px !important;
+    object-fit: contain;
+    display: block !important;
+    visibility: visible !important;
+    background: transparent !important;
+    border: none !important;
 }
 
-.vip-card-container:not(.active) .lock-icon i {
-    color: #666;
+.vip-slide-info {
+    margin-top: auto;
+    text-align: left;
+    z-index: 2;
+    position: relative;
 }
 
-.lock-text {
+.vip-range {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.vip-details {
     font-size: 12px;
     color: #ccc;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    padding: 0;
 }
 
-.vip-card-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 15px;
-    z-index: 2;
-}
-
-.vip-percent-left {
+.vip-percent-badge {
     position: absolute;
-    top: 40px;
-    left: 10px;
-    font-size: 24px;
+    top: 15px;
+    left: 15px;
+    font-size: 20px;
     font-weight: bold;
     color: #FFD700;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
     z-index: 3;
 }
 
-.vip-requirement-left {
+.vip-level-badge {
     position: absolute;
-    top: 70px;
-    left: 10px;
-    font-size: 12px;
+    top: 40px;
+    left: 15px;
+    font-size: 14px;
     color: #ffffff;
     background: rgba(54, 69, 79, 0.9);
     padding: 3px 8px;
     border-radius: 5px;
     font-weight: bold;
     z-index: 3;
-}
-
-.vip-icon-wrapper {
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-    width: 80px;
-    height: 80px;
-    z-index: 10;
-}
-
-.vip-icon {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
-}
-
-.vip-bg-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.3;
-    z-index: 1;
-}
-
-.vip-level-name {
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    margin-bottom: 5px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    z-index: 3;
-}
-
-.vip-level-requirement {
-    font-size: 11px;
-    color: #ccc;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    z-index: 3;
-}
-
-/* Индикаторы свайпа */
-.vip-indicators {
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-    z-index: 20;
-}
-
-.vip-indicator {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transition: all 0.3s ease;
-}
-
-.vip-indicator.active {
-    background: #FFD700;
-    transform: scale(1.2);
 }
 
 .vip-description {
@@ -1318,11 +1282,30 @@ html {
     text-align: center;
 }
 
-/* Старая VIP карусель (скрываем) */
-.vip-carousel-container,
-.vip-carousel,
-.vip-card {
-    display: none;
+/* Индикаторы карусели */
+.vip-swiper-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    z-index: 100;
+}
+
+.vip-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.vip-indicator.active {
+    background: #FFD700;
+    transform: scale(1.2);
 }
 
 /* Дополнительные стили */
@@ -1336,15 +1319,6 @@ html {
 
 .quantum-signal.used {
     background: #666;
-}
-
-.vip-level-badge {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 8px 15px;
-    border-radius: 20px;
-    color: #fff;
-    font-weight: bold;
-    display: inline-block;
 }
 
 .referral-stats {
@@ -2438,32 +2412,19 @@ html {
         font-size: 16px;
     }
     
-    /* Исправления для VIP карточек на мобильных */
-    .vip-carousel-new-container {
-        height: 160px;
+    /* Исправления для VIP карусели на мобильных */
+    .vip-swiper-container {
+        height: 350px;
     }
     
-    .vip-percent-left {
-        font-size: 20px;
-        top: 35px;
+    .vip-slide-icon {
+        width: 80px;
+        height: 80px;
     }
     
-    .vip-requirement-left {
-        top: 60px;
-        font-size: 11px;
-    }
-    
-    .vip-icon-wrapper {
-        width: 70px;
-        height: 70px;
-    }
-    
-    .vip-card-header .text-xxl {
-        font-size: 16px;
-    }
-    
-    .lock-text {
-        font-size: 11px;
+    .vip-slide-icon img {
+        width: 80px !important;
+        height: 80px !important;
     }
     
     .pop-content {
@@ -2599,20 +2560,6 @@ html {
         width: 45px;
         height: 45px;
         font-size: 18px;
-    }
-    
-    /* Новая VIP карусель на маленьких экранах */
-    .vip-carousel-new-container {
-        height: 150px;
-    }
-    
-    .vip-percent-left {
-        font-size: 18px;
-    }
-    
-    .vip-icon-wrapper {
-        width: 60px;
-        height: 60px;
     }
 }
 
@@ -3353,7 +3300,7 @@ body.no-tabbar .uni-tabbar {
 
 /* Улучшенные стили для диаграммы */
 .chart-container {
-    background: rgba(54, 69, 79, 0.8);
+    background: rgba(54, 69,79, 0.8);
     border: 1px solid rgba(54, 69, 79, 0.9);
     border-left: 3px solid #FFD700;
 }
@@ -3508,7 +3455,7 @@ body.no-tabbar .uni-tabbar {
 .balance-amount,
 .color-balance,
 .team-stat-value,
-.vip-percent-left,
+.vip-percent-badge,
 .calendar-time,
 .setting-value,
 .referral-balance,
@@ -3534,7 +3481,7 @@ body.no-tabbar .uni-tabbar {
 .text-xxl,
 .balance-title,
 .quantum-title,
-.vip-level-name,
+.vip-slide-title,
 .crypto-name,
 .crypto-price {
     text-shadow: 0 1px 2px rgba(0,0,0,0.3);
@@ -3544,7 +3491,7 @@ body.no-tabbar .uni-tabbar {
 .notice-bar,
 .balance-card,
 .referral-section,
-.vip-card.active,
+.vip-slide-content.active,
 .profile-bg {
     background: rgba(54, 69, 79, 0.9) !important;
     backdrop-filter: blur(10px);
@@ -3603,180 +3550,5 @@ img {
     body {
         overflow: auto !important;
         height: auto;
-    }
-}
-
-/* НОВЫЕ СТИЛИ ДЛЯ VIP КАРУСЕЛИ КАК В ПРИМЕРЕ */
-.vip-swiper-container {
-    position: relative;
-    width: 100%;
-    height: 200px;
-    margin: 15px 0;
-    overflow: hidden;
-    border-radius: 15px;
-}
-
-.uni-swiper-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.uni-swiper-slides {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease;
-}
-
-.uni-swiper-slide-frame {
-    width: 100%;
-    height: 100%;
-    flex-shrink: 0;
-}
-
-.uni-swiper-item {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.3s ease;
-}
-
-.swiper-itemWrap {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-    overflow: hidden;
-    background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
-}
-
-.swiper-itemWrap .text-bold {
-    font-size: 24px;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    z-index: 2;
-    position: relative;
-}
-
-.swiper-itemWrap .flex.align-center {
-    font-size: 14px;
-    color: white;
-    z-index: 2;
-    position: relative;
-    margin-top: 5px;
-}
-
-.swiperPo {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 100px;
-    height: 100px;
-    z-index: 2;
-}
-
-.swiperPo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-/* Кнопки навигации для карусели */
-.vip-carousel-nav {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.vip-nav-btn {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.vip-nav-btn.active {
-    background: white;
-    transform: scale(1.2);
-}
-
-/* Индикатор текущего уровня */
-.current-vip-indicator {
-    text-align: center;
-    margin-top: 10px;
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.current-vip-indicator .vip-level {
-    color: #FFD700;
-    font-weight: bold;
-}
-
-/* Стили для иконок замков */
-.u-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 5px;
-}
-
-.u-icon__icon {
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    font-size: 16px;
-}
-
-.uicon-lock-opened-fill::before {
-    content: "\f3c1";
-    color: #52c41a;
-}
-
-.uicon-lock-fill::before {
-    content: "\f023";
-    color: #ccc;
-}
-
-/* Адаптация для мобильных */
-@media (max-width: 480px) {
-    .vip-swiper-container {
-        height: 180px;
-    }
-    
-    .swiperPo {
-        width: 80px;
-        height: 80px;
-        right: 15px;
-    }
-    
-    .swiper-itemWrap .text-bold {
-        font-size: 20px;
-    }
-    
-    .swiper-itemWrap .flex.align-center {
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 375px) {
-    .vip-swiper-container {
-        height: 160px;
-    }
-    
-    .swiperPo {
-        width: 70px;
-        height: 70px;
-        right: 10px;
     }
 }

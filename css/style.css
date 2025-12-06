@@ -816,13 +816,13 @@ html {
     overflow: visible !important;
 }
 
-/* Баннер - ОБНОВЛЕННЫЙ ЦВЕТ */
+/* Баннер - БЕЗ ФОНА */
 .banner-section {
-    background: #36454f;
     width: 100%;
     border-radius: 0 0 20px 20px;
     overflow: hidden;
     margin-top: 0;
+    background: none !important;
 }
 
 .banner {
@@ -831,6 +831,7 @@ html {
     position: relative;
     border-radius: 0 0 20px 20px;
     overflow: hidden;
+    background: none !important;
 }
 
 .banner-video {
@@ -3613,13 +3614,14 @@ img {
     }
 }
 
-/* Carousel styles - FIXED */
+/* Carousel styles - FIXED и УПРОЩЕННЫЕ */
 .carousel-container {
     position: relative;
     width: 100%;
     height: 150px;
     overflow: hidden;
     border-radius: 0 0 20px 20px;
+    background: none !important;
 }
 
 .carousel-track {
@@ -3632,8 +3634,10 @@ img {
 .carousel-slide {
     flex: 0 0 100%;
     height: 100%;
-    position: relative;
     min-width: 100%;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
 }
 
 .carousel-slide img {
@@ -3641,6 +3645,8 @@ img {
     height: 100%;
     object-fit: cover;
     display: block;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .carousel-indicators {
@@ -3660,6 +3666,7 @@ img {
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.5);
     transition: background-color 0.3s;
+    cursor: pointer;
 }
 
 .indicator.active {
@@ -3785,186 +3792,6 @@ body:not(.no-tabbar) .page {
         height: 34px;
     }
     
-    .carousel-container {
-        height: 130px;
-    }
-}
-/* Исправленные стили для карусели - ДОБАВЬТЕ В КОНЕЦ ФАЙЛА */
-.carousel-container {
-    position: relative;
-    width: 100%;
-    height: 150px;
-    overflow: hidden;
-    border-radius: 0 0 20px 20px;
-}
-
-.carousel-track {
-    display: flex;
-    height: 100%;
-    transition: transform 0.5s ease-in-out;
-    will-change: transform;
-}
-
-.carousel-slide {
-    flex: 0 0 100%;
-    height: 100%;
-    position: relative;
-    min-width: 100%;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.carousel-slide.active {
-    opacity: 1;
-}
-
-.carousel-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.carousel-indicators {
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    z-index: 10;
-}
-
-.indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.5);
-    transition: background-color 0.3s;
-    cursor: pointer;
-}
-
-.indicator.active {
-    background-color: #fff;
-    transform: scale(1.2);
-}
-
-/* Убираем кнопки навигации карусели */
-.carousel-btn {
-    display: none !important;
-}
-
-/* Анимация для перехода слайдов */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.carousel-slide.fade-in {
-    animation: fadeIn 0.5s ease forwards;
-}
-
-/* Улучшение для мобильных */
-@media (max-width: 480px) {
-    .carousel-container {
-        height: 140px;
-    }
-    
-    .carousel-slide img {
-        object-fit: cover;
-    }
-}
-
-@media (max-width: 375px) {
-    .carousel-container {
-        height: 130px;
-    }
-    
-    .carousel-indicators {
-        bottom: 8px;
-    }
-    
-    .indicator {
-        width: 6px;
-        height: 6px;
-    }
-}
-
-/* Улучшение для загрузки изображений */
-.carousel-slide img {
-    display: none;
-}
-
-.carousel-slide.active img {
-    display: block;
-}
-/* Carousel styles - FIXED VERSION */
-.carousel-container {
-    position: relative;
-    width: 100%;
-    height: 150px;
-    overflow: hidden;
-    border-radius: 0 0 20px 20px;
-    background: #36454f; /* Fallback color */
-}
-
-.carousel-track {
-    display: flex;
-    height: 100%;
-    transition: transform 0.5s ease-in-out;
-    will-change: transform;
-}
-
-.carousel-slide {
-    flex: 0 0 100%;
-    height: 100%;
-    min-width: 100%;
-    position: relative;
-}
-
-.carousel-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.carousel-indicators {
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    z-index: 10;
-}
-
-.indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.5);
-    transition: background-color 0.3s;
-    cursor: pointer;
-}
-
-.indicator.active {
-    background-color: #fff;
-}
-
-/* Responsive adjustments */
-@media (max-width: 480px) {
-    .carousel-container {
-        height: 140px;
-    }
-}
-
-@media (max-width: 375px) {
     .carousel-container {
         height: 130px;
     }

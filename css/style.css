@@ -3627,11 +3627,30 @@ body:not(.no-tabbar) .page {
 .banner-video {
     display: none !important;
 }
-/* Вертикальная карусель для VIP в get.js */
+/* =========================================== */
+/* НОВЫЕ СТИЛИ ДЛЯ ВЕРТИКАЛЬНОЙ КАРУСЕЛИ VIP */
+/* =========================================== */
+
+.vip-section {
+    padding: 15px;
+    background: transparent;
+    border-radius: 10px;
+    margin: 15px 0;
+}
+
+.section-title {
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #fff;
+    text-align: center;
+}
+
+/* ОБНОВЛЕННЫЙ ВЕРТИКАЛЬНЫЙ СЛАЙДЕР VIP */
 .custom-vip-carousel {
     position: relative;
     width: 345px;
-    height: 150px; /* 130px карточка + 20px предпросмотр следующей */
+    height: 150px;
     overflow: hidden;
     border-radius: 10px;
     margin: 0 auto 15px;
@@ -3643,16 +3662,16 @@ body:not(.no-tabbar) .page {
     cursor: grabbing;
 }
 
-.custom-vip-carousel .carousel-track {
+.carousel-track {
     display: flex;
     flex-direction: column;
-    height: calc(130px * 6 + 20px); /* 6 карточек по 130px + 20px предпросмотр */
+    height: calc(130px * 6 + 20px);
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
 }
 
-.custom-vip-carousel .vip-slide {
-    flex: 0 0 130px; /* высота карточки */
+.vip-slide {
+    flex: 0 0 130px;
     height: 130px;
     padding: 0;
     box-sizing: border-box;
@@ -3662,11 +3681,11 @@ body:not(.no-tabbar) .page {
     transition: opacity 0.3s ease;
 }
 
-.custom-vip-carousel .vip-slide.active .vip-card {
+.vip-slide.active .vip-card {
     box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 
-.custom-vip-carousel .vip-card {
+.vip-card {
     width: 345px;
     height: 130px;
     border-radius: 10px;
@@ -3682,7 +3701,7 @@ body:not(.no-tabbar) .page {
     transition: box-shadow 0.3s ease;
 }
 
-.custom-vip-carousel .vip-title {
+.vip-title {
     position: absolute;
     top: 15px;
     left: 15px;
@@ -3693,7 +3712,7 @@ body:not(.no-tabbar) .page {
     z-index: 2;
 }
 
-.custom-vip-carousel .vip-status {
+.vip-status {
     position: absolute;
     bottom: 15px;
     left: 15px;
@@ -3707,7 +3726,7 @@ body:not(.no-tabbar) .page {
     z-index: 2;
 }
 
-.custom-vip-carousel .vip-image {
+.vip-image {
     position: absolute;
     top: 50%;
     right: 20px;
@@ -3720,7 +3739,7 @@ body:not(.no-tabbar) .page {
     z-index: 2;
 }
 
-.custom-vip-carousel .vip-image img {
+.vip-image img {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -3728,69 +3747,145 @@ body:not(.no-tabbar) .page {
 }
 
 /* Кнопки навигации (скрыты) */
-.custom-vip-carousel .carousel-btn {
+.carousel-btn {
     display: none !important;
 }
 
 /* Индикаторы (скрыты) */
-.custom-vip-carousel .carousel-indicators {
+.carousel-indicators {
     display: none !important;
 }
 
-/* Адаптация для мобильных экранов */
+.vip-description {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    padding: 15px;
+    background: rgba(54, 69, 79, 0.8);
+    border-radius: 10px;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.5;
+    border-left: 3px solid #FFD700;
+}
+
+/* Блок с деталями VIP уровня */
+.vip-details {
+    margin-top: 10px;
+    padding: 15px;
+    background: rgba(54, 69, 79, 0.8);
+    border-radius: 10px;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.5;
+    border-left: 3px solid #4CAF50;
+}
+
+.details-content {
+    color: white;
+    font-size: 14px;
+    line-height: 1.8;
+    text-align: center;
+}
+
+.detail-item {
+    margin-bottom: 8px;
+    display: block;
+}
+
+.detail-label {
+    color: #FFD700;
+    font-weight: bold;
+}
+
+.detail-value {
+    color: #ffffff;
+    margin-left: 5px;
+}
+
+/* Анимация для переключения слайдов */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.vip-slide.sliding-up {
+    animation: slideUp 0.3s ease;
+}
+
+.vip-slide.sliding-down {
+    animation: slideDown 0.3s ease;
+}
+
+/* Адаптация для мобильных экранов - ИСПРАВЛЕНО: одинаковые размеры */
 @media (max-width: 480px) {
     .custom-vip-carousel {
         width: 100%;
         max-width: 345px;
-        height: 150px; /* Одинаковая высота на всех устройствах */
+        height: 150px;
     }
     
-    .custom-vip-carousel .vip-card {
+    .vip-card {
         width: 100%;
         max-width: 345px;
-        height: 130px; /* Одинаковая высота на всех устройствах */
+        height: 130px;
     }
     
-    .custom-vip-carousel .vip-title {
-        font-size: 24px; /* Одинаковый размер */
+    .vip-title {
+        font-size: 24px;
     }
     
-    .custom-vip-carousel .vip-image {
-        width: 100px; /* Одинаковый размер */
+    .vip-image {
+        width: 100px;
         height: 100px;
     }
     
-    /* Для очень маленьких экранов можно немного уменьшить */
-    @media (max-width: 375px) {
-        .custom-vip-carousel {
-            height: 145px;
-        }
-        
-        .custom-vip-carousel .vip-card {
-            height: 125px;
-        }
-        
-        .custom-vip-carousel .vip-title {
-            font-size: 22px;
-        }
-        
-        .custom-vip-carousel .vip-image {
-            width: 90px;
-            height: 90px;
-            right: 15px;
-        }
-        
-        .custom-vip-carousel .vip-status {
-            font-size: 13px;
-        }
-        
-        .custom-vip-carousel .vip-slide {
-            flex: 0 0 125px;
-            height: 125px;
-        }
-        
-        .custom-vip-carousel .carousel-track {
-            height: calc(125px * 6 + 20px);
-        }
+    .vip-description,
+    .vip-details {
+        padding: 15px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 375px) {
+    .custom-vip-carousel {
+        width: 100%;
+        max-width: 345px;
+        height: 150px;
+    }
+    
+    .vip-card {
+        width: 100%;
+        max-width: 345px;
+        height: 130px;
+    }
+    
+    .vip-title {
+        font-size: 24px;
+    }
+    
+    .vip-image {
+        width: 100px;
+        height: 100px;
+        right: 20px;
+    }
+    
+    .vip-status {
+        font-size: 14px;
+    }
+    
+    .vip-slide {
+        flex: 0 0 130px;
+        height: 130px;
+    }
+    
+    .carousel-track {
+        height: calc(130px * 6 + 20px);
     }
 }

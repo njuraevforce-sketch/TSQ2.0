@@ -10,20 +10,20 @@ export default function renderHome() {
             <div class="banner">
                 <div class="carousel-container" id="carousel-container">
                     <div class="carousel-track" id="carousel-track">
-                        <div class="carousel-slide active">
-                            <img src="assets/banner.png" alt="${t('banner_1')}" data-translate-alt="banner1">
+                        <div class="carousel-slide">
+                            <img src="assets/banner.png" alt="${t('banner_1')}" data-translate-alt="banner1" loading="eager">
                         </div>
                         <div class="carousel-slide">
-                            <img src="assets/banner1.png" alt="${t('banner_2')}" data-translate-alt="banner2">
+                            <img src="assets/banner1.png" alt="${t('banner_2')}" data-translate-alt="banner2" loading="eager">
                         </div>
                         <div class="carousel-slide">
-                            <img src="assets/banner2.png" alt="${t('banner_3')}" data-translate-alt="banner3">
+                            <img src="assets/banner2.png" alt="${t('banner_3')}" data-translate-alt="banner3" loading="eager">
                         </div>
                     </div>
                     <div class="carousel-indicators" id="carousel-indicators">
-                        <span class="indicator active"></span>
-                        <span class="indicator"></span>
-                        <span class="indicator"></span>
+                        <span class="indicator active" data-index="0"></span>
+                        <span class="indicator" data-index="1"></span>
+                        <span class="indicator" data-index="2"></span>
                     </div>
                 </div>
             </div>
@@ -134,177 +134,157 @@ function initCarousel() {
     const slides = document.querySelectorAll('.carousel-slide');
     const indicators = document.querySelectorAll('.indicator');
     
-    if (!track || slides.length === 0) return;
-    
-    // Preload all images
-    const imageUrls = [
-        'assets/banner.png',
-        'assets/banner1.png', 
-        'assets/banner2.png'
-    ];
-    
-    // Force load all images
-    imageUrls.forEach(url => {
-        const img = new Image();
-        img.src = url;
-        console.log('Preloading image:', url);
-    });
+    if (!track || slides.length === 0) {
+        console.warn('Carousel elements not found');
+        return;
+    }
     
     let currentIndex = 0;
     const totalSlides = slides.length;
     let autoSlideInterval;
-    let isTransitioning = false;
     
-    // Function to update carousel position
-    function updateCarousel() {
-        if (isTransitioning) return;
-        
-        isTransitioning = true;
-        
-        // Hide all slides first
+    console.log('Carousel initialized with', totalSlides, 'slides');
+    
+    // Предзагрузка изображений
+    function preloadImages() {
         slides.forEach((slide, index) => {
-            slide.style.opacity = '0';
-            slide.style.transition = 'opacity 0.5s ease';
-        });
-        
-        // Show current slide
-        setTimeout(() => {
-            track.style.transform = `translateX(-${currentIndex * 100}%)`;
-            
-            slides[currentIndex].style.opacity = '1';
-            
-            // Update indicators
-            indicators.forEach((indicator, index) => {
-                indicator.classList.toggle('active', index === currentIndex);
-            });
-            
-            // Update slide classes
-            slides.forEach((slide, index) => {
-                slide.classList.toggle('active', index === currentIndex);
-            });
-            
-            // Force load image for current slide
-            const currentImg = slides[currentIndex].querySelector('img');
-            if (currentImg) {
-                currentImg.style.display = 'block';
-                if (!currentImg.complete) {
-                    currentImg.onload = function() {
-                        console.log(`Image ${currentIndex} loaded`);
-                        isTransitioning = false;
-                    };
-                    currentImg.onerror = function() {
-                        console.error(`Error loading image ${currentIndex}`);
-                        this.src = 'assets/banner.png'; // fallback
-                        isTransitioning = false;
-                    };
-                } else {
-                    isTransitioning = false;
-                }
-            } else {
-                isTransitioning = false;
+            const img = slide.querySelector('img');
+            if (img) {
+                const image = new Image();
+                image.src = img.src;
+                image.onload = () => {
+                    console.log(`Image ${index + 1} loaded:`, img.src);
+                };
+                image.onerror = () => {
+                    console.error(`Error loading image ${index + 1}:`, img.src);
+                };
             }
-        }, 100);
+        });
     }
     
-    // Function to go to specific slide
-    function goToSlide(index) {
-        if (isTransitioning) return;
+    // Обновление позиции карусели
+    function updateCarousel() {
+        console.log('Updating carousel to index:', currentIndex);
         
-        currentIndex = (index + totalSlides) % totalSlides;
+        // Сдвигаем трек
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        
+        // Обновляем индикаторы
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === currentIndex);
+        });
+        
+        // Обновляем классы слайдов (для CSS анимации, если нужно)
+        slides.forEach((slide, index) => {
+            slide.classList.toggle('active', index === currentIndex);
+        });
+    }
+    
+    // Переход к конкретному слайду
+    function goToSlide(index) {
+        if (index < 0) {
+            currentIndex = totalSlides - 1;
+        } else if (index >= totalSlides) {
+            currentIndex = 0;
+        } else {
+            currentIndex = index;
+        }
         updateCarousel();
     }
     
-    // Function for next slide
+    // Следующий слайд
     function nextSlide() {
         goToSlide(currentIndex + 1);
     }
     
-    // Auto slide function
+    // Добавляем обработчики для индикаторов
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', (e) => {
+            e.preventDefault();
+            goToSlide(index);
+            resetAutoSlide();
+        });
+    });
+    
+    // Сброс авто-перелистывания
+    function resetAutoSlide() {
+        clearInterval(autoSlideInterval);
+        startAutoSlide();
+    }
+    
+    // Автоматическое перелистывание
     function startAutoSlide() {
         clearInterval(autoSlideInterval);
         autoSlideInterval = setInterval(() => {
-            if (!isTransitioning) {
-                nextSlide();
-            }
-        }, 5000); // Change slide every 5 seconds
+            nextSlide();
+        }, 5000); // Каждые 5 секунд
     }
     
-    // Initialize
-    updateCarousel();
-    
-    // Force load all images initially
-    setTimeout(() => {
-        slides.forEach((slide, index) => {
-            const img = slide.querySelector('img');
-            if (img) {
-                // Remove lazy loading
-                img.loading = 'eager';
-                img.style.display = 'block';
-                
-                // Ensure image is loaded
-                if (!img.complete) {
-                    const tempImg = new Image();
-                    tempImg.src = img.src;
-                    tempImg.onload = function() {
-                        console.log(`Initial load of image ${index} complete`);
-                        img.style.opacity = '1';
-                    };
-                    tempImg.onerror = function() {
-                        console.error(`Initial load failed for image ${index}`);
-                        img.src = 'assets/banner.png';
-                    };
-                }
-            }
-        });
-        
-        // Show first slide
-        slides[0].style.opacity = '1';
-    }, 500);
-    
-    // Start auto sliding
-    startAutoSlide();
-    
-    // Pause on hover
-    const container = document.getElementById('carousel-container');
-    if (container) {
-        container.addEventListener('mouseenter', () => {
-            clearInterval(autoSlideInterval);
-        });
-        
-        container.addEventListener('mouseleave', () => {
-            startAutoSlide();
-        });
-    }
-    
-    // Touch support for mobile
+    // Свайп для мобильных устройств
     let touchStartX = 0;
     let touchEndX = 0;
     
-    if (container) {
-        container.addEventListener('touchstart', (e) => {
+    if (track) {
+        track.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
-        });
+        }, { passive: true });
         
-        container.addEventListener('touchend', (e) => {
+        track.addEventListener('touchend', (e) => {
             touchEndX = e.changedTouches[0].screenX;
             handleSwipe();
-        });
+        }, { passive: true });
     }
     
     function handleSwipe() {
         const swipeThreshold = 50;
-        const diff = touchStartX - touchEndX;
+        const diffX = touchStartX - touchEndX;
         
-        if (Math.abs(diff) > swipeThreshold) {
-            if (diff > 0) {
-                // Swipe left - next slide
+        if (Math.abs(diffX) > swipeThreshold) {
+            if (diffX > 0) {
+                // Свайп влево - следующий слайд
                 nextSlide();
             } else {
-                // Swipe right - previous slide
+                // Свайп вправо - предыдущий слайд
                 goToSlide(currentIndex - 1);
             }
+            resetAutoSlide();
         }
     }
+    
+    // Навигация с клавиатуры
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            nextSlide();
+            resetAutoSlide();
+        } else if (e.key === 'ArrowLeft') {
+            goToSlide(currentIndex - 1);
+            resetAutoSlide();
+        }
+    });
+    
+    // Инициализация
+    preloadImages();
+    updateCarousel();
+    startAutoSlide();
+    
+    // Пауза при наведении (если не на touch устройстве)
+    if (track && !('ontouchstart' in window)) {
+        track.addEventListener('mouseenter', () => {
+            clearInterval(autoSlideInterval);
+        });
+        
+        track.addEventListener('mouseleave', () => {
+            startAutoSlide();
+        });
+    }
+    
+    // Логирование для отладки
+    console.log('Carousel initialized:', {
+        track: track,
+        slides: slides.length,
+        indicators: indicators.length,
+        currentIndex: currentIndex
+    });
 }
 
 function showWelcomeBanner() {

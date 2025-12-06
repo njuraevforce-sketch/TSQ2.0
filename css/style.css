@@ -3612,3 +3612,171 @@ img {
         height: auto;
     }
 }
+/* Добавить в конец файла style.css */
+
+/* Carousel styles */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 0 0 20px 20px;
+}
+
+.carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.carousel-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    z-index: 10;
+}
+
+.indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    transition: background-color 0.3s;
+}
+
+.indicator.active {
+    background-color: #fff;
+}
+
+/* Amount selection styles */
+.amount-selection {
+    background: rgba(54, 69, 79, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border-left: 3px solid #36454f;
+}
+
+.amount-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.amount-option {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 12px 5px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.amount-option:hover {
+    background: rgba(54, 69, 79, 0.5);
+}
+
+.amount-option.active {
+    background: rgba(78, 119, 113, 0.8);
+    border-color: #4CAF50;
+    transform: scale(1.05);
+}
+
+/* Fix для прокрутки на home и mine */
+.page {
+    min-height: calc(100vh - 60px);
+    padding-bottom: 80px !important;
+    overflow-y: auto !important;
+}
+
+.page-content {
+    padding-bottom: 30px;
+}
+
+/* Гарантируем что контент не скрывается под таббаром */
+body:not(.no-tabbar) .page {
+    padding-bottom: 120px !important;
+}
+
+/* Улучшаем скролл на iOS */
+@supports (-webkit-touch-callout: none) {
+    .page {
+        -webkit-overflow-scrolling: touch !important;
+        height: 100vh;
+        overflow-y: scroll !important;
+    }
+}
+
+/* Улучшаем отображение последних элементов */
+.partners-section,
+.deposits-list,
+.settings-list {
+    margin-bottom: 40px;
+}
+
+/* Стили для инпутов с кастомным значением */
+#deposit-amount {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#deposit-amount:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .amount-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .carousel-container {
+        height: 140px;
+    }
+}
+
+@media (max-width: 375px) {
+    .carousel-container {
+        height: 130px;
+    }
+    
+    .amount-option {
+        padding: 10px 5px;
+        font-size: 14px;
+    }
+}
+
+/* Убираем кнопки навигации карусели */
+.carousel-btn {
+    display: none !important;
+}

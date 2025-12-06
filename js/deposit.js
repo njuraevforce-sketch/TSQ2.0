@@ -9,9 +9,9 @@ export default function renderDeposit() {
                 <p style="color: #ccc; font-size: 14px;" data-translate="select_deposit_amount">Select deposit amount and network</p>
             </div>
 
-            <!-- Amount Selection -->
+            <!-- Amount Selection - UPDATED: удален заголовок, компактные кнопки -->
             <div class="amount-selection margin-bottom">
-                <div class="section-title-small" style="color: #fff; margin-bottom: 10px; font-size: 14px;" data-translate="quick_amounts">Quick Amounts (USDT)</div>
+                <!-- Заголовок УДАЛЕН -->
                 <div class="amount-options">
                     <button type="button" class="amount-option" data-amount="20">20</button>
                     <button type="button" class="amount-option" data-amount="50">50</button>

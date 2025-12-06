@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gly-platform-v6.0';
+const CACHE_NAME = 'gly-platform-v6.1';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -50,7 +50,7 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                console.log('Cache opened for version: v6.0');
+                console.log('Cache opened for version: v6.1');
                 // Пытаемся добавить все файлы в кеш
                 return cache.addAll(urlsToCache)
                     .then(() => {
@@ -96,7 +96,7 @@ self.addEventListener('activate', event => {
                 clients.forEach(client => {
                     client.postMessage({
                         type: 'NEW_VERSION',
-                        version: '5.0'
+                        version: '6.1'
                     });
                 });
             });
@@ -137,7 +137,7 @@ self.addEventListener('fetch', event => {
                     // Для CSS и JS файлов - проверяем версию
                     if (event.request.url.match(/\.(css|js)$/)) {
                         const url = new URL(event.request.url);
-                        if (url.searchParams.get('v') !== '6.0') {
+                        if (url.searchParams.get('v') !== '6.1') {
                             // Обновляем файл в фоне
                             event.waitUntil(
                                 updateFileCache(event.request)
@@ -370,7 +370,7 @@ function cleanOldLocalStorage() {
             });
             
             // Устанавливаем новую версию
-            localStorage.setItem('app_version', '6.0');
+            localStorage.setItem('app_version', '6.1');
             
             // Очищаем кеш CSS и JS версий
             const keys = Object.keys(localStorage);
@@ -470,7 +470,7 @@ self.addEventListener('activate', event => {
             clients.forEach(client => {
                 client.postMessage({
                     type: 'FORCE_RELOAD',
-                    version: '6.0',
+                    version: '6.1',
                     reason: 'New version with scroll fixes'
                 });
             });

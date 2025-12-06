@@ -3605,3 +3605,195 @@ img {
         height: auto;
     }
 }
+
+/* NEW VIP CAROUSEL STYLES */
+.uni-swiper-wrapper {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+.uni-swiper-slides {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    transition: transform 0.3s ease;
+}
+
+.vip-card {
+    min-width: 100%;
+    height: 180px;
+    background: linear-gradient(135deg, #36454f, #5a6b76);
+    border-radius: 15px;
+    padding: 20px;
+    position: relative;
+    transition: all 0.3s ease;
+    transform: translateX(100%);
+    opacity: 0.5;
+    pointer-events: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.vip-card.active {
+    transform: translateX(0) !important;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.vip-card.unlocked {
+    border-left: 3px solid #4CAF50;
+}
+
+.vip-card.locked {
+    border-left: 3px solid #ff4d4f;
+}
+
+.vip-card-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+}
+
+.vip-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.vip-level-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFD700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.vip-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #ccc;
+}
+
+.vip-status i {
+    font-size: 16px;
+}
+
+.vip-status .fa-lock-open {
+    color: #4CAF50;
+}
+
+.vip-status .fa-lock {
+    color: #ff4d4f;
+}
+
+.vip-icon-wrapper {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 80px;
+    z-index: 1;
+}
+
+.vip-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.vip-details {
+    margin-top: auto;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    border-left: 2px solid #FFD700;
+}
+
+.vip-amount-range {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.vip-percent {
+    font-size: 14px;
+    color: #4CAF50;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.vip-signals {
+    font-size: 12px;
+    color: #ccc;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .uni-swiper-wrapper {
+        height: 170px;
+    }
+    
+    .vip-card {
+        height: 150px;
+        padding: 15px;
+    }
+    
+    .vip-level-name {
+        font-size: 20px;
+    }
+    
+    .vip-icon-wrapper {
+        width: 60px;
+        height: 60px;
+        right: 15px;
+    }
+    
+    .vip-amount-range {
+        font-size: 14px;
+    }
+    
+    .vip-percent {
+        font-size: 12px;
+    }
+    
+    .vip-signals {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 375px) {
+    .uni-swiper-wrapper {
+        height: 150px;
+    }
+    
+    .vip-card {
+        height: 130px;
+        padding: 12px;
+    }
+    
+    .vip-level-name {
+        font-size: 18px;
+    }
+    
+    .vip-status {
+        font-size: 12px;
+    }
+    
+    .vip-icon-wrapper {
+        width: 50px;
+        height: 50px;
+    }
+}

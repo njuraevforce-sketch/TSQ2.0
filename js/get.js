@@ -9,55 +9,55 @@ export default function renderGet() {
     // Рассчитываем начальную позицию карусели (чтобы активная карточка была первой)
     const startTranslate = -((currentVipLevel - 1) * 100); // смещение в %
     
-    // VIP уровни данные с путями к изображениям
+    // VIP уровни данные с путями к изображениям (БЕЗ параметра кеширования)
     const vipLevelsData = [
         { 
             level: 1, 
             percent: '2.2%', 
             name: '0-299 USDT', 
             requirement: '2.2% daily, 3 signals',
-            icon: `assets/vipicon1.png?v=${Date.now()}`,
-            bg: `assets/vip1.png?v=${Date.now()}`
+            icon: 'assets/vipicon1.png',
+            bg: 'assets/vip1.png'
         },
         { 
             level: 2, 
             percent: '2.8%', 
             name: '300-1000 USDT', 
             requirement: '2.8% daily, 3 signals, 2 refs',
-            icon: `assets/vipicon2.png?v=${Date.now()}`,
-            bg: `assets/vip2.png?v=${Date.now()}`
+            icon: 'assets/vipicon2.png',
+            bg: 'assets/vip2.png'
         },
         { 
             level: 3, 
             percent: '3.5%', 
             name: '1000-3500 USDT', 
             requirement: '3.5% daily, 3 signals, 5 refs',
-            icon: `assets/vipicon3.png?v=${Date.now()}`,
-            bg: `assets/vip3.png?v=${Date.now()}`
+            icon: 'assets/vipicon3.png',
+            bg: 'assets/vip3.png'
         },
         { 
             level: 4, 
             percent: '4.0%', 
             name: '3500-6000 USDT', 
             requirement: '4.0% daily, 3 signals, 8 refs',
-            icon: `assets/vipicon4.png?v=${Date.now()}`,
-            bg: `assets/vip4.png?v=${Date.now()}`
+            icon: 'assets/vipicon4.png',
+            bg: 'assets/vip4.png'
         },
         { 
             level: 5, 
             percent: '5.0%', 
             name: '6000-12000 USDT', 
             requirement: '5.0% daily, 3 signals, 15 refs',
-            icon: `assets/vipicon5.png?v=${Date.now()}`,
-            bg: `assets/vip5.png?v=${Date.now()}`
+            icon: 'assets/vipicon5.png',
+            bg: 'assets/vip5.png'
         },
         { 
             level: 6, 
             percent: '6.0%', 
             name: '12000-20000 USDT', 
             requirement: '6.0% daily, 3 signals, 25 refs',
-            icon: `assets/vipicon6.png?v=${Date.now()}`,
-            bg: `assets/vip6.png?v=${Date.now()}`
+            icon: 'assets/vipicon6.png',
+            bg: 'assets/vip6.png'
         }
     ];
     

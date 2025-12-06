@@ -72,60 +72,6 @@ html {
     overflow-x: hidden !important;
 }
 
-/* Video player styles */
-.video-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    border-radius: 0 0 20px 20px;
-}
-
-.video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-}
-
-.play-btn {
-    width: 60px;
-    height: 60px;
-    background: rgba(54, 69, 79, 0.8);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.play-btn:hover {
-    background: rgba(54, 69, 79, 1);
-    transform: scale(1.1);
-}
-
-.play-btn i {
-    margin-left: 5px;
-}
-
-/* Disable video controls on mobile */
-.banner-video::-webkit-media-controls {
-    display: none !important;
-}
-
-.banner-video::-webkit-media-controls-enclosure {
-    display: none !important;
-}
-
 /* Install button */
 .install-btn {
     position: fixed;
@@ -143,7 +89,7 @@ html {
     font-size: 16px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    display: none; /* Hidden by default, shown via JS */
+    display: none;
 }
 
 .install-btn i { 
@@ -252,7 +198,7 @@ html {
     font-size: 14px;
 }
 
-/* Навбар стили - ОБНОВЛЕННЫЙ ЦВЕТ */
+/* Навбар стили */
 .u-navbar {
     position: relative;
     width: 100%;
@@ -485,15 +431,15 @@ html {
 
 /* Цвета для баланса и финансов */
 .color-up {
-    color: #4CAF50 !important; /* Зеленый для пополнения */
+    color: #4CAF50 !important;
 }
 
 .color-down {
-    color: #ff4d4f !important; /* Красный для вывода */
+    color: #ff4d4f !important;
 }
 
 .color-balance {
-    color: #FFD700 !important; /* Желтый для балансов */
+    color: #FFD700 !important;
 }
 
 /* Grid */
@@ -647,7 +593,7 @@ html {
     white-space: nowrap;
 }
 
-/* Уведомления - ОБНОВЛЕННЫЕ ЦВЕТА */
+/* Уведомления */
 .notice-section {
     margin: 15px 0;
 }
@@ -748,7 +694,7 @@ html {
     font-size: 12px;
 }
 
-/* Попап - ОБНОВЛЕННЫЕ ЦВЕТА */
+/* Попап */
 .pop-overlay {
     position: fixed;
     top: 0;
@@ -816,28 +762,11 @@ html {
     overflow: visible !important;
 }
 
-/* Баннер - БЕЗ ФОНА */
+/* Баннер - ЧИСТЫЙ БЕЗ ФОНОВ */
 .banner-section {
     width: 100%;
-    border-radius: 0 0 20px 20px;
     overflow: hidden;
     margin-top: 0;
-    background: none !important;
-}
-
-.banner {
-    width: 100%;
-    height: 150px;
-    position: relative;
-    border-radius: 0 0 20px 20px;
-    overflow: hidden;
-    background: none !important;
-}
-
-.banner-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 }
 
 /* Навигационные иконки */
@@ -1111,7 +1040,7 @@ html {
 .custom-vip-carousel {
     position: relative;
     width: 345px;
-    height: 150px; /* 130px карточка + 20px предпросмотр следующей */
+    height: 150px;
     overflow: hidden;
     border-radius: 10px;
     margin: 0 auto 15px;
@@ -1123,16 +1052,16 @@ html {
     cursor: grabbing;
 }
 
-.carousel-track {
+.vip-carousel-track {
     display: flex;
     flex-direction: column;
-    height: calc(130px * 6 + 20px); /* 6 карточек по 130px + 20px предпросмотр */
+    height: calc(130px * 6 + 20px);
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
 }
 
 .vip-slide {
-    flex: 0 0 130px; /* высота карточки */
+    flex: 0 0 130px;
     height: 130px;
     padding: 0;
     box-sizing: border-box;
@@ -1213,7 +1142,7 @@ html {
 }
 
 /* Индикаторы (скрыты) */
-.carousel-indicators {
+.vip-carousel-indicators {
     display: none !important;
 }
 
@@ -1342,80 +1271,9 @@ html {
         height: 125px;
     }
     
-    .carousel-track {
+    .vip-carousel-track {
         height: calc(125px * 6 + 20px);
     }
-}
-
-/* Дополнительные стили */
-.quantum-signal {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: #36454f;
-    margin: 0 5px;
-}
-
-.quantum-signal.used {
-    background: #666;
-}
-
-.vip-level-badge {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 8px 15px;
-    border-radius: 20px;
-    color: #fff;
-    font-weight: bold;
-    display: inline-block;
-}
-
-.referral-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin: 15px 0;
-}
-
-.referral-stat {
-    background: rgba(54, 69, 79, 0.8);
-    padding: 10px;
-    border-radius: 8px;
-    text-align: center;
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
-.transaction-history {
-    max-height: 300px;
-    overflow-y: auto;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-}
-
-.profile-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: rgba(54, 69, 79, 0.8);
-    margin: 0 auto 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    border: 3px solid white;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
-.profile-avatar-small {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: rgba(54, 69, 79, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    border: 2px solid white;
-    margin-right: 15px;
 }
 
 /* Криптовалютные блоки */
@@ -2505,17 +2363,6 @@ html {
         height: 150px;
     }
     
-    /* Video adjustments for mobile */
-    .play-btn {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-    }
-    
-    .video-overlay {
-        background: rgba(0, 0, 0, 0.4);
-    }
-    
     /* Компактные стили для мобильных */
     .wallet-action-compact {
         height: 70px;
@@ -2564,10 +2411,6 @@ html {
         margin: 15px auto 0;
     }
     
-    .banner {
-        height: 120px;
-    }
-    
     .balance-amount {
         font-size: 22px;
     }
@@ -2578,14 +2421,6 @@ html {
     
     .nav-item {
         width: 48%;
-    }
-    
-    .wallet-action {
-        padding: 10px;
-    }
-    
-    .transaction-categories {
-        grid-template-columns: 1fr;
     }
     
     .uni-tabbar__item {
@@ -2600,13 +2435,6 @@ html {
     
     .uni-tabbar__label {
         font-size: 9px;
-    }
-    
-    /* Video adjustments for small mobile */
-    .play-btn {
-        width: 45px;
-        height: 45px;
-        font-size: 18px;
     }
     
     /* Вертикальная карусель на очень маленьких экранах */
@@ -2690,7 +2518,6 @@ body.no-tabbar .uni-tabbar {
     font-size: 14px;
     color: #fff;
 }
-/* Добавьте эти стили в конец файла style.css, перед последней закрывающей скобкой */
 
 /* Calendar стили для mine.js */
 .calendar-section {
@@ -3125,7 +2952,7 @@ body.no-tabbar .uni-tabbar {
     }
 }
 
-/* СТИЛИ ДЛЯ DEPOSIT С ТЕМНЫМИ ЛИНИЯМИ */
+/* СТИЛИ ДЛЯ DEPOSIT */
 .deposit-address-section {
     background: rgba(54, 69, 79, 0.8);
     padding: 15px;
@@ -3251,7 +3078,7 @@ body.no-tabbar .uni-tabbar {
     padding-bottom: 0;
 }
 
-/* Стили для новой диаграммы в team.js */
+/* Стили для диаграммы в team.js */
 .chart-container {
     width: 100%;
     height: 250px;
@@ -3614,30 +3441,27 @@ img {
     }
 }
 
-/* Carousel styles - FIXED и УПРОЩЕННЫЕ */
+/* ========================================== */
+/* СТИЛИ ДЛЯ КАРУСЕЛИ HOME - ЧИСТЫЕ И ПРОСТЫЕ */
+/* ========================================== */
+
 .carousel-container {
     position: relative;
     width: 100%;
     height: 150px;
     overflow: hidden;
-    border-radius: 0 0 20px 20px;
-    background: none !important;
 }
 
 .carousel-track {
     display: flex;
     height: 100%;
     transition: transform 0.5s ease-in-out;
-    will-change: transform;
 }
 
 .carousel-slide {
     flex: 0 0 100%;
-    height: 100%;
     min-width: 100%;
-    opacity: 1 !important;
-    visibility: visible !important;
-    display: block !important;
+    height: 100%;
 }
 
 .carousel-slide img {
@@ -3645,8 +3469,6 @@ img {
     height: 100%;
     object-fit: cover;
     display: block;
-    opacity: 1 !important;
-    visibility: visible !important;
 }
 
 .carousel-indicators {
@@ -3673,7 +3495,7 @@ img {
     background-color: #fff;
 }
 
-/* Amount selection styles - компактные кнопки */
+/* Amount selection styles */
 .amount-options {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -3795,4 +3617,13 @@ body:not(.no-tabbar) .page {
     .carousel-container {
         height: 130px;
     }
+}
+
+/* Убираем все возможные конфликты с каруселью */
+.banner,
+.video-container,
+.video-overlay,
+.play-btn,
+.banner-video {
+    display: none !important;
 }

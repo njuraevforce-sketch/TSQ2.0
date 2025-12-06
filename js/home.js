@@ -1,22 +1,29 @@
-// home.js - UPDATED with deposit navigation
+// home.js - UPDATED with carousel instead of video (auto-only)
 import { t } from './translate.js';
 
 export default function renderHome() {
     const lang = localStorage.getItem('gly_language') || 'en';
     
     return `
-        <!-- Video banner with play button -->
+        <!-- Image Carousel -->
         <div class="banner-section">
             <div class="banner">
-                <div class="video-container" id="video-container">
-                    <video class="banner-video" id="banner-video" muted playsinline>
-                        <source src="assets/company.MP4" type="video/mp4">
-                        <span data-translate="video_error">Your browser does not support the video tag.</span>
-                    </video>
-                    <div class="video-overlay" id="video-overlay">
-                        <div class="play-btn" id="play-btn">
-                            <i class="fas fa-play"></i>
+                <div class="carousel-container" id="carousel-container">
+                    <div class="carousel-track" id="carousel-track">
+                        <div class="carousel-slide active">
+                            <img src="assets/banner.png" alt="${t('banner_1')}" data-translate-alt="banner1" loading="lazy">
                         </div>
+                        <div class="carousel-slide">
+                            <img src="assets/banner1.png" alt="${t('banner_2')}" data-translate-alt="banner2" loading="lazy">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="assets/banner2.png" alt="${t('banner_3')}" data-translate-alt="banner3" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="carousel-indicators" id="carousel-indicators">
+                        <span class="indicator active"></span>
+                        <span class="indicator"></span>
+                        <span class="indicator"></span>
                     </div>
                 </div>
             </div>
@@ -92,7 +99,7 @@ export default function renderHome() {
         </div>
 
         <!-- Partners block -->
-        <div class="partners-section">
+        <div class="partners-section" style="margin-bottom: 80px;">
             <div class="section-title" data-translate="our_partners">Our Partners</div>
             <img src="assets/partners.png" alt="${t('our_partners')}" style="width: 100%; border-radius: 10px;">
         </div>
@@ -109,8 +116,8 @@ export function init() {
         });
     });
 
-    // Video player setup
-    setupVideoPlayer();
+    // Initialize carousel
+    initCarousel();
     
     // Load crypto prices
     loadCryptoPrices();
@@ -122,53 +129,53 @@ export function init() {
     }, 1000);
 }
 
-function setupVideoPlayer() {
-    const video = document.getElementById('banner-video');
-    const overlay = document.getElementById('video-overlay');
-    const playBtn = document.getElementById('play-btn');
+function initCarousel() {
+    const track = document.getElementById('carousel-track');
+    const slides = document.querySelectorAll('.carousel-slide');
+    const indicators = document.querySelectorAll('.indicator');
     
-    if (!video) return;
+    if (!track || slides.length === 0) return;
     
-    // Ensure video doesn't autoplay
-    video.autoplay = false;
-    video.controls = false;
-    video.loop = false;
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+    let autoSlideInterval;
     
-    // Play button click handler
-    playBtn.addEventListener('click', () => {
-        video.play().catch(e => {
-            console.log('Video play failed:', e);
-            window.showCustomAlert(t('video_error'));
+    // Function to update carousel position
+    function updateCarousel() {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        
+        // Update indicators
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === currentIndex);
         });
-        overlay.style.display = 'none';
-        video.setAttribute('controls', 'true');
-    });
+        
+        // Update slide classes
+        slides.forEach((slide, index) => {
+            slide.classList.toggle('active', index === currentIndex);
+        });
+    }
     
-    // When video ends or pauses, show play button again
-    video.addEventListener('ended', () => {
-        overlay.style.display = 'flex';
-        video.removeAttribute('controls');
-        video.currentTime = 0;
-    });
+    // Function to go to specific slide
+    function goToSlide(index) {
+        currentIndex = (index + totalSlides) % totalSlides;
+        updateCarousel();
+    }
     
-    video.addEventListener('pause', () => {
-        if (video.currentTime < video.duration) {
-            overlay.style.display = 'flex';
-            video.removeAttribute('controls');
-        }
-    });
+    // Function for next slide
+    function nextSlide() {
+        goToSlide(currentIndex + 1);
+    }
     
-    // Prevent video from going fullscreen
-    video.addEventListener('webkitbeginfullscreen', (e) => {
-        e.preventDefault();
-        video.webkitExitFullscreen();
-    });
+    // Auto slide function
+    function startAutoSlide() {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = setInterval(() => {
+            nextSlide();
+        }, 5000); // Change slide every 5 seconds
+    }
     
-    video.addEventListener('fullscreenchange', (e) => {
-        if (document.fullscreenElement) {
-            document.exitFullscreen();
-        }
-    });
+    // Start auto sliding
+    startAutoSlide();
 }
 
 function showWelcomeBanner() {
@@ -248,41 +255,7 @@ async function loadCryptoPrices() {
             'DOGEUSDT': { symbol: 'DOGE', name: 'Dogecoin', icon: 'https://assets.coingecko.com/coins/images/5/small/dogecoin.png' }
         };
         
-        let html = '';
-        
-        // Process each crypto
-        data.forEach(item => {
-            const mapping = cryptoMapping[item.symbol];
-            if (mapping) {
-                const price = parseFloat(item.lastPrice);
-                const change = parseFloat(item.priceChangePercent);
-                const changeClass = change >= 0 ? 'change-positive' : 'change-negative';
-                const changeSign = change >= 0 ? '+' : '';
-                const formattedPrice = price > 1 ? 
-                    price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) :
-                    price.toLocaleString('en-US', {minimumFractionDigits: 4, maximumFractionDigits: 4});
-                
-                html += `
-                    <div class="crypto-item">
-                        <div class="crypto-info">
-                            <div class="crypto-icon">
-                                <img src="${mapping.icon}" alt="${mapping.name}" onerror="this.src='assets/crypto/placeholder.png'">
-                            </div>
-                            <div>
-                                <span class="crypto-name">${mapping.name}</span>
-                                <span class="crypto-pair">/USDT</span>
-                            </div>
-                        </div>
-                        <div class="flex align-center">
-                            <div class="crypto-price">$${formattedPrice}</div>
-                            <div class="crypto-change ${changeClass}">${changeSign}${change.toFixed(2)}%</div>
-                        </div>
-                    </div>
-                `;
-            }
-        });
-        
-        // Sort in the desired order if needed
+        // Sort in the desired order
         const orderedHtml = [];
         Object.keys(cryptoMapping).forEach(symbol => {
             const item = data.find(d => d.symbol === symbol);
@@ -318,8 +291,6 @@ async function loadCryptoPrices() {
         
         if (orderedHtml.length > 0) {
             cryptoContainer.innerHTML = orderedHtml.join('');
-        } else if (html) {
-            cryptoContainer.innerHTML = html;
         } else {
             throw new Error('No valid data received from API');
         }

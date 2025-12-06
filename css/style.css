@@ -3627,3 +3627,169 @@ body:not(.no-tabbar) .page {
 .banner-video {
     display: none !important;
 }
+/* Вертикальная карусель для VIP в get.js */
+.custom-vip-carousel {
+    position: relative;
+    width: 345px;
+    height: 150px; /* 130px карточка + 20px предпросмотр следующей */
+    overflow: hidden;
+    border-radius: 10px;
+    margin: 0 auto 15px;
+    background: rgba(0, 0, 0, 0.1);
+    cursor: grab;
+}
+
+.custom-vip-carousel:active {
+    cursor: grabbing;
+}
+
+.custom-vip-carousel .carousel-track {
+    display: flex;
+    flex-direction: column;
+    height: calc(130px * 6 + 20px); /* 6 карточек по 130px + 20px предпросмотр */
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+.custom-vip-carousel .vip-slide {
+    flex: 0 0 130px; /* высота карточки */
+    height: 130px;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    transition: opacity 0.3s ease;
+}
+
+.custom-vip-carousel .vip-slide.active .vip-card {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.custom-vip-carousel .vip-card {
+    width: 345px;
+    height: 130px;
+    border-radius: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: none;
+    transition: box-shadow 0.3s ease;
+}
+
+.custom-vip-carousel .vip-title {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 24px;
+    font-weight: 900;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    z-index: 2;
+}
+
+.custom-vip-carousel .vip-status {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    z-index: 2;
+}
+
+.custom-vip-carousel .vip-image {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.custom-vip-carousel .vip-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+/* Кнопки навигации (скрыты) */
+.custom-vip-carousel .carousel-btn {
+    display: none !important;
+}
+
+/* Индикаторы (скрыты) */
+.custom-vip-carousel .carousel-indicators {
+    display: none !important;
+}
+
+/* Адаптация для мобильных экранов */
+@media (max-width: 480px) {
+    .custom-vip-carousel {
+        width: 100%;
+        max-width: 345px;
+        height: 150px;
+    }
+    
+    .custom-vip-carousel .vip-card {
+        width: 100%;
+        max-width: 345px;
+        height: 130px;
+    }
+    
+    .custom-vip-carousel .vip-title {
+        font-size: 22px;
+    }
+    
+    .custom-vip-carousel .vip-image {
+        width: 90px;
+        height: 90px;
+    }
+}
+
+@media (max-width: 375px) {
+    .custom-vip-carousel {
+        height: 145px;
+    }
+    
+    .custom-vip-carousel .vip-card {
+        height: 125px;
+    }
+    
+    .custom-vip-carousel .vip-title {
+        font-size: 20px;
+    }
+    
+    .custom-vip-carousel .vip-image {
+        width: 85px;
+        height: 85px;
+        right: 15px;
+    }
+    
+    .custom-vip-carousel .vip-status {
+        font-size: 13px;
+    }
+    
+    .custom-vip-carousel .vip-slide {
+        flex: 0 0 125px;
+        height: 125px;
+    }
+    
+    .custom-vip-carousel .carousel-track {
+        height: calc(125px * 6 + 20px);
+    }
+}

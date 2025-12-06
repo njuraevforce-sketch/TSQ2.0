@@ -1,8 +1,13 @@
-// Get section
+// Get section - UPDATED WITH NEW VIP CAROUSEL
 import { t } from './translate.js';
 
 export default function renderGet() {
     const lang = localStorage.getItem('gly_language') || 'en';
+    const user = window.getCurrentUser();
+    const currentVipLevel = user ? user.vip_level : 1;
+    
+    // Определяем, какие уровни разблокированы
+    const unlockedLevels = user ? Array.from({length: currentVipLevel}, (_, i) => i + 1) : [1];
     
     return `
         <div class="card padding">
@@ -36,136 +41,141 @@ export default function renderGet() {
                 <div class="process-step" id="profit-result" style="display: none; color: #52c41a; font-weight: bold;"></div>
             </div>
 
-            <!-- VIP carousel (NEW VERSION) -->
+            <!-- НОВАЯ VIP КАРУСЕЛЬ КАК В ПРИМЕРЕ -->
             <div class="vip-section">
                 <div class="section-title" data-translate="vip_levels">VIP Levels</div>
                 
-                <div class="vip-carousel-container">
-                    <!-- VIP Carousel wrapper -->
-                    <div class="uni-swiper-wrapper" id="vip-carousel-wrapper">
-                        <div class="uni-swiper-slides" id="vip-carousel">
+                <div class="vip-swiper-container">
+                    <div class="uni-swiper-wrapper">
+                        <div class="uni-swiper-slides" id="vip-slides" style="left: 0px; right: 0px; bottom: 0;">
                             <!-- VIP 1 -->
-                            <div class="vip-card" data-level="1">
-                                <div class="vip-card-inner">
-                                    <div class="vip-card-header">
-                                        <div class="vip-level-name">VIP1</div>
-                                        <div class="vip-status">
-                                            <i class="fas fa-lock"></i>
-                                            <span data-translate="locked">Locked</span>
+                            <div class="uni-swiper-slide-frame" style="width: 100%; height: 100%;">
+                                <div class="uni-swiper-item" style="position: absolute; width: 100%; height: 100%; transform: translate(0px, 0%) translateZ(0px);">
+                                    <div class="swiper-itemWrap flex flex-direction justify-between padding" 
+                                         style="background: url('assets/vip1.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
+                                        <div class="text-bold text-xxl">VIP1</div>
+                                        <div class="flex align-center">
+                                            <div class="u-icon u-icon--right">
+                                                <span class="u-icon__icon ${unlockedLevels.includes(1) ? 'uicon-lock-opened-fill' : 'uicon-lock-fill'}" 
+                                                      style="font-size: 16px; line-height: 16px; font-weight: normal; top: 0px; color: ${unlockedLevels.includes(1) ? '#52c41a' : '#606266'};">
+                                                    <span>${unlockedLevels.includes(1) ? '' : ''}</span>
+                                                </span>
+                                            </div>
+                                            ${t('unlocked_this_level')}
                                         </div>
-                                    </div>
-                                    <div class="vip-icon-wrapper">
-                                        <img src="assets/vipicon1.png?v=${Date.now()}" alt="VIP 1" class="vip-icon">
-                                    </div>
-                                    <div class="vip-details">
-                                        <div class="vip-amount-range">0-299 USDT</div>
-                                        <div class="vip-percent">2.2% daily</div>
-                                        <div class="vip-signals">3 quantum signals</div>
+                                        <div class="swiperPo">
+                                            <img src="assets/vipicon1.png?v=${Date.now()}" draggable="false" alt="VIP1">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- VIP 2 -->
-                            <div class="vip-card" data-level="2">
-                                <div class="vip-card-inner">
-                                    <div class="vip-card-header">
-                                        <div class="vip-level-name">VIP2</div>
-                                        <div class="vip-status">
-                                            <i class="fas fa-lock"></i>
-                                            <span data-translate="locked">Locked</span>
+                            <div class="uni-swiper-slide-frame" style="width: 100%; height: 100%;">
+                                <div class="uni-swiper-item" style="position: absolute; width: 100%; height: 100%; transform: translate(0px, 100%) translateZ(0px);">
+                                    <div class="swiper-itemWrap flex flex-direction justify-between padding" 
+                                         style="background: url('assets/vip2.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
+                                        <div class="text-bold text-xxl">VIP2</div>
+                                        <div class="flex align-center">
+                                            <div class="u-icon u-icon--right">
+                                                <span class="u-icon__icon ${unlockedLevels.includes(2) ? 'uicon-lock-opened-fill' : 'uicon-lock-fill'}" 
+                                                      style="font-size: 16px; line-height: 16px; font-weight: normal; top: 0px; color: ${unlockedLevels.includes(2) ? '#52c41a' : '#606266'};">
+                                                    <span>${unlockedLevels.includes(2) ? '' : ''}</span>
+                                                </span>
+                                            </div>
+                                            ${t('unlocked_this_level')}
                                         </div>
-                                    </div>
-                                    <div class="vip-icon-wrapper">
-                                        <img src="assets/vipicon2.png?v=${Date.now()}" alt="VIP 2" class="vip-icon">
-                                    </div>
-                                    <div class="vip-details">
-                                        <div class="vip-amount-range">300-1000 USDT</div>
-                                        <div class="vip-percent">2.8% daily</div>
-                                        <div class="vip-signals">3 signals, 2 active refs</div>
+                                        <div class="swiperPo">
+                                            <img src="assets/vipicon2.png?v=${Date.now()}" draggable="false" alt="VIP2">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- VIP 3 -->
-                            <div class="vip-card" data-level="3">
-                                <div class="vip-card-inner">
-                                    <div class="vip-card-header">
-                                        <div class="vip-level-name">VIP3</div>
-                                        <div class="vip-status">
-                                            <i class="fas fa-lock"></i>
-                                            <span data-translate="locked">Locked</span>
+                            <div class="uni-swiper-slide-frame" style="width: 100%; height: 100%;">
+                                <div class="uni-swiper-item" style="position: absolute; width: 100%; height: 100%; transform: translate(0px, 200%) translateZ(0px);">
+                                    <div class="swiper-itemWrap flex flex-direction justify-between padding" 
+                                         style="background: url('assets/vip3.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
+                                        <div class="text-bold text-xxl">VIP3</div>
+                                        <div class="flex align-center">
+                                            <div class="u-icon u-icon--right">
+                                                <span class="u-icon__icon ${unlockedLevels.includes(3) ? 'uicon-lock-opened-fill' : 'uicon-lock-fill'}" 
+                                                      style="font-size: 16px; line-height: 16px; font-weight: normal; top: 0px; color: ${unlockedLevels.includes(3) ? '#52c41a' : '#606266'};">
+                                                    <span>${unlockedLevels.includes(3) ? '' : ''}</span>
+                                                </span>
+                                            </div>
+                                            ${t('unlocked_this_level')}
                                         </div>
-                                    </div>
-                                    <div class="vip-icon-wrapper">
-                                        <img src="assets/vipicon3.png?v=${Date.now()}" alt="VIP 3" class="vip-icon">
-                                    </div>
-                                    <div class="vip-details">
-                                        <div class="vip-amount-range">1000-3500 USDT</div>
-                                        <div class="vip-percent">3.5% daily</div>
-                                        <div class="vip-signals">3 signals, 5 active refs</div>
+                                        <div class="swiperPo">
+                                            <img src="assets/vipicon3.png?v=${Date.now()}" draggable="false" alt="VIP3">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- VIP 4 -->
-                            <div class="vip-card" data-level="4">
-                                <div class="vip-card-inner">
-                                    <div class="vip-card-header">
-                                        <div class="vip-level-name">VIP4</div>
-                                        <div class="vip-status">
-                                            <i class="fas fa-lock"></i>
-                                            <span data-translate="locked">Locked</span>
+                            <div class="uni-swiper-slide-frame" style="width: 100%; height: 100%;">
+                                <div class="uni-swiper-item" style="position: absolute; width: 100%; height: 100%; transform: translate(0px, 300%) translateZ(0px);">
+                                    <div class="swiper-itemWrap flex flex-direction justify-between padding" 
+                                         style="background: url('assets/vip4.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
+                                        <div class="text-bold text-xxl">VIP4</div>
+                                        <div class="flex align-center">
+                                            <div class="u-icon u-icon--right">
+                                                <span class="u-icon__icon ${unlockedLevels.includes(4) ? 'uicon-lock-opened-fill' : 'uicon-lock-fill'}" 
+                                                      style="font-size: 16px; line-height: 16px; font-weight: normal; top: 0px; color: ${unlockedLevels.includes(4) ? '#52c41a' : '#606266'};">
+                                                    <span>${unlockedLevels.includes(4) ? '' : ''}</span>
+                                                </span>
+                                            </div>
+                                            ${t('unlocked_this_level')}
                                         </div>
-                                    </div>
-                                    <div class="vip-icon-wrapper">
-                                        <img src="assets/vipicon4.png?v=${Date.now()}" alt="VIP 4" class="vip-icon">
-                                    </div>
-                                    <div class="vip-details">
-                                        <div class="vip-amount-range">3500-6000 USDT</div>
-                                        <div class="vip-percent">4.0% daily</div>
-                                        <div class="vip-signals">3 signals, 8 active refs</div>
+                                        <div class="swiperPo">
+                                            <img src="assets/vipicon4.png?v=${Date.now()}" draggable="false" alt="VIP4">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- VIP 5 -->
-                            <div class="vip-card" data-level="5">
-                                <div class="vip-card-inner">
-                                    <div class="vip-card-header">
-                                        <div class="vip-level-name">VIP5</div>
-                                        <div class="vip-status">
-                                            <i class="fas fa-lock"></i>
-                                            <span data-translate="locked">Locked</span>
+                            <div class="uni-swiper-slide-frame" style="width: 100%; height: 100%;">
+                                <div class="uni-swiper-item" style="position: absolute; width: 100%; height: 100%; transform: translate(0px, 400%) translateZ(0px);">
+                                    <div class="swiper-itemWrap flex flex-direction justify-between padding" 
+                                         style="background: url('assets/vip5.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
+                                        <div class="text-bold text-xxl">VIP5</div>
+                                        <div class="flex align-center">
+                                            <div class="u-icon u-icon--right">
+                                                <span class="u-icon__icon ${unlockedLevels.includes(5) ? 'uicon-lock-opened-fill' : 'uicon-lock-fill'}" 
+                                                      style="font-size: 16px; line-height: 16px; font-weight: normal; top: 0px; color: ${unlockedLevels.includes(5) ? '#52c41a' : '#606266'};">
+                                                    <span>${unlockedLevels.includes(5) ? '' : ''}</span>
+                                                </span>
+                                            </div>
+                                            ${t('unlocked_this_level')}
                                         </div>
-                                    </div>
-                                    <div class="vip-icon-wrapper">
-                                        <img src="assets/vipicon5.png?v=${Date.now()}" alt="VIP 5" class="vip-icon">
-                                    </div>
-                                    <div class="vip-details">
-                                        <div class="vip-amount-range">6000-12000 USDT</div>
-                                        <div class="vip-percent">5.0% daily</div>
-                                        <div class="vip-signals">3 signals, 15 active refs</div>
+                                        <div class="swiperPo">
+                                            <img src="assets/vipicon5.png?v=${Date.now()}" draggable="false" alt="VIP5">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- VIP 6 -->
-                            <div class="vip-card" data-level="6">
-                                <div class="vip-card-inner">
-                                    <div class="vip-card-header">
-                                        <div class="vip-level-name">VIP6</div>
-                                        <div class="vip-status">
-                                            <i class="fas fa-lock"></i>
-                                            <span data-translate="locked">Locked</span>
+                            <div class="uni-swiper-slide-frame" style="width: 100%; height: 100%;">
+                                <div class="uni-swiper-item" style="position: absolute; width: 100%; height: 100%; transform: translate(0px, 500%) translateZ(0px);">
+                                    <div class="swiper-itemWrap flex flex-direction justify-between padding" 
+                                         style="background: url('assets/vip6.png?v=${Date.now()}') 0% 0% / 100% 100% no-repeat;">
+                                        <div class="text-bold text-xxl">VIP6</div>
+                                        <div class="flex align-center">
+                                            <div class="u-icon u-icon--right">
+                                                <span class="u-icon__icon ${unlockedLevels.includes(6) ? 'uicon-lock-opened-fill' : 'uicon-lock-fill'}" 
+                                                      style="font-size: 16px; line-height: 16px; font-weight: normal; top: 0px; color: ${unlockedLevels.includes(6) ? '#52c41a' : '#606266'};">
+                                                    <span>${unlockedLevels.includes(6) ? '' : ''}</span>
+                                                </span>
+                                            </div>
+                                            ${t('unlocked_this_level')}
                                         </div>
-                                    </div>
-                                    <div class="vip-icon-wrapper">
-                                        <img src="assets/vipicon6.png?v=${Date.now()}" alt="VIP 6" class="vip-icon">
-                                    </div>
-                                    <div class="vip-details">
-                                        <div class="vip-amount-range">12000-20000 USDT</div>
-                                        <div class="vip-percent">6.0% daily</div>
-                                        <div class="vip-signals">3 signals, 25 active refs</div>
+                                        <div class="swiperPo">
+                                            <img src="assets/vipicon6.png?v=${Date.now()}" draggable="false" alt="VIP6">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -173,17 +183,46 @@ export default function renderGet() {
                     </div>
                 </div>
                 
+                <!-- Навигационные точки -->
+                <div class="vip-carousel-nav" id="vip-nav">
+                    <div class="vip-nav-btn ${currentVipLevel === 1 ? 'active' : ''}" data-index="0"></div>
+                    <div class="vip-nav-btn ${currentVipLevel === 2 ? 'active' : ''}" data-index="1"></div>
+                    <div class="vip-nav-btn ${currentVipLevel === 3 ? 'active' : ''}" data-index="2"></div>
+                    <div class="vip-nav-btn ${currentVipLevel === 4 ? 'active' : ''}" data-index="3"></div>
+                    <div class="vip-nav-btn ${currentVipLevel === 5 ? 'active' : ''}" data-index="4"></div>
+                    <div class="vip-nav-btn ${currentVipLevel === 6 ? 'active' : ''}" data-index="5"></div>
+                </div>
+                
+                <!-- Индикатор текущего уровня -->
+                <div class="current-vip-indicator" id="current-vip-indicator">
+                    ${t('current_vip_level')}: <span class="vip-level">VIP${currentVipLevel}</span>
+                </div>
+                
+                <!-- Описание VIP уровня -->
                 <div class="vip-description" id="vip-description">
-                    ${t('vip_description_1')}
+                    ${getVipDescription(currentVipLevel)}
                 </div>
             </div>
         </div>
     `;
 }
 
+// Функция для получения описания VIP уровня
+function getVipDescription(level) {
+    const descriptions = {
+        1: t('vip_description_1'),
+        2: t('vip_description_2'),
+        3: t('vip_description_3'),
+        4: t('vip_description_4'),
+        5: t('vip_description_5'),
+        6: t('vip_description_6')
+    };
+    return descriptions[level] || t('vip_description_1');
+}
+
 export async function init() {
-    // Initialize VIP carousel
-    initVipCarousel();
+    // Инициализация новой VIP карусели
+    initNewVipCarousel();
     
     // Update UTC time
     updateUTCTime();
@@ -196,173 +235,104 @@ export async function init() {
     document.getElementById('quant-btn').addEventListener('click', startQuantification);
 }
 
-function initVipCarousel() {
-    const carouselWrapper = document.getElementById('vip-carousel-wrapper');
-    const carousel = document.getElementById('vip-carousel');
-    const cards = document.querySelectorAll('.vip-card');
-    const description = document.getElementById('vip-description');
+function initNewVipCarousel() {
+    const slides = document.getElementById('vip-slides');
+    const navButtons = document.querySelectorAll('.vip-nav-btn');
+    const user = window.getCurrentUser();
+    const currentLevel = user ? user.vip_level : 1;
     
-    if (!carousel || cards.length === 0 || !description) {
-        console.error('Carousel elements not found');
-        return;
-    }
+    if (!slides || navButtons.length === 0) return;
     
-    let currentIndex = 0;
-    let startX = 0;
-    let isDragging = false;
+    // Устанавливаем начальную позицию карусели (показываем текущий уровень)
+    const slideHeight = 100; // 100% на каждый слайд
+    const initialTranslate = (currentLevel - 1) * slideHeight;
+    slides.style.transform = `translateY(-${initialTranslate}%)`;
     
-    const vipDescriptions = [
-        t('vip_description_1'),
-        t('vip_description_2'),
-        t('vip_description_3'),
-        t('vip_description_4'),
-        t('vip_description_5'),
-        t('vip_description_6')
-    ];
-    
-    // Set initial card positions
-    function updateCarouselPositions() {
-        cards.forEach((card, index) => {
-            card.style.transform = `translateX(${(index - currentIndex) * 100}%)`;
-            card.style.opacity = index === currentIndex ? '1' : '0.5';
-            card.style.pointerEvents = index === currentIndex ? 'auto' : 'none';
-        });
-    }
-    
-    // Update carousel based on current index
-    function updateCarousel() {
-        // Update cards
-        cards.forEach((card, index) => {
-            card.classList.remove('active');
-            if (index === currentIndex) {
-                card.classList.add('active');
+    // Обработчики для навигационных точек
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const index = parseInt(btn.getAttribute('data-index'));
+            
+            // Обновляем активную точку
+            navButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Прокручиваем карусель
+            slides.style.transform = `translateY(-${index * slideHeight}%)`;
+            
+            // Обновляем описание
+            updateVipDescription(index + 1);
+            
+            // Обновляем индикатор текущего уровня (только для визуального отображения)
+            const indicator = document.getElementById('current-vip-indicator');
+            if (indicator) {
+                indicator.innerHTML = `${t('viewing_vip_level')}: <span class="vip-level">VIP${index + 1}</span>`;
             }
         });
-        
-        // Update description
-        if (vipDescriptions[currentIndex]) {
-            description.textContent = vipDescriptions[currentIndex];
-        }
-        
-        // Update positions
-        updateCarouselPositions();
-    }
+    });
     
-    // Initialize carousel with user's current VIP level
-    function initializeWithUserLevel() {
-        const user = window.getCurrentUser();
-        if (user && user.vip_level) {
-            // Find card with matching level (data-level starts from 1)
-            const userLevelIndex = user.vip_level - 1; // Convert to 0-based index
-            if (userLevelIndex >= 0 && userLevelIndex < cards.length) {
-                currentIndex = userLevelIndex;
+    // Автоматическая прокрутка к текущему уровню пользователя
+    setTimeout(() => {
+        navButtons.forEach(btn => {
+            const index = parseInt(btn.getAttribute('data-index'));
+            if (index === currentLevel - 1) {
+                btn.classList.add('active');
+            }
+        });
+    }, 100);
+    
+    // Добавляем свайп-жесты для мобильных устройств
+    let startY = 0;
+    let isSwiping = false;
+    
+    slides.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+        isSwiping = true;
+    });
+    
+    slides.addEventListener('touchmove', (e) => {
+        if (!isSwiping) return;
+        e.preventDefault();
+    });
+    
+    slides.addEventListener('touchend', (e) => {
+        if (!isSwiping) return;
+        isSwiping = false;
+        
+        const endY = e.changedTouches[0].clientY;
+        const diffY = startY - endY;
+        const threshold = 50;
+        
+        if (Math.abs(diffY) > threshold) {
+            const currentIndex = Array.from(navButtons).findIndex(btn => btn.classList.contains('active'));
+            let newIndex = currentIndex;
+            
+            if (diffY > 0 && currentIndex < navButtons.length - 1) {
+                newIndex = currentIndex + 1; // Свайп вверх
+            } else if (diffY < 0 && currentIndex > 0) {
+                newIndex = currentIndex - 1; // Свайп вниз
+            }
+            
+            if (newIndex !== currentIndex && navButtons[newIndex]) {
+                navButtons.forEach(b => b.classList.remove('active'));
+                navButtons[newIndex].classList.add('active');
+                slides.style.transform = `translateY(-${newIndex * slideHeight}%)`;
+                updateVipDescription(newIndex + 1);
                 
-                // Update unlocked status for cards up to user's level
-                cards.forEach((card, index) => {
-                    const level = parseInt(card.getAttribute('data-level'));
-                    const statusEl = card.querySelector('.vip-status');
-                    if (statusEl) {
-                        if (level <= user.vip_level) {
-                            statusEl.innerHTML = '<i class="fas fa-lock-open"></i> <span data-translate="unlocked_this_level">Unlocked this level</span>';
-                        } else {
-                            statusEl.innerHTML = '<i class="fas fa-lock"></i> <span data-translate="locked">Locked</span>';
-                        }
-                    }
-                });
+                const indicator = document.getElementById('current-vip-indicator');
+                if (indicator) {
+                    indicator.innerHTML = `${t('viewing_vip_level')}: <span class="vip-level">VIP${newIndex + 1}</span>`;
+                }
             }
         }
-        
-        updateCarousel();
+    });
+}
+
+function updateVipDescription(level) {
+    const description = document.getElementById('vip-description');
+    if (description) {
+        description.textContent = getVipDescription(level);
     }
-    
-    // Call initialization
-    initializeWithUserLevel();
-    
-    // Touch events for mobile swipe
-    carouselWrapper.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
-        isDragging = true;
-    });
-    
-    carouselWrapper.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
-        e.preventDefault();
-    });
-    
-    carouselWrapper.addEventListener('touchend', (e) => {
-        if (!isDragging) return;
-        isDragging = false;
-        
-        const endX = e.changedTouches[0].clientX;
-        const diffX = startX - endX;
-        const threshold = 50;
-        
-        if (Math.abs(diffX) > threshold) {
-            if (diffX > 0 && currentIndex < cards.length - 1) {
-                // Swipe left, go to next
-                currentIndex++;
-            } else if (diffX < 0 && currentIndex > 0) {
-                // Swipe right, go to previous
-                currentIndex--;
-            }
-            updateCarousel();
-        }
-    });
-    
-    // Mouse drag events for desktop
-    carouselWrapper.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        startX = e.pageX;
-        carouselWrapper.style.cursor = 'grabbing';
-    });
-    
-    carouselWrapper.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        e.preventDefault();
-    });
-    
-    document.addEventListener('mouseup', (e) => {
-        if (!isDragging) return;
-        isDragging = false;
-        carouselWrapper.style.cursor = 'grab';
-        
-        const endX = e.pageX;
-        const diffX = startX - endX;
-        const threshold = 50;
-        
-        if (Math.abs(diffX) > threshold) {
-            if (diffX > 0 && currentIndex < cards.length - 1) {
-                currentIndex++;
-            } else if (diffX < 0 && currentIndex > 0) {
-                currentIndex--;
-            }
-            updateCarousel();
-        }
-    });
-    
-    // Click navigation for cards (optional)
-    cards.forEach((card, index) => {
-        card.addEventListener('click', (e) => {
-            if (index !== currentIndex) {
-                currentIndex = index;
-                updateCarousel();
-            }
-        });
-    });
-    
-    // Keyboard navigation for testing
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' && currentIndex < cards.length - 1) {
-            currentIndex++;
-            updateCarousel();
-        } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
-            currentIndex--;
-            updateCarousel();
-        }
-    });
-    
-    // Update positions on resize
-    window.addEventListener('resize', updateCarouselPositions);
 }
 
 async function loadUserData() {
@@ -372,17 +342,20 @@ async function loadUserData() {
         return;
     }
     
-    // Check and update signals
+    // Проверяем и обновляем сигналы при загрузке страницы
     if (window.glyApp) {
         await window.glyApp.checkAndUpdateSignals();
         await window.glyApp.updateVipLevel();
     }
     
-    // Update signals display
-    updateSignalsDisplay(user.signals_available);
+    // Обновляем данные пользователя после проверки
+    const updatedUser = window.getCurrentUser();
     
-    // Update VIP status in carousel
-    updateVipStatusInCarousel(user.vip_level);
+    // Update signals display
+    updateSignalsDisplay(updatedUser.signals_available);
+    
+    // Обновляем отображение текущего VIP уровня
+    updateCurrentVipDisplay(updatedUser.vip_level);
 }
 
 function updateSignalsDisplay(signalsAvailable) {
@@ -406,33 +379,31 @@ function updateSignalsDisplay(signalsAvailable) {
     });
 }
 
-function updateVipStatusInCarousel(userVipLevel) {
-    const cards = document.querySelectorAll('.vip-card');
-    cards.forEach(card => {
-        const level = parseInt(card.getAttribute('data-level'));
-        const statusEl = card.querySelector('.vip-status');
-        
-        if (statusEl) {
-            if (level <= userVipLevel) {
-                statusEl.innerHTML = '<i class="fas fa-lock-open"></i> <span data-translate="unlocked_this_level">Unlocked this level</span>';
-                card.classList.add('unlocked');
-                card.classList.remove('locked');
-            } else {
-                statusEl.innerHTML = '<i class="fas fa-lock"></i> <span data-translate="locked">Locked</span>';
-                card.classList.add('locked');
-                card.classList.remove('unlocked');
-            }
-        }
-        
-        // Highlight current level
-        if (level === userVipLevel) {
-            card.style.border = '2px solid #4CAF50';
-            card.style.boxShadow = '0 0 15px rgba(76, 175, 80, 0.3)';
-        } else {
-            card.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-            card.style.boxShadow = 'none';
+function updateCurrentVipDisplay(vipLevel) {
+    // Обновляем индикатор текущего уровня
+    const indicator = document.getElementById('current-vip-indicator');
+    if (indicator) {
+        indicator.innerHTML = `${t('current_vip_level')}: <span class="vip-level">VIP${vipLevel}</span>`;
+    }
+    
+    // Обновляем навигационные точки
+    const navButtons = document.querySelectorAll('.vip-nav-btn');
+    navButtons.forEach((btn, index) => {
+        btn.classList.remove('active');
+        if (index === vipLevel - 1) {
+            btn.classList.add('active');
         }
     });
+    
+    // Прокручиваем карусель к текущему уровню
+    const slides = document.getElementById('vip-slides');
+    if (slides) {
+        const slideHeight = 100;
+        slides.style.transform = `translateY(-${(vipLevel - 1) * slideHeight}%)`;
+    }
+    
+    // Обновляем описание
+    updateVipDescription(vipLevel);
 }
 
 async function startQuantification() {
@@ -471,11 +442,11 @@ async function startQuantification() {
         profitResult.style.display = 'block';
         
         // Update signals display
-        const updatedUser = window.getCurrentUser();
-        updateSignalsDisplay(updatedUser.signals_available);
+        updateSignalsDisplay(result.signals_left);
         
-        // Update VIP status in carousel
-        updateVipStatusInCarousel(updatedUser.vip_level);
+        // Update VIP level display after quantification
+        const updatedUser = window.getCurrentUser();
+        updateCurrentVipDisplay(updatedUser.vip_level);
         
         // Hide process after 3 seconds
         setTimeout(() => {
@@ -546,10 +517,10 @@ function updateUTCTime() {
     }
 }
 
-// Global function for updating VIP level display
+// Глобальная функция для обновления VIP уровня
 window.updateVipLevelDisplay = function() {
     const user = window.getCurrentUser();
     if (user) {
-        updateVipStatusInCarousel(user.vip_level);
+        updateCurrentVipDisplay(user.vip_level);
     }
 };

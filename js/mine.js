@@ -188,7 +188,7 @@ export default function renderMine() {
                             <div class="referral-info">
                                 <div class="referral-text">
                                     <h4 data-translate="telegram">Telegram</h4>
-                                    <p>@GLYSupport</p>
+                                    <p>@GLY_Support</p>
                                 </div>
                             </div>
                             <button class="copy-btn" id="copy-telegram">

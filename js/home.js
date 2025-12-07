@@ -7,22 +7,22 @@ export default function renderHome() {
     return `
         <!-- Image Carousel -->
         <div class="banner-section">
-            <div class="carousel-container" id="carousel-container">
-                <div class="carousel-track" id="carousel-track">
-                    <div class="carousel-slide">
+            <div class="home-carousel-container" id="home-carousel-container">
+                <div class="home-carousel-track" id="home-carousel-track">
+                    <div class="home-carousel-slide">
                         <img src="assets/banner.png" alt="${t('banner_1')}" data-translate-alt="banner1" loading="eager">
                     </div>
-                    <div class="carousel-slide">
+                    <div class="home-carousel-slide">
                         <img src="assets/banner1.png" alt="${t('banner_2')}" data-translate-alt="banner2" loading="eager">
                     </div>
-                    <div class="carousel-slide">
+                    <div class="home-carousel-slide">
                         <img src="assets/banner2.png" alt="${t('banner_3')}" data-translate-alt="banner3" loading="eager">
                     </div>
                 </div>
-                <div class="carousel-indicators" id="carousel-indicators">
-                    <span class="indicator active" data-index="0"></span>
-                    <span class="indicator" data-index="1"></span>
-                    <span class="indicator" data-index="2"></span>
+                <div class="home-carousel-indicators" id="home-carousel-indicators">
+                    <span class="home-indicator active" data-index="0"></span>
+                    <span class="home-indicator" data-index="1"></span>
+                    <span class="home-indicator" data-index="2"></span>
                 </div>
             </div>
         </div>
@@ -114,8 +114,8 @@ export function init() {
         });
     });
 
-    // Initialize carousel
-    initCarousel();
+    // Initialize home carousel
+    initHomeCarousel();
     
     // Load crypto prices
     loadCryptoPrices();
@@ -127,13 +127,13 @@ export function init() {
     }, 1000);
 }
 
-function initCarousel() {
-    const track = document.getElementById('carousel-track');
-    const slides = document.querySelectorAll('.carousel-slide');
-    const indicators = document.querySelectorAll('.indicator');
+function initHomeCarousel() {
+    const track = document.getElementById('home-carousel-track');
+    const slides = document.querySelectorAll('.home-carousel-slide');
+    const indicators = document.querySelectorAll('.home-indicator');
     
     if (!track || slides.length === 0) {
-        console.warn('Carousel elements not found');
+        console.warn('Home carousel elements not found');
         return;
     }
     
@@ -141,19 +141,19 @@ function initCarousel() {
     const totalSlides = slides.length;
     let autoSlideInterval;
     
-    console.log('Carousel initialized with', totalSlides, 'slides');
+    console.log('Home carousel initialized with', totalSlides, 'slides');
     
     // Проверка загрузки изображений
     slides.forEach((slide, index) => {
         const img = slide.querySelector('img');
         if (img) {
             img.onload = () => {
-                console.log(`✅ Изображение ${index + 1} загружено:`, img.src);
-                slide.style.opacity = '1'; // Гарантируем видимость
+                console.log(`✅ Home carousel image ${index + 1} loaded:`, img.src);
+                slide.style.opacity = '1';
             };
             img.onerror = () => {
-                console.error(`❌ Ошибка загрузки изображения ${index + 1}:`, img.src);
-                slide.innerHTML = `<div style="width:100%;height:100%;background:#ff0000;color:white;display:flex;align-items:center;justify-content:center;">ERROR: ${img.src}</div>`;
+                console.error(`❌ Home carousel image error ${index + 1}:`, img.src);
+                slide.innerHTML = `<div style="width:100%;height:100%;background:#36454f;color:white;display:flex;align-items:center;justify-content:center;">Image: ${img.src.split('/').pop()}</div>`;
             };
         }
     });
@@ -245,7 +245,7 @@ function initCarousel() {
     startAutoSlide();
     
     // Логирование для отладки
-    console.log('Carousel initialized:', {
+    console.log('Home carousel initialized:', {
         track: track,
         slides: slides.length,
         indicators: indicators.length,

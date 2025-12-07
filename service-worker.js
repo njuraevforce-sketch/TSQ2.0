@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gly-platform-v6.2';
+const CACHE_NAME = 'gly-platform-v6.3';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -50,7 +50,7 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                console.log('Cache opened for version: v6.1');
+                console.log('Cache opened for version: v6.3');
                 // Пытаемся добавить все файлы в кеш
                 return cache.addAll(urlsToCache)
                     .then(() => {
@@ -96,7 +96,7 @@ self.addEventListener('activate', event => {
                 clients.forEach(client => {
                     client.postMessage({
                         type: 'NEW_VERSION',
-                        version: '6.2'
+                        version: '6.3'
                     });
                 });
             });
@@ -137,7 +137,7 @@ self.addEventListener('fetch', event => {
                     // Для CSS и JS файлов - проверяем версию
                     if (event.request.url.match(/\.(css|js)$/)) {
                         const url = new URL(event.request.url);
-                        if (url.searchParams.get('v') !== '6.2') {
+                        if (url.searchParams.get('v') !== '6.3') {
                             // Обновляем файл в фоне
                             event.waitUntil(
                                 updateFileCache(event.request)
@@ -362,7 +362,7 @@ function cleanOldLocalStorage() {
     return new Promise((resolve) => {
         try {
             // Удаляем старые версии app_version
-            const versions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1'];
+            const versions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1', '6.1'];
             versions.forEach(version => {
                 if (localStorage.getItem('app_version') === version) {
                     localStorage.removeItem('app_version');
@@ -470,7 +470,7 @@ self.addEventListener('activate', event => {
             clients.forEach(client => {
                 client.postMessage({
                     type: 'FORCE_RELOAD',
-                    version: '6.2',
+                    version: '6.3',
                     reason: 'New version with scroll fixes'
                 });
             });

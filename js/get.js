@@ -52,7 +52,7 @@ export default function renderGet() {
                                     <span>Unlocked</span>
                                 </div>
                                 <div class="vip-image">
-                                    <img src="assets/vipicon1.png?v=${Date.now()}" alt="VIP 1">
+                                    <img src="assets/vipicon1.png" alt="VIP 1">
                                 </div>
                             </div>
                         </div>
@@ -66,7 +66,7 @@ export default function renderGet() {
                                     <span>Locked</span>
                                 </div>
                                 <div class="vip-image">
-                                    <img src="assets/vipicon2.png?v=${Date.now()}" alt="VIP 2">
+                                    <img src="assets/vipicon2.png" alt="VIP 2">
                                 </div>
                             </div>
                         </div>
@@ -80,7 +80,7 @@ export default function renderGet() {
                                     <span>Locked</span>
                                 </div>
                                 <div class="vip-image">
-                                    <img src="assets/vipicon3.png?v=${Date.now()}" alt="VIP 3">
+                                    <img src="assets/vipicon3.png" alt="VIP 3">
                                 </div>
                             </div>
                         </div>
@@ -94,7 +94,7 @@ export default function renderGet() {
                                     <span>Locked</span>
                                 </div>
                                 <div class="vip-image">
-                                    <img src="assets/vipicon4.png?v=${Date.now()}" alt="VIP 4">
+                                    <img src="assets/vipicon4.png" alt="VIP 4">
                                 </div>
                             </div>
                         </div>
@@ -108,7 +108,7 @@ export default function renderGet() {
                                     <span>Locked</span>
                                 </div>
                                 <div class="vip-image">
-                                    <img src="assets/vipicon5.png?v=${Date.now()}" alt="VIP 5">
+                                    <img src="assets/vipicon5.png" alt="VIP 5">
                                 </div>
                             </div>
                         </div>
@@ -122,7 +122,7 @@ export default function renderGet() {
                                     <span>Locked</span>
                                 </div>
                                 <div class="vip-image">
-                                    <img src="assets/vipicon6.png?v=${Date.now()}" alt="VIP 6">
+                                    <img src="assets/vipicon6.png" alt="VIP 6">
                                 </div>
                             </div>
                         </div>

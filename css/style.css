@@ -3628,25 +3628,6 @@ body:not(.no-tabbar) .page {
     display: none !important;
 }
 /* =========================================== */
-/* НОВЫЕ СТИЛИ ДЛЯ ВЕРТИКАЛЬНОЙ КАРУСЕЛИ VIP */
-/* =========================================== */
-
-.vip-section {
-    padding: 15px;
-    background: transparent;
-    border-radius: 10px;
-    margin: 15px 0;
-}
-
-.section-title {
-    font-weight: bold;
-    margin-bottom: 15px;
-    font-size: 18px;
-    color: #fff;
-    text-align: center;
-}
-
-/* =========================================== */
 /* СТИЛИ ДЛЯ ВЕРТИКАЛЬНОЙ КАРУСЕЛИ VIP */
 /* =========================================== */
 

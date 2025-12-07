@@ -1,192 +1,116 @@
-// Admin section - UPDATED with full monitoring and management
+// Admin section - COMPLETELY REDESIGNED for PC usability
 export default function renderAdmin() {
     return `
         <div class="admin-container">
-            <!-- Admin Header with Quick Stats -->
-            <div class="card padding" style="background: linear-gradient(135deg, #4e7771 0%, #2c4b45 100%); margin-bottom: 15px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <h2 style="color: white; margin-bottom: 5px;">Admin Dashboard</h2>
-                        <p style="color: #ccc; font-size: 12px;">Full control panel v2.0</p>
-                    </div>
-                    <div class="admin-stats">
-                        <div class="admin-stat" id="today-deposits-stat">
-                            <div class="admin-stat-value">0</div>
-                            <div class="admin-stat-label">Today Deposits</div>
-                        </div>
-                        <div class="admin-stat" id="pending-withdrawals-stat">
-                            <div class="admin-stat-value">0</div>
-                            <div class="admin-stat-label">Pending WD</div>
-                        </div>
-                        <div class="admin-stat" id="total-users-stat">
-                            <div class="admin-stat-value">0</div>
-                            <div class="admin-stat-label">Total Users</div>
-                        </div>
-                    </div>
+            <!-- Admin Header -->
+            <div class="admin-header">
+                <div class="admin-title">
+                    <h1><i class="fas fa-crown"></i> GLY Admin Panel</h1>
+                    <p>Full control panel with inline editing</p>
                 </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="card padding margin-bottom">
-                <h3 style="color: white; margin-bottom: 15px;">Quick Actions</h3>
-                <div class="quick-actions">
-                    <button class="admin-btn-quick" id="refresh-all-data">
+                <div class="admin-actions">
+                    <button class="admin-btn" id="refresh-all">
                         <i class="fas fa-sync-alt"></i> Refresh All
                     </button>
-                    <button class="admin-btn-quick" id="export-data">
-                        <i class="fas fa-download"></i> Export Data
-                    </button>
-                    <button class="admin-btn-quick" id="add-manual-deposit">
-                        <i class="fas fa-plus-circle"></i> Add Deposit
-                    </button>
-                    <button class="admin-btn-quick" id="view-system-logs">
-                        <i class="fas fa-history"></i> System Logs
+                    <button class="admin-btn btn-success" id="export-data">
+                        <i class="fas fa-download"></i> Export
                     </button>
                 </div>
             </div>
 
-            <!-- Admin Navigation - Vertical Layout -->
-            <div class="admin-nav-vertical">
-                <div class="admin-nav-item active" data-tab="overview">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Overview</span>
-                </div>
-                <div class="admin-nav-item" data-tab="users">
-                    <i class="fas fa-users"></i>
-                    <span>All Users</span>
-                </div>
-                <div class="admin-nav-item" data-tab="deposits">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <span>Deposits Monitor</span>
-                </div>
-                <div class="admin-nav-item" data-tab="withdrawals">
-                    <i class="fas fa-wallet"></i>
-                    <span>Withdrawals</span>
-                </div>
-                <div class="admin-nav-item" data-tab="referral-tree">
-                    <i class="fas fa-sitemap"></i>
-                    <span>Referral Tree</span>
-                </div>
-                <div class="admin-nav-item" data-tab="transactions">
-                    <i class="fas fa-exchange-alt"></i>
-                    <span>Transactions</span>
-                </div>
-                <div class="admin-nav-item" data-tab="balance-management">
-                    <i class="fas fa-balance-scale"></i>
-                    <span>Balance Management</span>
-                </div>
-                <div class="admin-nav-item" data-tab="settings">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
-                </div>
-            </div>
-
-            <!-- Tabs Content -->
-            <div class="admin-tabs-content">
-                <!-- Overview Tab -->
-                <div class="admin-tab active" id="overview-tab">
-                    <div class="card padding">
-                        <div class="tab-header">
-                            <h3 style="color: white;">System Overview</h3>
-                            <div class="tab-actions">
-                                <button class="admin-btn-small" id="refresh-overview">
-                                    <i class="fas fa-sync-alt"></i> Refresh
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Stats Grid -->
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-icon" style="background: #4e7771;">
-                                    <i class="fas fa-users"></i>
-                                </div>
-                                <div class="stat-content">
-                                    <div class="stat-value" id="total-users-overview">0</div>
-                                    <div class="stat-label">Total Users</div>
-                                </div>
-                            </div>
-                            
-                            <div class="stat-card">
-                                <div class="stat-icon" style="background: #52c41a;">
-                                    <i class="fas fa-money-bill-wave"></i>
-                                </div>
-                                <div class="stat-content">
-                                    <div class="stat-value" id="today-deposits-overview">0</div>
-                                    <div class="stat-label">Today Deposits</div>
-                                </div>
-                            </div>
-                            
-                            <div class="stat-card">
-                                <div class="stat-icon" style="background: #f9ae3d;">
-                                    <i class="fas fa-wallet"></i>
-                                </div>
-                                <div class="stat-content">
-                                    <div class="stat-value" id="pending-withdrawals-overview">0</div>
-                                    <div class="stat-label">Pending Withdrawals</div>
-                                </div>
-                            </div>
-                            
-                            <div class="stat-card">
-                                <div class="stat-icon" style="background: #2c4b45;">
-                                    <i class="fas fa-chart-bar"></i>
-                                </div>
-                                <div class="stat-content">
-                                    <div class="stat-value" id="total-deposits-overview">0</div>
-                                    <div class="stat-label">All Time Deposits</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Recent Activity -->
-                        <div class="margin-top">
-                            <h4 style="color: white; margin-bottom: 15px;">Recent Activity</h4>
-                            <div class="activity-list" id="recent-activity">
-                                <div style="color: #ccc; text-align: center; padding: 20px;">
-                                    <i class="fas fa-spinner fa-spin"></i> Loading...
-                                </div>
-                            </div>
-                        </div>
+            <!-- Quick Stats Dashboard -->
+            <div class="stats-dashboard">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #4e7771;">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="total-users-count">0</div>
+                        <div class="stat-label">Total Users</div>
                     </div>
                 </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #52c41a;">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="today-deposits-count">0</div>
+                        <div class="stat-label">Today's Deposits</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #f9ae3d;">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="pending-withdrawals-count">0</div>
+                        <div class="stat-label">Pending Withdrawals</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #ff4d4f;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="active-deposits-count">0</div>
+                        <div class="stat-label">Active Deposits</div>
+                    </div>
+                </div>
+            </div>
 
-                <!-- Users Tab -->
-                <div class="admin-tab" id="users-tab">
-                    <div class="card padding">
+            <!-- Main Content Tabs -->
+            <div class="admin-tabs">
+                <div class="tab-nav">
+                    <button class="tab-btn active" data-tab="users"><i class="fas fa-users"></i> Users</button>
+                    <button class="tab-btn" data-tab="withdrawals"><i class="fas fa-money-check-alt"></i> Withdrawals</button>
+                    <button class="tab-btn" data-tab="deposits"><i class="fas fa-piggy-bank"></i> Deposits</button>
+                    <button class="tab-btn" data-tab="referrals"><i class="fas fa-sitemap"></i> Referral Tree</button>
+                    <button class="tab-btn" data-tab="transactions"><i class="fas fa-exchange-alt"></i> Transactions</button>
+                    <button class="tab-btn" data-tab="quick-actions"><i class="fas fa-bolt"></i> Quick Actions</button>
+                </div>
+                
+                <div class="tab-content">
+                    <!-- Users Tab -->
+                    <div class="tab-pane active" id="users-tab">
                         <div class="tab-header">
-                            <h3 style="color: white;">All Users Management</h3>
+                            <h3><i class="fas fa-users"></i> All Users Management</h3>
                             <div class="tab-actions">
-                                <input type="text" 
-                                       id="search-users" 
-                                       placeholder="Search by ID, username or email..."
-                                       class="admin-input-small">
-                                <button class="admin-btn-small" id="add-new-user">
+                                <div class="search-box">
+                                    <input type="text" id="user-search" placeholder="Search users...">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <button class="btn-small" id="add-user-btn">
                                     <i class="fas fa-user-plus"></i> Add User
                                 </button>
-                                <button class="admin-btn-small" id="refresh-users">
+                                <button class="btn-small" id="refresh-users">
                                     <i class="fas fa-sync-alt"></i>
                                 </button>
                             </div>
                         </div>
                         
-                        <div class="users-table-container">
-                            <table class="admin-table">
+                        <div class="table-container">
+                            <table class="data-table">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Username</th>
+                                        <th>Email</th>
                                         <th>Balance</th>
                                         <th>VIP</th>
                                         <th>Signals</th>
                                         <th>Refs</th>
+                                        <th>Status</th>
                                         <th>Joined</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="users-table-body">
+                                <tbody id="users-table">
                                     <tr>
-                                        <td colspan="8" style="text-align: center; color: #ccc;">
-                                            <i class="fas fa-spinner fa-spin"></i> Loading...
+                                        <td colspan="10" class="loading-cell">
+                                            <i class="fas fa-spinner fa-spin"></i> Loading users...
                                         </td>
                                     </tr>
                                 </tbody>
@@ -199,319 +123,284 @@ export default function renderAdmin() {
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Deposits Monitor Tab -->
-                <div class="admin-tab" id="deposits-tab">
-                    <div class="card padding">
+                    <!-- Withdrawals Tab -->
+                    <div class="tab-pane" id="withdrawals-tab">
                         <div class="tab-header">
-                            <h3 style="color: white;">Deposits Monitor</h3>
+                            <h3><i class="fas fa-money-check-alt"></i> Withdrawal Requests Processing</h3>
                             <div class="tab-actions">
-                                <select id="deposit-period-filter" class="admin-select-small">
-                                    <option value="today">Today</option>
-                                    <option value="yesterday">Yesterday</option>
-                                    <option value="week">This Week</option>
-                                    <option value="month">This Month</option>
-                                    <option value="all">All Time</option>
-                                </select>
-                                <button class="admin-btn-small" id="refresh-deposits">
-                                    <i class="fas fa-sync-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Deposit Stats -->
-                        <div class="deposit-stats">
-                            <div class="deposit-stat">
-                                <div class="deposit-stat-value" id="total-deposit-count">0</div>
-                                <div class="deposit-stat-label">Total Deposits</div>
-                            </div>
-                            <div class="deposit-stat">
-                                <div class="deposit-stat-value" id="total-deposit-amount">0</div>
-                                <div class="deposit-stat-label">Total Amount (USDT)</div>
-                            </div>
-                            <div class="deposit-stat">
-                                <div class="deposit-stat-value" id="average-deposit">0</div>
-                                <div class="deposit-stat-label">Average Deposit</div>
-                            </div>
-                        </div>
-                        
-                        <div class="deposits-table-container">
-                            <table class="admin-table">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>User</th>
-                                        <th>Amount</th>
-                                        <th>Network</th>
-                                        <th>Status</th>
-                                        <th>Transaction ID</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="deposits-table-body">
-                                    <tr>
-                                        <td colspan="7" style="text-align: center; color: #ccc;">
-                                            <i class="fas fa-spinner fa-spin"></i> Loading...
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Withdrawals Tab -->
-                <div class="admin-tab" id="withdrawals-tab">
-                    <div class="card padding">
-                        <div class="tab-header">
-                            <h3 style="color: white;">Withdrawal Requests</h3>
-                            <div class="tab-actions">
-                                <select id="withdrawal-status-filter" class="admin-select-small">
-                                    <option value="pending">Pending</option>
-                                    <option value="completed">Completed</option>
-                                    <option value="cancelled">Cancelled</option>
-                                    <option value="all">All</option>
-                                </select>
-                                <button class="admin-btn-small" id="refresh-withdrawals">
+                                <div class="filter-group">
+                                    <select id="withdrawal-filter" class="filter-select">
+                                        <option value="pending">Pending</option>
+                                        <option value="all">All Requests</option>
+                                        <option value="completed">Completed</option>
+                                        <option value="cancelled">Cancelled</option>
+                                    </select>
+                                </div>
+                                <button class="btn-small" id="refresh-withdrawals">
                                     <i class="fas fa-sync-alt"></i> Refresh
                                 </button>
                             </div>
                         </div>
                         
-                        <div class="withdrawals-table-container">
-                            <table class="admin-table">
+                        <div class="table-container">
+                            <table class="data-table">
                                 <thead>
                                     <tr>
-                                        <th>Date</th>
+                                        <th>ID</th>
                                         <th>User</th>
                                         <th>Amount</th>
                                         <th>Network</th>
                                         <th>Address</th>
+                                        <th>Requested</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="withdrawals-table-body">
+                                <tbody id="withdrawals-table">
                                     <tr>
-                                        <td colspan="7" style="text-align: center; color: #ccc;">
-                                            <i class="fas fa-spinner fa-spin"></i> Loading...
+                                        <td colspan="8" class="loading-cell">
+                                            <i class="fas fa-spinner fa-spin"></i> Loading withdrawal requests...
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                </div>
 
-                <!-- Referral Tree Tab -->
-                <div class="admin-tab" id="referral-tree-tab">
-                    <div class="card padding">
+                    <!-- Deposits Tab -->
+                    <div class="tab-pane" id="deposits-tab">
                         <div class="tab-header">
-                            <h3 style="color: white;">Referral Tree Explorer</h3>
+                            <h3><i class="fas fa-piggy-bank"></i> Deposits Monitoring</h3>
                             <div class="tab-actions">
-                                <input type="text" 
-                                       id="search-user-tree" 
-                                       placeholder="Enter user ID or username..."
-                                       class="admin-input-small">
-                                <button class="admin-btn-small" id="load-referral-tree">
-                                    <i class="fas fa-search"></i> Load Tree
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="referral-tree-container" id="referral-tree-container">
-                            <div style="color: #ccc; text-align: center; padding: 40px;">
-                                <i class="fas fa-sitemap" style="font-size: 48px; margin-bottom: 15px;"></i>
-                                <p>Enter a user ID or username to load their referral tree</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Transactions Tab -->
-                <div class="admin-tab" id="transactions-tab">
-                    <div class="card padding">
-                        <div class="tab-header">
-                            <h3 style="color: white;">All Transactions</h3>
-                            <div class="tab-actions">
-                                <select id="transaction-type-filter" class="admin-select-small">
-                                    <option value="">All Types</option>
-                                    <option value="deposit">Deposits</option>
-                                    <option value="withdrawal">Withdrawals</option>
-                                    <option value="quantification">Quantification</option>
-                                    <option value="referral">Referrals</option>
-                                </select>
-                                <input type="date" id="transaction-date-filter" class="admin-input-small">
-                                <button class="admin-btn-small" id="refresh-transactions">
+                                <div class="filter-group">
+                                    <select id="deposit-period-filter" class="filter-select">
+                                        <option value="today">Today</option>
+                                        <option value="yesterday">Yesterday</option>
+                                        <option value="week">This Week</option>
+                                        <option value="month">This Month</option>
+                                        <option value="all">All Time</option>
+                                    </select>
+                                </div>
+                                <button class="btn-small" id="refresh-deposits">
                                     <i class="fas fa-sync-alt"></i>
                                 </button>
                             </div>
                         </div>
                         
-                        <div class="transactions-table-container">
-                            <table class="admin-table">
+                        <div class="table-container">
+                            <table class="data-table">
                                 <thead>
                                     <tr>
-                                        <th>Date</th>
+                                        <th>ID</th>
                                         <th>User</th>
-                                        <th>Type</th>
                                         <th>Amount</th>
+                                        <th>Network</th>
+                                        <th>Time</th>
                                         <th>Status</th>
-                                        <th>Description</th>
-                                        <th>Actions</th>
+                                        <th>Transaction</th>
                                     </tr>
                                 </thead>
-                                <tbody id="transactions-table-body">
+                                <tbody id="deposits-table">
                                     <tr>
-                                        <td colspan="7" style="text-align: center; color: #ccc;">
-                                            <i class="fas fa-spinner fa-spin"></i> Loading...
+                                        <td colspan="7" class="loading-cell">
+                                            <i class="fas fa-spinner fa-spin"></i> Loading deposits...
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                </div>
 
-                <!-- Balance Management Tab -->
-                <div class="admin-tab" id="balance-management-tab">
-                    <div class="card padding">
+                    <!-- Referrals Tab -->
+                    <div class="tab-pane" id="referrals-tab">
                         <div class="tab-header">
-                            <h3 style="color: white;">Balance Management</h3>
-                            <p style="color: #ccc; font-size: 12px;">Direct balance adjustments for users</p>
+                            <h3><i class="fas fa-sitemap"></i> Referral Tree Explorer</h3>
+                            <div class="tab-actions">
+                                <div class="search-box">
+                                    <input type="text" id="referral-search" placeholder="Enter user ID or username...">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <button class="btn-small" id="load-referral-tree">
+                                    <i class="fas fa-search"></i> Load Tree
+                                </button>
+                            </div>
                         </div>
                         
-                        <div class="balance-management-form">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label style="color: #fff; font-size: 14px;">Select User</label>
-                                    <select id="balance-user-select" class="admin-input" style="width: 100%;">
-                                        <option value="">Search user...</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label style="color: #fff; font-size: 14px;">Current Balance</label>
-                                    <input type="text" 
-                                           id="current-user-balance" 
-                                           class="admin-input"
-                                           readonly
-                                           placeholder="Select user first">
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label style="color: #fff; font-size: 14px;">Action</label>
-                                    <select id="balance-action" class="admin-input">
-                                        <option value="add">Add Balance</option>
-                                        <option value="subtract">Subtract Balance</option>
-                                        <option value="set">Set Balance</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label style="color: #fff; font-size: 14px;">Amount (USDT)</label>
-                                    <input type="number" 
-                                           id="balance-amount" 
-                                           class="admin-input"
-                                           step="0.01"
-                                           min="0"
-                                           placeholder="Enter amount">
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label style="color: #fff; font-size: 14px;">Reason/Description</label>
-                                <textarea id="balance-reason" 
-                                          class="admin-input"
-                                          rows="3"
-                                          placeholder="Enter reason for balance adjustment"></textarea>
-                            </div>
-                            
-                            <button class="admin-btn" id="apply-balance-change" style="margin-top: 20px;">
-                                <i class="fas fa-check-circle"></i> Apply Balance Change
-                            </button>
-                            
-                            <!-- Recent Balance Changes -->
-                            <div class="margin-top">
-                                <h4 style="color: white; margin-bottom: 15px;">Recent Balance Adjustments</h4>
-                                <div id="recent-balance-changes">
-                                    <div style="color: #ccc; text-align: center; padding: 20px;">
-                                        No recent adjustments
-                                    </div>
-                                </div>
+                        <div class="referral-tree-view" id="referral-tree-view">
+                            <div class="empty-state">
+                                <i class="fas fa-sitemap"></i>
+                                <p>Enter a user ID or username to load their referral tree</p>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Settings Tab -->
-                <div class="admin-tab" id="settings-tab">
-                    <div class="card padding">
+                    <!-- Transactions Tab -->
+                    <div class="tab-pane" id="transactions-tab">
                         <div class="tab-header">
-                            <h3 style="color: white;">Platform Settings</h3>
+                            <h3><i class="fas fa-exchange-alt"></i> All Transactions</h3>
+                            <div class="tab-actions">
+                                <div class="filter-group">
+                                    <select id="transaction-type-filter" class="filter-select">
+                                        <option value="">All Types</option>
+                                        <option value="deposit">Deposits</option>
+                                        <option value="withdrawal">Withdrawals</option>
+                                        <option value="quantification">Quantification</option>
+                                        <option value="referral">Referrals</option>
+                                        <option value="admin_adjustment">Admin Adjustments</option>
+                                    </select>
+                                    <input type="date" id="transaction-date-filter" class="filter-input">
+                                </div>
+                                <button class="btn-small" id="refresh-transactions">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
                         </div>
                         
-                        <div class="settings-form">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label style="color: #fff; font-size: 14px;">Registration Bonus</label>
-                                    <input type="number" 
-                                           id="reg-bonus" 
-                                           value="3.00" 
-                                           class="admin-input"
-                                           step="0.01">
-                                    <div style="font-size: 12px; color: #ccc;">USDT</div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label style="color: #fff; font-size: 14px;">Min Deposit</label>
-                                    <input type="number" 
-                                           id="min-deposit" 
-                                           value="17" 
-                                           class="admin-input"
-                                           step="0.01">
-                                    <div style="font-size: 12px; color: #ccc;">USDT</div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>User</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Description</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactions-table">
+                                    <tr>
+                                        <td colspan="7" class="loading-cell">
+                                            <i class="fas fa-spinner fa-spin"></i> Loading transactions...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Tab -->
+                    <div class="tab-pane" id="quick-actions-tab">
+                        <div class="tab-header">
+                            <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                        </div>
+                        
+                        <div class="quick-actions-grid">
+                            <!-- Balance Management -->
+                            <div class="action-card">
+                                <h4><i class="fas fa-balance-scale"></i> Balance Management</h4>
+                                <div class="action-form">
+                                    <div class="form-group">
+                                        <label>Select User</label>
+                                        <select id="quick-user-select" class="form-input">
+                                            <option value="">Select user...</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Current Balance</label>
+                                        <input type="text" id="quick-current-balance" class="form-input" readonly>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Action</label>
+                                            <select id="quick-action" class="form-input">
+                                                <option value="add">Add Balance</option>
+                                                <option value="subtract">Subtract Balance</option>
+                                                <option value="set">Set Balance</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Amount (USDT)</label>
+                                            <input type="number" id="quick-amount" class="form-input" step="0.01">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Reason</label>
+                                        <textarea id="quick-reason" class="form-input" rows="2"></textarea>
+                                    </div>
+                                    <button class="btn btn-primary" id="apply-quick-change">
+                                        <i class="fas fa-check"></i> Apply Change
+                                    </button>
                                 </div>
                             </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label style="color: #fff; font-size: 14px;">Min Withdrawal</label>
-                                    <input type="number" 
-                                           id="min-withdrawal" 
-                                           value="20" 
-                                           class="admin-input"
-                                           step="0.01">
-                                    <div style="font-size: 12px; color: #ccc;">USDT</div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label style="color: #fff; font-size: 14px;">Daily Signals</label>
-                                    <input type="number" 
-                                           id="daily-signals" 
-                                           value="3" 
-                                           class="admin-input">
-                                    <div style="font-size: 12px; color: #ccc;">Signals per day</div>
+
+                            <!-- Manual Deposit -->
+                            <div class="action-card">
+                                <h4><i class="fas fa-plus-circle"></i> Manual Deposit</h4>
+                                <div class="action-form">
+                                    <div class="form-group">
+                                        <label>Select User</label>
+                                        <select id="deposit-user-select" class="form-input">
+                                            <option value="">Select user...</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Amount (USDT)</label>
+                                            <input type="number" id="manual-deposit-amount" class="form-input" step="0.01" min="17">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Network</label>
+                                            <select id="manual-deposit-network" class="form-input">
+                                                <option value="TRC20">TRC20</option>
+                                                <option value="BEP20">BEP20</option>
+                                                <option value="MANUAL">Manual</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Transaction ID (Optional)</label>
+                                        <input type="text" id="manual-deposit-txid" class="form-input">
+                                    </div>
+                                    <button class="btn btn-success" id="add-manual-deposit">
+                                        <i class="fas fa-plus"></i> Add Deposit
+                                    </button>
                                 </div>
                             </div>
-                            
-                            <div class="form-group">
-                                <label style="color: #fff; font-size: 14px;">Signal Reset Time (UTC)</label>
-                                <input type="number" 
-                                       id="signal-reset-hour" 
-                                       value="18" 
-                                       class="admin-input"
-                                       min="0"
-                                       max="23">
-                                <div style="font-size: 12px; color: #ccc;">Hour (0-23) when signals reset</div>
+
+                            <!-- User Management -->
+                            <div class="action-card">
+                                <h4><i class="fas fa-user-cog"></i> User Management</h4>
+                                <div class="action-form">
+                                    <div class="form-group">
+                                        <label>Search User</label>
+                                        <input type="text" id="search-user-manage" class="form-input" placeholder="Enter user ID or username">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Action</label>
+                                        <select id="user-action" class="form-input">
+                                            <option value="edit">Edit User</option>
+                                            <option value="suspend">Suspend User</option>
+                                            <option value="activate">Activate User</option>
+                                            <option value="reset_password">Reset Password</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-warning" id="execute-user-action">
+                                        <i class="fas fa-play"></i> Execute Action
+                                    </button>
+                                </div>
                             </div>
-                            
-                            <button class="admin-btn" id="save-settings" style="margin-top: 20px;">
-                                <i class="fas fa-save"></i> Save Settings
-                            </button>
+
+                            <!-- System Actions -->
+                            <div class="action-card">
+                                <h4><i class="fas fa-cog"></i> System Actions</h4>
+                                <div class="action-buttons-vertical">
+                                    <button class="btn btn-info" id="reset-signals">
+                                        <i class="fas fa-redo"></i> Reset All Signals
+                                    </button>
+                                    <button class="btn btn-warning" id="recalculate-vip">
+                                        <i class="fas fa-calculator"></i> Recalculate VIP Levels
+                                    </button>
+                                    <button class="btn btn-danger" id="cleanup-old-data">
+                                        <i class="fas fa-trash"></i> Cleanup Old Data
+                                    </button>
+                                    <button class="btn btn-primary" id="backup-database">
+                                        <i class="fas fa-save"></i> Backup Database
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -519,35 +408,34 @@ export default function renderAdmin() {
         </div>
 
         <!-- User Edit Modal -->
-        <div class="pop-overlay" id="edit-user-modal" style="display: none;">
-            <div class="pop-content" style="max-width: 600px;">
-                <form id="edit-user-form" onsubmit="return false;">
-                    <div class="pop-header">Edit User</div>
-                    <div class="pop-body">
-                        <div class="admin-form-grid">
+        <div class="modal-overlay" id="user-edit-modal" style="display: none;">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3>Edit User</h3>
+                    <button class="modal-close" id="close-user-edit">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="user-edit-form">
+                        <div class="form-grid">
                             <div class="form-group">
-                                <label style="color: #333; font-size: 14px;">User ID</label>
-                                <input type="text" id="edit-user-id" class="admin-input" readonly>
+                                <label>User ID</label>
+                                <input type="text" id="edit-user-id" class="form-input" readonly>
                             </div>
                             <div class="form-group">
-                                <label style="color: #333; font-size: 14px;">Username</label>
-                                <input type="text" id="edit-username" class="admin-input">
+                                <label>Username</label>
+                                <input type="text" id="edit-username" class="form-input">
                             </div>
                             <div class="form-group">
-                                <label style="color: #333; font-size: 14px;">Email</label>
-                                <input type="email" id="edit-email" class="admin-input">
+                                <label>Email</label>
+                                <input type="email" id="edit-email" class="form-input">
                             </div>
                             <div class="form-group">
-                                <label style="color: #333; font-size: 14px;">Password</label>
-                                <input type="text" id="edit-password" class="admin-input" placeholder="Leave empty to keep current">
+                                <label>Balance (USDT)</label>
+                                <input type="number" id="edit-balance" class="form-input" step="0.01">
                             </div>
                             <div class="form-group">
-                                <label style="color: #333; font-size: 14px;">Balance (USDT)</label>
-                                <input type="number" id="edit-balance" class="admin-input" step="0.01">
-                            </div>
-                            <div class="form-group">
-                                <label style="color: #333; font-size: 14px;">VIP Level</label>
-                                <select id="edit-vip-level" class="admin-input">
+                                <label>VIP Level</label>
+                                <select id="edit-vip-level" class="form-input">
                                     <option value="1">VIP 1</option>
                                     <option value="2">VIP 2</option>
                                     <option value="3">VIP 3</option>
@@ -557,204 +445,130 @@ export default function renderAdmin() {
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label style="color: #333; font-size: 14px;">Signals Available</label>
-                                <input type="number" id="edit-signals" class="admin-input" min="0" max="10">
-                            </div>
-                            <div class="form-group">
-                                <label style="color: #333; font-size: 14px;">Status</label>
-                                <select id="edit-status" class="admin-input">
-                                    <option value="active">Active</option>
-                                    <option value="suspended">Suspended</option>
-                                    <option value="banned">Banned</option>
-                                </select>
+                                <label>Signals Available</label>
+                                <input type="number" id="edit-signals" class="form-input" min="0" max="10">
                             </div>
                             <div class="form-group full-width">
-                                <label style="color: #333; font-size: 14px;">TRC20 Address</label>
-                                <input type="text" id="edit-address-trc20" class="admin-input">
+                                <label>Password (Leave empty to keep current)</label>
+                                <input type="text" id="edit-password" class="form-input" placeholder="New password">
                             </div>
                             <div class="form-group full-width">
-                                <label style="color: #333; font-size: 14px;">BEP20 Address</label>
-                                <input type="text" id="edit-address-bep20" class="admin-input">
+                                <label>TRC20 Address</label>
+                                <input type="text" id="edit-address-trc20" class="form-input">
                             </div>
                             <div class="form-group full-width">
-                                <label style="color: #333; font-size: 14px;">Invite Code</label>
-                                <input type="text" id="edit-invite-code" class="admin-input">
+                                <label>BEP20 Address</label>
+                                <input type="text" id="edit-address-bep20" class="form-input">
                             </div>
                         </div>
-                    </div>
-                    <div class="pop-footer">
-                        <button type="submit" id="save-user-changes" style="margin-right: 10px;">Save Changes</button>
-                        <button type="button" id="cancel-edit-user">Cancel</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancel-user-edit">Cancel</button>
+                    <button class="btn btn-primary" id="save-user-changes">Save Changes</button>
+                </div>
             </div>
         </div>
 
-        <!-- Withdrawal Action Modal -->
-        <div class="pop-overlay" id="withdrawal-action-modal" style="display: none;">
-            <div class="pop-content">
-                <div class="pop-header">Process Withdrawal</div>
-                <div class="pop-body">
-                    <p style="color: #333; margin-bottom: 15px;" id="withdrawal-info">
-                        Loading withdrawal details...
-                    </p>
+        <!-- Withdrawal Processing Modal -->
+        <div class="modal-overlay" id="withdrawal-process-modal" style="display: none;">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3>Process Withdrawal Request</h3>
+                    <button class="modal-close" id="close-withdrawal-process">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="withdrawal-details" id="withdrawal-details">
+                        <!-- Details will be loaded here -->
+                    </div>
+                    
                     <div class="action-buttons">
-                        <button class="admin-btn-success" id="approve-withdrawal">
-                            <i class="fas fa-check"></i> Approve & Pay
+                        <button class="btn btn-success btn-large" id="approve-withdrawal-btn">
+                            <i class="fas fa-check-circle"></i> Approve & Pay
                         </button>
-                        <button class="admin-btn-warning" id="cancel-withdrawal">
+                        <button class="btn btn-warning btn-large" id="cancel-withdrawal-btn">
                             <i class="fas fa-ban"></i> Cancel & Refund
                         </button>
-                        <button class="admin-btn-danger" id="reject-withdrawal">
-                            <i class="fas fa-times"></i> Reject
+                        <button class="btn btn-danger btn-large" id="reject-withdrawal-btn">
+                            <i class="fas fa-times-circle"></i> Reject (No Refund)
                         </button>
                     </div>
-                </div>
-                <div class="pop-footer">
-                    <button id="close-withdrawal-action">Close</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Add Manual Deposit Modal -->
-        <div class="pop-overlay" id="manual-deposit-modal" style="display: none;">
-            <div class="pop-content" style="max-width: 500px;">
-                <form id="manual-deposit-form" onsubmit="return false;">
-                    <div class="pop-header">Add Manual Deposit</div>
-                    <div class="pop-body">
-                        <div class="form-group">
-                            <label style="color: #333; font-size: 14px;">Select User</label>
-                            <select id="deposit-user-select" class="admin-input" style="width: 100%;">
-                                <option value="">Search user...</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label style="color: #333; font-size: 14px;">Amount (USDT)</label>
-                            <input type="number" 
-                                   id="manual-deposit-amount" 
-                                   class="admin-input"
-                                   step="0.01"
-                                   min="17"
-                                   required>
-                        </div>
-                        <div class="form-group">
-                            <label style="color: #333; font-size: 14px;">Network</label>
-                            <select id="manual-deposit-network" class="admin-input">
-                                <option value="TRC20">TRC20</option>
-                                <option value="BEP20">BEP20</option>
-                                <option value="MANUAL">Manual</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label style="color: #333; font-size: 14px;">Transaction ID (Optional)</label>
-                            <input type="text" 
-                                   id="manual-deposit-txid" 
-                                   class="admin-input"
-                                   placeholder="External transaction ID">
-                        </div>
-                        <div class="form-group">
-                            <label style="color: #333; font-size: 14px;">Notes</label>
-                            <textarea id="manual-deposit-notes" 
-                                      class="admin-input"
-                                      rows="3"
-                                      placeholder="Additional notes"></textarea>
-                        </div>
-                    </div>
-                    <div class="pop-footer">
-                        <button type="submit" id="save-manual-deposit" style="margin-right: 10px;">Add Deposit</button>
-                        <button type="button" id="close-manual-deposit">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Add New User Modal -->
-        <div class="pop-overlay" id="add-user-modal" style="display: none;">
-            <div class="pop-content" style="max-width: 500px;">
-                <form id="add-user-form" onsubmit="return false;">
-                    <div class="pop-header">Add New User</div>
-                    <div class="pop-body">
-                        <div class="form-group">
-                            <label style="color: #333; font-size: 14px;">Username *</label>
-                            <input type="text" 
-                                   id="new-username" 
-                                   class="admin-input"
-                                   required>
-                        </div>
-                        <div class="form-group">
-                            <label style="color: #333; font-size: 14px;">Email (Optional)</label>
-                            <input type="email" 
-                                   id="new-email" 
-                                   class="admin-input">
-                        </div>
-                        <div class="form-group">
-                            <label style="color: #333; font-size: 14px;">Password *</label>
-                            <input type="text" 
-                                   id="new-password" 
-                                   class="admin-input"
-                                   required>
-                        </div>
-                        <div class="form-group">
-                            <label style="color: #333; font-size: 14px;">Initial Balance (USDT)</label>
-                            <input type="number" 
-                                   id="new-balance" 
-                                   class="admin-input"
-                                   step="0.01"
-                                   value="0">
-                        </div>
-                        <div class="form-group">
-                            <label style="color: #333; font-size: 14px;">VIP Level</label>
-                            <select id="new-vip-level" class="admin-input">
-                                <option value="1">VIP 1</option>
-                                <option value="2">VIP 2</option>
-                                <option value="3">VIP 3</option>
-                                <option value="4">VIP 4</option>
-                                <option value="5">VIP 5</option>
-                                <option value="6">VIP 6</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label style="color: #333; font-size: 14px;">Referrer ID (Optional)</label>
-                            <input type="text" 
-                                   id="new-referrer" 
-                                   class="admin-input"
-                                   placeholder="Leave empty for no referrer">
-                        </div>
-                    </div>
-                    <div class="pop-footer">
-                        <button type="submit" id="save-new-user" style="margin-right: 10px;">Create User</button>
-                        <button type="button" id="close-add-user">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Transaction Details Modal -->
-        <div class="pop-overlay" id="transaction-details-modal" style="display: none;">
-            <div class="pop-content" style="max-width: 500px;">
-                <div class="pop-header">Transaction Details</div>
-                <div class="pop-body">
-                    <div id="transaction-details-content">
-                        Loading details...
+                    
+                    <div class="process-notes">
+                        <label>Admin Notes (Optional)</label>
+                        <textarea id="withdrawal-notes" class="form-input" rows="3" placeholder="Add notes about this transaction..."></textarea>
                     </div>
                 </div>
-                <div class="pop-footer">
-                    <button id="close-transaction-details">Close</button>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="close-withdrawal-modal">Close</button>
                 </div>
             </div>
         </div>
 
-        <!-- Deposit Details Modal -->
-        <div class="pop-overlay" id="deposit-details-modal" style="display: none;">
-            <div class="pop-content" style="max-width: 500px;">
-                <div class="pop-header">Deposit Details</div>
-                <div class="pop-body">
-                    <div id="deposit-details-content">
-                        Loading details...
-                    </div>
+        <!-- Add User Modal -->
+        <div class="modal-overlay" id="add-user-modal" style="display: none;">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3>Add New User</h3>
+                    <button class="modal-close" id="close-add-user">&times;</button>
                 </div>
-                <div class="pop-footer">
-                    <button id="close-deposit-details">Close</button>
+                <div class="modal-body">
+                    <form id="add-user-form">
+                        <div class="form-group">
+                            <label>Username *</label>
+                            <input type="text" id="new-username" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email (Optional)</label>
+                            <input type="email" id="new-email" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Password *</label>
+                            <input type="text" id="new-password" class="form-input" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Initial Balance (USDT)</label>
+                                <input type="number" id="new-balance" class="form-input" step="0.01" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label>VIP Level</label>
+                                <select id="new-vip-level" class="form-input">
+                                    <option value="1">VIP 1</option>
+                                    <option value="2">VIP 2</option>
+                                    <option value="3">VIP 3</option>
+                                    <option value="4">VIP 4</option>
+                                    <option value="5">VIP 5</option>
+                                    <option value="6">VIP 6</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Referrer ID (Optional)</label>
+                            <input type="text" id="new-referrer" class="form-input" placeholder="User ID of referrer">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancel-add-user">Cancel</button>
+                    <button class="btn btn-primary" id="save-new-user">Create User</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div class="modal-overlay" id="confirmation-modal" style="display: none;">
+            <div class="modal small">
+                <div class="modal-header">
+                    <h3 id="confirmation-title">Confirm Action</h3>
+                    <button class="modal-close" id="close-confirmation">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmation-message">Are you sure you want to perform this action?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancel-confirmation">Cancel</button>
+                    <button class="btn btn-primary" id="confirm-action">Confirm</button>
                 </div>
             </div>
         </div>
@@ -769,18 +583,12 @@ export async function init() {
     if (!isAdmin) return;
     
     // Load initial data
-    await loadAdminOverview();
+    await loadStats();
     await loadAllUsers();
-    await loadAllDeposits('today');
-    await loadAllWithdrawals('pending');
-    await loadAllTransactions();
-    await loadRecentBalanceChanges();
+    await populateUserSelects();
     
     // Setup event listeners
     setupEventListeners();
-    
-    // Load initial tab
-    loadTab('overview');
 }
 
 async function checkAdminAccess() {
@@ -796,98 +604,68 @@ async function checkAdminAccess() {
 }
 
 function setupEventListeners() {
-    // Navigation tabs
-    document.querySelectorAll('.admin-nav-item').forEach(item => {
-        item.addEventListener('click', function() {
-            const tab = this.getAttribute('data-tab');
-            
-            // Update active tab
-            document.querySelectorAll('.admin-nav-item').forEach(i => {
-                i.classList.remove('active');
-            });
-            this.classList.add('active');
-            
-            // Show selected tab
-            loadTab(tab);
+    // Tab navigation
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tabId = this.getAttribute('data-tab');
+            switchTab(tabId);
         });
     });
     
-    // Quick Actions
-    document.getElementById('refresh-all-data').addEventListener('click', refreshAllData);
-    document.getElementById('export-data').addEventListener('click', exportData);
-    document.getElementById('add-manual-deposit').addEventListener('click', showManualDepositModal);
-    document.getElementById('view-system-logs').addEventListener('click', showSystemLogs);
-    
-    // Refresh buttons for each tab
-    document.getElementById('refresh-overview').addEventListener('click', () => loadAdminOverview());
+    // Refresh buttons
+    document.getElementById('refresh-all').addEventListener('click', refreshAllData);
     document.getElementById('refresh-users').addEventListener('click', () => loadAllUsers());
-    document.getElementById('refresh-deposits').addEventListener('click', () => loadAllDeposits(document.getElementById('deposit-period-filter').value));
-    document.getElementById('refresh-withdrawals').addEventListener('click', () => loadAllWithdrawals(document.getElementById('withdrawal-status-filter').value));
+    document.getElementById('refresh-withdrawals').addEventListener('click', () => loadWithdrawalRequests());
+    document.getElementById('refresh-deposits').addEventListener('click', () => loadDeposits());
     document.getElementById('refresh-transactions').addEventListener('click', () => loadAllTransactions());
     
-    // Filters
-    document.getElementById('deposit-period-filter').addEventListener('change', (e) => loadAllDeposits(e.target.value));
-    document.getElementById('withdrawal-status-filter').addEventListener('change', (e) => loadAllWithdrawals(e.target.value));
-    document.getElementById('transaction-type-filter').addEventListener('change', loadAllTransactions);
-    document.getElementById('transaction-date-filter').addEventListener('change', loadAllTransactions);
+    // Search and filters
+    document.getElementById('user-search').addEventListener('input', debounce(() => loadAllUsers(), 500));
+    document.getElementById('withdrawal-filter').addEventListener('change', () => loadWithdrawalRequests());
+    document.getElementById('deposit-period-filter').addEventListener('change', () => loadDeposits());
+    document.getElementById('transaction-type-filter').addEventListener('change', () => loadAllTransactions());
+    document.getElementById('transaction-date-filter').addEventListener('change', () => loadAllTransactions());
     
-    // User search
-    document.getElementById('search-users').addEventListener('input', debounce(() => loadAllUsers(), 500));
+    // Add user
+    document.getElementById('add-user-btn').addEventListener('click', showAddUserModal);
+    document.getElementById('save-new-user').addEventListener('click', saveNewUser);
+    document.getElementById('close-add-user').addEventListener('click', hideAddUserModal);
+    document.getElementById('cancel-add-user').addEventListener('click', hideAddUserModal);
     
-    // Referral tree search
+    // User edit modal
+    document.getElementById('close-user-edit').addEventListener('click', hideUserEditModal);
+    document.getElementById('cancel-user-edit').addEventListener('click', hideUserEditModal);
+    document.getElementById('save-user-changes').addEventListener('click', saveUserChanges);
+    
+    // Withdrawal processing
+    document.getElementById('close-withdrawal-process').addEventListener('click', hideWithdrawalProcessModal);
+    document.getElementById('close-withdrawal-modal').addEventListener('click', hideWithdrawalProcessModal);
+    document.getElementById('approve-withdrawal-btn').addEventListener('click', approveWithdrawal);
+    document.getElementById('cancel-withdrawal-btn').addEventListener('click', cancelWithdrawal);
+    document.getElementById('reject-withdrawal-btn').addEventListener('click', rejectWithdrawal);
+    
+    // Quick actions
+    document.getElementById('apply-quick-change').addEventListener('click', applyQuickBalanceChange);
+    document.getElementById('add-manual-deposit').addEventListener('click', addManualDeposit);
+    document.getElementById('quick-user-select').addEventListener('change', loadQuickUserBalance);
+    document.getElementById('deposit-user-select').addEventListener('change', loadDepositUserInfo);
+    
+    // Referral tree
     document.getElementById('load-referral-tree').addEventListener('click', loadReferralTree);
-    document.getElementById('search-user-tree').addEventListener('keypress', (e) => {
+    document.getElementById('referral-search').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') loadReferralTree();
     });
     
-    // Add new user
-    document.getElementById('add-new-user').addEventListener('click', showAddUserModal);
+    // Export data
+    document.getElementById('export-data').addEventListener('click', exportData);
     
-    // Balance management
-    document.getElementById('apply-balance-change').addEventListener('click', applyBalanceChange);
-    document.getElementById('balance-user-select').addEventListener('change', loadUserBalanceInfo);
+    // System actions
+    document.getElementById('reset-signals').addEventListener('click', () => resetAllSignals());
+    document.getElementById('recalculate-vip').addEventListener('click', () => recalculateAllVipLevels());
     
-    // Settings save
-    document.getElementById('save-settings').addEventListener('click', saveSettings);
-    
-    // Modal close buttons
-    document.getElementById('cancel-edit-user').addEventListener('click', () => {
-        document.getElementById('edit-user-modal').style.display = 'none';
-    });
-    
-    document.getElementById('close-withdrawal-action').addEventListener('click', () => {
-        document.getElementById('withdrawal-action-modal').style.display = 'none';
-    });
-    
-    document.getElementById('close-transaction-details').addEventListener('click', () => {
-        document.getElementById('transaction-details-modal').style.display = 'none';
-    });
-    
-    document.getElementById('close-deposit-details').addEventListener('click', () => {
-        document.getElementById('deposit-details-modal').style.display = 'none';
-    });
-    
-    document.getElementById('close-manual-deposit').addEventListener('click', () => {
-        document.getElementById('manual-deposit-modal').style.display = 'none';
-    });
-    
-    document.getElementById('close-add-user').addEventListener('click', () => {
-        document.getElementById('add-user-modal').style.display = 'none';
-    });
-    
-    // Withdrawal actions
-    document.getElementById('approve-withdrawal').addEventListener('click', approveWithdrawal);
-    document.getElementById('cancel-withdrawal').addEventListener('click', cancelWithdrawal);
-    document.getElementById('reject-withdrawal').addEventListener('click', rejectWithdrawal);
-    
-    // Manual deposit
-    document.getElementById('save-manual-deposit').addEventListener('click', saveManualDeposit);
-    
-    // Add new user
-    document.getElementById('save-new-user').addEventListener('click', saveNewUser);
-    
-    // Populate user selects
-    populateUserSelects();
+    // Confirmation modal
+    document.getElementById('close-confirmation').addEventListener('click', hideConfirmationModal);
+    document.getElementById('cancel-confirmation').addEventListener('click', hideConfirmationModal);
 }
 
 function debounce(func, wait) {
@@ -902,35 +680,63 @@ function debounce(func, wait) {
     };
 }
 
+function switchTab(tabId) {
+    // Update tab buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-tab') === tabId) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Update tab content
+    document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.remove('active');
+    });
+    document.getElementById(`${tabId}-tab`).classList.add('active');
+    
+    // Load tab data
+    switch(tabId) {
+        case 'users':
+            loadAllUsers();
+            break;
+        case 'withdrawals':
+            loadWithdrawalRequests();
+            break;
+        case 'deposits':
+            loadDeposits();
+            break;
+        case 'referrals':
+            // Tree will load when user searches
+            break;
+        case 'transactions':
+            loadAllTransactions();
+            break;
+        case 'quick-actions':
+            // Already loaded
+            break;
+    }
+}
+
 async function refreshAllData() {
     window.showLoading('Refreshing all data...');
     try {
         await Promise.all([
-            loadAdminOverview(),
+            loadStats(),
             loadAllUsers(),
-            loadAllDeposits(document.getElementById('deposit-period-filter').value),
-            loadAllWithdrawals(document.getElementById('withdrawal-status-filter').value),
+            loadWithdrawalRequests(),
+            loadDeposits(),
             loadAllTransactions()
         ]);
         window.hideLoading();
-        window.showCustomAlert('All data refreshed successfully!');
+        showToast('All data refreshed successfully!', 'success');
     } catch (error) {
         window.hideLoading();
-        window.showCustomAlert('Error refreshing data: ' + error.message);
+        showToast('Error refreshing data: ' + error.message, 'error');
     }
 }
 
-function loadTab(tabName) {
-    // Hide all tabs
-    document.querySelectorAll('.admin-tab').forEach(tab => {
-        tab.classList.remove('active');
-    });
-    
-    // Show selected tab
-    document.getElementById(`${tabName}-tab`).classList.add('active');
-}
-
-async function loadAdminOverview() {
+async function loadStats() {
     try {
         // Get total users
         const { count: totalUsers } = await window.supabase
@@ -947,16 +753,6 @@ async function loadAdminOverview() {
             .lte('created_at', `${today}T23:59:59`);
         
         const todayDepositCount = todayDeposits?.length || 0;
-        const todayDepositAmount = todayDeposits?.reduce((sum, d) => sum + d.amount, 0) || 0;
-        
-        // Get all time deposits
-        const { data: allDeposits } = await window.supabase
-            .from('transactions')
-            .select('amount')
-            .eq('type', 'deposit');
-        
-        const totalDepositCount = allDeposits?.length || 0;
-        const totalDepositAmount = allDeposits?.reduce((sum, d) => sum + d.amount, 0) || 0;
         
         // Get pending withdrawals
         const { count: pendingWithdrawals } = await window.supabase
@@ -965,85 +761,30 @@ async function loadAdminOverview() {
             .eq('type', 'withdrawal')
             .eq('status', 'pending');
         
-        // Update header stats
-        document.getElementById('today-deposits-stat').querySelector('.admin-stat-value').textContent = todayDepositCount;
-        document.getElementById('pending-withdrawals-stat').querySelector('.admin-stat-value').textContent = pendingWithdrawals || 0;
-        document.getElementById('total-users-stat').querySelector('.admin-stat-value').textContent = totalUsers || 0;
-        
-        // Update overview stats
-        document.getElementById('total-users-overview').textContent = totalUsers || 0;
-        document.getElementById('today-deposits-overview').textContent = todayDepositCount;
-        document.getElementById('pending-withdrawals-overview').textContent = pendingWithdrawals || 0;
-        document.getElementById('total-deposits-overview').textContent = totalDepositCount;
-        
-        // Load recent activity
-        await loadRecentActivity();
-        
-    } catch (error) {
-        console.error('Error loading admin overview:', error);
-    }
-}
-
-async function loadRecentActivity() {
-    try {
-        const { data: activities, error } = await window.supabase
+        // Get active deposits (last 24 hours)
+        const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+        const { data: recentDeposits } = await window.supabase
             .from('transactions')
-            .select(`
-                *,
-                user:users(username)
-            `)
-            .order('created_at', { ascending: false })
-            .limit(20);
+            .select('amount')
+            .eq('type', 'deposit')
+            .gte('created_at', yesterday);
         
-        if (error) throw error;
+        const activeDeposits = recentDeposits?.length || 0;
         
-        const container = document.getElementById('recent-activity');
-        let html = '';
-        
-        if (activities && activities.length > 0) {
-            activities.forEach(activity => {
-                const date = new Date(activity.created_at);
-                const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                const isPositive = activity.amount > 0;
-                const amountColor = isPositive ? '#52c41a' : '#ff4d4f';
-                const sign = isPositive ? '+' : '';
-                const icon = activity.type === 'deposit' ? 'fa-money-bill-wave' :
-                           activity.type === 'withdrawal' ? 'fa-wallet' :
-                           activity.type === 'quantification' ? 'fa-chart-line' :
-                           'fa-exchange-alt';
-                
-                html += `
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas ${icon}"></i>
-                        </div>
-                        <div class="activity-content">
-                            <div class="activity-title">
-                                <span class="activity-user">${activity.user.username}</span>
-                                <span class="activity-amount" style="color: ${amountColor};">${sign}${activity.amount.toFixed(2)} USDT</span>
-                            </div>
-                            <div class="activity-details">
-                                <span class="activity-type">${activity.type}</span>
-                                <span class="activity-time">${timeStr}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        } else {
-            html = '<div style="color: #ccc; text-align: center; padding: 20px;">No recent activity</div>';
-        }
-        
-        container.innerHTML = html;
+        // Update stats
+        document.getElementById('total-users-count').textContent = totalUsers || 0;
+        document.getElementById('today-deposits-count').textContent = todayDepositCount;
+        document.getElementById('pending-withdrawals-count').textContent = pendingWithdrawals || 0;
+        document.getElementById('active-deposits-count').textContent = activeDeposits;
         
     } catch (error) {
-        console.error('Error loading recent activity:', error);
+        console.error('Error loading stats:', error);
     }
 }
 
 async function loadAllUsers(page = 1, limit = 20) {
     try {
-        const searchTerm = document.getElementById('search-users').value;
+        const searchTerm = document.getElementById('user-search').value;
         let query = window.supabase
             .from('users')
             .select('*', { count: 'exact' })
@@ -1061,7 +802,7 @@ async function loadAllUsers(page = 1, limit = 20) {
         
         if (error) throw error;
         
-        const container = document.getElementById('users-table-body');
+        const container = document.getElementById('users-table');
         let html = '';
         
         if (users && users.length > 0) {
@@ -1074,70 +815,79 @@ async function loadAllUsers(page = 1, limit = 20) {
                     .eq('level', 1);
                 
                 const date = new Date(user.created_at).toLocaleDateString();
-                const vipBadge = user.vip_level === 6 ? 'vip-badge vip6' : 
-                               user.vip_level === 5 ? 'vip-badge vip5' :
-                               user.vip_level === 4 ? 'vip-badge vip4' :
-                               user.vip_level === 3 ? 'vip-badge vip3' :
-                               user.vip_level === 2 ? 'vip-badge vip2' :
-                               'vip-badge vip1';
+                const vipClass = `vip-${user.vip_level}`;
+                const statusClass = user.status === 'active' ? 'status-active' : 
+                                   user.status === 'suspended' ? 'status-suspended' : 'status-banned';
                 
                 html += `
                     <tr>
-                        <td><small>${user.id.substring(0, 8)}...</small></td>
+                        <td><code>${user.id.substring(0, 8)}...</code></td>
                         <td>
-                            <div style="font-weight: bold;">${user.username}</div>
-                            <small>${user.email || 'No email'}</small>
+                            <strong>${user.username}</strong>
+                            ${user.referred_by ? `<br><small>Ref: ${user.referred_by.substring(0, 8)}...</small>` : ''}
                         </td>
-                        <td style="color: #f9ae3d; font-weight: bold;">${user.balance.toFixed(2)} USDT</td>
-                        <td><span class="${vipBadge}">VIP ${user.vip_level}</span></td>
-                        <td>${user.signals_available}</td>
-                        <td>${referrals || 0}</td>
-                        <td>${date}</td>
+                        <td>${user.email || '—'}</td>
+                        <td class="balance-cell">
+                            <span class="balance-value">${user.balance.toFixed(2)}</span>
+                            <div class="balance-actions">
+                                <button class="btn-icon" onclick="editUserBalance('${user.id}', ${user.balance})" title="Edit balance">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </td>
                         <td>
-                            <button class="admin-btn-small action-btn" data-id="${user.id}" data-action="edit">
-                                <i class="fas fa-edit"></i> Edit
+                            <span class="vip-badge ${vipClass}">VIP ${user.vip_level}</span>
+                        </td>
+                        <td>
+                            <span class="signal-count">${user.signals_available}</span>
+                            <button class="btn-icon" onclick="resetUserSignals('${user.id}')" title="Reset signals">
+                                <i class="fas fa-redo"></i>
                             </button>
-                            <button class="admin-btn-small action-btn" data-id="${user.id}" data-action="view">
-                                <i class="fas fa-eye"></i> View
+                        </td>
+                        <td>${referrals || 0}</td>
+                        <td>
+                            <span class="status-badge ${statusClass}">${user.status || 'active'}</span>
+                        </td>
+                        <td>${date}</td>
+                        <td class="actions-cell">
+                            <button class="btn-icon btn-edit" onclick="showEditUserModal('${user.id}')" title="Edit user">
+                                <i class="fas fa-edit"></i>
                             </button>
+                            <button class="btn-icon btn-view" onclick="viewUserDetails('${user.id}')" title="View details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${user.status === 'active' ? `
+                                <button class="btn-icon btn-suspend" onclick="toggleUserStatus('${user.id}', 'suspended')" title="Suspend user">
+                                    <i class="fas fa-ban"></i>
+                                </button>
+                            ` : `
+                                <button class="btn-icon btn-activate" onclick="toggleUserStatus('${user.id}', 'active')" title="Activate user">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            `}
                         </td>
                     </tr>
                 `;
             }
         } else {
-            html = '<tr><td colspan="8" style="text-align: center; color: #ccc; padding: 20px;">No users found</td></tr>';
+            html = '<tr><td colspan="10" class="empty-cell">No users found</td></tr>';
         }
         
         container.innerHTML = html;
         
-        // Add event listeners to action buttons
-        container.querySelectorAll('.action-btn[data-action="edit"]').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const userId = this.getAttribute('data-id');
-                showEditUserModal(userId);
-            });
-        });
-        
-        container.querySelectorAll('.action-btn[data-action="view"]').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const userId = this.getAttribute('data-id');
-                viewUserDetails(userId);
-            });
-        });
-        
         // Update pagination
-        updateUsersPagination(page, limit, count || 0);
+        updatePagination('users-pagination', page, limit, count || 0, loadAllUsers);
         
     } catch (error) {
         console.error('Error loading users:', error);
-        document.getElementById('users-table-body').innerHTML = 
-            '<tr><td colspan="8" style="text-align: center; color: #ff4d4f; padding: 20px;">Error loading users</td></tr>';
+        document.getElementById('users-table').innerHTML = 
+            '<tr><td colspan="10" class="error-cell">Error loading users</td></tr>';
     }
 }
 
-function updateUsersPagination(currentPage, limit, totalCount) {
+function updatePagination(containerId, currentPage, limit, totalCount, loadFunction) {
     const totalPages = Math.ceil(totalCount / limit);
-    const container = document.getElementById('users-pagination');
+    const container = document.getElementById(containerId);
     
     if (totalPages <= 1) {
         container.innerHTML = '';
@@ -1148,41 +898,301 @@ function updateUsersPagination(currentPage, limit, totalCount) {
     
     // Previous button
     if (currentPage > 1) {
-        html += `<button class="pagination-btn" data-page="${currentPage - 1}">Previous</button>`;
+        html += `<button class="pagination-btn" onclick="${loadFunction.name}(${currentPage - 1}, ${limit})">Previous</button>`;
     }
     
     // Page numbers
-    for (let i = 1; i <= totalPages; i++) {
+    const maxVisible = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+    
+    if (endPage - startPage + 1 < maxVisible) {
+        startPage = Math.max(1, endPage - maxVisible + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
         if (i === currentPage) {
-            html += `<button class="pagination-btn active" data-page="${i}">${i}</button>`;
-        } else if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
-            html += `<button class="pagination-btn" data-page="${i}">${i}</button>`;
+            html += `<button class="pagination-btn active">${i}</button>`;
+        } else {
+            html += `<button class="pagination-btn" onclick="${loadFunction.name}(${i}, ${limit})">${i}</button>`;
         }
     }
     
     // Next button
     if (currentPage < totalPages) {
-        html += `<button class="pagination-btn" data-page="${currentPage + 1}">Next</button>`;
+        html += `<button class="pagination-btn" onclick="${loadFunction.name}(${currentPage + 1}, ${limit})">Next</button>`;
     }
     
     container.innerHTML = html;
-    
-    // Add event listeners to pagination buttons
-    container.querySelectorAll('.pagination-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const page = parseInt(this.getAttribute('data-page'));
-            loadAllUsers(page, 20);
-        });
-    });
 }
 
-async function loadAllDeposits(period = 'today') {
+// Глобальные функции для inline редактирования
+window.editUserBalance = async function(userId, currentBalance) {
+    const newBalance = prompt(`Edit balance for user ${userId}\nCurrent: ${currentBalance.toFixed(2)} USDT\nEnter new balance:`, currentBalance.toFixed(2));
+    
+    if (newBalance === null) return;
+    
+    const amount = parseFloat(newBalance);
+    if (isNaN(amount) || amount < 0) {
+        showToast('Invalid amount entered', 'error');
+        return;
+    }
+    
     try {
+        const { error } = await window.supabase
+            .from('users')
+            .update({ balance: amount })
+            .eq('id', userId);
+        
+        if (error) throw error;
+        
+        // Create transaction record
+        await window.supabase
+            .from('transactions')
+            .insert([{
+                user_id: userId,
+                type: 'admin_adjustment',
+                amount: amount - currentBalance,
+                status: 'completed',
+                description: 'Balance adjusted by admin'
+            }]);
+        
+        showToast(`Balance updated to ${amount.toFixed(2)} USDT`, 'success');
+        loadAllUsers();
+        loadStats();
+        
+    } catch (error) {
+        console.error('Error updating balance:', error);
+        showToast('Error updating balance', 'error');
+    }
+};
+
+window.resetUserSignals = async function(userId) {
+    if (!confirm('Reset this user\'s signals to 3?')) return;
+    
+    try {
+        const { error } = await window.supabase
+            .from('users')
+            .update({ signals_available: 3 })
+            .eq('id', userId);
+        
+        if (error) throw error;
+        
+        showToast('Signals reset successfully', 'success');
+        loadAllUsers();
+        
+    } catch (error) {
+        console.error('Error resetting signals:', error);
+        showToast('Error resetting signals', 'error');
+    }
+};
+
+window.toggleUserStatus = async function(userId, newStatus) {
+    const action = newStatus === 'suspended' ? 'suspend' : 'activate';
+    if (!confirm(`Are you sure you want to ${action} this user?`)) return;
+    
+    try {
+        const { error } = await window.supabase
+            .from('users')
+            .update({ status: newStatus })
+            .eq('id', userId);
+        
+        if (error) throw error;
+        
+        showToast(`User ${action}ed successfully`, 'success');
+        loadAllUsers();
+        
+    } catch (error) {
+        console.error('Error updating user status:', error);
+        showToast('Error updating user status', 'error');
+    }
+};
+
+async function loadWithdrawalRequests() {
+    try {
+        const filter = document.getElementById('withdrawal-filter').value;
+        
         let query = window.supabase
             .from('transactions')
             .select(`
                 *,
-                user:users(username, email)
+                user:users(username, email, balance)
+            `)
+            .eq('type', 'withdrawal')
+            .order('created_at', { ascending: false });
+        
+        if (filter !== 'all') {
+            query = query.eq('status', filter);
+        }
+        
+        const { data: withdrawals, error } = await query;
+        
+        if (error) throw error;
+        
+        const container = document.getElementById('withdrawals-table');
+        let html = '';
+        
+        if (withdrawals && withdrawals.length > 0) {
+            withdrawals.forEach(tx => {
+                const date = new Date(tx.created_at);
+                const dateStr = date.toLocaleDateString();
+                const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const amount = Math.abs(tx.amount);
+                const statusClass = tx.status === 'completed' ? 'status-success' : 
+                                   tx.status === 'pending' ? 'status-pending' : 
+                                   tx.status === 'cancelled' ? 'status-cancelled' : 'status-error';
+                
+                html += `
+                    <tr>
+                        <td><code>${tx.id.substring(0, 8)}...</code></td>
+                        <td>
+                            <strong>${tx.user.username}</strong><br>
+                            <small>${tx.user.email || 'No email'}</small>
+                        </td>
+                        <td class="amount-cell">
+                            <strong style="color: #ff4d4f;">${amount.toFixed(2)} USDT</strong>
+                        </td>
+                        <td>${tx.network || 'TRC20'}</td>
+                        <td>
+                            <code title="${tx.withdrawal_address}">${tx.withdrawal_address?.substring(0, 20)}...</code>
+                            <button class="btn-icon" onclick="copyToClipboard('${tx.withdrawal_address}')" title="Copy address">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </td>
+                        <td>${dateStr}<br><small>${timeStr}</small></td>
+                        <td>
+                            <span class="status-badge ${statusClass}">${tx.status}</span>
+                        </td>
+                        <td class="actions-cell">
+                            ${tx.status === 'pending' ? `
+                                <button class="btn-action btn-approve" onclick="processWithdrawal('${tx.id}', 'approve')" title="Approve & Pay">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="btn-action btn-cancel" onclick="processWithdrawal('${tx.id}', 'cancel')" title="Cancel & Refund">
+                                    <i class="fas fa-ban"></i>
+                                </button>
+                                <button class="btn-action btn-reject" onclick="processWithdrawal('${tx.id}', 'reject')" title="Reject (No Refund)">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            ` : ''}
+                            <button class="btn-action btn-view" onclick="viewWithdrawalDetails('${tx.id}')" title="View details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        } else {
+            html = '<tr><td colspan="8" class="empty-cell">No withdrawal requests found</td></tr>';
+        }
+        
+        container.innerHTML = html;
+        
+    } catch (error) {
+        console.error('Error loading withdrawals:', error);
+        document.getElementById('withdrawals-table').innerHTML = 
+            '<tr><td colspan="8" class="error-cell">Error loading withdrawals</td></tr>';
+    }
+}
+
+window.processWithdrawal = async function(txId, action) {
+    try {
+        // Get transaction details
+        const { data: transaction, error: getError } = await window.supabase
+            .from('transactions')
+            .select(`
+                *,
+                user:users(username, balance)
+            `)
+            .eq('id', txId)
+            .single();
+        
+        if (getError) throw getError;
+        
+        const amount = Math.abs(transaction.amount);
+        const adminUser = window.getCurrentUser();
+        
+        switch(action) {
+            case 'approve':
+                if (!confirm(`Approve withdrawal of ${amount.toFixed(2)} USDT to ${transaction.withdrawal_address}?`)) return;
+                
+                // Update transaction status
+                const { error: approveError } = await window.supabase
+                    .from('transactions')
+                    .update({ 
+                        status: 'completed',
+                        description: `Withdrawal approved by admin ${adminUser.username}`
+                    })
+                    .eq('id', txId);
+                
+                if (approveError) throw approveError;
+                
+                showToast('Withdrawal approved successfully!', 'success');
+                break;
+                
+            case 'cancel':
+                if (!confirm(`Cancel withdrawal and refund ${amount.toFixed(2)} USDT to user's balance?`)) return;
+                
+                // Return funds to user balance
+                const newBalance = transaction.user.balance + amount;
+                const { error: balanceError } = await window.supabase
+                    .from('users')
+                    .update({ balance: newBalance })
+                    .eq('id', transaction.user_id);
+                
+                if (balanceError) throw balanceError;
+                
+                // Update transaction status
+                const { error: cancelError } = await window.supabase
+                    .from('transactions')
+                    .update({ 
+                        status: 'cancelled',
+                        description: `Withdrawal cancelled - Funds returned to balance`
+                    })
+                    .eq('id', txId);
+                
+                if (cancelError) throw cancelError;
+                
+                showToast('Withdrawal cancelled and funds returned!', 'success');
+                break;
+                
+            case 'reject':
+                if (!confirm(`Reject withdrawal WITHOUT refund? User will NOT receive ${amount.toFixed(2)} USDT.`)) return;
+                
+                // Update transaction status
+                const { error: rejectError } = await window.supabase
+                    .from('transactions')
+                    .update({ 
+                        status: 'rejected',
+                        description: `Withdrawal rejected by admin`
+                    })
+                    .eq('id', txId);
+                
+                if (rejectError) throw rejectError;
+                
+                showToast('Withdrawal rejected!', 'warning');
+                break;
+        }
+        
+        // Refresh data
+        loadWithdrawalRequests();
+        loadStats();
+        
+    } catch (error) {
+        console.error('Error processing withdrawal:', error);
+        showToast('Error processing withdrawal', 'error');
+    }
+};
+
+async function loadDeposits() {
+    try {
+        const period = document.getElementById('deposit-period-filter').value;
+        
+        let query = window.supabase
+            .from('transactions')
+            .select(`
+                *,
+                user:users(username)
             `)
             .eq('type', 'deposit')
             .order('created_at', { ascending: false });
@@ -1210,17 +1220,7 @@ async function loadAllDeposits(period = 'today') {
         
         if (error) throw error;
         
-        // Update stats
-        const totalCount = deposits?.length || 0;
-        const totalAmount = deposits?.reduce((sum, d) => sum + d.amount, 0) || 0;
-        const averageAmount = totalCount > 0 ? totalAmount / totalCount : 0;
-        
-        document.getElementById('total-deposit-count').textContent = totalCount;
-        document.getElementById('total-deposit-amount').textContent = totalAmount.toFixed(2);
-        document.getElementById('average-deposit').textContent = averageAmount.toFixed(2);
-        
-        // Update table
-        const container = document.getElementById('deposits-table-body');
+        const container = document.getElementById('deposits-table');
         let html = '';
         
         if (deposits && deposits.length > 0) {
@@ -1228,145 +1228,119 @@ async function loadAllDeposits(period = 'today') {
                 const date = new Date(deposit.created_at);
                 const dateStr = date.toLocaleDateString();
                 const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                const statusColor = deposit.status === 'completed' ? '#52c41a' : 
-                                   deposit.status === 'pending' ? '#f9ae3d' : 
-                                   '#ccc';
-                const shortTxId = deposit.description ? 
-                    deposit.description.substring(0, 20) + '...' : 
-                    'N/A';
+                const statusClass = deposit.status === 'completed' ? 'status-success' : 
+                                   deposit.status === 'pending' ? 'status-pending' : 'status-error';
                 
                 html += `
                     <tr>
+                        <td><code>${deposit.id.substring(0, 8)}...</code></td>
+                        <td>
+                            <strong>${deposit.user.username}</strong>
+                        </td>
+                        <td class="amount-cell">
+                            <strong style="color: #52c41a;">+${deposit.amount.toFixed(2)} USDT</strong>
+                        </td>
+                        <td>${deposit.network || 'TRC20'}</td>
                         <td>${dateStr}<br><small>${timeStr}</small></td>
                         <td>
-                            <div style="font-weight: bold;">${deposit.user.username}</div>
-                            <small>${deposit.user.email || ''}</small>
+                            <span class="status-badge ${statusClass}">${deposit.status}</span>
                         </td>
-                        <td style="color: #52c41a; font-weight: bold;">+${deposit.amount.toFixed(2)} USDT</td>
-                        <td>${deposit.network || 'TRC20'}</td>
-                        <td><span class="status-badge" style="background: ${statusColor};">${deposit.status}</span></td>
-                        <td><small title="${deposit.description || ''}">${shortTxId}</small></td>
                         <td>
-                            <button class="admin-btn-small action-btn" data-id="${deposit.id}" data-action="view-deposit">
-                                <i class="fas fa-eye"></i> Details
-                            </button>
+                            <code title="${deposit.description}">${deposit.description?.substring(0, 30)}...</code>
                         </td>
                     </tr>
                 `;
             });
         } else {
-            html = '<tr><td colspan="7" style="text-align: center; color: #ccc; padding: 20px;">No deposits found</td></tr>';
+            html = '<tr><td colspan="7" class="empty-cell">No deposits found</td></tr>';
         }
         
         container.innerHTML = html;
         
-        // Add event listeners to action buttons
-        container.querySelectorAll('.action-btn[data-action="view-deposit"]').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const depositId = this.getAttribute('data-id');
-                showDepositDetails(depositId);
-            });
-        });
-        
     } catch (error) {
         console.error('Error loading deposits:', error);
-        document.getElementById('deposits-table-body').innerHTML = 
-            '<tr><td colspan="7" style="text-align: center; color: #ff4d4f; padding: 20px;">Error loading deposits</td></tr>';
+        document.getElementById('deposits-table').innerHTML = 
+            '<tr><td colspan="7" class="error-cell">Error loading deposits</td></tr>';
     }
 }
 
-async function loadAllWithdrawals(statusFilter = 'pending') {
+async function loadAllTransactions() {
     try {
+        const typeFilter = document.getElementById('transaction-type-filter').value;
+        const dateFilter = document.getElementById('transaction-date-filter').value;
+        
         let query = window.supabase
             .from('transactions')
             .select(`
                 *,
-                user:users(username, email, balance)
+                user:users(username)
             `)
-            .eq('type', 'withdrawal')
-            .order('created_at', { ascending: false });
+            .order('created_at', { ascending: false })
+            .limit(100);
         
-        if (statusFilter !== 'all') {
-            query = query.eq('status', statusFilter);
+        if (typeFilter) {
+            query = query.eq('type', typeFilter);
         }
         
-        const { data: withdrawals, error } = await query;
+        if (dateFilter) {
+            query = query.gte('created_at', `${dateFilter}T00:00:00`)
+                         .lte('created_at', `${dateFilter}T23:59:59`);
+        }
+        
+        const { data: transactions, error } = await query;
         
         if (error) throw error;
         
-        const container = document.getElementById('withdrawals-table-body');
+        const container = document.getElementById('transactions-table');
         let html = '';
         
-        if (withdrawals && withdrawals.length > 0) {
-            withdrawals.forEach(tx => {
+        if (transactions && transactions.length > 0) {
+            transactions.forEach(tx => {
                 const date = new Date(tx.created_at);
                 const dateStr = date.toLocaleDateString();
                 const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                const amount = Math.abs(tx.amount);
-                const statusColor = tx.status === 'completed' ? '#52c41a' : 
-                                   tx.status === 'pending' ? '#f9ae3d' : 
-                                   tx.status === 'cancelled' ? '#ff4d4f' : 
-                                   '#ccc';
-                const shortAddress = tx.withdrawal_address ? 
-                    tx.withdrawal_address.substring(0, 15) + '...' : 
-                    'N/A';
+                const isPositive = tx.amount > 0;
+                const amountColor = isPositive ? '#52c41a' : '#ff4d4f';
+                const statusClass = tx.status === 'completed' ? 'status-success' : 
+                                   tx.status === 'pending' ? 'status-pending' : 'status-error';
                 
                 html += `
                     <tr>
+                        <td><code>${tx.id.substring(0, 8)}...</code></td>
+                        <td>${tx.user.username}</td>
+                        <td>
+                            <span class="type-badge type-${tx.type}">${tx.type}</span>
+                        </td>
+                        <td style="color: ${amountColor}; font-weight: bold;">
+                            ${isPositive ? '+' : ''}${tx.amount.toFixed(2)} USDT
+                        </td>
+                        <td>
+                            <span class="status-badge ${statusClass}">${tx.status}</span>
+                        </td>
+                        <td title="${tx.description || ''}">
+                            ${tx.description?.substring(0, 50) || '—'}${tx.description && tx.description.length > 50 ? '...' : ''}
+                        </td>
                         <td>${dateStr}<br><small>${timeStr}</small></td>
-                        <td>
-                            <div style="font-weight: bold;">${tx.user.username}</div>
-                            <small>Balance: ${tx.user.balance.toFixed(2)} USDT</small>
-                        </td>
-                        <td style="color: #ff4d4f; font-weight: bold;">-${amount.toFixed(2)} USDT</td>
-                        <td>${tx.network || 'TRC20'}</td>
-                        <td title="${tx.withdrawal_address || ''}">${shortAddress}</td>
-                        <td><span class="status-badge" style="background: ${statusColor};">${tx.status}</span></td>
-                        <td>
-                            ${tx.status === 'pending' ? `
-                                <button class="admin-btn-small action-btn" data-id="${tx.id}" data-action="process">
-                                    <i class="fas fa-cog"></i> Process
-                                </button>
-                            ` : ''}
-                            <button class="admin-btn-small action-btn" data-id="${tx.id}" data-action="view-tx">
-                                <i class="fas fa-eye"></i> View
-                            </button>
-                        </td>
                     </tr>
                 `;
             });
         } else {
-            html = '<tr><td colspan="7" style="text-align: center; color: #ccc; padding: 20px;">No withdrawals found</td></tr>';
+            html = '<tr><td colspan="7" class="empty-cell">No transactions found</td></tr>';
         }
         
         container.innerHTML = html;
         
-        // Add event listeners to action buttons
-        container.querySelectorAll('.action-btn[data-action="process"]').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const txId = this.getAttribute('data-id');
-                showWithdrawalAction(txId);
-            });
-        });
-        
-        container.querySelectorAll('.action-btn[data-action="view-tx"]').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const txId = this.getAttribute('data-id');
-                showTransactionDetails(txId);
-            });
-        });
-        
     } catch (error) {
-        console.error('Error loading withdrawals:', error);
-        document.getElementById('withdrawals-table-body').innerHTML = 
-            '<tr><td colspan="7" style="text-align: center; color: #ff4d4f; padding: 20px;">Error loading withdrawals</td></tr>';
+        console.error('Error loading transactions:', error);
+        document.getElementById('transactions-table').innerHTML = 
+            '<tr><td colspan="7" class="error-cell">Error loading transactions</td></tr>';
     }
 }
 
 async function loadReferralTree() {
-    const searchInput = document.getElementById('search-user-tree').value.trim();
+    const searchInput = document.getElementById('referral-search').value.trim();
     if (!searchInput) {
-        window.showCustomAlert('Please enter a user ID or username');
+        showToast('Please enter a user ID or username', 'warning');
         return;
     }
     
@@ -1379,7 +1353,7 @@ async function loadReferralTree() {
             .maybeSingle();
         
         if (userError || !user) {
-            window.showCustomAlert('User not found');
+            showToast('User not found', 'error');
             return;
         }
         
@@ -1432,24 +1406,29 @@ async function loadReferralTree() {
         }
         
         // Render tree
-        const container = document.getElementById('referral-tree-container');
+        const container = document.getElementById('referral-tree-view');
         let html = `
-            <div class="referral-tree">
+            <div class="tree-container">
                 <div class="tree-header">
-                    <h4 style="color: white;">Referral Tree for ${user.username} (ID: ${user.id})</h4>
+                    <h4>Referral Tree for ${user.username} (ID: ${user.id.substring(0, 10)}...)</h4>
                     <div class="tree-stats">
-                        <span>Level 1: ${level1Refs?.length || 0}</span>
-                        <span>Level 2: ${level2Refs.length}</span>
-                        <span>Level 3: ${level3Refs.length}</span>
+                        <span class="stat">Level 1: ${level1Refs?.length || 0}</span>
+                        <span class="stat">Level 2: ${level2Refs.length}</span>
+                        <span class="stat">Level 3: ${level3Refs.length}</span>
+                        <span class="stat">Total: ${(level1Refs?.length || 0) + level2Refs.length + level3Refs.length}</span>
                     </div>
                 </div>
                 
-                <div class="tree-node root">
-                    <div class="node-content">
-                        <div class="node-avatar">${user.username.charAt(0).toUpperCase()}</div>
+                <div class="tree-level level-0">
+                    <div class="tree-node root">
+                        <div class="node-header">
+                            <span class="node-badge">ROOT</span>
+                            <span class="node-name">${user.username}</span>
+                        </div>
                         <div class="node-details">
-                            <div class="node-name">${user.username} (YOU)</div>
-                            <div class="node-info">VIP ${user.vip_level} | ${user.balance.toFixed(2)} USDT</div>
+                            <span>VIP ${user.vip_level}</span>
+                            <span>${user.balance.toFixed(2)} USDT</span>
+                            <span>${new Date(user.created_at).toLocaleDateString()}</span>
                         </div>
                     </div>
                 </div>
@@ -1458,68 +1437,93 @@ async function loadReferralTree() {
         // Level 1
         if (level1Refs && level1Refs.length > 0) {
             html += '<div class="tree-level level-1">';
+            html += '<div class="level-label">Level 1 Referrals</div>';
+            html += '<div class="nodes-grid">';
+            
             level1Refs.forEach((ref, index) => {
                 const referred = ref.referred;
+                const activeRefs = level2Refs.filter(r => r.parent === ref.referred_id).length;
+                
                 html += `
                     <div class="tree-node">
-                        <div class="node-content">
-                            <div class="node-avatar">${referred.username.charAt(0).toUpperCase()}</div>
-                            <div class="node-details">
-                                <div class="node-name">${referred.username}</div>
-                                <div class="node-info">VIP ${referred.vip_level} | ${referred.balance.toFixed(2)} USDT</div>
-                                <div class="node-date">${new Date(referred.created_at).toLocaleDateString()}</div>
-                            </div>
+                        <div class="node-header">
+                            <span class="node-badge">L1</span>
+                            <span class="node-name">${referred.username}</span>
+                            <button class="btn-icon" onclick="editUserFromTree('${referred.id}')" title="Edit user">
+                                <i class="fas fa-edit"></i>
+                            </button>
                         </div>
+                        <div class="node-details">
+                            <span>VIP ${referred.vip_level}</span>
+                            <span>${referred.balance.toFixed(2)} USDT</span>
+                            <span>Refs: ${activeRefs}</span>
+                        </div>
+                    </div>
                 `;
-                
-                // Level 2 for this user
-                const level2ForThisUser = level2Refs.filter(r => r.parent === ref.referred_id);
-                if (level2ForThisUser.length > 0) {
-                    html += '<div class="tree-level level-2">';
-                    level2ForThisUser.forEach(ref2 => {
-                        const referred2 = ref2.referred;
-                        html += `
-                            <div class="tree-node">
-                                <div class="node-content">
-                                    <div class="node-avatar">${referred2.username.charAt(0).toUpperCase()}</div>
-                                    <div class="node-details">
-                                        <div class="node-name">${referred2.username}</div>
-                                        <div class="node-info">VIP ${referred2.vip_level} | ${referred2.balance.toFixed(2)} USDT</div>
-                                        <div class="node-date">${new Date(referred2.created_at).toLocaleDateString()}</div>
-                                    </div>
-                                </div>
-                        `;
-                        
-                        // Level 3 for this user
-                        const level3ForThisUser = level3Refs.filter(r => r.parent === ref2.referred_id);
-                        if (level3ForThisUser.length > 0) {
-                            html += '<div class="tree-level level-3">';
-                            level3ForThisUser.forEach(ref3 => {
-                                const referred3 = ref3.referred;
-                                html += `
-                                    <div class="tree-node">
-                                        <div class="node-content">
-                                            <div class="node-avatar">${referred3.username.charAt(0).toUpperCase()}</div>
-                                            <div class="node-details">
-                                                <div class="node-name">${referred3.username}</div>
-                                                <div class="node-info">VIP ${referred3.vip_level} | ${referred3.balance.toFixed(2)} USDT</div>
-                                                <div class="node-date">${new Date(referred3.created_at).toLocaleDateString()}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                `;
-                            });
-                            html += '</div>';
-                        }
-                        
-                        html += '</div>';
-                    });
-                    html += '</div>';
-                }
-                
-                html += '</div>';
             });
-            html += '</div>';
+            
+            html += '</div></div>';
+        }
+        
+        // Level 2
+        if (level2Refs.length > 0) {
+            html += '<div class="tree-level level-2">';
+            html += '<div class="level-label">Level 2 Referrals</div>';
+            html += '<div class="nodes-grid">';
+            
+            level2Refs.forEach(ref => {
+                const referred = ref.referred;
+                const activeRefs = level3Refs.filter(r => r.parent === ref.referred_id).length;
+                
+                html += `
+                    <div class="tree-node">
+                        <div class="node-header">
+                            <span class="node-badge">L2</span>
+                            <span class="node-name">${referred.username}</span>
+                            <button class="btn-icon" onclick="editUserFromTree('${referred.id}')" title="Edit user">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                        <div class="node-details">
+                            <span>VIP ${referred.vip_level}</span>
+                            <span>${referred.balance.toFixed(2)} USDT</span>
+                            <span>Refs: ${activeRefs}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div></div>';
+        }
+        
+        // Level 3
+        if (level3Refs.length > 0) {
+            html += '<div class="tree-level level-3">';
+            html += '<div class="level-label">Level 3 Referrals</div>';
+            html += '<div class="nodes-grid">';
+            
+            level3Refs.forEach(ref => {
+                const referred = ref.referred;
+                
+                html += `
+                    <div class="tree-node">
+                        <div class="node-header">
+                            <span class="node-badge">L3</span>
+                            <span class="node-name">${referred.username}</span>
+                            <button class="btn-icon" onclick="editUserFromTree('${referred.id}')" title="Edit user">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                        <div class="node-details">
+                            <span>VIP ${referred.vip_level}</span>
+                            <span>${referred.balance.toFixed(2)} USDT</span>
+                            <span>No refs</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div></div>';
         }
         
         html += '</div>';
@@ -1527,135 +1531,13 @@ async function loadReferralTree() {
         
     } catch (error) {
         console.error('Error loading referral tree:', error);
-        window.showCustomAlert('Error loading referral tree');
+        showToast('Error loading referral tree', 'error');
     }
 }
 
-async function loadAllTransactions() {
-    try {
-        const typeFilter = document.getElementById('transaction-type-filter').value;
-        const dateFilter = document.getElementById('transaction-date-filter').value;
-        
-        let query = window.supabase
-            .from('transactions')
-            .select(`
-                *,
-                user:users(username)
-            `)
-            .order('created_at', { ascending: false })
-            .limit(100);
-        
-        if (typeFilter) {
-            query = query.eq('type', typeFilter);
-        }
-        
-        if (dateFilter) {
-            query = query.gte('created_at', `${dateFilter}T00:00:00`)
-                         .lte('created_at', `${dateFilter}T23:59:59`);
-        }
-        
-        const { data: transactions, error } = await query;
-        
-        if (error) throw error;
-        
-        const container = document.getElementById('transactions-table-body');
-        let html = '';
-        
-        if (transactions && transactions.length > 0) {
-            transactions.forEach(tx => {
-                const date = new Date(tx.created_at);
-                const dateStr = date.toLocaleDateString();
-                const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                const isPositive = tx.amount > 0;
-                const amountColor = isPositive ? '#52c41a' : '#ff4d4f';
-                const statusColor = tx.status === 'completed' ? '#52c41a' : 
-                                   tx.status === 'pending' ? '#f9ae3d' : 
-                                   '#ff4d4f';
-                
-                html += `
-                    <tr>
-                        <td>${dateStr}<br><small>${timeStr}</small></td>
-                        <td>${tx.user.username}</td>
-                        <td><span class="type-badge">${tx.type}</span></td>
-                        <td style="color: ${amountColor}; font-weight: bold;">${isPositive ? '+' : ''}${tx.amount.toFixed(2)} USDT</td>
-                        <td><span class="status-badge" style="background: ${statusColor};">${tx.status}</span></td>
-                        <td><small>${tx.description || ''}</small></td>
-                        <td>
-                            <button class="admin-btn-small action-btn" data-id="${tx.id}" data-action="view">
-                                <i class="fas fa-eye"></i> View
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-        } else {
-            html = '<tr><td colspan="7" style="text-align: center; color: #ccc; padding: 20px;">No transactions found</td></tr>';
-        }
-        
-        container.innerHTML = html;
-        
-        // Add event listeners to action buttons
-        container.querySelectorAll('.action-btn[data-action="view"]').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const txId = this.getAttribute('data-id');
-                showTransactionDetails(txId);
-            });
-        });
-        
-    } catch (error) {
-        console.error('Error loading transactions:', error);
-        document.getElementById('transactions-table-body').innerHTML = 
-            '<tr><td colspan="7" style="text-align: center; color: #ff4d4f; padding: 20px;">Error loading transactions</td></tr>';
-    }
-}
-
-async function loadRecentBalanceChanges() {
-    try {
-        const { data: changes, error } = await window.supabase
-            .from('admin_logs')
-            .select(`
-                *,
-                admin:users!admin_id(username),
-                target_user:users!target_user_id(username)
-            `)
-            .eq('action', 'balance_adjustment')
-            .order('created_at', { ascending: false })
-            .limit(10);
-        
-        if (error) throw error;
-        
-        const container = document.getElementById('recent-balance-changes');
-        let html = '';
-        
-        if (changes && changes.length > 0) {
-            changes.forEach(change => {
-                const date = new Date(change.created_at).toLocaleDateString();
-                const details = JSON.parse(change.details || '{}');
-                
-                html += `
-                    <div class="balance-change-item">
-                        <div class="change-header">
-                            <span class="change-admin">${change.admin?.username || 'System'}</span>
-                            <span class="change-date">${date}</span>
-                        </div>
-                        <div class="change-details">
-                            User: ${change.target_user?.username || 'Unknown'} |
-                            Amount: ${details.amount || 0} USDT |
-                            Reason: ${details.reason || 'No reason provided'}
-                        </div>
-                    </div>
-                `;
-            });
-        } else {
-            html = '<div style="color: #ccc; text-align: center; padding: 20px;">No recent balance adjustments</div>';
-        }
-        
-        container.innerHTML = html;
-        
-    } catch (error) {
-        console.error('Error loading balance changes:', error);
-    }
-}
+window.editUserFromTree = function(userId) {
+    showEditUserModal(userId);
+};
 
 async function populateUserSelects() {
     try {
@@ -1667,17 +1549,17 @@ async function populateUserSelects() {
         
         if (error) throw error;
         
-        const balanceSelect = document.getElementById('balance-user-select');
+        const quickSelect = document.getElementById('quick-user-select');
         const depositSelect = document.getElementById('deposit-user-select');
         
         let options = '<option value="">Select user...</option>';
         if (users && users.length > 0) {
             users.forEach(user => {
-                options += `<option value="${user.id}">${user.username} (${user.id})</option>`;
+                options += `<option value="${user.id}">${user.username} (${user.id.substring(0, 8)}...)</option>`;
             });
         }
         
-        balanceSelect.innerHTML = options;
+        quickSelect.innerHTML = options;
         depositSelect.innerHTML = options;
         
     } catch (error) {
@@ -1685,8 +1567,8 @@ async function populateUserSelects() {
     }
 }
 
-async function loadUserBalanceInfo() {
-    const userId = document.getElementById('balance-user-select').value;
+async function loadQuickUserBalance() {
+    const userId = document.getElementById('quick-user-select').value;
     if (!userId) return;
     
     try {
@@ -1698,28 +1580,28 @@ async function loadUserBalanceInfo() {
         
         if (error) throw error;
         
-        document.getElementById('current-user-balance').value = `${user.balance.toFixed(2)} USDT (${user.username})`;
+        document.getElementById('quick-current-balance').value = `${user.balance.toFixed(2)} USDT (${user.username})`;
         
     } catch (error) {
         console.error('Error loading user balance:', error);
-        document.getElementById('current-user-balance').value = 'Error loading balance';
+        document.getElementById('quick-current-balance').value = 'Error loading balance';
     }
 }
 
-async function applyBalanceChange() {
-    const userId = document.getElementById('balance-user-select').value;
-    const action = document.getElementById('balance-action').value;
-    const amount = parseFloat(document.getElementById('balance-amount').value);
-    const reason = document.getElementById('balance-reason').value.trim();
+async function applyQuickBalanceChange() {
+    const userId = document.getElementById('quick-user-select').value;
+    const action = document.getElementById('quick-action').value;
+    const amount = parseFloat(document.getElementById('quick-amount').value);
+    const reason = document.getElementById('quick-reason').value.trim();
     const adminUser = window.getCurrentUser();
     
     if (!userId || !amount || amount <= 0) {
-        window.showCustomAlert('Please select a user and enter a valid amount');
+        showToast('Please select a user and enter a valid amount', 'warning');
         return;
     }
     
     if (!reason) {
-        window.showCustomAlert('Please enter a reason for this balance change');
+        showToast('Please enter a reason for this balance change', 'warning');
         return;
     }
     
@@ -1742,7 +1624,7 @@ async function applyBalanceChange() {
             transactionAmount = amount;
         } else if (action === 'subtract') {
             if (amount > user.balance) {
-                window.showCustomAlert('Cannot subtract more than current balance');
+                showToast('Cannot subtract more than current balance', 'error');
                 return;
             }
             newBalance -= amount;
@@ -1761,7 +1643,7 @@ async function applyBalanceChange() {
         if (updateError) throw updateError;
         
         // Create transaction record
-        const { error: txError } = await window.supabase
+        await window.supabase
             .from('transactions')
             .insert([{
                 user_id: userId,
@@ -1771,10 +1653,8 @@ async function applyBalanceChange() {
                 description: `Admin balance adjustment: ${reason}`
             }]);
         
-        if (txError) throw txError;
-        
         // Log admin action
-        const { error: logError } = await window.supabase
+        await window.supabase
             .from('admin_logs')
             .insert([{
                 admin_id: adminUser.id,
@@ -1791,24 +1671,101 @@ async function applyBalanceChange() {
                 target_user_id: userId
             }]);
         
-        if (logError) throw logError;
-        
-        window.showCustomAlert(`Balance updated successfully! New balance: ${newBalance.toFixed(2)} USDT`);
+        showToast(`Balance updated to ${newBalance.toFixed(2)} USDT`, 'success');
         
         // Reset form
-        document.getElementById('balance-amount').value = '';
-        document.getElementById('balance-reason').value = '';
-        document.getElementById('current-user-balance').value = '';
-        document.getElementById('balance-user-select').value = '';
+        document.getElementById('quick-amount').value = '';
+        document.getElementById('quick-reason').value = '';
+        document.getElementById('quick-current-balance').value = '';
+        document.getElementById('quick-user-select').value = '';
         
         // Refresh data
-        await loadRecentBalanceChanges();
-        await loadAllUsers();
-        await loadAdminOverview();
+        loadAllUsers();
+        loadStats();
         
     } catch (error) {
         console.error('Error applying balance change:', error);
-        window.showCustomAlert('Error applying balance change: ' + error.message);
+        showToast('Error applying balance change: ' + error.message, 'error');
+    }
+}
+
+async function addManualDeposit() {
+    const userId = document.getElementById('deposit-user-select').value;
+    const amount = parseFloat(document.getElementById('manual-deposit-amount').value);
+    const network = document.getElementById('manual-deposit-network').value;
+    const txid = document.getElementById('manual-deposit-txid').value.trim();
+    const adminUser = window.getCurrentUser();
+    
+    if (!userId || !amount || amount < 17) {
+        showToast('Please select a user and enter a valid amount (min 17 USDT)', 'warning');
+        return;
+    }
+    
+    try {
+        // Get user current balance
+        const { data: user, error: userError } = await window.supabase
+            .from('users')
+            .select('balance, username')
+            .eq('id', userId)
+            .single();
+        
+        if (userError) throw userError;
+        
+        const newBalance = user.balance + amount;
+        
+        // Update user balance
+        const { error: balanceError } = await window.supabase
+            .from('users')
+            .update({ balance: newBalance })
+            .eq('id', userId);
+        
+        if (balanceError) throw balanceError;
+        
+        // Create transaction record
+        const description = `Manual deposit by admin${txid ? ` | TXID: ${txid}` : ''}`;
+        
+        await window.supabase
+            .from('transactions')
+            .insert([{
+                user_id: userId,
+                type: 'deposit',
+                amount: amount,
+                status: 'completed',
+                description: description,
+                network: network
+            }]);
+        
+        // Log admin action
+        await window.supabase
+            .from('admin_logs')
+            .insert([{
+                admin_id: adminUser.id,
+                action: 'manual_deposit',
+                details: JSON.stringify({
+                    userId: userId,
+                    username: user.username,
+                    amount: amount,
+                    network: network,
+                    txid: txid
+                }),
+                target_user_id: userId
+            }]);
+        
+        showToast(`Manual deposit of ${amount} USDT added successfully!`, 'success');
+        
+        // Reset form
+        document.getElementById('manual-deposit-amount').value = '';
+        document.getElementById('manual-deposit-txid').value = '';
+        document.getElementById('deposit-user-select').value = '';
+        
+        // Refresh data
+        loadAllUsers();
+        loadStats();
+        loadDeposits();
+        
+    } catch (error) {
+        console.error('Error adding manual deposit:', error);
+        showToast('Error adding manual deposit: ' + error.message, 'error');
     }
 }
 
@@ -1829,25 +1786,27 @@ async function showEditUserModal(userId) {
         document.getElementById('edit-balance').value = user.balance;
         document.getElementById('edit-vip-level').value = user.vip_level;
         document.getElementById('edit-signals').value = user.signals_available;
-        document.getElementById('edit-status').value = user.status || 'active';
         document.getElementById('edit-address-trc20').value = user.withdrawal_address_trc20 || '';
         document.getElementById('edit-address-bep20').value = user.withdrawal_address_bep20 || '';
-        document.getElementById('edit-invite-code').value = user.invite_code || '';
         
         // Store user ID
-        document.getElementById('edit-user-form').setAttribute('data-user-id', userId);
+        document.getElementById('user-edit-form').setAttribute('data-user-id', userId);
         
         // Show modal
-        document.getElementById('edit-user-modal').style.display = 'flex';
+        document.getElementById('user-edit-modal').style.display = 'flex';
         
     } catch (error) {
         console.error('Error loading user:', error);
-        window.showCustomAlert('Error loading user data');
+        showToast('Error loading user data', 'error');
     }
 }
 
+function hideUserEditModal() {
+    document.getElementById('user-edit-modal').style.display = 'none';
+}
+
 async function saveUserChanges() {
-    const userId = document.getElementById('edit-user-form').getAttribute('data-user-id');
+    const userId = document.getElementById('user-edit-form').getAttribute('data-user-id');
     const adminUser = window.getCurrentUser();
     
     try {
@@ -1857,10 +1816,8 @@ async function saveUserChanges() {
             balance: parseFloat(document.getElementById('edit-balance').value),
             vip_level: parseInt(document.getElementById('edit-vip-level').value),
             signals_available: parseInt(document.getElementById('edit-signals').value),
-            status: document.getElementById('edit-status').value,
             withdrawal_address_trc20: document.getElementById('edit-address-trc20').value || null,
-            withdrawal_address_bep20: document.getElementById('edit-address-bep20').value || null,
-            invite_code: document.getElementById('edit-invite-code').value
+            withdrawal_address_bep20: document.getElementById('edit-address-bep20').value || null
         };
         
         // Update password if provided
@@ -1886,563 +1843,26 @@ async function saveUserChanges() {
                 target_user_id: userId
             }]);
         
-        window.showCustomAlert('User updated successfully!');
-        document.getElementById('edit-user-modal').style.display = 'none';
+        showToast('User updated successfully!', 'success');
+        hideUserEditModal();
         
-        // Reload users tab
-        await loadAllUsers();
-        await loadAdminOverview();
+        // Refresh data
+        loadAllUsers();
+        loadStats();
         
     } catch (error) {
         console.error('Error updating user:', error);
-        window.showCustomAlert('Error updating user');
-    }
-}
-
-async function viewUserDetails(userId) {
-    try {
-        const { data: user, error } = await window.supabase
-            .from('users')
-            .select('*')
-            .eq('id', userId)
-            .single();
-        
-        if (error) throw error;
-        
-        // Get referral stats
-        const { count: totalRefs } = await window.supabase
-            .from('referrals')
-            .select('*', { count: 'exact', head: true })
-            .eq('referrer_id', userId);
-        
-        // Get transaction stats
-        const { data: transactions } = await window.supabase
-            .from('transactions')
-            .select('type, amount')
-            .eq('user_id', userId);
-        
-        let totalDeposits = 0;
-        let totalWithdrawals = 0;
-        let totalQuantification = 0;
-        
-        if (transactions) {
-            transactions.forEach(tx => {
-                if (tx.type === 'deposit') totalDeposits += tx.amount;
-                else if (tx.type === 'withdrawal') totalWithdrawals += Math.abs(tx.amount);
-                else if (tx.type === 'quantification') totalQuantification += tx.amount;
-            });
-        }
-        
-        const details = `
-            <div style="color: #333;">
-                <h4 style="margin-bottom: 15px;">User Details: ${user.username}</h4>
-                
-                <div class="detail-section">
-                    <h5>Account Information</h5>
-                    <div class="detail-row">
-                        <span class="detail-label">User ID:</span>
-                        <span class="detail-value">${user.id}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Email:</span>
-                        <span class="detail-value">${user.email || 'Not set'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Invite Code:</span>
-                        <span class="detail-value">${user.invite_code || 'Not set'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Referred By:</span>
-                        <span class="detail-value">${user.referred_by || 'Direct registration'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Joined:</span>
-                        <span class="detail-value">${new Date(user.created_at).toLocaleString()}</span>
-                    </div>
-                </div>
-                
-                <div class="detail-section">
-                    <h5>Financial Information</h5>
-                    <div class="detail-row">
-                        <span class="detail-label">Balance:</span>
-                        <span class="detail-value" style="color: #f9ae3d; font-weight: bold;">${user.balance.toFixed(2)} USDT</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">VIP Level:</span>
-                        <span class="detail-value">VIP ${user.vip_level}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Signals Available:</span>
-                        <span class="detail-value">${user.signals_available}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Last Signal Update:</span>
-                        <span class="detail-value">${user.last_signal_update ? new Date(user.last_signal_update).toLocaleString() : 'Never'}</span>
-                    </div>
-                </div>
-                
-                <div class="detail-section">
-                    <h5>Statistics</h5>
-                    <div class="detail-row">
-                        <span class="detail-label">Total Referrals:</span>
-                        <span class="detail-value">${totalRefs || 0}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Total Deposits:</span>
-                        <span class="detail-value" style="color: #52c41a;">${totalDeposits.toFixed(2)} USDT</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Total Withdrawals:</span>
-                        <span class="detail-value" style="color: #ff4d4f;">${totalWithdrawals.toFixed(2)} USDT</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Total Quantification:</span>
-                        <span class="detail-value" style="color: #4e7771;">${totalQuantification.toFixed(2)} USDT</span>
-                    </div>
-                </div>
-                
-                <div class="detail-section">
-                    <h5>Wallet Addresses</h5>
-                    <div class="detail-row">
-                        <span class="detail-label">TRC20 Address:</span>
-                        <span class="detail-value">${user.withdrawal_address_trc20 || 'Not set'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">BEP20 Address:</span>
-                        <span class="detail-value">${user.withdrawal_address_bep20 || 'Not set'}</span>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        document.getElementById('transaction-details-content').innerHTML = details;
-        document.getElementById('transaction-details-modal').style.display = 'flex';
-        
-    } catch (error) {
-        console.error('Error loading user details:', error);
-        window.showCustomAlert('Error loading user details');
-    }
-}
-
-async function showWithdrawalAction(txId) {
-    try {
-        const { data: transaction, error } = await window.supabase
-            .from('transactions')
-            .select(`
-                *,
-                user:users(username, balance)
-            `)
-            .eq('id', txId)
-            .single();
-        
-        if (error) throw error;
-        
-        const amount = Math.abs(transaction.amount);
-        const userBalance = transaction.user.balance;
-        
-        let info = `
-            <div style="color: #333;">
-                <div style="margin-bottom: 10px;">
-                    <strong>User:</strong> ${transaction.user.username}
-                </div>
-                <div style="margin-bottom: 10px;">
-                    <strong>Amount:</strong> ${amount.toFixed(2)} USDT
-                </div>
-                <div style="margin-bottom: 10px;">
-                    <strong>User Balance:</strong> ${userBalance.toFixed(2)} USDT
-                </div>
-                <div style="margin-bottom: 10px;">
-                    <strong>Network:</strong> ${transaction.network || 'TRC20'}
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <strong>Address:</strong><br>
-                    <small style="word-break: break-all;">${transaction.withdrawal_address}</small>
-                </div>
-            </div>
-        `;
-        
-        document.getElementById('withdrawal-info').innerHTML = info;
-        document.getElementById('withdrawal-action-modal').setAttribute('data-tx-id', txId);
-        document.getElementById('withdrawal-action-modal').style.display = 'flex';
-        
-    } catch (error) {
-        console.error('Error loading withdrawal:', error);
-        window.showCustomAlert('Error loading withdrawal details');
-    }
-}
-
-async function approveWithdrawal() {
-    const txId = document.getElementById('withdrawal-action-modal').getAttribute('data-tx-id');
-    const adminUser = window.getCurrentUser();
-    
-    try {
-        // Update transaction status
-        const { error: txError } = await window.supabase
-            .from('transactions')
-            .update({ 
-                status: 'completed',
-                description: `Withdrawal approved by admin ${adminUser.username}`
-            })
-            .eq('id', txId);
-        
-        if (txError) throw txError;
-        
-        // Log admin action
-        await window.supabase
-            .from('admin_logs')
-            .insert([{
-                admin_id: adminUser.id,
-                action: 'withdrawal_approve',
-                target_transaction_id: txId
-            }]);
-        
-        window.showCustomAlert('Withdrawal approved successfully!');
-        document.getElementById('withdrawal-action-modal').style.display = 'none';
-        
-        // Refresh data
-        await loadAllWithdrawals(document.getElementById('withdrawal-status-filter').value);
-        await loadAdminOverview();
-        
-    } catch (error) {
-        console.error('Error approving withdrawal:', error);
-        window.showCustomAlert('Error approving withdrawal');
-    }
-}
-
-async function cancelWithdrawal() {
-    const txId = document.getElementById('withdrawal-action-modal').getAttribute('data-tx-id');
-    const adminUser = window.getCurrentUser();
-    
-    try {
-        // Get transaction details first
-        const { data: transaction, error: getError } = await window.supabase
-            .from('transactions')
-            .select('user_id, amount')
-            .eq('id', txId)
-            .single();
-        
-        if (getError) throw getError;
-        
-        // Return funds to user balance
-        const amountToReturn = Math.abs(transaction.amount);
-        const { data: user } = await window.supabase
-            .from('users')
-            .select('balance')
-            .eq('id', transaction.user_id)
-            .single();
-        
-        const newBalance = user.balance + amountToReturn;
-        
-        const { error: balanceError } = await window.supabase
-            .from('users')
-            .update({ balance: newBalance })
-            .eq('id', transaction.user_id);
-        
-        if (balanceError) throw balanceError;
-        
-        // Update transaction status
-        const { error: txError } = await window.supabase
-            .from('transactions')
-            .update({ 
-                status: 'cancelled',
-                description: `Withdrawal cancelled by admin - Funds returned to balance`
-            })
-            .eq('id', txId);
-        
-        if (txError) throw txError;
-        
-        // Log admin action
-        await window.supabase
-            .from('admin_logs')
-            .insert([{
-                admin_id: adminUser.id,
-                action: 'withdrawal_cancel',
-                details: JSON.stringify({
-                    amountReturned: amountToReturn,
-                    newBalance: newBalance
-                }),
-                target_user_id: transaction.user_id,
-                target_transaction_id: txId
-            }]);
-        
-        window.showCustomAlert('Withdrawal cancelled and funds returned to user!');
-        document.getElementById('withdrawal-action-modal').style.display = 'none';
-        
-        // Refresh data
-        await loadAllWithdrawals(document.getElementById('withdrawal-status-filter').value);
-        await loadAdminOverview();
-        
-    } catch (error) {
-        console.error('Error cancelling withdrawal:', error);
-        window.showCustomAlert('Error cancelling withdrawal');
-    }
-}
-
-async function rejectWithdrawal() {
-    const txId = document.getElementById('withdrawal-action-modal').getAttribute('data-tx-id');
-    const adminUser = window.getCurrentUser();
-    
-    try {
-        // Update transaction status to rejected (no refund)
-        const { error: txError } = await window.supabase
-            .from('transactions')
-            .update({ 
-                status: 'rejected',
-                description: `Withdrawal rejected by admin ${adminUser.username}`
-            })
-            .eq('id', txId);
-        
-        if (txError) throw txError;
-        
-        // Log admin action
-        await window.supabase
-            .from('admin_logs')
-            .insert([{
-                admin_id: adminUser.id,
-                action: 'withdrawal_reject',
-                target_transaction_id: txId
-            }]);
-        
-        window.showCustomAlert('Withdrawal rejected! Funds NOT returned to user.');
-        document.getElementById('withdrawal-action-modal').style.display = 'none';
-        
-        // Refresh data
-        await loadAllWithdrawals(document.getElementById('withdrawal-status-filter').value);
-        await loadAdminOverview();
-        
-    } catch (error) {
-        console.error('Error rejecting withdrawal:', error);
-        window.showCustomAlert('Error rejecting withdrawal');
-    }
-}
-
-async function showTransactionDetails(txId) {
-    try {
-        const { data: transaction, error } = await window.supabase
-            .from('transactions')
-            .select(`
-                *,
-                user:users(username, email)
-            `)
-            .eq('id', txId)
-            .single();
-        
-        if (error) throw error;
-        
-        const date = new Date(transaction.created_at).toLocaleString();
-        const isPositive = transaction.amount > 0;
-        const amountColor = isPositive ? '#52c41a' : '#ff4d4f';
-        
-        let details = `
-            <div style="color: #333;">
-                <div class="detail-row">
-                    <span class="detail-label">Transaction ID:</span>
-                    <span class="detail-value">${transaction.id}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Date:</span>
-                    <span class="detail-value">${date}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">User:</span>
-                    <span class="detail-value">${transaction.user.username} (${transaction.user.email || 'No email'})</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Type:</span>
-                    <span class="detail-value">${transaction.type}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Amount:</span>
-                    <span class="detail-value" style="color: ${amountColor}; font-weight: bold;">${transaction.amount.toFixed(2)} USDT</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Status:</span>
-                    <span class="detail-value">${transaction.status}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Description:</span>
-                    <span class="detail-value">${transaction.description || 'N/A'}</span>
-                </div>
-        `;
-        
-        if (transaction.network) {
-            details += `
-                <div class="detail-row">
-                    <span class="detail-label">Network:</span>
-                    <span class="detail-value">${transaction.network}</span>
-                </div>
-            `;
-        }
-        
-        if (transaction.withdrawal_address) {
-            details += `
-                <div class="detail-row">
-                    <span class="detail-label">Withdrawal Address:</span>
-                    <span class="detail-value" style="word-break: break-all;">${transaction.withdrawal_address}</span>
-                </div>
-            `;
-        }
-        
-        details += '</div>';
-        
-        document.getElementById('transaction-details-content').innerHTML = details;
-        document.getElementById('transaction-details-modal').style.display = 'flex';
-        
-    } catch (error) {
-        console.error('Error loading transaction:', error);
-        window.showCustomAlert('Error loading transaction details');
-    }
-}
-
-async function showDepositDetails(depositId) {
-    try {
-        const { data: deposit, error } = await window.supabase
-            .from('transactions')
-            .select(`
-                *,
-                user:users(username, email)
-            `)
-            .eq('id', depositId)
-            .single();
-        
-        if (error) throw error;
-        
-        const date = new Date(deposit.created_at).toLocaleString();
-        
-        let details = `
-            <div style="color: #333;">
-                <div class="detail-row">
-                    <span class="detail-label">Deposit ID:</span>
-                    <span class="detail-value">${deposit.id}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Date:</span>
-                    <span class="detail-value">${date}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">User:</span>
-                    <span class="detail-value">${deposit.user.username} (${deposit.user.email || 'No email'})</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Amount:</span>
-                    <span class="detail-value" style="color: #52c41a; font-weight: bold;">+${deposit.amount.toFixed(2)} USDT</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Status:</span>
-                    <span class="detail-value">${deposit.status}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Network:</span>
-                    <span class="detail-value">${deposit.network || 'TRC20'}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Description:</span>
-                    <span class="detail-value">${deposit.description || 'N/A'}</span>
-                </div>
-            </div>
-        `;
-        
-        document.getElementById('deposit-details-content').innerHTML = details;
-        document.getElementById('deposit-details-modal').style.display = 'flex';
-        
-    } catch (error) {
-        console.error('Error loading deposit:', error);
-        window.showCustomAlert('Error loading deposit details');
-    }
-}
-
-function showManualDepositModal() {
-    document.getElementById('manual-deposit-modal').style.display = 'flex';
-}
-
-async function saveManualDeposit() {
-    const userId = document.getElementById('deposit-user-select').value;
-    const amount = parseFloat(document.getElementById('manual-deposit-amount').value);
-    const network = document.getElementById('manual-deposit-network').value;
-    const txid = document.getElementById('manual-deposit-txid').value.trim();
-    const notes = document.getElementById('manual-deposit-notes').value.trim();
-    const adminUser = window.getCurrentUser();
-    
-    if (!userId || !amount || amount < 17) {
-        window.showCustomAlert('Please select a user and enter a valid amount (min 17 USDT)');
-        return;
-    }
-    
-    try {
-        // Get user current balance
-        const { data: user, error: userError } = await window.supabase
-            .from('users')
-            .select('balance, username')
-            .eq('id', userId)
-            .single();
-        
-        if (userError) throw userError;
-        
-        const newBalance = user.balance + amount;
-        
-        // Update user balance
-        const { error: balanceError } = await window.supabase
-            .from('users')
-            .update({ balance: newBalance })
-            .eq('id', userId);
-        
-        if (balanceError) throw balanceError;
-        
-        // Create transaction record
-        const description = notes ? 
-            `Manual deposit by admin: ${notes}${txid ? ` | TXID: ${txid}` : ''}` :
-            `Manual deposit by admin${txid ? ` | TXID: ${txid}` : ''}`;
-        
-        const { error: txError } = await window.supabase
-            .from('transactions')
-            .insert([{
-                user_id: userId,
-                type: 'deposit',
-                amount: amount,
-                status: 'completed',
-                description: description,
-                network: network
-            }]);
-        
-        if (txError) throw txError;
-        
-        // Log admin action
-        await window.supabase
-            .from('admin_logs')
-            .insert([{
-                admin_id: adminUser.id,
-                action: 'manual_deposit',
-                details: JSON.stringify({
-                    userId: userId,
-                    username: user.username,
-                    amount: amount,
-                    network: network,
-                    txid: txid,
-                    notes: notes
-                }),
-                target_user_id: userId
-            }]);
-        
-        window.showCustomAlert(`Manual deposit added successfully! New balance: ${newBalance.toFixed(2)} USDT`);
-        
-        // Reset form and close modal
-        document.getElementById('manual-deposit-amount').value = '';
-        document.getElementById('manual-deposit-txid').value = '';
-        document.getElementById('manual-deposit-notes').value = '';
-        document.getElementById('manual-deposit-modal').style.display = 'none';
-        
-        // Refresh data
-        await loadAllDeposits(document.getElementById('deposit-period-filter').value);
-        await loadAdminOverview();
-        
-    } catch (error) {
-        console.error('Error adding manual deposit:', error);
-        window.showCustomAlert('Error adding manual deposit: ' + error.message);
+        showToast('Error updating user', 'error');
     }
 }
 
 function showAddUserModal() {
     document.getElementById('add-user-modal').style.display = 'flex';
+}
+
+function hideAddUserModal() {
+    document.getElementById('add-user-modal').style.display = 'none';
+    document.getElementById('add-user-form').reset();
 }
 
 async function saveNewUser() {
@@ -2455,12 +1875,12 @@ async function saveNewUser() {
     const adminUser = window.getCurrentUser();
     
     if (!username || !password) {
-        window.showCustomAlert('Username and password are required');
+        showToast('Username and password are required', 'warning');
         return;
     }
     
     if (username === 'admin') {
-        window.showCustomAlert('Username "admin" is reserved');
+        showToast('Username "admin" is reserved', 'error');
         return;
     }
     
@@ -2473,7 +1893,7 @@ async function saveNewUser() {
             .maybeSingle();
         
         if (existingUser) {
-            window.showCustomAlert('Username already exists');
+            showToast('Username already exists', 'error');
             return;
         }
         
@@ -2486,7 +1906,7 @@ async function saveNewUser() {
             username: username,
             email: email || null,
             password: password,
-            payment_password: password, // Same as login password for simplicity
+            payment_password: password,
             invite_code: inviteCode,
             referred_by: referrer || null,
             balance: balance,
@@ -2545,72 +1965,143 @@ async function saveNewUser() {
                 target_user_id: userId
             }]);
         
-        window.showCustomAlert(`User ${username} created successfully! User ID: ${userId}`);
-        
-        // Reset form and close modal
-        document.getElementById('new-username').value = '';
-        document.getElementById('new-email').value = '';
-        document.getElementById('new-password').value = '';
-        document.getElementById('new-balance').value = '0';
-        document.getElementById('add-user-modal').style.display = 'none';
+        showToast(`User ${username} created successfully!`, 'success');
+        hideAddUserModal();
         
         // Refresh data
-        await loadAllUsers();
-        await loadAdminOverview();
-        await populateUserSelects();
+        loadAllUsers();
+        loadStats();
+        populateUserSelects();
         
     } catch (error) {
         console.error('Error creating user:', error);
-        window.showCustomAlert('Error creating user: ' + error.message);
+        showToast('Error creating user: ' + error.message, 'error');
     }
 }
 
-async function saveSettings() {
-    const adminUser = window.getCurrentUser();
+function hideWithdrawalProcessModal() {
+    document.getElementById('withdrawal-process-modal').style.display = 'none';
+}
+
+function hideConfirmationModal() {
+    document.getElementById('confirmation-modal').style.display = 'none';
+}
+
+async function resetAllSignals() {
+    if (!confirm('Reset signals for ALL users? This will set all users to 3 signals.')) return;
     
     try {
-        const settings = {
-            registration_bonus: document.getElementById('reg-bonus').value,
-            min_deposit: document.getElementById('min-deposit').value,
-            min_withdrawal: document.getElementById('min-withdrawal').value,
-            daily_signals: document.getElementById('daily-signals').value,
-            signal_reset_hour: document.getElementById('signal-reset-hour').value
-        };
+        const { error } = await window.supabase
+            .from('users')
+            .update({ 
+                signals_available: 3,
+                last_signal_update: new Date().toISOString()
+            })
+            .neq('username', 'admin');
         
-        // Save settings to database (platform_settings table)
-        for (const [key, value] of Object.entries(settings)) {
-            const { error } = await window.supabase
-                .from('platform_settings')
-                .upsert({
-                    key: key,
-                    value: value,
-                    updated_at: new Date().toISOString()
-                });
-            
-            if (error) throw error;
-        }
+        if (error) throw error;
         
-        // Log admin action
-        await window.supabase
-            .from('admin_logs')
-            .insert([{
-                admin_id: adminUser.id,
-                action: 'settings_update',
-                details: JSON.stringify(settings)
-            }]);
-        
-        window.showCustomAlert('Settings saved successfully!');
+        showToast('All user signals reset to 3', 'success');
+        loadAllUsers();
         
     } catch (error) {
-        console.error('Error saving settings:', error);
-        window.showCustomAlert('Error saving settings');
+        console.error('Error resetting signals:', error);
+        showToast('Error resetting signals', 'error');
+    }
+}
+
+async function recalculateAllVipLevels() {
+    if (!confirm('Recalculate VIP levels for ALL users? This may take a moment.')) return;
+    
+    window.showLoading('Recalculating VIP levels...');
+    
+    try {
+        // Get all users
+        const { data: users, error: usersError } = await window.supabase
+            .from('users')
+            .select('id, balance, vip_level')
+            .neq('username', 'admin');
+        
+        if (usersError) throw usersError;
+        
+        let updated = 0;
+        
+        // Process each user
+        for (const user of users) {
+            await window.glyApp.updateVipLevelForUser(user.id);
+            updated++;
+        }
+        
+        window.hideLoading();
+        showToast(`VIP levels recalculated for ${updated} users`, 'success');
+        loadAllUsers();
+        
+    } catch (error) {
+        window.hideLoading();
+        console.error('Error recalculating VIP levels:', error);
+        showToast('Error recalculating VIP levels', 'error');
     }
 }
 
 function exportData() {
-    window.showCustomAlert('Export feature coming soon!');
+    showToast('Export feature coming soon!', 'info');
 }
 
-function showSystemLogs() {
-    window.showCustomAlert('System logs feature coming soon!');
+window.copyToClipboard = async function(text) {
+    try {
+        await navigator.clipboard.writeText(text);
+        showToast('Copied to clipboard', 'success');
+    } catch (error) {
+        // Fallback
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showToast('Copied to clipboard', 'success');
+    }
+};
+
+window.viewUserDetails = async function(userId) {
+    showToast('Viewing user details for: ' + userId, 'info');
+    // Implement detailed view if needed
+};
+
+window.viewWithdrawalDetails = async function(txId) {
+    showToast('Viewing withdrawal details for: ' + txId, 'info');
+    // Implement detailed view if needed
+};
+
+// Toast notification system
+function showToast(message, type = 'info') {
+    // Remove existing toasts
+    document.querySelectorAll('.toast').forEach(toast => toast.remove());
+    
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `
+        <div class="toast-content">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'times-circle' : 'info-circle'}"></i>
+            <span>${message}</span>
+        </div>
+        <button class="toast-close">&times;</button>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => toast.classList.add('show'), 10);
+    
+    // Auto remove
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+    
+    // Close button
+    toast.querySelector('.toast-close').addEventListener('click', () => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    });
 }

@@ -15,6 +15,12 @@ class GLYApp {
         // Initialize language system first
         initLanguageSystem();
         
+        // Setup Service Worker messaging FIRST
+        this.setupServiceWorkerMessaging();
+        
+        // Register Service Worker
+        this.registerServiceWorker();
+        
         // Initialize Supabase
         await this.initSupabase();
         
@@ -85,6 +91,70 @@ class GLYApp {
         );
         
         window.supabase = this.supabase;
+    }
+
+    setupServiceWorkerMessaging() {
+        if ('serviceWorker' in navigator) {
+            // Слушаем сообщения от Service Worker
+            navigator.serviceWorker.addEventListener('message', event => {
+                const data = event.data;
+                
+                if (data.type === 'FORCE_RELOAD') {
+                    console.log(`Получена команда на перезагрузку. Версия: ${data.version}`);
+                    
+                    // Ждем 1 секунду и перезагружаем страницу
+                    setTimeout(() => {
+                        console.log('Перезагружаем страницу для обновления...');
+                        window.location.reload();
+                    }, 1000);
+                }
+            });
+            
+            // Слушаем обновления Service Worker
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                console.log('Service Worker контроллер изменен, перезагружаем...');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 100);
+            });
+        }
+    }
+
+    registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(registration => {
+                    console.log('Service Worker зарегистрирован:', registration.scope);
+                    
+                    // Периодически проверяем обновления SW
+                    setInterval(() => {
+                        registration.update();
+                    }, 60 * 60 * 1000); // Каждый час
+                    
+                    // Слушаем установку нового SW
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        console.log('Найден новый Service Worker:', newWorker.state);
+                        
+                        newWorker.addEventListener('statechange', () => {
+                            console.log('Состояние нового SW:', newWorker.state);
+                            
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                console.log('Новая версия SW установлена, ждем активации...');
+                            }
+                            
+                            if (newWorker.state === 'activated') {
+                                console.log('Новый SW активирован!');
+                                // Сообщаем новому SW пропустить ожидание
+                                newWorker.postMessage({ type: 'SKIP_WAITING' });
+                            }
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Ошибка регистрации Service Worker:', error);
+                });
+        }
     }
 
     setupPWAInstall() {

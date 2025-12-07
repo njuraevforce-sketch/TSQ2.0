@@ -3944,35 +3944,3 @@ body:not(.no-tabbar) .page {
 .carousel-container .indicator.active {
     background-color: #fff;
 }
-
-/* Медиа-запросы ТОЛЬКО для home карусели */
-@media (max-width: 480px) {
-    .custom-vip-carousel {
-        width: 100%;
-        max-width: 345px;
-        /* высота остается 150px - не меняем */
-    }
-    
-    .vip-card {
-        width: 100%;
-        max-width: 345px;
-        /* высота остается 130px - не меняем */
-    }
-    
-    .vip-description,
-    .vip-details {
-        padding: 12px;
-        font-size: 13px;
-    }
-}
-
-@media (max-width: 375px) {
-    .custom-vip-carousel {
-        /* Только ширина адаптируется, высота остается 150px */
-    }
-    
-    .vip-card {
-        /* Только ширина адаптируется, высота остается 130px */
-    }
-}   }
-}

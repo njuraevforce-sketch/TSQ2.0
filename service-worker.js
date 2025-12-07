@@ -1,15 +1,15 @@
-const CACHE_NAME = 'gly-platform-v6.5';  // ← ИЗМЕНИТЬ ВЕРСИЮ
+const CACHE_NAME = 'gly-platform-v6.5';
 const urlsToCache = [
     '/',
     '/index.html',
-    '/css/style.css?v=6.5',  // ← ИЗМЕНИТЬ ВЕРСИЮ
-    '/js/app.js?v=6.5',      // ← ИЗМЕНИТЬ ВЕРСИЮ
-    '/js/home.js?v=6.5',     // ← ИЗМЕНИТЬ ВЕРСИЮ
-    '/js/mine.js?v=6.5',     // ← ИЗМЕНИТЬ ВЕРСИЮ
-    '/js/assets.js?v=6.5',   // ← ИЗМЕНИТЬ ВЕРСИЮ
-    '/js/team.js?v=6.5',     // ← ИЗМЕНИТЬ ВЕРСИЮ
-    '/js/deposit.js?v=6.5',  // ← ИЗМЕНИТЬ ВЕРСИЮ
-    '/js/withdraw.js?v=6.5', // ← ИЗМЕНИТЬ ВЕРСИЮ
+    '/css/style.css?v=6.5',
+    '/js/app.js?v=6.5',
+    '/js/home.js?v=6.5',
+    '/js/mine.js?v=6.5',
+    '/js/assets.js?v=6.5',
+    '/js/team.js?v=6.5',
+    '/js/deposit.js?v=6.5',
+    '/js/withdraw.js?v=6.5',
     '/manifest.json',
     '/assets/logo.png',
     '/assets/favicon.ico',
@@ -92,7 +92,7 @@ self.addEventListener('activate', event => {
                         console.log('Sending reload command to client:', client.id);
                         client.postMessage({
                             type: 'FORCE_RELOAD',
-                            version: '6.5',  // ← ИЗМЕНИТЬ ВЕРСИЮ
+                            version: '6.5',
                             timestamp: Date.now(),
                             message: 'New version available. Please reload.'
                         });
@@ -106,7 +106,7 @@ self.addEventListener('activate', event => {
                 oldVersions.forEach(version => {
                     localStorage.removeItem(`app_version_${version}`);
                 });
-                localStorage.setItem('app_version', '6.5');  // ← ИЗМЕНИТЬ ВЕРСИЮ
+                localStorage.setItem('app_version', '6.5');
                 console.log('LocalStorage cleaned and updated to new version');
             } catch (error) {
                 console.log('Error cleaning localStorage:', error);

@@ -3628,9 +3628,10 @@ body:not(.no-tabbar) .page {
     display: none !important;
 }
 /* =========================================== */
-/* СТИЛИ ДЛЯ ВЕРТИКАЛЬНОЙ КАРУСЕЛИ VIP */
+/* СТИЛИ ДЛЯ ВЕРТИКАЛЬНОЙ КАРУСЕЛИ VIP - ТОЛЬКО ДЛЯ GET.JS */
 /* =========================================== */
 
+/* Стили для VIP секции - только для get.js */
 .vip-section {
     padding: 15px;
     background: transparent;
@@ -3646,12 +3647,11 @@ body:not(.no-tabbar) .page {
     text-align: center;
 }
 
-/* ОБНОВЛЕННЫЙ ВЕРТИКАЛЬНЫЙ СЛАЙДЕР VIP - ОДИНАКОВЫЕ РАЗМЕРЫ НА ВСЕХ УСТРОЙСТВАХ */
+/* ОБНОВЛЕННЫЙ ВЕРТИКАЛЬНЫЙ СЛАЙДЕР VIP - ИЗОЛИРОВАННЫЕ СТИЛИ */
 .custom-vip-carousel {
     position: relative;
-    width: 100%;
-    max-width: 345px;
-    height: 150px; /* 130px карточка + 20px предпросмотр */
+    width: 345px;
+    height: 150px;
     overflow: hidden;
     border-radius: 10px;
     margin: 0 auto 15px;
@@ -3663,16 +3663,16 @@ body:not(.no-tabbar) .page {
     cursor: grabbing;
 }
 
-.carousel-track {
+.custom-vip-carousel .carousel-track {
     display: flex;
     flex-direction: column;
-    height: calc(130px * 6 + 20px); /* 6 карточек по 130px + 20px предпросмотр */
+    height: calc(130px * 6 + 20px);
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
 }
 
-.vip-slide {
-    flex: 0 0 130px; /* фиксированная высота карточки */
+.custom-vip-carousel .vip-slide {
+    flex: 0 0 130px;
     height: 130px;
     padding: 0;
     box-sizing: border-box;
@@ -3682,12 +3682,12 @@ body:not(.no-tabbar) .page {
     transition: opacity 0.3s ease;
 }
 
-.vip-slide.active .vip-card {
+.custom-vip-carousel .vip-slide.active .vip-card {
     box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 
-.vip-card {
-    width: 100%;
+.custom-vip-carousel .vip-card {
+    width: 345px;
     height: 130px;
     border-radius: 10px;
     position: absolute;
@@ -3702,7 +3702,7 @@ body:not(.no-tabbar) .page {
     transition: box-shadow 0.3s ease;
 }
 
-.vip-title {
+.custom-vip-carousel .vip-title {
     position: absolute;
     top: 15px;
     left: 15px;
@@ -3713,7 +3713,7 @@ body:not(.no-tabbar) .page {
     z-index: 2;
 }
 
-.vip-status {
+.custom-vip-carousel .vip-status {
     position: absolute;
     bottom: 15px;
     left: 15px;
@@ -3727,7 +3727,7 @@ body:not(.no-tabbar) .page {
     z-index: 2;
 }
 
-.vip-image {
+.custom-vip-carousel .vip-image {
     position: absolute;
     top: 50%;
     right: 20px;
@@ -3740,7 +3740,7 @@ body:not(.no-tabbar) .page {
     z-index: 2;
 }
 
-.vip-image img {
+.custom-vip-carousel .vip-image img {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -3748,61 +3748,13 @@ body:not(.no-tabbar) .page {
 }
 
 /* Кнопки навигации (скрыты) */
-.carousel-btn {
+.custom-vip-carousel .carousel-btn {
     display: none !important;
 }
 
 /* Индикаторы (скрыты) */
-.carousel-indicators {
+.custom-vip-carousel .carousel-indicators {
     display: none !important;
-}
-
-.vip-description {
-    margin-top: 15px;
-    margin-bottom: 10px;
-    padding: 15px;
-    background: rgba(54, 69, 79, 0.8);
-    border-radius: 10px;
-    color: white;
-    font-size: 14px;
-    text-align: center;
-    line-height: 1.5;
-    border-left: 3px solid #FFD700;
-}
-
-/* Блок с деталями VIP уровня */
-.vip-details {
-    margin-top: 10px;
-    padding: 15px;
-    background: rgba(54, 69, 79, 0.8);
-    border-radius: 10px;
-    color: white;
-    font-size: 14px;
-    text-align: center;
-    line-height: 1.5;
-    border-left: 3px solid #4CAF50;
-}
-
-.details-content {
-    color: white;
-    font-size: 14px;
-    line-height: 1.8;
-    text-align: center;
-}
-
-.detail-item {
-    margin-bottom: 8px;
-    display: block;
-}
-
-.detail-label {
-    color: #FFD700;
-    font-weight: bold;
-}
-
-.detail-value {
-    color: #ffffff;
-    margin-left: 5px;
 }
 
 /* Анимация для переключения слайдов */
@@ -3816,30 +3768,90 @@ body:not(.no-tabbar) .page {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.vip-slide.sliding-up {
+.custom-vip-carousel .vip-slide.sliding-up {
     animation: slideUp 0.3s ease;
 }
 
-.vip-slide.sliding-down {
+.custom-vip-carousel .vip-slide.sliding-down {
     animation: slideDown 0.3s ease;
 }
 
-/* Адаптация для мобильных экранов - ТОЛЬКО ШИРИНА, ВЫСОТА ОСТАЕТСЯ ТАКОЙ ЖЕ */
+/* Описание VIP уровня - ОБЩИЕ СТИЛИ, но специфичные для VIP секции */
+.vip-section .vip-description {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    padding: 15px;
+    background: rgba(54, 69, 79, 0.8);
+    border-radius: 10px;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.5;
+    border-left: 3px solid #FFD700;
+}
+
+/* Блок с деталями VIP уровня */
+.vip-section .vip-details {
+    margin-top: 10px;
+    padding: 15px;
+    background: rgba(54, 69, 79, 0.8);
+    border-radius: 10px;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.5;
+    border-left: 3px solid #4CAF50;
+}
+
+.vip-section .details-content {
+    color: white;
+    font-size: 14px;
+    line-height: 1.8;
+    text-align: center;
+}
+
+.vip-section .detail-item {
+    margin-bottom: 8px;
+    display: block;
+}
+
+.vip-section .detail-label {
+    color: #FFD700;
+    font-weight: bold;
+}
+
+.vip-section .detail-value {
+    color: #ffffff;
+    margin-left: 5px;
+}
+
+/* МЕДИА-ЗАПРОСЫ ТОЛЬКО ДЛЯ VIP КАРУСЕЛИ */
 @media (max-width: 480px) {
+    /* Эти стили применяются только к VIP карусели в get.js */
     .custom-vip-carousel {
         width: 100%;
         max-width: 345px;
-        /* высота остается 150px - не меняем */
+        height: 150px;
     }
     
-    .vip-card {
+    .custom-vip-carousel .vip-card {
         width: 100%;
         max-width: 345px;
-        /* высота остается 130px - не меняем */
+        height: 130px;
     }
     
-    .vip-description,
-    .vip-details {
+    .custom-vip-carousel .vip-title {
+        font-size: 22px;
+    }
+    
+    .custom-vip-carousel .vip-image {
+        width: 90px;
+        height: 90px;
+    }
+    
+    /* Стили для описания и деталей внутри VIP секции */
+    .vip-section .vip-description,
+    .vip-section .vip-details {
         padding: 12px;
         font-size: 13px;
     }
@@ -3847,10 +3859,101 @@ body:not(.no-tabbar) .page {
 
 @media (max-width: 375px) {
     .custom-vip-carousel {
-        /* Только ширина адаптируется, высота остается 150px */
+        height: 145px;
     }
     
-    .vip-card {
-        /* Только ширина адаптируется, высота остается 130px */
+    .custom-vip-carousel .vip-card {
+        height: 125px;
+    }
+    
+    .custom-vip-carousel .vip-title {
+        font-size: 20px;
+    }
+    
+    .custom-vip-carousel .vip-image {
+        width: 85px;
+        height: 85px;
+        right: 15px;
+    }
+    
+    .custom-vip-carousel .vip-status {
+        font-size: 13px;
+    }
+    
+    .custom-vip-carousel .vip-slide {
+        flex: 0 0 125px;
+        height: 125px;
+    }
+    
+    .custom-vip-carousel .carousel-track {
+        height: calc(125px * 6 + 20px);
+    }
+}
+
+/* ========================================== */
+/* СТИЛИ ДЛЯ КАРУСЕЛИ HOME - ОТДЕЛЬНЫЕ И НЕЗАВИСИМЫЕ */
+/* ========================================== */
+
+/* Эти стили НЕ должны изменяться медиа-запросами для VIP */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+}
+
+.carousel-container .carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-container .carousel-slide {
+    flex: 0 0 100%;
+    min-width: 100%;
+    height: 100%;
+}
+
+.carousel-container .carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.carousel-container .carousel-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    z-index: 10;
+}
+
+.carousel-container .indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.carousel-container .indicator.active {
+    background-color: #fff;
+}
+
+/* Медиа-запросы ТОЛЬКО для home карусели */
+@media (max-width: 480px) {
+    .carousel-container {
+        height: 140px;
+    }
+}
+
+@media (max-width: 375px) {
+    .carousel-container {
+        height: 130px;
     }
 }

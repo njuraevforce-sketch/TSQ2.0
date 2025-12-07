@@ -1,15 +1,15 @@
-const CACHE_NAME = 'gly-platform-v6.4';
+const CACHE_NAME = 'gly-platform-v6.5';  // ← ИЗМЕНИТЬ ВЕРСИЮ
 const urlsToCache = [
     '/',
     '/index.html',
-    '/css/style.css?v=6.4',
-    '/js/app.js?v=6.4',
-    '/js/home.js?v=6.4',
-    '/js/mine.js?v=6.4',
-    '/js/assets.js?v=6.4',
-    '/js/team.js?v=6.4',
-    '/js/deposit.js?v=6.4',
-    '/js/withdraw.js?v=6.4',
+    '/css/style.css?v=6.5',  // ← ИЗМЕНИТЬ ВЕРСИЮ
+    '/js/app.js?v=6.5',      // ← ИЗМЕНИТЬ ВЕРСИЮ
+    '/js/home.js?v=6.5',     // ← ИЗМЕНИТЬ ВЕРСИЮ
+    '/js/mine.js?v=6.5',     // ← ИЗМЕНИТЬ ВЕРСИЮ
+    '/js/assets.js?v=6.5',   // ← ИЗМЕНИТЬ ВЕРСИЮ
+    '/js/team.js?v=6.5',     // ← ИЗМЕНИТЬ ВЕРСИЮ
+    '/js/deposit.js?v=6.5',  // ← ИЗМЕНИТЬ ВЕРСИЮ
+    '/js/withdraw.js?v=6.5', // ← ИЗМЕНИТЬ ВЕРСИЮ
     '/manifest.json',
     '/assets/logo.png',
     '/assets/favicon.ico',
@@ -47,15 +47,26 @@ const urlsToCache = [
 
 // Install
 self.addEventListener('install', event => {
+    console.log('Installing new Service Worker version:', CACHE_NAME);
     event.waitUntil(
         caches.open(CACHE_NAME)
-            .then(cache => cache.addAll(urlsToCache))
-            .then(() => self.skipWaiting())
+            .then(cache => {
+                console.log('Caching files for version:', CACHE_NAME);
+                return cache.addAll(urlsToCache);
+            })
+            .then(() => {
+                console.log('All files cached, skipping waiting');
+                return self.skipWaiting();
+            })
+            .catch(error => {
+                console.error('Cache error:', error);
+            })
     );
 });
 
 // Activate
 self.addEventListener('activate', event => {
+    console.log('Activating new Service Worker');
     event.waitUntil(
         Promise.all([
             // Clean old caches
@@ -63,6 +74,7 @@ self.addEventListener('activate', event => {
                 return Promise.all(
                     cacheNames.map(cacheName => {
                         if (cacheName !== CACHE_NAME) {
+                            console.log('Deleting old cache:', cacheName);
                             return caches.delete(cacheName);
                         }
                     })
@@ -71,10 +83,39 @@ self.addEventListener('activate', event => {
             // Take control immediately
             self.clients.claim()
         ])
+        .then(() => {
+            console.log('Service Worker activated, sending reload command');
+            // Отправляем всем клиентам команду на перезагрузку
+            return self.clients.matchAll()
+                .then(clients => {
+                    clients.forEach(client => {
+                        console.log('Sending reload command to client:', client.id);
+                        client.postMessage({
+                            type: 'FORCE_RELOAD',
+                            version: '6.5',  // ← ИЗМЕНИТЬ ВЕРСИЮ
+                            timestamp: Date.now(),
+                            message: 'New version available. Please reload.'
+                        });
+                    });
+                });
+        })
+        .then(() => {
+            // Очищаем старый localStorage
+            try {
+                const oldVersions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1', '6.3', '6.4'];
+                oldVersions.forEach(version => {
+                    localStorage.removeItem(`app_version_${version}`);
+                });
+                localStorage.setItem('app_version', '6.5');  // ← ИЗМЕНИТЬ ВЕРСИЮ
+                console.log('LocalStorage cleaned and updated to new version');
+            } catch (error) {
+                console.log('Error cleaning localStorage:', error);
+            }
+        })
     );
 });
 
-// Fetch - SIMPLIFIED VERSION
+// Fetch
 self.addEventListener('fetch', event => {
     // Skip non-GET requests
     if (event.request.method !== 'GET') return;
@@ -102,12 +143,10 @@ self.addEventListener('fetch', event => {
                 
                 return fetch(event.request)
                     .then(response => {
-                        // Don't cache non-successful responses
                         if (!response || response.status !== 200 || response.type !== 'basic') {
                             return response;
                         }
                         
-                        // Clone the response for caching
                         const responseToCache = response.clone();
                         
                         caches.open(CACHE_NAME)
@@ -119,7 +158,6 @@ self.addEventListener('fetch', event => {
                         return response;
                     })
                     .catch(() => {
-                        // If offline and requesting HTML, return index.html
                         if (event.request.mode === 'navigate') {
                             return caches.match('/index.html');
                         }
@@ -132,29 +170,15 @@ self.addEventListener('fetch', event => {
     );
 });
 
-// Clean old localStorage
-function cleanOldLocalStorage() {
-    try {
-        const versions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1', '6.3'];
-        versions.forEach(version => {
-            if (localStorage.getItem('app_version') === version) {
-                localStorage.removeItem('app_version');
-            }
-        });
-        localStorage.setItem('app_version', '6.4');
-    } catch (e) {
-        console.log('Error cleaning localStorage:', e);
-    }
-}
-
 // Message handling
 self.addEventListener('message', event => {
     if (event.data && event.data.type === 'SKIP_WAITING') {
+        console.log('Received SKIP_WAITING message');
         self.skipWaiting();
     }
 });
 
-// Notifications
+// Notifications (опционально)
 self.addEventListener('push', event => {
     const options = {
         body: event.data ? event.data.text() : 'New notification',

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gly-platform-v6.3';
+const CACHE_NAME = 'gly-platform-v6.4';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -96,7 +96,7 @@ self.addEventListener('activate', event => {
                 clients.forEach(client => {
                     client.postMessage({
                         type: 'NEW_VERSION',
-                        version: '6.3'
+                        version: '6.4'
                     });
                 });
             });
@@ -362,7 +362,7 @@ function cleanOldLocalStorage() {
     return new Promise((resolve) => {
         try {
             // Удаляем старые версии app_version
-            const versions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1', '6.1'];
+            const versions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1', '6.3'];
             versions.forEach(version => {
                 if (localStorage.getItem('app_version') === version) {
                     localStorage.removeItem('app_version');
@@ -470,7 +470,7 @@ self.addEventListener('activate', event => {
             clients.forEach(client => {
                 client.postMessage({
                     type: 'FORCE_RELOAD',
-                    version: '6.3',
+                    version: '6.4',
                     reason: 'New version with scroll fixes'
                 });
             });

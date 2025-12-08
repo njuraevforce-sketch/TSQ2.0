@@ -1,15 +1,15 @@
-const CACHE_NAME = 'gly-platform-v6.5';
+const CACHE_NAME = 'gly-platform-v6.6';
 const urlsToCache = [
     '/',
     '/index.html',
-    '/css/style.css?v=6.5',
-    '/js/app.js?v=6.5',
-    '/js/home.js?v=6.5',
-    '/js/mine.js?v=6.5',
-    '/js/assets.js?v=6.5',
-    '/js/team.js?v=6.5',
-    '/js/deposit.js?v=6.5',
-    '/js/withdraw.js?v=6.5',
+    '/css/style.css?v=6.6',
+    '/js/app.js?v=6.6',
+    '/js/home.js?v=6.6',
+    '/js/mine.js?v=6.6',
+    '/js/assets.js?v=6.6',
+    '/js/team.js?v=6.6',
+    '/js/deposit.js?v=6.6',
+    '/js/withdraw.js?v=6.6',
     '/manifest.json',
     '/assets/logo.png',
     '/assets/favicon.ico',
@@ -92,7 +92,7 @@ self.addEventListener('activate', event => {
                         console.log('Sending reload command to client:', client.id);
                         client.postMessage({
                             type: 'FORCE_RELOAD',
-                            version: '6.5',
+                            version: '6.6',
                             timestamp: Date.now(),
                             message: 'New version available. Please reload.'
                         });
@@ -102,11 +102,11 @@ self.addEventListener('activate', event => {
         .then(() => {
             // Очищаем старый localStorage
             try {
-                const oldVersions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1', '6.3', '6.4'];
+                const oldVersions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '6.5'];
                 oldVersions.forEach(version => {
                     localStorage.removeItem(`app_version_${version}`);
                 });
-                localStorage.setItem('app_version', '6.5');
+                localStorage.setItem('app_version', '6.6');
                 console.log('LocalStorage cleaned and updated to new version');
             } catch (error) {
                 console.log('Error cleaning localStorage:', error);

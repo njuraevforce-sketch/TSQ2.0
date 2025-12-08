@@ -586,7 +586,7 @@ export const translations = {
     'address_copied': 'Adresse copiée dans le presse-papiers !',
     'trc20': 'TRC20',
     'bep20': 'BEP20',
-    'Entrez un montant personnalisé',
+    'enter_custom_amount': 'Entrez un montant personnalisé',
      
     'withdraw_usdt': 'Retirer USDT',
     'withdraw_earnings': 'Retirez vos gains vers votre portefeuille',

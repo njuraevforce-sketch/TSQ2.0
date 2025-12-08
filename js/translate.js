@@ -2436,7 +2436,7 @@ export const translations = {
     'vip3_unavailable_until': '01.01.2026 tarihine kadar kullanılamaz',
     'vip4_unavailable_until': '01.06.2026 tarihine kadar kullanılamaz',
     'vip5_unavailable': 'Kullanılamaz',
-    'vip6_unavailable': 'Kullanılamaz'
+    'vip6_unavailable': 'Kullanılamaz',
      
     'total_balance': 'Toplam Bakiye',
     'transaction_history': 'İşlem Geçmişi',
@@ -3108,7 +3108,7 @@ export const translations = {
     'vip3_unavailable_until': '01.01.2026 gacha mavjud emas',
     'vip4_unavailable_until': '01.06.2026 gacha mavjud emas',
     'vip5_unavailable': 'Mavjud emas',
-    'vip6_unavailable': 'Mavjud emas'
+    'vip6_unavailable': 'Mavjud emas',
       
     'total_balance': 'Umumiy balans',
     'transaction_history': 'Tranzaksiya tarixi',

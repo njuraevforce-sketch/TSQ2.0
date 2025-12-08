@@ -69,6 +69,11 @@ export const translations = {
         'deposit_range': 'Deposit Range:',
         'signals_count': 'Signals:',
         'referrals_required': 'Referrals Required:',
+        'vip3_unavailable_until': 'Unavailable until 01.01.2026',
+    'vip3_unavailable_until': 'Unavailable until 01.01.2026',
+    'vip4_unavailable_until': 'Unavailable until 01.06.2026',
+    'vip5_unavailable': 'Unavailable',
+    'vip6_unavailable': 'Unavailable',
     
     // Assets
     'total_balance': 'Total Balance',
@@ -413,6 +418,10 @@ export const translations = {
         'deposit_range': 'Plage de Dépôt :',
         'signals_count': 'Signaux :',
         'referrals_required': 'Parrainages Requis :',
+         'vip3_unavailable_until': 'Indisponible jusqu\'au 01.01.2026',
+    'vip4_unavailable_until': 'Indisponible jusqu\'au 01.06.2026',
+    'vip5_unavailable': 'Indisponible',
+    'vip6_unavailable': 'Indisponible',
      
     'total_balance': 'Solde total',
     'transaction_history': 'Historique des transactions',
@@ -745,6 +754,10 @@ export const translations = {
         'deposit_range': 'Einzahlungsbereich:',
         'signals_count': 'Signale:',
         'referrals_required': 'Empfehlungen Erforderlich:',
+    'vip3_unavailable_until': 'Bis 01.01.2026 nicht verfügbar',
+    'vip4_unavailable_until': 'Bis 01.06.2026 nicht verfügbar',
+    'vip5_unavailable': 'Nicht verfügbar',
+    'vip6_unavailable': 'Nicht verfügbar',
     
     'total_balance': 'Gesamtguthaben',
     'transaction_history': 'Transaktionsverlauf',
@@ -1077,6 +1090,10 @@ export const translations = {
         'deposit_range': 'نطاق الإيداع:',
         'signals_count': 'الإشارات:',
         'referrals_required': 'الإحالات المطلوبة:',
+    'vip3_unavailable_until': 'غير متاح حتى 01.01.2026',
+    'vip4_unavailable_until': 'غير متاح حتى 01.06.2026',
+    'vip5_unavailable': 'غير متاح',
+    'vip6_unavailable': 'غير متاح',
     
     'total_balance': 'الرصيد الإجمالي',
     'transaction_history': 'سجل المعاملات',
@@ -1409,6 +1426,10 @@ export const translations = {
         'deposit_range': 'Zakres depozytu:',
         'signals_count': 'Sygnały:',
         'referrals_required': 'Wymagane polecenia:',
+    'vip3_unavailable_until': 'Niedostępne do 01.01.2026',
+    'vip4_unavailable_until': 'Niedostępne do 01.06.2026',
+    'vip5_unavailable': 'Niedostępne',
+    'vip6_unavailable': 'Niedostępne',
     
     'total_balance': 'Całkowite saldo',
     'transaction_history': 'Historia transakcji',
@@ -1741,6 +1762,10 @@ export const translations = {
         'deposit_range': 'Диапазон депозита:',
         'signals_count': 'Сигналы:',
         'referrals_required': 'Требуются рефералы:',
+    'vip3_unavailable_until': 'Недоступно до 01.01.2026',
+    'vip4_unavailable_until': 'Недоступно до 01.06.2026',
+    'vip5_unavailable': 'Недоступно',
+    'vip6_unavailable': 'Недоступно',
     
     'total_balance': 'Общий баланс',
     'transaction_history': 'История транзакций',
@@ -2073,6 +2098,10 @@ export const translations = {
         'deposit_range': 'Faixa de Depósito:',
         'signals_count': 'Sinais:',
         'referrals_required': 'Indicações Necessárias:',
+    'vip3_unavailable_until': 'Indisponível até 01.01.2026',
+    'vip4_unavailable_until': 'Indisponível até 01.06.2026',
+    'vip5_unavailable': 'Indisponível',
+    'vip6_unavailable': 'Indisponível',
     
     'total_balance': 'Saldo total',
     'transaction_history': 'Histórico de transações',
@@ -2404,6 +2433,10 @@ export const translations = {
         'deposit_range': 'Depozito Aralığı:',
         'signals_count': 'Sinyaller:',
         'referrals_required': 'Gerekli Yönlendirmeler:',
+    'vip3_unavailable_until': '01.01.2026 tarihine kadar kullanılamaz',
+    'vip4_unavailable_until': '01.06.2026 tarihine kadar kullanılamaz',
+    'vip5_unavailable': 'Kullanılamaz',
+    'vip6_unavailable': 'Kullanılamaz'
      
     'total_balance': 'Toplam Bakiye',
     'transaction_history': 'İşlem Geçmişi',
@@ -2736,7 +2769,11 @@ export const translations = {
         'deposit_range': 'Interval Depozit:',
         'signals_count': 'Semnale:',
         'referrals_required': 'Recomandări Necesare:',
-    
+    'vip3_unavailable_until': 'Indisponibil până la 01.01.2026',
+    'vip4_unavailable_until': 'Indisponibil până la 01.06.2026',
+    'vip5_unavailable': 'Indisponibil',
+    'vip6_unavailable': 'Indisponibil',
+  
     'total_balance': 'Sold total',
     'transaction_history': 'Istoric tranzacții',
     'total_earned': 'Total câștigat',
@@ -3068,7 +3105,11 @@ export const translations = {
         'deposit_range': 'Depozit Oralig\'i:',
         'signals_count': 'Signallar:',
         'referrals_required': 'Talab qilinadigan takliflar:',
-    
+    'vip3_unavailable_until': '01.01.2026 gacha mavjud emas',
+    'vip4_unavailable_until': '01.06.2026 gacha mavjud emas',
+    'vip5_unavailable': 'Mavjud emas',
+    'vip6_unavailable': 'Mavjud emas'
+      
     'total_balance': 'Umumiy balans',
     'transaction_history': 'Tranzaksiya tarixi',
     'total_earned': 'Umumiy topilgan',
@@ -3400,7 +3441,11 @@ export const translations = {
         'deposit_range': 'Rango de Depósito:',
         'signals_count': 'Señales:',
         'referrals_required': 'Referidos Requeridos:',
-    
+    'vip3_unavailable_until': 'No disponible hasta el 01.01.2026',
+    'vip4_unavailable_until': 'No disponible hasta el 01.06.2026',
+    'vip5_unavailable': 'No disponible',
+    'vip6_unavailable': 'No disponible',
+      
     'total_balance': 'Saldo total',
     'transaction_history': 'Historial de transacciones',
     'total_earned': 'Total ganado',
@@ -3732,7 +3777,11 @@ export const translations = {
         'deposit_range': 'Intervallo di Deposito:',
         'signals_count': 'Segnali:',
         'referrals_required': 'Referral Richiesti:',
-    
+    'vip3_unavailable_until': 'Non disponibile fino al 01.01.2026',
+    'vip4_unavailable_until': 'Non disponibile fino al 01.06.2026',
+    'vip5_unavailable': 'Non disponibile',
+    'vip6_unavailable': 'Non disponibile',
+      
     'total_balance': 'Saldo totale',
     'transaction_history': 'Cronologia transazioni',
     'total_earned': 'Totale guadagnato',
@@ -4064,7 +4113,11 @@ export const translations = {
         'deposit_range': 'Rentang Deposit:',
         'signals_count': 'Sinyal:',
         'referrals_required': 'Referral Diperlukan:',
-    
+    'vip3_unavailable_until': 'Tidak tersedia hingga 01.01.2026',
+    'vip4_unavailable_until': 'Tidak tersedia hingga 01.06.2026',
+    'vip5_unavailable': 'Tidak tersedia',
+    'vip6_unavailable': 'Tidak tersedia',
+      
     'total_balance': 'Total Saldo',
     'transaction_history': 'Riwayat Transaksi',
     'total_earned': 'Total Diperoleh',

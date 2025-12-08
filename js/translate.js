@@ -245,7 +245,7 @@ export const translations = {
     'address_copied': 'Address copied to clipboard!',
      'trc20': 'TRC20',
     'bep20': 'BEP20',
-    
+    'enter_custom_amount': 'Enter custom amount',
     // Withdraw
     'withdraw_usdt': 'Withdraw USDT',
     'withdraw_earnings': 'Withdraw your earnings to your wallet',
@@ -586,7 +586,8 @@ export const translations = {
     'address_copied': 'Adresse copiée dans le presse-papiers !',
     'trc20': 'TRC20',
     'bep20': 'BEP20',
-    
+    'Entrez un montant personnalisé',
+     
     'withdraw_usdt': 'Retirer USDT',
     'withdraw_earnings': 'Retirez vos gains vers votre portefeuille',
     'withdrawal_address_section': 'Adresse de retrait',
@@ -922,6 +923,7 @@ export const translations = {
     'address_copied': 'Adresse in die Zwischenablage kopiert!',
     'trc20': 'TRC20',
     'bep20': 'BEP20',
+   'enter_custom_amount': 'Benutzerdefinierten Betrag eingeben',
     
     'withdraw_usdt': 'USDT abheben',
     'withdraw_earnings': 'Heben Sie Ihre Einnahmen auf Ihre Wallet ab',
@@ -1258,6 +1260,7 @@ export const translations = {
     'address_copied': 'تم نسخ العنوان إلى الحافظة!',
     'trc20': 'TRC20',
     'bep20': 'BEP20',
+     'enter_custom_amount': 'أدخل المبلغ المخصص',
     
     'withdraw_usdt': 'سحب USDT',
     'withdraw_earnings': 'اسحب أرباحك إلى محفظتك',
@@ -1594,6 +1597,7 @@ export const translations = {
     'address_copied': 'Adres skopiowany do schowka!',
     'trc20': 'TRC20',
     'bep20': 'BEP20',
+    'enter_custom_amount': 'Wprowadź własną kwotę',
     
     'withdraw_usdt': 'Wypłać USDT',
     'withdraw_earnings': 'Wypłać swoje zarobki na swój portfel',
@@ -1930,6 +1934,7 @@ export const translations = {
     'address_copied': 'Адрес скопирован в буфер обмена!',
     'trc20': 'TRC20',
     'bep20': 'BEP20',
+     'enter_custom_amount': 'Введите свою сумму',
     
     'withdraw_usdt': 'Вывести USDT',
     'withdraw_earnings': 'Выведите ваши заработки на ваш кошелек',
@@ -2266,6 +2271,7 @@ export const translations = {
     'address_copied': 'Endereço copiado para a área de transferência!',
     'trc20': 'TRC20',
     'bep20': 'BEP20',
+    'enter_custom_amount': 'Insira o valor personalizado',
     
     'withdraw_usdt': 'Sacar USDT',
     'withdraw_earnings': 'Saque seus ganhos para sua carteira',
@@ -2601,7 +2607,8 @@ export const translations = {
     'address_copied': 'Adres panoya kopyalandı!',
     'trc20': 'TRC20',
     'bep20': 'BEP20',
-    
+    'enter_custom_amount': 'Özel miktar girin',
+     
     'withdraw_usdt': 'USDT Çek',
     'withdraw_earnings': 'Kazançlarınızı cüzdanınıza çekin',
     'withdrawal_address_section': 'Çekim Adresi',
@@ -2937,6 +2944,7 @@ export const translations = {
     'address_copied': 'Adresa copiată în clipboard!',
     'trc20': 'TRC20',
     'bep20': 'BEP20',
+     'enter_custom_amount': 'Introduceți suma personalizată',
     
     'withdraw_usdt': 'Retrage USDT',
     'withdraw_earnings': 'Retrageți câștigurile în portofelul dvs.',
@@ -3273,6 +3281,7 @@ export const translations = {
     'address_copied': 'Manzil buferga nusxalandi!',
     'trc20': 'TRC20',
     'bep20': 'BEP20',
+    'enter_custom_amount': 'Maxsus miqdorni kiriting',
     
     'withdraw_usdt': 'USDT yechib olish',
     'withdraw_earnings': 'Daromadlaringizni hamyoningizga yechib oling',
@@ -3609,6 +3618,7 @@ export const translations = {
     'address_copied': '¡Dirección copiada al portapapeles!',
     'trc20': 'TRC20',
     'bep20': 'BEP20',
+    'enter_custom_amount': 'Ingrese el monto personalizado',
     
     'withdraw_usdt': 'Retirar USDT',
     'withdraw_earnings': 'Retire sus ganancias a su billetera',
@@ -3945,6 +3955,7 @@ export const translations = {
     'address_copied': 'Indirizzo copiato negli appunti!',
     'trc20': 'TRC20',
     'bep20': 'BEP20',
+    'enter_custom_amount': 'Inserisci l\'importo personalizzato',
     
     'withdraw_usdt': 'Preleva USDT',
     'withdraw_earnings': 'Preleva i tuoi guadagni sul tuo portafoglio',
@@ -4281,6 +4292,7 @@ export const translations = {
     'address_copied': 'Alamat disalin ke clipboard!',
     'trc20': 'TRC20',
     'bep20': 'BEP20',
+'enter_custom_amount': 'Masukkan jumlah kustom',
     
     'withdraw_usdt': 'Tarik USDT',
     'withdraw_earnings': 'Tarik penghasilan Anda ke dompet Anda',

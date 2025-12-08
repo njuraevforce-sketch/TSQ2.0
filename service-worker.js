@@ -10,6 +10,7 @@ const urlsToCache = [
     '/js/team.js?v=6.6',
     '/js/deposit.js?v=6.6',
     '/js/withdraw.js?v=6.6',
+    '/js/translate.js?v=6.6',
     '/manifest.json',
     '/assets/logo.png',
     '/assets/favicon.ico',

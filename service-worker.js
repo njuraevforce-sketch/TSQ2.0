@@ -10,7 +10,6 @@ const urlsToCache = [
     '/js/team.js?v=7.0',
     '/js/deposit.js?v=7.0',
     '/js/withdraw.js?v=7.0',
-    '/js/translate.js?v=7.0',
     '/manifest.json',
     '/assets/logo.png',
     '/assets/favicon.ico',
@@ -46,7 +45,7 @@ const urlsToCache = [
     '/assets/vipicon6.png'
 ];
 
-// Улучшенная установка с проверкой обновлений
+// Install
 self.addEventListener('install', event => {
     console.log('🚀 Installing Service Worker version:', CACHE_NAME);
     
@@ -69,7 +68,7 @@ self.addEventListener('install', event => {
     );
 });
 
-// Улучшенная активация с принудительным обновлением
+// Activate
 self.addEventListener('activate', event => {
     console.log('🚀 Activating new Service Worker version:', CACHE_NAME);
     
@@ -167,7 +166,7 @@ self.addEventListener('activate', event => {
     );
 });
 
-// Улучшенный fetch с агрессивным кешированием
+// Fetch
 self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
     
@@ -364,26 +363,34 @@ self.addEventListener('sync', event => {
 
 async function checkForUpdates() {
     // Проверка обновлений в фоне
-    const response = await fetch('/version.json?t=' + Date.now());
-    const data = await response.json();
-    
-    if (data.version !== '7.0') {
-        // Уведомляем о новой версии
-        self.registration.showNotification('New Version Available', {
-            body: `Version ${data.version} is available. Click to update.`,
-            icon: '/assets/logo.png',
-            tag: 'new-version'
-        });
+    try {
+        const response = await fetch('/version.json?t=' + Date.now());
+        const data = await response.json();
+        
+        if (data.version !== '7.0') {
+            // Уведомляем о новой версии
+            self.registration.showNotification('New Version Available', {
+                body: `Version ${data.version} is available. Click to update.`,
+                icon: '/assets/logo.png',
+                tag: 'new-version'
+            });
+        }
+    } catch (error) {
+        console.log('Update check failed:', error);
     }
 }
 
 // Периодическая синхронизация (если поддерживается)
-if ('periodicSync' in self.registration) {
-    try {
-        await self.registration.periodicSync.register('update-check', {
-            minInterval: 24 * 60 * 60 * 1000 // 1 день
-        });
-    } catch (error) {
-        console.log('Periodic sync not supported:', error);
+// Оборачиваем в IIFE (Immediately Invoked Function Expression) с async
+(async () => {
+    if (self.registration && 'periodicSync' in self.registration) {
+        try {
+            await self.registration.periodicSync.register('update-check', {
+                minInterval: 24 * 60 * 60 * 1000 // 1 день
+            });
+            console.log('✅ Periodic sync registered');
+        } catch (error) {
+            console.log('Periodic sync not supported:', error);
+        }
     }
-}
+})();

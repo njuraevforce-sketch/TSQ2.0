@@ -75,6 +75,9 @@ export default function renderGet() {
                         <div class="vip-slide" data-vip="3">
                             <div class="vip-card">
                                 <div class="vip-title">VIP3</div>
+                                <div class="unavailable-text" data-translate="vip3_unavailable_until">
+                                    недоступно до 01.01.2026
+                                </div>
                                 <div class="vip-status">
                                     <i class="fas fa-lock" style="color: #cccccc;"></i>
                                     <span>Locked</span>
@@ -89,6 +92,9 @@ export default function renderGet() {
                         <div class="vip-slide" data-vip="4">
                             <div class="vip-card">
                                 <div class="vip-title">VIP4</div>
+                                <div class="unavailable-text" data-translate="vip4_unavailable_until">
+                                    недоступно до 01.06.2026
+                                </div>
                                 <div class="vip-status">
                                     <i class="fas fa-lock" style="color: #cccccc;"></i>
                                     <span>Locked</span>
@@ -103,6 +109,9 @@ export default function renderGet() {
                         <div class="vip-slide" data-vip="5">
                             <div class="vip-card">
                                 <div class="vip-title">VIP5</div>
+                                <div class="unavailable-text" data-translate="vip5_unavailable">
+                                    недоступно
+                                </div>
                                 <div class="vip-status">
                                     <i class="fas fa-lock" style="color: #cccccc;"></i>
                                     <span>Locked</span>
@@ -117,6 +126,9 @@ export default function renderGet() {
                         <div class="vip-slide" data-vip="6">
                             <div class="vip-card">
                                 <div class="vip-title">VIP6</div>
+                                <div class="unavailable-text" data-translate="vip6_unavailable">
+                                    недоступно
+                                </div>
                                 <div class="vip-status">
                                     <i class="fas fa-lock" style="color: #cccccc;"></i>
                                     <span>Locked</span>

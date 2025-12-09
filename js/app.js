@@ -52,7 +52,7 @@ class GLYApp {
                 await this.showSection('login');
             }
         }
-        
+
         this.setupEventListeners();
         this.setupNavigation();
         

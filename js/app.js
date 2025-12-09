@@ -27,6 +27,9 @@ class GLYApp {
         // Check authentication
         await this.checkAuth();
         
+        // Setup hash routing
+        this.setupHashRouting();
+        
         // Hide tabbar by default
         this.hideTabbar();
         
@@ -36,11 +39,18 @@ class GLYApp {
         // Check for invite code in URL and redirect to register
         await this.handleInviteCodeRedirect();
         
-        // Load initial section
-        if (this.currentUser) {
-            await this.showSection('home');
-        } else {
-            await this.showSection('login');
+        // Check initial hash route
+        setTimeout(() => {
+            this.handleHashRoute();
+        }, 100);
+        
+        // If no hash, load initial section
+        if (!window.location.hash) {
+            if (this.currentUser) {
+                await this.showSection('home');
+            } else {
+                await this.showSection('login');
+            }
         }
         
         this.setupEventListeners();
@@ -53,6 +63,41 @@ class GLYApp {
         this.startDepositCheck();
     }
 
+    setupHashRouting() {
+        // Handle hash changes
+        window.addEventListener('hashchange', () => {
+            this.handleHashRoute();
+        });
+    }
+
+    handleHashRoute() {
+        const hash = window.location.hash.substring(1);
+        if (!hash) return;
+        
+        const section = hash.split('?')[0];
+        
+        // If section exists
+        if (this.sections.includes(section)) {
+            // Special handling for admin section
+            if (section === 'admin') {
+                const user = this.currentUser || JSON.parse(localStorage.getItem('gly_user'));
+                if (user && user.username === 'admin') {
+                    this.showSection(section);
+                } else {
+                    window.showCustomAlert('Access denied. Admin only.');
+                    // Redirect to login if not logged in, or home if logged in as non-admin
+                    if (this.currentUser) {
+                        window.location.hash = 'home';
+                    } else {
+                        window.location.hash = 'login';
+                    }
+                }
+            } else {
+                this.showSection(section);
+            }
+        }
+    }
+
     async handleInviteCodeRedirect() {
         // Check if there's an invite code in the URL
         const hash = window.location.hash;
@@ -60,6 +105,8 @@ class GLYApp {
             // Extract the invite code
             const refCode = hash.split('?ref=')[1];
             if (refCode && !this.currentUser) {
+                // Save invite code and redirect to register
+                localStorage.setItem('invite_code', refCode);
                 // Redirect to register page
                 await this.showSection('register');
                 return true;
@@ -286,6 +333,11 @@ class GLYApp {
             this.logout();
         };
         
+        // Admin function
+        window.showAdmin = () => {
+            this.showSection('admin');
+        };
+        
         // Language system functions
         window.showLanguageModal = () => {
             import('./translate.js').then(module => {
@@ -345,6 +397,8 @@ class GLYApp {
                 this.hideTabbar();
                 this.hideNavbar();
                 document.body.classList.add('auth-page');
+                // Update URL hash ONLY for login page
+                window.location.hash = 'login';
                 return;
             }
         }
@@ -375,6 +429,16 @@ class GLYApp {
             newElement.classList.add('active');
         }
         
+        // Update URL hash for specific sections only (not for main sections)
+        // This prevents hash conflicts with login/register redirects
+        const hashSections = ['login', 'register', 'company', 'invite', 'team', 'rules', 'withdraw', 'admin', 'deposit'];
+        if (hashSections.includes(cleanSectionId)) {
+            window.location.hash = cleanSectionId;
+        } else if (cleanSectionId === 'home' && (this.currentSection === 'login' || this.currentSection === 'register')) {
+            // Clear hash when moving from login/register to home
+            window.location.hash = '';
+        }
+        
         // Manage tabbar and navbar visibility
         if (cleanSectionId === 'login' || cleanSectionId === 'register') {
             this.hideTabbar();
@@ -402,9 +466,11 @@ class GLYApp {
             else if (cleanSectionId === 'admin') this.setNavbarTitle(t('admin_panel'), true);
             else if (cleanSectionId === 'deposit') this.setNavbarTitle(t('deposit'), true);
         } else {
+            // MAIN SECTIONS: home, get, assets, mine
             this.showTabbar();
             this.showNavbar();
             document.body.classList.remove('no-tabbar');
+            document.body.classList.remove('auth-page'); // ВАЖНО: удаляем auth-page класс
             this.setNavbarTitle('', false);
             
             // Hide language button
@@ -475,6 +541,7 @@ class GLYApp {
         const tabbar = document.querySelector('.uni-tabbar');
         if (tabbar) {
             tabbar.style.display = 'none';
+            console.log('Tabbar hidden');
         }
     }
 
@@ -482,6 +549,7 @@ class GLYApp {
         const tabbar = document.querySelector('.uni-tabbar');
         if (tabbar) {
             tabbar.style.display = 'flex';
+            console.log('Tabbar shown');
         }
     }
 

@@ -466,9 +466,11 @@ class GLYApp {
             else if (cleanSectionId === 'admin') this.setNavbarTitle(t('admin_panel'), true);
             else if (cleanSectionId === 'deposit') this.setNavbarTitle(t('deposit'), true);
         } else {
+            // MAIN SECTIONS: home, get, assets, mine
             this.showTabbar();
             this.showNavbar();
             document.body.classList.remove('no-tabbar');
+            document.body.classList.remove('auth-page'); // ВАЖНО: удаляем auth-page класс
             this.setNavbarTitle('', false);
             
             // Hide language button
@@ -539,6 +541,7 @@ class GLYApp {
         const tabbar = document.querySelector('.uni-tabbar');
         if (tabbar) {
             tabbar.style.display = 'none';
+            console.log('Tabbar hidden');
         }
     }
 
@@ -546,6 +549,7 @@ class GLYApp {
         const tabbar = document.querySelector('.uni-tabbar');
         if (tabbar) {
             tabbar.style.display = 'flex';
+            console.log('Tabbar shown');
         }
     }
 

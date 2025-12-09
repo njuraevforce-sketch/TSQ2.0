@@ -1,4 +1,4 @@
-// Admin section - COMPACT & FULLY FUNCTIONAL
+// Admin section - COMPACT & FULLY FUNCTIONAL - UPDATED DEPOSIT STATS
 export default function renderAdmin() {
     return `
         <div class="admin-container">
@@ -23,7 +23,7 @@ export default function renderAdmin() {
                             <div class="admin-stat-label" style="font-size: 10px;">Today $</div>
                         </div>
                         <div class="admin-stat" style="min-width: 70px; padding: 8px;">
-                            <div class="admin-stat-value" id="total-balance" style="font-size: 18px;">0</div>
+                            <div class="admin-stat-value" id="total-deposits" style="font-size: 18px;">0</div>
                             <div class="admin-stat-label" style="font-size: 10px;">Total $</div>
                         </div>
                     </div>
@@ -115,7 +115,7 @@ export default function renderAdmin() {
                 <div class="admin-tab" id="deposits-tab">
                     <div class="card padding" style="padding: 10px;">
                         <div class="tab-header" style="margin-bottom: 10px;">
-                            <h3 style="color: white; font-size: 16px; margin: 0;">Deposits</h3>
+                            <h3 style="color: white; font-size: 16px; margin: 0;">Deposits (from deposit_transactions)</h3>
                             <div class="tab-actions" style="gap: 5px;">
                                 <select id="deposit-period-filter" class="admin-select-small" style="padding: 6px 8px; font-size: 12px;">
                                     <option value="today">Today</option>
@@ -166,12 +166,14 @@ export default function renderAdmin() {
                 <div class="admin-tab" id="transactions-tab">
                     <div class="card padding" style="padding: 10px;">
                         <div class="tab-header" style="margin-bottom: 10px;">
-                            <h3 style="color: white; font-size: 16px; margin: 0;">Transactions</h3>
+                            <h3 style="color: white; font-size: 16px; margin: 0;">Transactions (All types)</h3>
                             <div class="tab-actions" style="gap: 5px;">
                                 <select id="transaction-type-filter" class="admin-select-small" style="padding: 6px 8px; font-size: 12px; min-width: 100px;">
                                     <option value="">All</option>
                                     <option value="deposit">Deposits</option>
                                     <option value="withdrawal">Withdrawals</option>
+                                    <option value="quantification">Quantification</option>
+                                    <option value="referral">Referral</option>
                                 </select>
                                 <button class="admin-btn-small" id="refresh-transactions" style="padding: 6px 8px; font-size: 12px;">
                                     <i class="fas fa-sync-alt"></i>
@@ -478,38 +480,38 @@ async function loadAdminData() {
             .from('users')
             .select('*', { count: 'exact', head: true });
         
-        // Load pending withdrawals
+        // Load pending withdrawals from transactions table
         const { count: pendingWithdrawals } = await window.supabase
             .from('transactions')
             .select('*', { count: 'exact', head: true })
             .eq('type', 'withdrawal')
             .eq('status', 'pending');
         
-        // Load today's deposits
+        // Load today's deposits from deposit_transactions table
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         
         const { data: todayDeposits } = await window.supabase
-            .from('transactions')
+            .from('deposit_transactions')
             .select('amount')
-            .eq('type', 'deposit')
-            .gte('created_at', today.toISOString())
-            .eq('status', 'completed');
+            .eq('status', 'confirmed')  // Only confirmed deposits
+            .gte('created_at', today.toISOString());
         
-        const todayDepositsAmount = todayDeposits?.reduce((sum, t) => sum + t.amount, 0) || 0;
+        const todayDepositsAmount = todayDeposits?.reduce((sum, d) => sum + d.amount, 0) || 0;
         
-        // Load total balance
-        const { data: users } = await window.supabase
-            .from('users')
-            .select('balance');
+        // Load total deposits from deposit_transactions table (confirmed only)
+        const { data: allDeposits } = await window.supabase
+            .from('deposit_transactions')
+            .select('amount')
+            .eq('status', 'confirmed');  // Only confirmed deposits
         
-        const totalBalance = users?.reduce((sum, u) => sum + u.balance, 0) || 0;
+        const totalDepositsAmount = allDeposits?.reduce((sum, d) => sum + d.amount, 0) || 0;
         
         // Update header stats
         document.getElementById('total-users').textContent = totalUsers || 0;
         document.getElementById('pending-withdrawals').textContent = pendingWithdrawals || 0;
-        document.getElementById('today-deposits').textContent = todayDepositsAmount.toFixed(0);
-        document.getElementById('total-balance').textContent = totalBalance.toFixed(0);
+        document.getElementById('today-deposits').textContent = todayDepositsAmount.toFixed(2);
+        document.getElementById('total-deposits').textContent = totalDepositsAmount.toFixed(2);
         
     } catch (error) {
         console.error('Error loading admin data:', error);
@@ -867,12 +869,11 @@ async function loadDeposits() {
         const periodFilter = document.getElementById('deposit-period-filter').value;
         
         let query = window.supabase
-            .from('transactions')
+            .from('deposit_transactions')
             .select(`
                 *,
                 user:users(username, email)
             `)
-            .eq('type', 'deposit')
             .order('created_at', { ascending: false })
             .limit(50);
         
@@ -918,8 +919,8 @@ async function loadDeposits() {
                 
                 const statusColors = {
                     'pending': '#f9ae3d',
-                    'completed': '#52c41a',
                     'confirmed': '#1890ff',
+                    'processed': '#52c41a',
                     'cancelled': '#ff4d4f'
                 };
                 
@@ -939,16 +940,16 @@ async function loadDeposits() {
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; font-size: 11px;">
                             <div>
                                 <div style="color: #999;">Network:</div>
-                                <div style="color: white;">${deposit.network || 'Manual'}</div>
+                                <div style="color: white;">${deposit.network || 'TRC20'}</div>
                             </div>
                             <div>
-                                <div style="color: #999;">Type:</div>
-                                <div style="color: white;">${deposit.description?.includes('Manual') ? 'Manual' : 'Auto'}</div>
+                                <div style="color: #999;">TX Hash:</div>
+                                <div style="color: #ccc; font-size: 9px;">${deposit.tx_hash.substring(0, 12)}...</div>
                             </div>
                         </div>
                         
                         <div style="font-size: 10px; color: #ccc; word-break: break-all;">
-                            ${deposit.description || ''}
+                            Status: ${deposit.status}
                         </div>
                     </div>
                 `;
@@ -1450,30 +1451,31 @@ async function showUserDetails(userId) {
             .eq('id', userId)
             .single();
         
-        // Get user statistics
-        const [deposits, withdrawals, referrals] = await Promise.all([
-            window.supabase
-                .from('transactions')
-                .select('amount')
-                .eq('user_id', userId)
-                .eq('type', 'deposit')
-                .eq('status', 'completed'),
-            window.supabase
-                .from('transactions')
-                .select('amount')
-                .eq('user_id', userId)
-                .eq('type', 'withdrawal')
-                .eq('status', 'completed'),
-            window.supabase
-                .from('referrals')
-                .select('*', { count: 'exact', head: true })
-                .eq('referrer_id', userId)
-                .eq('level', 1)
-        ]);
+        // Get user statistics from deposit_transactions (real deposits only)
+        const { data: deposits } = await window.supabase
+            .from('deposit_transactions')
+            .select('amount')
+            .eq('user_id', userId)
+            .eq('status', 'confirmed');
         
-        const totalDeposits = deposits.data?.reduce((sum, d) => sum + d.amount, 0) || 0;
-        const totalWithdrawals = Math.abs(withdrawals.data?.reduce((sum, w) => sum + w.amount, 0) || 0);
-        const totalReferrals = referrals.count || 0;
+        // Get withdrawals from transactions
+        const { data: withdrawals } = await window.supabase
+            .from('transactions')
+            .select('amount')
+            .eq('user_id', userId)
+            .eq('type', 'withdrawal')
+            .eq('status', 'completed');
+        
+        // Get referrals count
+        const { count: referrals } = await window.supabase
+            .from('referrals')
+            .select('*', { count: 'exact', head: true })
+            .eq('referrer_id', userId)
+            .eq('level', 1);
+        
+        const totalDeposits = deposits?.reduce((sum, d) => sum + d.amount, 0) || 0;
+        const totalWithdrawals = Math.abs(withdrawals?.reduce((sum, w) => sum + w.amount, 0) || 0);
+        const totalReferrals = referrals || 0;
         
         const details = `
             <div style="color: #333;">
@@ -1484,11 +1486,11 @@ async function showUserDetails(userId) {
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
                     <div style="background: #f5f5f5; padding: 10px; border-radius: 5px;">
-                        <div style="color: #999; font-size: 11px;">Total Deposits</div>
+                        <div style="color: #999; font-size: 11px;">Real Deposits</div>
                         <div style="color: #52c41a; font-weight: bold; font-size: 14px;">${totalDeposits.toFixed(2)} USDT</div>
                     </div>
                     <div style="background: #f5f5f5; padding: 10px; border-radius: 5px;">
-                        <div style="color: #999; font-size: 11px;">Total Withdrawals</div>
+                        <div style="color: #999; font-size: 11px;">Withdrawals</div>
                         <div style="color: #ff4d4f; font-weight: bold; font-size: 14px;">${totalWithdrawals.toFixed(2)} USDT</div>
                     </div>
                     <div style="background: #f5f5f5; padding: 10px; border-radius: 5px;">
@@ -1496,8 +1498,8 @@ async function showUserDetails(userId) {
                         <div style="color: #1890ff; font-weight: bold; font-size: 14px;">${totalReferrals}</div>
                     </div>
                     <div style="background: #f5f5f5; padding: 10px; border-radius: 5px;">
-                        <div style="color: #999; font-size: 11px;">Joined</div>
-                        <div style="color: #333; font-weight: bold; font-size: 14px;">${new Date(user.created_at).toLocaleDateString()}</div>
+                        <div style="color: #999; font-size: 11px;">Current Balance</div>
+                        <div style="color: #f9ae3d; font-weight: bold; font-size: 14px;">${user.balance.toFixed(2)} USDT</div>
                     </div>
                 </div>
                 

@@ -114,10 +114,16 @@ export function init() {
                 window.glyApp.currentUser = data;
             }
             
-            // Reload app for correct redirection
+            // Clear URL hash to prevent routing issues
+            window.location.hash = '';
+            
+            // Show success message
+            window.showCustomAlert(t('login_success'));
+            
+            // Navigate to home WITHOUT reload
             setTimeout(() => {
-                window.location.reload();
-            }, 100);
+                window.showSection('home');
+            }, 500);
             
         } catch (error) {
             console.error('Login error:', error);

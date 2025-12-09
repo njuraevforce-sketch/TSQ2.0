@@ -298,7 +298,7 @@ async function createReferralRecords(referrerId, userId) {
                 .eq('referred_id', level2Referrer.referrer_id)
                 .eq('level', 1)
                 .maybeSingle();
-                
+            
             if (level3Referrer) {
                 // Level 3
                 await supabase
@@ -306,7 +306,7 @@ async function createReferralRecords(referrerId, userId) {
                     .insert([{
                         referrer_id: level3Referrer.referrer_id,
                         referred_id: userId,
-                        level: 3
+                     level: 3
                     }]);
             }
         }

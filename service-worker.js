@@ -1,15 +1,15 @@
-const CACHE_NAME = 'gly-platform-v10.0';
+const CACHE_NAME = 'gly-platform-v10.1';
 const urlsToCache = [
     '/',
     '/index.html',
-    '/css/style.css?v=10.0',
-    '/js/app.js?v=10.0',
-    '/js/home.js?v=10.0',
-    '/js/mine.js?v=10.0',
-    '/js/assets.js?v=10.0',
-    '/js/team.js?v=10.0',
-    '/js/deposit.js?v=10.0',
-    '/js/withdraw.js?v=10.0',
+    '/css/style.css?v=10.1',
+    '/js/app.js?v=10.1',
+    '/js/home.js?v=10.1',
+    '/js/mine.js?v=10.1',
+    '/js/assets.js?v=10.1',
+    '/js/team.js?v=10.1',
+    '/js/deposit.js?v=10.1',
+    '/js/withdraw.js?v=10.1',
     '/manifest.json',
     '/assets/logo.png',
     '/assets/favicon.ico',
@@ -86,11 +86,11 @@ self.addEventListener('activate', event => {
         .then(() => {
             // Очищаем старый localStorage
             try {
-                const oldVersions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '6.5', '7.0'];
+                const oldVersions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '7.0', '10.0'];
                 oldVersions.forEach(version => {
                     localStorage.removeItem(`app_version_${version}`);
                 });
-                localStorage.setItem('app_version', '10.0');
+                localStorage.setItem('app_version', '10.1');
                 console.log('LocalStorage cleaned and updated to new version');
             } catch (error) {
                 console.log('Error cleaning localStorage:', error);

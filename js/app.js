@@ -1127,7 +1127,7 @@ window.showCustomModal = (title, content, onConfirm = null) => {
         console.error('Modal elements not found');
         return;
     }
-    
+
     modalHeader.textContent = title;
     modalBody.innerHTML = content;
     
@@ -1149,7 +1149,7 @@ window.showLoading = (message = 'Loading...') => {
         console.error('Loading elements not found');
         return;
     }
-    
+
     loadingText.textContent = message;
     loading.style.display = 'flex';
 };

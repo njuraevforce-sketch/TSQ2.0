@@ -233,10 +233,13 @@ export function init() {
                 window.glyApp.currentUser = newUser;
             }
             
+            // Clear URL hash to prevent routing issues
+            window.location.hash = '';
+            
             // Show success message
             window.showCustomAlert(t('registration_success'));
             
-            // Redirect to home after 2 seconds
+            // Navigate to home WITHOUT reload
             setTimeout(() => {
                 window.showSection('home');
             }, 2000);

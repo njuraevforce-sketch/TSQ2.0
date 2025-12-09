@@ -33,9 +33,6 @@ class GLYApp {
         // Setup PWA installation
         this.setupPWAInstall();
         
-        // Check for admin access in URL
-        await this.handleAdminAccess();
-        
         // Check for invite code in URL and redirect to register
         await this.handleInviteCodeRedirect();
         
@@ -54,27 +51,6 @@ class GLYApp {
         
         // Start deposit check interval
         this.startDepositCheck();
-    }
-
-    async handleAdminAccess() {
-        // Check if admin parameter is in URL
-        const hash = window.location.hash;
-        if (hash.includes('?admin=1')) {
-            const user = this.currentUser || JSON.parse(localStorage.getItem('gly_user'));
-            if (user && user.username === 'admin') {
-                await this.showSection('admin');
-                return true;
-            } else {
-                if (user) {
-                    window.showCustomAlert('Access denied. Admin only.');
-                } else {
-                    window.showCustomAlert('Please login as admin');
-                    await this.showSection('login');
-                }
-                return false;
-            }
-        }
-        return false;
     }
 
     async handleInviteCodeRedirect() {
@@ -336,11 +312,6 @@ class GLYApp {
         // Функция для принудительного обновления VIP уровня
         window.forceUpdateVipLevel = async () => {
             return await this.updateVipLevel();
-        };
-        
-        // Admin function
-        window.showAdmin = () => {
-            this.showSection('admin');
         };
     }
 

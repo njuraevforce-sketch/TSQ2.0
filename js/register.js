@@ -71,7 +71,7 @@ export function init() {
         showLanguageModal();
     });
     
-    // Extract invite code from URL
+    // Extract invite code from URL or session storage
     const hash = window.location.hash;
     let refCode = '';
     
@@ -81,7 +81,16 @@ export function init() {
             // Clean the ref code from any other parameters
             refCode = refCode.split('&')[0];
             document.getElementById('invite-code').value = refCode.toUpperCase();
+            // Clear the hash after extracting ref
+            window.location.hash = 'register';
         }
+    }
+    
+    // Also check session storage for pending invite code
+    const pendingRefCode = sessionStorage.getItem('pending_invite_code');
+    if (pendingRefCode && !refCode) {
+        document.getElementById('invite-code').value = pendingRefCode.toUpperCase();
+        sessionStorage.removeItem('pending_invite_code');
     }
     
     // Password toggle handlers

@@ -440,7 +440,7 @@ class GLYApp {
             // For home, get, assets, mine - show tabbar
             this.showTabbar();
             this.showNavbar();
-            document.body.classList.remove('no-tabbar');
+            document.body.classList.remove('no-tabbar', 'auth-page'); // УБЕДИТЕСЬ, что удаляем оба класса
             this.setNavbarTitle('', false);
             
             // Hide language button

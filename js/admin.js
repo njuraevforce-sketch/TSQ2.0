@@ -487,11 +487,12 @@ async function loadAdminData() {
         // Load today's registered users
         const today = new Date();
         today.setHours(0, 0, 0, 0);
+        const todayISO = today.toISOString();
         
         const { count: todayUsers } = await window.supabase
             .from('users')
             .select('*', { count: 'exact', head: true })
-            .gte('created_at', today.toISOString());
+            .gte('created_at', todayISO);
         
         // Load pending withdrawals from transactions table
         const { count: pendingWithdrawals } = await window.supabase
@@ -501,22 +502,43 @@ async function loadAdminData() {
             .eq('status', 'pending');
         
         // Load today's deposits from deposit_transactions table
-        // ИСПРАВЛЕННЫЙ ЗАПРОС: используем статус 'processed' вместо 'confirmed'
-        const { data: todayDeposits } = await window.supabase
+        // Get start of today in UTC
+        const startOfToday = new Date();
+        startOfToday.setUTCHours(0, 0, 0, 0);
+        
+        // Get start of tomorrow in UTC
+        const startOfTomorrow = new Date(startOfToday);
+        startOfTomorrow.setUTCDate(startOfTomorrow.getUTCDate() + 1);
+        
+        console.log('Date range for today deposits:', {
+            startOfToday: startOfToday.toISOString(),
+            startOfTomorrow: startOfTomorrow.toISOString()
+        });
+        
+        const { data: todayDeposits, error: todayError } = await window.supabase
             .from('deposit_transactions')
             .select('amount')
-            .eq('status', 'processed')  // <- ИЗМЕНЕНО С 'confirmed' НА 'processed'
-            .gte('created_at', today.toISOString());
+            .eq('status', 'processed')
+            .gte('created_at', startOfToday.toISOString())
+            .lt('created_at', startOfTomorrow.toISOString());
         
-        const todayDepositsAmount = todayDeposits?.reduce((sum, d) => sum + d.amount, 0) || 0;
+        if (todayError) {
+            console.error('Error loading today deposits:', todayError);
+        }
+        
+        const todayDepositsAmount = todayDeposits?.reduce((sum, d) => sum + (d.amount || 0), 0) || 0;
         
         // Load total deposits from deposit_transactions table
-        const { data: allDeposits } = await window.supabase
+        const { data: allDeposits, error: allError } = await window.supabase
             .from('deposit_transactions')
             .select('amount')
-            .eq('status', 'processed');  // <- ИЗМЕНЕНО С 'confirmed' НА 'processed'
+            .eq('status', 'processed');
         
-        const totalDepositsAmount = allDeposits?.reduce((sum, d) => sum + d.amount, 0) || 0;
+        if (allError) {
+            console.error('Error loading all deposits:', allError);
+        }
+        
+        const totalDepositsAmount = allDeposits?.reduce((sum, d) => sum + (d.amount || 0), 0) || 0;
         
         // Update header stats
         document.getElementById('total-users').textContent = totalUsers || 0;
@@ -529,7 +551,9 @@ async function loadAdminData() {
             totalUsers,
             todayUsers,
             pendingWithdrawals,
+            todayDepositsCount: todayDeposits?.length || 0,
             todayDepositsAmount,
+            totalDepositsCount: allDeposits?.length || 0,
             totalDepositsAmount
         });
         
@@ -910,15 +934,15 @@ async function loadDeposits() {
         switch(periodFilter) {
             case 'today':
                 startDate = new Date();
-                startDate.setHours(0, 0, 0, 0);
+                startDate.setUTCHours(0, 0, 0, 0);
                 break;
             case 'week':
                 startDate = new Date();
-                startDate.setDate(startDate.getDate() - 7);
+                startDate.setUTCDate(startDate.getUTCDate() - 7);
                 break;
             case 'month':
                 startDate = new Date();
-                startDate.setMonth(startDate.getMonth() - 1);
+                startDate.setUTCMonth(startDate.getUTCMonth() - 1);
                 break;
             case 'all':
                 // No date filter
@@ -1482,7 +1506,7 @@ async function showUserDetails(userId) {
             .from('deposit_transactions')
             .select('amount')
             .eq('user_id', userId)
-            .eq('status', 'processed');  // <- ИЗМЕНЕНО С 'confirmed' НА 'processed'
+            .eq('status', 'processed');
         
         // Get withdrawals from transactions
         const { data: withdrawals } = await window.supabase

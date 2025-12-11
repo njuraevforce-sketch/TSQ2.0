@@ -12,7 +12,11 @@ export default function renderAdmin() {
                     <div class="admin-stats" style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
                         <div class="admin-stat" style="min-width: 70px; padding: 8px;">
                             <div class="admin-stat-value" id="total-users" style="font-size: 18px;">0</div>
-                            <div class="admin-stat-label" style="font-size: 10px;">Users</div>
+                            <div class="admin-stat-label" style="font-size: 10px;">Total Users</div>
+                        </div>
+                        <div class="admin-stat" style="min-width: 70px; padding: 8px;">
+                            <div class="admin-stat-value" id="today-users" style="font-size: 18px;">0</div>
+                            <div class="admin-stat-label" style="font-size: 10px;">Today Users</div>
                         </div>
                         <div class="admin-stat" style="min-width: 70px; padding: 8px;">
                             <div class="admin-stat-value" id="pending-withdrawals" style="font-size: 18px;">0</div>
@@ -480,6 +484,15 @@ async function loadAdminData() {
             .from('users')
             .select('*', { count: 'exact', head: true });
         
+        // Load today's registered users
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const { count: todayUsers } = await window.supabase
+            .from('users')
+            .select('*', { count: 'exact', head: true })
+            .gte('created_at', today.toISOString());
+        
         // Load pending withdrawals from transactions table
         const { count: pendingWithdrawals } = await window.supabase
             .from('transactions')
@@ -488,33 +501,46 @@ async function loadAdminData() {
             .eq('status', 'pending');
         
         // Load today's deposits from deposit_transactions table
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        
+        // ИСПРАВЛЕННЫЙ ЗАПРОС: используем статус 'processed' вместо 'confirmed'
         const { data: todayDeposits } = await window.supabase
             .from('deposit_transactions')
             .select('amount')
-            .eq('status', 'confirmed')  // Only confirmed deposits
+            .eq('status', 'processed')  // <- ИЗМЕНЕНО С 'confirmed' НА 'processed'
             .gte('created_at', today.toISOString());
         
         const todayDepositsAmount = todayDeposits?.reduce((sum, d) => sum + d.amount, 0) || 0;
         
-        // Load total deposits from deposit_transactions table (confirmed only)
+        // Load total deposits from deposit_transactions table
         const { data: allDeposits } = await window.supabase
             .from('deposit_transactions')
             .select('amount')
-            .eq('status', 'confirmed');  // Only confirmed deposits
+            .eq('status', 'processed');  // <- ИЗМЕНЕНО С 'confirmed' НА 'processed'
         
         const totalDepositsAmount = allDeposits?.reduce((sum, d) => sum + d.amount, 0) || 0;
         
         // Update header stats
         document.getElementById('total-users').textContent = totalUsers || 0;
+        document.getElementById('today-users').textContent = todayUsers || 0;
         document.getElementById('pending-withdrawals').textContent = pendingWithdrawals || 0;
         document.getElementById('today-deposits').textContent = todayDepositsAmount.toFixed(2);
         document.getElementById('total-deposits').textContent = totalDepositsAmount.toFixed(2);
         
+        console.log('Admin stats loaded:', {
+            totalUsers,
+            todayUsers,
+            pendingWithdrawals,
+            todayDepositsAmount,
+            totalDepositsAmount
+        });
+        
     } catch (error) {
         console.error('Error loading admin data:', error);
+        // Установить дефолтные значения при ошибке
+        document.getElementById('total-users').textContent = '0';
+        document.getElementById('today-users').textContent = '0';
+        document.getElementById('pending-withdrawals').textContent = '0';
+        document.getElementById('today-deposits').textContent = '0.00';
+        document.getElementById('total-deposits').textContent = '0.00';
     }
 }
 
@@ -1456,7 +1482,7 @@ async function showUserDetails(userId) {
             .from('deposit_transactions')
             .select('amount')
             .eq('user_id', userId)
-            .eq('status', 'confirmed');
+            .eq('status', 'processed');  // <- ИЗМЕНЕНО С 'confirmed' НА 'processed'
         
         // Get withdrawals from transactions
         const { data: withdrawals } = await window.supabase

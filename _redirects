@@ -1,12 +1,2 @@
-# ===== 1. РЕДИРЕКТЫ-ЩИТЫ: Все старые/альтернативные домены ведут на основной =====
-# Если кто-то приходит по любому из этих адресов - сразу на главный.
-https://galaxy5.win/* https://galaxy-5.com/:splat 301
-https://galaxy5.cc/* https://galaxy-5.com/:splat 301
-https://2galaxy.win/* https://galaxy-5.com/:splat 301
-
-# ===== 2. СТАНДАРТНЫЕ ПРАВИЛА ДЛЯ ГЛАВНОГО ДОМЕНА =====
-# Для основного домена включаем SPA-роутинг (ваше старое правило)
-https://galaxy-5.com/* /index.html 200
-
-# (Опционально) Редирект с http на https для основного домена
-http://galaxy-5.com/* https://galaxy-5.com/:splat 301
+# _redirects
+/* /index.html 200

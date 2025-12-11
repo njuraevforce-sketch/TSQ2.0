@@ -1,2 +1,7 @@
-# _redirects
-/* /index.html 200
+# Редиректы со старых доменов
+https://galaxy5.win/* https://galaxy-5.com/:splat 301
+https://galaxy5.cc/* https://galaxy-5.com/:splat 301
+https://2galaxy.win/* https://galaxy-5.com/:splat 301
+
+# SPA-правило для основного домена
+https://galaxy-5.com/* /index.html 200

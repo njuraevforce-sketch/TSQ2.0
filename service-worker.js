@@ -1,15 +1,18 @@
-const CACHE_NAME = 'gly-platform-v13.1';
+const CACHE_NAME = 'gly-platform-v13.2';
 const urlsToCache = [
     '/',
     '/index.html',
-    '/css/style.css?v=13.1',
-    '/js/app.js?v=13.1',
-    '/js/home.js?v=13.1',
-    '/js/mine.js?v=13.1',
-    '/js/assets.js?v=13.1',
-    '/js/team.js?v=13.1',
-    '/js/deposit.js?v=13.1',
-    '/js/withdraw.js?v=13.1',
+    '/css/style.css?v=13.2',
+    '/js/app.js?v=13.2',
+    '/js/home.js?v=13.2',
+    '/js/mine.js?v=13.2',
+    '/js/assets.js?v=13.2',
+    '/js/team.js?v=13.2',
+    '/js/deposit.js?v=13.2',
+    '/js/withdraw.js?v=13.2',
+    '/js/register.js?v=13.2',
+    '/js/invite.js?v=13.2',
+    '/js/translate.js?v=13.2',
     '/manifest.json',
     '/assets/logo.png',
     '/assets/favicon.ico',
@@ -84,13 +87,13 @@ self.addEventListener('activate', event => {
             self.clients.claim()
         ])
         .then(() => {
-            // Очищаем старый localStorage
+            // Clean old localStorage versions
             try {
-                const oldVersions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '6.5', '7.0', '10.0', '11.0', '12.0', '13.0'];
+                const oldVersions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '6.5', '7.0', '10.0', '11.0', '12.0', '13.0', '13.1'];
                 oldVersions.forEach(version => {
                     localStorage.removeItem(`app_version_${version}`);
                 });
-                localStorage.setItem('app_version', '13.1');
+                localStorage.setItem('app_version', '13.2');
                 console.log('LocalStorage cleaned and updated to new version');
             } catch (error) {
                 console.log('Error cleaning localStorage:', error);
@@ -111,9 +114,10 @@ self.addEventListener('fetch', event => {
         return;
     }
     
-    // Skip API requests
+    // Skip API requests - let them go to network
     if (url.hostname.includes('supabase.co') ||
         url.hostname.includes('trongrid.io') ||
+        url.hostname.includes('api.qrserver.com') ||
         url.hostname.includes('api.')) {
         return fetch(event.request);
     }
@@ -121,31 +125,29 @@ self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request)
             .then(cachedResponse => {
-                if (cachedResponse) {
-                    return cachedResponse;
-                }
-                
+                // Always try network first for dynamic content
                 return fetch(event.request)
                     .then(response => {
-                        if (!response || response.status !== 200 || response.type !== 'basic') {
-                            return response;
+                        // Cache successful responses
+                        if (response && response.status === 200) {
+                            const responseToCache = response.clone();
+                            caches.open(CACHE_NAME)
+                                .then(cache => {
+                                    cache.put(event.request, responseToCache);
+                                });
                         }
-                        
-                        const responseToCache = response.clone();
-                        
-                        caches.open(CACHE_NAME)
-                            .then(cache => {
-                                cache.put(event.request, responseToCache);
-                            })
-                            .catch(err => console.warn('Cache put error:', err));
-                        
                         return response;
                     })
                     .catch(() => {
+                        // Fallback to cache if network fails
+                        if (cachedResponse) {
+                            return cachedResponse;
+                        }
+                        // Fallback for navigation requests
                         if (event.request.mode === 'navigate') {
                             return caches.match('/index.html');
                         }
-                        return new Response('Offline', {
+                        return new Response('Network error', {
                             status: 503,
                             headers: { 'Content-Type': 'text/plain' }
                         });
@@ -160,35 +162,4 @@ self.addEventListener('message', event => {
         console.log('Received SKIP_WAITING message');
         self.skipWaiting();
     }
-});
-
-// Notifications (опционально)
-self.addEventListener('push', event => {
-    const options = {
-        body: event.data ? event.data.text() : 'New notification',
-        icon: '/assets/logo.png',
-        badge: '/assets/logo.png'
-    };
-    
-    event.waitUntil(
-        self.registration.showNotification('GLY Platform', options)
-    );
-});
-
-self.addEventListener('notificationclick', event => {
-    event.notification.close();
-    
-    event.waitUntil(
-        clients.matchAll({ type: 'window' })
-            .then(clientList => {
-                for (const client of clientList) {
-                    if (client.url.includes('/index.html') && 'focus' in client) {
-                        return client.focus();
-                    }
-                }
-                if (clients.openWindow) {
-                    return clients.openWindow('/');
-                }
-            })
-    );
 });

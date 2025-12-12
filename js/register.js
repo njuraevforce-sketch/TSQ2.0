@@ -1,4 +1,4 @@
-// Register section v13.1
+// Register section
 import { t, showLanguageModal } from './translate.js';
 
 export default function renderRegister() {
@@ -71,23 +71,11 @@ export function init() {
         showLanguageModal();
     });
     
-    // Extract invite code from URL or session storage - ПОДДЕРЖИВАЕМ ОБА ФОРМАТА
+    // Extract invite code from URL or session storage
     const hash = window.location.hash;
     let refCode = '';
     
-    // НОВЫЙ ФОРМАТ: #/?i=CODE
-    if (hash.includes('?i=')) {
-        refCode = hash.split('?i=')[1];
-        if (refCode) {
-            // Clean the ref code from any other parameters
-            refCode = refCode.split('&')[0];
-            document.getElementById('invite-code').value = refCode.toUpperCase();
-            // Clear the hash after extracting ref
-            window.location.hash = 'register';
-        }
-    }
-    // СТАРЫЙ ФОРМАТ: #register?ref=CODE (обратная совместимость)
-    else if (hash.includes('?ref=')) {
+    if (hash.includes('?ref=')) {
         refCode = hash.split('?ref=')[1];
         if (refCode) {
             // Clean the ref code from any other parameters
@@ -105,7 +93,7 @@ export function init() {
         sessionStorage.removeItem('pending_invite_code');
     }
     
-    // Password toggle handlers (без изменений)
+    // Password toggle handlers
     document.getElementById('toggle-reg-password').addEventListener('click', function() {
         const passwordInput = document.getElementById('reg-password');
         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -127,7 +115,7 @@ export function init() {
         this.classList.toggle('fa-eye-slash');
     });
 
-    // Register button handler (без изменений)
+    // Register button handler
     document.getElementById('register-btn').addEventListener('click', async function() {
         const username = document.getElementById('reg-username').value.trim();
         const email = document.getElementById('email').value.trim();
@@ -137,7 +125,7 @@ export function init() {
         const inviteCode = document.getElementById('invite-code').value.trim().toUpperCase();
         const errorDiv = document.getElementById('register-error');
         
-        // Validation (без изменений)
+        // Validation
         if (!username || !email || !password || !confirmPassword || !paymentPassword || !inviteCode) {
             errorDiv.textContent = t('validation_required');
             errorDiv.style.display = 'block';
@@ -283,7 +271,6 @@ export function init() {
     });
 }
 
-// Функция createReferralRecords остается без изменений
 async function createReferralRecords(referrerId, userId) {
     try {
         // Level 1

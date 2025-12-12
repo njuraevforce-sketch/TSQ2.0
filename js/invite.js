@@ -131,8 +131,10 @@ async function loadUserData() {
     // Update invitation code
     document.getElementById('invite-code').textContent = user.invite_code;
     
-    // Generate referral link - corrected to go to register page with ref parameter
-    const referralLink = `${window.location.origin}${window.location.pathname}#register?ref=${user.invite_code}`;
+    // === ВАЖНОЕ ИЗМЕНЕНИЕ: новый формат реферальной ссылки ===
+    // Старый формат: #register?ref=CODE
+    // Новый формат: #/?i=CODE
+    const referralLink = `${window.location.origin}${window.location.pathname}#/?i=${user.invite_code}`;
     document.getElementById('referral-link').textContent = referralLink;
     
     // Generate QR code

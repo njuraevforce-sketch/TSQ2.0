@@ -10,7 +10,7 @@ const urlsToCache = [
     '/js/mine.js?v=14.1',
     '/js/assets.js?v=14.1',
     '/js/login.js?v=14.1',
-    '/js/register.js?v=14.1',
+    '/js/register.js',
     '/js/company.js?v=14.1',
     '/js/team.js?v=14.1',
     '/js/deposit.js?v=14.1',

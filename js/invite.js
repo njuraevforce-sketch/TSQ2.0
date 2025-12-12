@@ -1,4 +1,4 @@
-// Invite section
+// Invite section v13.1
 import { t } from './translate.js';
 
 export default function renderInvite() {
@@ -131,9 +131,7 @@ async function loadUserData() {
     // Update invitation code
     document.getElementById('invite-code').textContent = user.invite_code;
     
-    // === ВАЖНОЕ ИЗМЕНЕНИЕ: новый формат реферальной ссылки ===
-    // Старый формат: #register?ref=CODE
-    // Новый формат: #/?i=CODE
+    // НОВЫЙ ФОРМАТ: Генерируем ссылку с #/?i=CODE
     const referralLink = `${window.location.origin}${window.location.pathname}#/?i=${user.invite_code}`;
     document.getElementById('referral-link').textContent = referralLink;
     
@@ -142,6 +140,7 @@ async function loadUserData() {
     document.getElementById('qr-code-image').src = qrCodeUrl;
 }
 
+// Функция loadReferralStats остается без изменений
 async function loadReferralStats() {
     const user = window.getCurrentUser();
     if (!user) return;

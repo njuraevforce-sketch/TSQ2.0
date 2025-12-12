@@ -1,23 +1,23 @@
-const CACHE_NAME = 'gly-platform-v14.0'; // ОБНОВЛЕНО с 13.0 на 13.1
+const CACHE_NAME = 'gly-platform-v14.1'; // ОБНОВЛЕНО с 13.0 на 13.1
 const urlsToCache = [
     '/',
     '/index.html',
-    '/css/style.css?v=14.0',
-    '/js/app.js?v=14.0',
-    '/js/translate.js?v=14.0',
-    '/js/home.js?v=14.0',
-    '/js/get.js?v=14.0',
-    '/js/mine.js?v=14.0',
-    '/js/assets.js?v=14.0',
-    '/js/login.js?v=14.0',
-    '/js/register.js?v=14.0',
-    '/js/company.js?v=14.0',
-    '/js/team.js?v=14.0',
-    '/js/deposit.js?v=14.0',
-    '/js/withdraw.js?v=14.0',
-    '/js/invite.js?v=14.0',
-    '/js/rules.js?v=14.0',
-    '/js/admin.js?v=14.0',
+    '/css/style.css?v=14.1',
+    '/js/app.js?v=14.1',
+    '/js/translate.js?v=14.1',
+    '/js/home.js?v=14.1',
+    '/js/get.js?v=14.1',
+    '/js/mine.js?v=14.1',
+    '/js/assets.js?v=14.1',
+    '/js/login.js?v=14.1',
+    '/js/register.js?v=14.1',
+    '/js/company.js?v=14.1',
+    '/js/team.js?v=14.1',
+    '/js/deposit.js?v=14.1',
+    '/js/withdraw.js?v=14.1',
+    '/js/invite.js?v=14.1',
+    '/js/rules.js?v=14.1',
+    '/js/admin.js?v=14.1',
     '/manifest.json',
     '/assets/logo.png',
     '/assets/favicon.ico',
@@ -96,12 +96,12 @@ self.addEventListener('activate', event => {
             try {
                 const oldVersions = [
                     '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9',
-                    '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '6.5', '7.0', '10.0', '11.0', '12.0', '13.1', '13.2', '13.0'
+                    '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '6.5', '7.0', '10.0', '11.0', '12.0', '13.1', '13.2', '14.0'
                 ];
                 oldVersions.forEach(version => {
                     localStorage.removeItem(`app_version_${version}`);
                 });
-                localStorage.setItem('app_version', '14.0'); // Обновлено
+                localStorage.setItem('app_version', '14.1'); // Обновлено
                 console.log('LocalStorage cleaned and updated to new version');
             } catch (error) {
                 console.log('Error cleaning localStorage:', error);

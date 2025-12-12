@@ -1,4 +1,4 @@
-// Main application module - UPDATED v13.1
+// Main application module - UPDATED
 import { t, initLanguageSystem, updatePageLanguage } from './translate.js';
 
 class GLYApp {
@@ -83,25 +83,18 @@ class GLYApp {
     }
 
     async handleInviteCodeRedirect() {
-        // Check if there's an invite code in the URL - поддерживаем оба формата
+        // Check if there's an invite code in the URL
         const hash = window.location.hash;
-        let refCode = null;
-        
-        // НОВЫЙ ФОРМАТ: #/?i=CODE
-        if (hash.includes('?i=')) {
-            refCode = hash.split('?i=')[1].split('&')[0];
-        } 
-        // СТАРЫЙ ФОРМАТ: #register?ref=CODE (для обратной совместимости)
-        else if (hash.includes('?ref=')) {
-            refCode = hash.split('?ref=')[1].split('&')[0];
-        }
-        
-        if (refCode && !this.currentUser) {
-            // Redirect to register page with invite code
-            await this.showSection('register');
-            // Сохраняем ref code для использования в register.js
-            sessionStorage.setItem('pending_invite_code', refCode);
-            return true;
+        if (hash.includes('?ref=')) {
+            // Extract the invite code
+            const refCode = hash.split('?ref=')[1].split('&')[0];
+            if (refCode && !this.currentUser) {
+                // Redirect to register page with invite code
+                await this.showSection('register');
+                // Сохраняем ref code для использования в register.js
+                sessionStorage.setItem('pending_invite_code', refCode);
+                return true;
+            }
         }
         return false;
     }
@@ -511,7 +504,7 @@ class GLYApp {
         } catch (error) {
             console.error(`Error loading section ${sectionId}:`, error);
             sectionElement.innerHTML = `<div class="error">${t('error_loading')} ${sectionId} ${t('section')}. ${t('try_again')}</div>`;
-    }
+        }
     }
 
     hideTabbar() {

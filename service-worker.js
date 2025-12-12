@@ -1,23 +1,15 @@
-const CACHE_NAME = 'gly-platform-v14.1'; // ОБНОВЛЕНО с 13.0 на 13.1
+const CACHE_NAME = 'gly-platform-v13.0';
 const urlsToCache = [
     '/',
     '/index.html',
-    '/css/style.css?v=14.1',
-    '/js/app.js?v=14.1',
-    '/js/translate.js?v=14.1',
-    '/js/home.js?v=14.1',
-    '/js/get.js?v=14.1',
-    '/js/mine.js?v=14.1',
-    '/js/assets.js?v=14.1',
-    '/js/login.js?v=14.1',
-    '/js/register.js',
-    '/js/company.js?v=14.1',
-    '/js/team.js?v=14.1',
-    '/js/deposit.js?v=14.1',
-    '/js/withdraw.js?v=14.1',
-    '/js/invite.js?v=14.1',
-    '/js/rules.js?v=14.1',
-    '/js/admin.js?v=14.1',
+    '/css/style.css?v=13.0',
+    '/js/app.js?v=13.0',
+    '/js/home.js?v=13.0',
+    '/js/mine.js?v=13.0',
+    '/js/assets.js?v=13.0',
+    '/js/team.js?v=13.0',
+    '/js/deposit.js?v=13.0',
+    '/js/withdraw.js?v=13.0',
     '/manifest.json',
     '/assets/logo.png',
     '/assets/favicon.ico',
@@ -94,14 +86,11 @@ self.addEventListener('activate', event => {
         .then(() => {
             // Очищаем старый localStorage
             try {
-                const oldVersions = [
-                    '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9',
-                    '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '6.5', '7.0', '10.0', '11.0', '12.0', '13.1', '13.2', '14.0'
-                ];
+                const oldVersions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '6.5', '7.0', '10.0', '11.0', '12.0'];
                 oldVersions.forEach(version => {
                     localStorage.removeItem(`app_version_${version}`);
                 });
-                localStorage.setItem('app_version', '14.1'); // Обновлено
+                localStorage.setItem('app_version', '13.0');
                 console.log('LocalStorage cleaned and updated to new version');
             } catch (error) {
                 console.log('Error cleaning localStorage:', error);
@@ -126,13 +115,6 @@ self.addEventListener('fetch', event => {
     if (url.hostname.includes('supabase.co') ||
         url.hostname.includes('trongrid.io') ||
         url.hostname.includes('api.')) {
-        return fetch(event.request);
-    }
-    
-    // Skip CDN requests
-    if (url.hostname.includes('cdnjs.cloudflare.com') ||
-        url.hostname.includes('cdn.jsdelivr.net') ||
-        url.hostname.includes('static.cloudflareinsights.com')) {
         return fetch(event.request);
     }
     
@@ -178,21 +160,6 @@ self.addEventListener('message', event => {
         console.log('Received SKIP_WAITING message');
         self.skipWaiting();
     }
-    
-    if (event.data && event.data.type === 'FORCE_RELOAD') {
-        console.log('Received FORCE_RELOAD message from app');
-        event.waitUntil(
-            self.clients.matchAll()
-                .then(clients => {
-                    clients.forEach(client => {
-                        client.postMessage({
-                            type: 'FORCE_RELOAD',
-                            version: CACHE_NAME
-                        });
-                    });
-                })
-        );
-    }
 });
 
 // Notifications (опционально)
@@ -225,20 +192,3 @@ self.addEventListener('notificationclick', event => {
             })
     );
 });
-
-// Background sync (опционально)
-self.addEventListener('sync', event => {
-    if (event.tag === 'sync-data') {
-        console.log('Background sync triggered');
-        event.waitUntil(syncData());
-    }
-});
-
-async function syncData() {
-    try {
-        // Здесь можно добавить логику синхронизации данных
-        console.log('Syncing data in background...');
-    } catch (error) {
-        console.error('Background sync error:', error);
-    }
-}

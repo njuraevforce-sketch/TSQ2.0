@@ -1,9 +1,4 @@
-// === GLY App - Реферальная система ===
-// Версия: 13.1 (Обновление формата ссылок)
-// Изменения: Переход на формат ссылок #/?i=CODE для снижения спам-жалоб
-// =======================================
-
-// Main application module - UPDATED
+// Main application module - UPDATED v13.1
 import { t, initLanguageSystem, updatePageLanguage } from './translate.js';
 
 class GLYApp {
@@ -88,31 +83,23 @@ class GLYApp {
     }
 
     async handleInviteCodeRedirect() {
-        // Check if there's an invite code in the URL
+        // Check if there's an invite code in the URL - поддерживаем оба формата
         const hash = window.location.hash;
-        let refCode = '';
+        let refCode = null;
         
-        // 1. Check for NEW format: #/?i=CODE
+        // НОВЫЙ ФОРМАТ: #/?i=CODE
         if (hash.includes('?i=')) {
-            // Extract the invite code from #/?i=CODE
-            const hashParams = hash.split('?')[1];
-            if (hashParams) {
-                const params = new URLSearchParams(hashParams);
-                refCode = params.get('i');
-                console.log('Extracted ref code from new format (?i=):', refCode);
-            }
-        }
-        // 2. Check for OLD format: #register?ref=CODE (for backward compatibility)
+            refCode = hash.split('?i=')[1].split('&')[0];
+        } 
+        // СТАРЫЙ ФОРМАТ: #register?ref=CODE (для обратной совместимости)
         else if (hash.includes('?ref=')) {
-            // Extract the invite code from #register?ref=CODE
             refCode = hash.split('?ref=')[1].split('&')[0];
-            console.log('Extracted ref code from old format (?ref=):', refCode);
         }
         
         if (refCode && !this.currentUser) {
             // Redirect to register page with invite code
             await this.showSection('register');
-            // Save ref code for use in register.js
+            // Сохраняем ref code для использования в register.js
             sessionStorage.setItem('pending_invite_code', refCode);
             return true;
         }
@@ -524,7 +511,7 @@ class GLYApp {
         } catch (error) {
             console.error(`Error loading section ${sectionId}:`, error);
             sectionElement.innerHTML = `<div class="error">${t('error_loading')} ${sectionId} ${t('section')}. ${t('try_again')}</div>`;
-        }
+    }
     }
 
     hideTabbar() {

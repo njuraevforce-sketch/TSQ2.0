@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gly-platform-v13.1'; // ОБНОВЛЕНО с 13.0 на 13.1
+const CACHE_NAME = 'gly-platform-v14.0'; // ОБНОВЛЕНО с 13.0 на 13.1
 const urlsToCache = [
     '/',
     '/index.html',
@@ -96,12 +96,12 @@ self.addEventListener('activate', event => {
             try {
                 const oldVersions = [
                     '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9',
-                    '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '6.5', '7.0', '10.0', '11.0', '12.0', '13.0'
+                    '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '6.5', '7.0', '10.0', '11.0', '12.0', '13.1', '13.2', '13.0'
                 ];
                 oldVersions.forEach(version => {
                     localStorage.removeItem(`app_version_${version}`);
                 });
-                localStorage.setItem('app_version', '13.1'); // Обновлено
+                localStorage.setItem('app_version', '14.0'); // Обновлено
                 console.log('LocalStorage cleaned and updated to new version');
             } catch (error) {
                 console.log('Error cleaning localStorage:', error);

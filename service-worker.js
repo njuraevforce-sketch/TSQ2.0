@@ -1,4 +1,3 @@
-[file content begin]
 const CACHE_NAME = 'gly-platform-v15.1'; // Увеличьте версию
 const urlsToCache = [
     '/',

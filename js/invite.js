@@ -131,8 +131,8 @@ async function loadUserData() {
     // Update invitation code
     document.getElementById('invite-code').textContent = user.invite_code;
     
-    // Generate referral link - corrected to go to register page with ref parameter
-    const referralLink = `${window.location.origin}${window.location.pathname}#register?ref=${user.invite_code}`;
+    // Generate NEW FORMAT referral link: #/?i=CODE
+    const referralLink = `${window.location.origin}${window.location.pathname}#/?i=${user.invite_code}`;
     document.getElementById('referral-link').textContent = referralLink;
     
     // Generate QR code

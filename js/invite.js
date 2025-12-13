@@ -1,4 +1,4 @@
-// Invite section
+// Invite section - UPDATED to v17.0
 import { t } from './translate.js';
 
 export default function renderInvite() {
@@ -131,7 +131,7 @@ async function loadUserData() {
     // Update invitation code
     document.getElementById('invite-code').textContent = user.invite_code;
     
-    // Generate NEW FORMAT referral link: #/?i=CODE
+    // Generate referral link - НОВЫЙ ФОРМАТ
     const referralLink = `${window.location.origin}${window.location.pathname}#/?i=${user.invite_code}`;
     document.getElementById('referral-link').textContent = referralLink;
     

@@ -1,4 +1,6 @@
 // Admin section - COMPACT & FULLY FUNCTIONAL - UPDATED DEPOSIT STATS & WITHDRAWAL VIEW
+// Теперь проверяет администраторскую сессию через backend
+
 export default function renderAdmin() {
     return `
         <div class="admin-container">
@@ -6,8 +8,8 @@ export default function renderAdmin() {
             <div class="card padding" style="background: rgba(0,0,0,0.3); margin-bottom: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                     <div>
-                        <h2 style="color: white; margin-bottom: 5px; font-size: 18px;">Admin Panel</h2>
-                        <p style="color: #ccc; font-size: 11px;">Full control panel</p>
+                        <h2 style="color: white; margin-bottom: 5px; font-size: 18px;">Administrator Panel</h2>
+                        <p style="color: #ccc; font-size: 11px;">Secure administrative interface</p>
                     </div>
                     <div class="admin-stats" style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
                         <div class="admin-stat" style="min-width: 70px; padding: 8px;">
@@ -249,6 +251,18 @@ export default function renderAdmin() {
                     </div>
                 </div>
             </div>
+            
+            <!-- Кнопка выхода администратора -->
+            <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <button id="admin-logout-btn" 
+                        style="background: #ff6b6b; color: white; border: none; padding: 10px 20px; 
+                               border-radius: 8px; font-size: 14px; cursor: pointer; width: 100%; max-width: 300px;">
+                    <i class="fas fa-sign-out-alt"></i> Logout Administrator
+                </button>
+                <div style="color: #ccc; font-size: 11px; margin-top: 10px;">
+                    Secure administrator session
+                </div>
+            </div>
         </div>
 
         <!-- User Edit Modal - COMPACT with FIXED COLORS -->
@@ -353,8 +367,17 @@ export default function renderAdmin() {
 export async function init() {
     document.body.classList.add('no-tabbar');
     
-    // Check admin access
-    await checkAdminAccess();
+    // Новая проверка через сессию администратора
+    const adminUser = window.checkAdminSession ? window.checkAdminSession() : null;
+    if (!adminUser) {
+        window.showCustomAlert('Administrator access required. Please login through backend.');
+        setTimeout(() => {
+            window.showSection('backend');
+        }, 2000);
+        return false;
+    }
+    
+    console.log('Admin session verified:', adminUser.username);
     
     // Load admin data
     await loadAdminData();
@@ -364,18 +387,6 @@ export async function init() {
     
     // Load initial tab
     loadTab('withdrawals');
-}
-
-async function checkAdminAccess() {
-    const user = window.getCurrentUser();
-    if (!user || user.username !== 'admin') {
-        window.showCustomAlert('Access denied. Admin only.');
-        setTimeout(() => {
-            window.showSection('home');
-        }, 2000);
-        return false;
-    }
-    return true;
 }
 
 function setupEventListeners() {
@@ -411,7 +422,6 @@ function setupEventListeners() {
     });
     
     // Filters
-    // Removed withdrawal status filter event listener
     document.getElementById('deposit-period-filter').addEventListener('change', loadDeposits);
     document.getElementById('transaction-type-filter').addEventListener('change', loadTransactions);
     
@@ -419,6 +429,20 @@ function setupEventListeners() {
     document.getElementById('save-settings').addEventListener('click', saveSettings);
     document.getElementById('reset-settings').addEventListener('click', resetSettings);
     document.getElementById('load-settings').addEventListener('click', loadCurrentSettings);
+    
+    // Logout button
+    document.getElementById('admin-logout-btn').addEventListener('click', () => {
+        if (confirm('Logout from administrator session?')) {
+            if (window.adminLogout) {
+                window.adminLogout();
+            } else {
+                window.showCustomAlert('Logging out...');
+                setTimeout(() => {
+                    window.showSection('login');
+                }, 1000);
+            }
+        }
+    });
     
     // Modal close buttons
     document.getElementById('cancel-edit-user').addEventListener('click', () => {
@@ -1619,7 +1643,7 @@ async function saveSettings() {
             daily_signals: document.getElementById('daily-signals').value
         };
         
-        // Here you would save to Supabase
+        // Здесь вы бы сохранили в Supabase
         // const { error } = await window.supabase
         //     .from('platform_settings')
         //     .upsert(settings);

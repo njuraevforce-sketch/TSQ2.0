@@ -1,10 +1,11 @@
-// Main application module - UPDATED to v17.0
+// Main application module - UPDATED to v17.1 with backend support
 import { t, initLanguageSystem, updatePageLanguage } from './translate.js';
 
 class GLYApp {
     constructor() {
         this.currentSection = null;
-        this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register', 'company', 'invite', 'team', 'rules', 'withdraw', 'admin', 'deposit'];
+        // Добавлена секция 'backend' для администраторского входа
+        this.sections = ['home', 'get', 'assets', 'mine', 'login', 'register', 'company', 'invite', 'team', 'rules', 'withdraw', 'admin', 'deposit', 'backend'];
         this.currentUser = null;
         this.supabase = null;
         this.deferredPrompt = null;
@@ -399,6 +400,19 @@ class GLYApp {
         window.forceUpdateVipLevel = async () => {
             return await this.updateVipLevel();
         };
+        
+        // Администраторские функции
+        window.checkAdminSession = () => {
+            // Функция реализована в backend.js
+            return window.checkAdminSession ? window.checkAdminSession() : null;
+        };
+        
+        window.adminLogout = () => {
+            // Функция реализована в backend.js
+            if (window.adminLogout) {
+                window.adminLogout();
+            }
+        };
     }
 
     async showSection(sectionId) {
@@ -423,12 +437,19 @@ class GLYApp {
         
         if (this.currentSection === cleanSectionId) return;
 
-        // Special check for admin page
+        // Специальная проверка для страницы админ-панели
         if (cleanSectionId === 'admin') {
-            const user = this.currentUser || JSON.parse(localStorage.getItem('gly_user'));
-            if (!user || user.username !== 'admin') {
-                window.showCustomAlert(t('admin_access_only'));
-                return;
+            const adminUser = window.checkAdminSession ? window.checkAdminSession() : null;
+            if (!adminUser) {
+                // Проверяем текущего пользователя
+                const user = this.currentUser || JSON.parse(localStorage.getItem('gly_user'));
+                if (!user || user.username !== 'admin') {
+                    window.showCustomAlert('Administrator access required. Please login through backend.');
+                    setTimeout(() => {
+                        window.showSection('backend');
+                    }, 1500);
+                    return;
+                }
             }
         }
 
@@ -462,7 +483,7 @@ class GLYApp {
                 this.currentSection !== 'company' && this.currentSection !== 'invite' && 
                 this.currentSection !== 'team' && this.currentSection !== 'rules' &&
                 this.currentSection !== 'withdraw' && this.currentSection !== 'admin' &&
-                this.currentSection !== 'deposit') {
+                this.currentSection !== 'deposit' && this.currentSection !== 'backend') {
                 const activeTab = document.querySelector(`[data-section="${this.currentSection}"]`);
                 if (activeTab) {
                     activeTab.classList.remove('uni-tabbar__item--active');
@@ -478,13 +499,22 @@ class GLYApp {
         }
         
         // Manage tabbar and navbar visibility
-        if (cleanSectionId === 'login' || cleanSectionId === 'register') {
+        if (cleanSectionId === 'backend') {
+            this.hideTabbar();
+            this.hideNavbar();
+            document.body.classList.add('auth-page');
+            
+            // Hide language button
+            this.hideLanguageButton();
+            
+        } else if (cleanSectionId === 'login' || cleanSectionId === 'register') {
             this.hideTabbar();
             this.hideNavbar();
             document.body.classList.add('auth-page');
             
             // Show language button in top right corner
             this.showLanguageButton();
+            
         } else if (cleanSectionId === 'company' || cleanSectionId === 'invite' || 
                    cleanSectionId === 'team' || cleanSectionId === 'rules' ||
                    cleanSectionId === 'withdraw' || cleanSectionId === 'admin' ||
@@ -1041,6 +1071,7 @@ class GLYApp {
 
     logout() {
         localStorage.removeItem('gly_user');
+        localStorage.removeItem('gly_admin_session');
         this.currentUser = null;
         window.showSection('login');
         window.location.hash = 'login';

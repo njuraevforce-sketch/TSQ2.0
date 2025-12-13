@@ -1,4 +1,4 @@
-// Register section
+// Register section - UPDATED to v17.0
 import { t, showLanguageModal } from './translate.js';
 
 export default function renderRegister() {
@@ -64,8 +64,6 @@ export default function renderRegister() {
 }
 
 export function init() {
-    console.log('Register section initializing...');
-    
     document.body.classList.add('auth-page');
     
     // Language button handler
@@ -73,13 +71,11 @@ export function init() {
         showLanguageModal();
     });
     
-    // Extract invite code from session storage (set by app.js)
+    // Извлекаем invite code ТОЛЬКО из sessionStorage
     const pendingRefCode = sessionStorage.getItem('pending_invite_code');
     if (pendingRefCode) {
-        console.log('Found pending invite code:', pendingRefCode);
         document.getElementById('invite-code').value = pendingRefCode.toUpperCase();
-        // Очищаем sessionStorage чтобы не заполнялось при повторном открытии
-        sessionStorage.removeItem('pending_invite_code');
+        console.log('Invite code loaded from sessionStorage:', pendingRefCode);
     }
     
     // Password toggle handlers
@@ -135,13 +131,6 @@ export function init() {
         
         if (paymentPassword.length < 6) {
             errorDiv.textContent = t('validation_payment_password_length');
-            errorDiv.style.display = 'block';
-            return;
-        }
-        
-        // Check invitation code
-        if (!inviteCode) {
-            errorDiv.textContent = t('validation_invite_code');
             errorDiv.style.display = 'block';
             return;
         }
@@ -231,8 +220,8 @@ export function init() {
                 window.glyApp.currentUser = newUser;
             }
             
-            // Clear URL hash to prevent routing issues
-            window.location.hash = '';
+            // Очищаем sessionStorage после успешной регистрации
+            sessionStorage.removeItem('pending_invite_code');
             
             // Show success message
             window.showCustomAlert(t('registration_success'));
@@ -240,6 +229,7 @@ export function init() {
             // Navigate to home WITHOUT reload
             setTimeout(() => {
                 window.showSection('home');
+                window.location.hash = 'home';
             }, 2000);
             
         } catch (error) {
@@ -257,9 +247,8 @@ export function init() {
     document.getElementById('go-to-login').addEventListener('click', function(e) {
         e.preventDefault();
         window.showSection('login');
+        window.location.hash = 'login';
     });
-    
-    console.log('Register section initialized');
 }
 
 async function createReferralRecords(referrerId, userId) {

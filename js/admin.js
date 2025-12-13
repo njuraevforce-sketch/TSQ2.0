@@ -1,4 +1,4 @@
-// Admin section - COMPACT & FULLY FUNCTIONAL - UPDATED DEPOSIT STATS
+// Admin section - COMPACT & FULLY FUNCTIONAL - UPDATED DEPOSIT STATS & WITHDRAWAL VIEW
 export default function renderAdmin() {
     return `
         <div class="admin-container">
@@ -29,6 +29,11 @@ export default function renderAdmin() {
                         <div class="admin-stat" style="min-width: 70px; padding: 8px;">
                             <div class="admin-stat-value" id="total-deposits" style="font-size: 18px;">0</div>
                             <div class="admin-stat-label" style="font-size: 10px;">Total $</div>
+                        </div>
+                        <!-- NEW: Total Withdrawals Stat -->
+                        <div class="admin-stat" style="min-width: 70px; padding: 8px;">
+                            <div class="admin-stat-value" id="total-withdrawals" style="font-size: 18px;">0</div>
+                            <div class="admin-stat-label" style="font-size: 10px;">Total WD</div>
                         </div>
                     </div>
                 </div>
@@ -64,20 +69,14 @@ export default function renderAdmin() {
 
             <!-- Tabs Content -->
             <div class="admin-tabs">
-                <!-- Withdrawals Tab - COMPACT DESIGN -->
+                <!-- Withdrawals Tab - UPDATED: No filtering, show all withdrawals -->
                 <div class="admin-tab active" id="withdrawals-tab">
                     <div class="card padding" style="padding: 10px;">
                         <div class="tab-header" style="margin-bottom: 10px;">
-                            <h3 style="color: white; font-size: 16px; margin: 0;">Pending Withdrawals</h3>
+                            <h3 style="color: white; font-size: 16px; margin: 0;">All Withdrawals</h3>
                             <div class="tab-actions" style="gap: 5px;">
-                                <select id="withdrawal-status-filter" class="admin-select-small" style="padding: 6px 8px; font-size: 12px; min-width: 120px;">
-                                    <option value="pending">Pending</option>
-                                    <option value="completed">Completed</option>
-                                    <option value="cancelled">Cancelled</option>
-                                    <option value="all">All</option>
-                                </select>
                                 <button class="admin-btn-small" id="refresh-withdrawals" style="padding: 6px 8px; font-size: 12px;">
-                                    <i class="fas fa-sync-alt"></i>
+                                    <i class="fas fa-sync-alt"></i> Refresh
                                 </button>
                             </div>
                         </div>
@@ -252,24 +251,27 @@ export default function renderAdmin() {
             </div>
         </div>
 
-        <!-- User Edit Modal - COMPACT -->
+        <!-- User Edit Modal - COMPACT with FIXED COLORS -->
         <div class="pop-overlay" id="edit-user-modal" style="display: none;">
-            <div class="pop-content" style="max-width: 95%; margin: 10px; max-height: 90vh; overflow-y: auto;">
+            <div class="pop-content" style="max-width: 95%; margin: 10px; max-height: 90vh; overflow-y: auto; background: white; border: 1px solid #ddd;">
                 <form id="edit-user-form" onsubmit="return false;">
-                    <div class="pop-header" style="padding: 10px 15px; font-size: 14px;">Edit User</div>
-                    <div class="pop-body" style="padding: 10px;">
+                    <div class="pop-header" style="padding: 10px 15px; font-size: 14px; background: #36454f; color: white;">Edit User</div>
+                    <div class="pop-body" style="padding: 10px; background: white; color: #333;">
                         <div class="admin-form-grid" style="display: grid; grid-template-columns: 1fr; gap: 8px;">
                             <div class="form-group">
-                                <label style="color: #333; font-size: 12px;">Username</label>
-                                <input type="text" id="edit-username" class="admin-input" readonly style="padding: 6px; font-size: 12px;">
+                                <label style="color: #333; font-size: 12px; font-weight: bold;">Username</label>
+                                <input type="text" id="edit-username" class="admin-input" readonly 
+                                       style="padding: 8px; font-size: 12px; background: #f5f5f5; color: #333; border: 1px solid #ccc; border-radius: 4px; width: 100%;">
                             </div>
                             <div class="form-group">
-                                <label style="color: #333; font-size: 12px;">Balance (USDT)</label>
-                                <input type="number" id="edit-balance" class="admin-input" step="0.01" style="padding: 6px; font-size: 12px;">
+                                <label style="color: #333; font-size: 12px; font-weight: bold;">Balance (USDT)</label>
+                                <input type="number" id="edit-balance" class="admin-input" step="0.01" 
+                                       style="padding: 8px; font-size: 12px; background: #f5f5f5; color: #333; border: 1px solid #ccc; border-radius: 4px; width: 100%;">
                             </div>
                             <div class="form-group">
-                                <label style="color: #333; font-size: 12px;">VIP Level</label>
-                                <select id="edit-vip-level" class="admin-input" style="padding: 6px; font-size: 12px;">
+                                <label style="color: #333; font-size: 12px; font-weight: bold;">VIP Level</label>
+                                <select id="edit-vip-level" class="admin-input" 
+                                       style="padding: 8px; font-size: 12px; background: #f5f5f5; color: #333; border: 1px solid #ccc; border-radius: 4px; width: 100%;">
                                     <option value="1">VIP 1</option>
                                     <option value="2">VIP 2</option>
                                     <option value="3">VIP 3</option>
@@ -279,26 +281,27 @@ export default function renderAdmin() {
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label style="color: #333; font-size: 12px;">Signals</label>
-                                <input type="number" id="edit-signals" class="admin-input" style="padding: 6px; font-size: 12px;">
+                                <label style="color: #333; font-size: 12px; font-weight: bold;">Signals</label>
+                                <input type="number" id="edit-signals" class="admin-input" 
+                                       style="padding: 8px; font-size: 12px; background: #f5f5f5; color: #333; border: 1px solid #ccc; border-radius: 4px; width: 100%;">
                             </div>
                         </div>
                         
                         <div style="margin-top: 15px; display: flex; gap: 8px; flex-wrap: wrap;">
-                            <button type="button" class="admin-btn-small" id="add-balance-btn" style="padding: 6px 10px; font-size: 11px; background: #52c41a;">
+                            <button type="button" class="admin-btn-small" id="add-balance-btn" style="padding: 8px 12px; font-size: 11px; background: #52c41a; color: white; border: none; border-radius: 4px; cursor: pointer;">
                                 <i class="fas fa-plus"></i> Add Balance
                             </button>
-                            <button type="button" class="admin-btn-small" id="subtract-balance-btn" style="padding: 6px 10px; font-size: 11px; background: #ff4d4f;">
+                            <button type="button" class="admin-btn-small" id="subtract-balance-btn" style="padding: 8px 12px; font-size: 11px; background: #ff4d4f; color: white; border: none; border-radius: 4px; cursor: pointer;">
                                 <i class="fas fa-minus"></i> Subtract
                             </button>
-                            <button type="button" class="admin-btn-small" id="view-user-details" style="padding: 6px 10px; font-size: 11px; background: #1890ff;">
+                            <button type="button" class="admin-btn-small" id="view-user-details" style="padding: 8px 12px; font-size: 11px; background: #1890ff; color: white; border: none; border-radius: 4px; cursor: pointer;">
                                 <i class="fas fa-eye"></i> Details
                             </button>
                         </div>
                     </div>
-                    <div class="pop-footer" style="padding: 10px; display: flex; justify-content: space-between;">
-                        <button type="submit" id="save-user-changes" style="padding: 8px 15px; font-size: 12px; background: #4e7771;">Save</button>
-                        <button type="button" id="cancel-edit-user" style="padding: 8px 15px; font-size: 12px; background: #666;">Cancel</button>
+                    <div class="pop-footer" style="padding: 10px; display: flex; justify-content: space-between; background: #f5f5f5; border-top: 1px solid #ddd;">
+                        <button type="submit" id="save-user-changes" style="padding: 8px 15px; font-size: 12px; background: #4e7771; color: white; border: none; border-radius: 4px; cursor: pointer;">Save</button>
+                        <button type="button" id="cancel-edit-user" style="padding: 8px 15px; font-size: 12px; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer;">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -408,7 +411,7 @@ function setupEventListeners() {
     });
     
     // Filters
-    document.getElementById('withdrawal-status-filter').addEventListener('change', loadWithdrawals);
+    // Removed withdrawal status filter event listener
     document.getElementById('deposit-period-filter').addEventListener('change', loadDeposits);
     document.getElementById('transaction-type-filter').addEventListener('change', loadTransactions);
     
@@ -501,19 +504,23 @@ async function loadAdminData() {
             .eq('type', 'withdrawal')
             .eq('status', 'pending');
         
+        // Load total withdrawals amount (all statuses)
+        const { data: allWithdrawals, error: withdrawalsError } = await window.supabase
+            .from('transactions')
+            .select('amount')
+            .eq('type', 'withdrawal');
+        
+        let totalWithdrawalsAmount = 0;
+        if (!withdrawalsError && allWithdrawals) {
+            totalWithdrawalsAmount = allWithdrawals.reduce((sum, w) => sum + Math.abs(w.amount || 0), 0);
+        }
+        
         // Load today's deposits from deposit_transactions table
-        // Get start of today in UTC
         const startOfToday = new Date();
         startOfToday.setUTCHours(0, 0, 0, 0);
         
-        // Get start of tomorrow in UTC
         const startOfTomorrow = new Date(startOfToday);
         startOfTomorrow.setUTCDate(startOfTomorrow.getUTCDate() + 1);
-        
-        console.log('Date range for today deposits:', {
-            startOfToday: startOfToday.toISOString(),
-            startOfTomorrow: startOfTomorrow.toISOString()
-        });
         
         const { data: todayDeposits, error: todayError } = await window.supabase
             .from('deposit_transactions')
@@ -546,16 +553,7 @@ async function loadAdminData() {
         document.getElementById('pending-withdrawals').textContent = pendingWithdrawals || 0;
         document.getElementById('today-deposits').textContent = todayDepositsAmount.toFixed(2);
         document.getElementById('total-deposits').textContent = totalDepositsAmount.toFixed(2);
-        
-        console.log('Admin stats loaded:', {
-            totalUsers,
-            todayUsers,
-            pendingWithdrawals,
-            todayDepositsCount: todayDeposits?.length || 0,
-            todayDepositsAmount,
-            totalDepositsCount: allDeposits?.length || 0,
-            totalDepositsAmount
-        });
+        document.getElementById('total-withdrawals').textContent = totalWithdrawalsAmount.toFixed(2);
         
     } catch (error) {
         console.error('Error loading admin data:', error);
@@ -565,6 +563,7 @@ async function loadAdminData() {
         document.getElementById('pending-withdrawals').textContent = '0';
         document.getElementById('today-deposits').textContent = '0.00';
         document.getElementById('total-deposits').textContent = '0.00';
+        document.getElementById('total-withdrawals').textContent = '0.00';
     }
 }
 
@@ -602,9 +601,8 @@ function loadTab(tabName) {
 
 async function loadWithdrawals() {
     try {
-        const statusFilter = document.getElementById('withdrawal-status-filter').value;
-        
-        let query = window.supabase
+        // Load ALL withdrawals (no status filter)
+        const { data: withdrawals, error } = await window.supabase
             .from('transactions')
             .select(`
                 *,
@@ -612,12 +610,6 @@ async function loadWithdrawals() {
             `)
             .eq('type', 'withdrawal')
             .order('created_at', { ascending: false });
-        
-        if (statusFilter !== 'all') {
-            query = query.eq('status', statusFilter);
-        }
-        
-        const { data: withdrawals, error } = await query;
         
         if (error) throw error;
         
@@ -631,9 +623,6 @@ async function loadWithdrawals() {
                 const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                 const dateStr = date.toLocaleDateString();
                 const amount = Math.abs(tx.amount);
-                const shortAddress = tx.withdrawal_address ? 
-                    `${tx.withdrawal_address.substring(0, 6)}...${tx.withdrawal_address.substring(tx.withdrawal_address.length - 4)}` : 
-                    'N/A';
                 
                 const statusColors = {
                     'pending': '#f9ae3d',
@@ -665,8 +654,23 @@ async function loadWithdrawals() {
                             </div>
                         </div>
                         
-                        <div style="font-size: 10px; color: #ccc; margin-bottom: 10px; word-break: break-all;">
-                            ${shortAddress}
+                        <!-- UPDATED: Full address with copy button -->
+                        <div style="font-size: 10px; color: #ccc; margin-bottom: 10px; padding: 8px; background: rgba(0,0,0,0.2); border-radius: 5px; word-break: break-all;">
+                            <div style="color: #999; font-size: 9px; margin-bottom: 3px;">Withdrawal Address:</div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span id="address-${tx.id}">${tx.withdrawal_address || 'N/A'}</span>
+                                ${tx.withdrawal_address ? `
+                                    <button class="copy-full-address-btn" data-address="${tx.withdrawal_address}" 
+                                            style="background: #4e7771; color: white; border: none; border-radius: 3px; padding: 3px 8px; font-size: 9px; cursor: pointer; margin-left: 8px; flex-shrink: 0;">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                        
+                        <div style="color: #ccc; font-size: 10px; margin-bottom: 8px; word-break: break-all;">
+                            <div style="color: #999; font-size: 9px;">TX Hash:</div>
+                            ${tx.tx_hash || 'N/A'}
                         </div>
                 `;
                 
@@ -685,8 +689,8 @@ async function loadWithdrawals() {
                     `;
                 } else {
                     html += `
-                        <div style="color: #ccc; font-size: 10px; text-align: center;">
-                            ${tx.description || ''}
+                        <div style="color: #ccc; font-size: 10px; text-align: center; padding: 5px; background: rgba(0,0,0,0.1); border-radius: 4px;">
+                            ${tx.description || 'No description'}
                         </div>
                     `;
                 }
@@ -699,7 +703,7 @@ async function loadWithdrawals() {
         
         container.innerHTML = html;
         
-        // Add event listeners
+        // Add event listeners for approve/reject buttons
         container.querySelectorAll('.approve-btn').forEach(btn => {
             btn.addEventListener('click', async function() {
                 const txId = this.getAttribute('data-id');
@@ -721,6 +725,30 @@ async function loadWithdrawals() {
                 
                 if (confirm(`Reject withdrawal of ${amount} USDT? Funds will be returned to user balance.`)) {
                     await rejectWithdrawal(txId, userId, amount, reason);
+                }
+            });
+        });
+        
+        // Add event listeners for copy address buttons
+        container.querySelectorAll('.copy-full-address-btn').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const address = this.getAttribute('data-address');
+                if (address) {
+                    try {
+                        await navigator.clipboard.writeText(address);
+                        window.showCustomAlert('✅ Address copied to clipboard!');
+                        // Visual feedback
+                        const originalText = this.innerHTML;
+                        this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        this.style.background = '#52c41a';
+                        setTimeout(() => {
+                            this.innerHTML = originalText;
+                            this.style.background = '#4e7771';
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Failed to copy address:', err);
+                        window.showCustomAlert('❌ Failed to copy address');
+                    }
                 }
             });
         });

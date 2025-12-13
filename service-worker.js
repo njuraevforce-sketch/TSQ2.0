@@ -1,14 +1,23 @@
-const CACHE_NAME = 'gly-platform-v17.2';
+const CACHE_NAME = 'gly-platform-v18.0';
 const urlsToCache = [
     '/',
     '/index.html',
-    '/css/style.css?v=17.2',
-    '/js/app.js?v=17.2',
-    '/js/mine.js?v=17.2',
-    '/js/assets.js?v=17.2',
-    '/js/team.js?v=17.2',
-    '/js/deposit.js?v=17.2',
-    '/js/withdraw.js?v=17.2',
+    '/css/style.css?v=18.0',
+    '/js/app.js?v=18.0',
+    '/js/mine.js?v=18.0',
+    '/js/assets.js?v=18.0',
+    '/js/team.js?v=18.0',
+    '/js/deposit.js?v=18.0',
+    '/js/withdraw.js?v=18.0',
+    '/js/admin.js?v=18.0',
+    '/js/backend.js?v=18.0',
+    '/js/translate.js?v=18.0',
+    '/js/home.js?v=18.0',
+    '/js/get.js?v=18.0',
+    '/js/register.js?v=18.0',
+    '/js/company.js?v=18.0',
+    '/js/invite.js?v=18.0',
+    '/js/rules.js?v=18.0',
     '/manifest.json',
     '/assets/logo.png',
     '/assets/favicon.ico',
@@ -46,7 +55,7 @@ const urlsToCache = [
 
 // Install
 self.addEventListener('install', event => {
-    console.log('Installing new Service Worker version:', CACHE_NAME);
+    console.log('Installing Service Worker version:', CACHE_NAME);
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
@@ -54,7 +63,7 @@ self.addEventListener('install', event => {
                 return cache.addAll(urlsToCache);
             })
             .then(() => {
-                console.log('All files cached, skipping waiting');
+                console.log('All files cached successfully for v18.0');
                 return self.skipWaiting();
             })
             .catch(error => {
@@ -65,7 +74,7 @@ self.addEventListener('install', event => {
 
 // Activate
 self.addEventListener('activate', event => {
-    console.log('Activating new Service Worker');
+    console.log('Activating Service Worker v18.0');
     event.waitUntil(
         Promise.all([
             // Clean old caches
@@ -83,16 +92,45 @@ self.addEventListener('activate', event => {
             self.clients.claim()
         ])
         .then(() => {
-            // Очищаем старый localStorage
+            // Обновляем версию в localStorage
             try {
-                const oldVersions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '6.5', '7.0', '10.0', '11.0', '12.0', '13.0', '14.0', '17.0', '17.1'];
+                // Сохраняем важные данные перед очисткой
+                const userData = localStorage.getItem('gly_user');
+                const adminSession = localStorage.getItem('gly_admin_session');
+                const language = localStorage.getItem('gly_language');
+                
+                // Очищаем старые версии приложения
+                const oldVersions = [
+                    '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9',
+                    '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '6.5', '7.0', '10.0', '11.0',
+                    '12.0', '13.0', '14.0', '17.0', '17.1', '17.2'
+                ];
+                
                 oldVersions.forEach(version => {
                     localStorage.removeItem(`app_version_${version}`);
                 });
-                localStorage.setItem('app_version', '17.2');
-                console.log('LocalStorage cleaned and updated to new version');
+                
+                // Восстанавливаем важные данные
+                if (userData) localStorage.setItem('gly_user', userData);
+                if (adminSession) localStorage.setItem('gly_admin_session', adminSession);
+                if (language) localStorage.setItem('gly_language', language);
+                
+                // Устанавливаем новую версию
+                localStorage.setItem('app_version', '18.0');
+                console.log('LocalStorage updated to version 18.0');
+                
+                // Отправляем сообщение всем клиентам о перезагрузке
+                self.clients.matchAll().then(clients => {
+                    clients.forEach(client => {
+                        client.postMessage({
+                            type: 'FORCE_RELOAD',
+                            version: '18.0',
+                            message: 'New version available. Reloading...'
+                        });
+                    });
+                });
             } catch (error) {
-                console.log('Error cleaning localStorage:', error);
+                console.log('Error updating localStorage:', error);
             }
         })
     );
@@ -117,8 +155,9 @@ self.addEventListener('fetch', event => {
         return fetch(event.request);
     }
     
+    // Skip requests with cache-busting parameters (they should be handled by cache)
     event.respondWith(
-        caches.match(event.request)
+        caches.match(event.request, {ignoreSearch: true})
             .then(cachedResponse => {
                 if (cachedResponse) {
                     return cachedResponse;
@@ -146,6 +185,7 @@ self.addEventListener('fetch', event => {
                         }
                         return new Response('Offline', {
                             status: 503,
+                            statusText: 'Service Unavailable',
                             headers: { 'Content-Type': 'text/plain' }
                         });
                     });
@@ -164,9 +204,13 @@ self.addEventListener('message', event => {
 // Notifications
 self.addEventListener('push', event => {
     const options = {
-        body: event.data ? event.data.text() : 'New notification',
+        body: event.data ? event.data.text() : 'New notification from GLY Platform',
         icon: '/assets/logo.png',
-        badge: '/assets/logo.png'
+        badge: '/assets/logo.png',
+        vibrate: [200, 100, 200],
+        data: {
+            url: '/'
+        }
     };
     
     event.waitUntil(
@@ -177,17 +221,34 @@ self.addEventListener('push', event => {
 self.addEventListener('notificationclick', event => {
     event.notification.close();
     
-    event.waitUntil(
-        clients.matchAll({ type: 'window' })
-            .then(clientList => {
-                for (const client of clientList) {
-                    if (client.url.includes('/index.html') && 'focus' in client) {
-                        return client.focus();
-                    }
-                }
-                if (clients.openWindow) {
-                    return clients.openWindow('/');
-                }
-            })
-    );
+    const promiseChain = clients.matchAll({
+        type: 'window',
+        includeUncontrolled: true
+    }).then(windowClients => {
+        let matchingClient = null;
+        
+        for (let i = 0; i < windowClients.length; i++) {
+            const windowClient = windowClients[i];
+            if (windowClient.url.includes('/index.html')) {
+                matchingClient = windowClient;
+                break;
+            }
+        }
+        
+        if (matchingClient) {
+            return matchingClient.focus();
+        } else {
+            return clients.openWindow('/');
+        }
+    });
+    
+    event.waitUntil(promiseChain);
+});
+
+// Background sync (для оффлайн операций)
+self.addEventListener('sync', event => {
+    if (event.tag === 'sync-transactions') {
+        console.log('Background sync for transactions');
+        // Здесь можно добавить логику синхронизации
+    }
 });

@@ -64,45 +64,21 @@ export default function renderRegister() {
 }
 
 export function init() {
+    console.log('Register section initializing...');
+    
     document.body.classList.add('auth-page');
     
-    // Language button handler - use the same modal as in mine
+    // Language button handler
     document.getElementById('language-btn-register').addEventListener('click', () => {
         showLanguageModal();
     });
     
-    // Extract invite code from URL or session storage
-    const hash = window.location.hash;
-    let refCode = '';
-    
-    // NEW FORMAT: #/?i=CODE
-    if (hash.includes('?i=')) {
-        refCode = hash.split('?i=')[1];
-        if (refCode) {
-            // Clean the ref code from any other parameters
-            refCode = refCode.split('&')[0];
-            document.getElementById('invite-code').value = refCode.toUpperCase();
-            // Clear the hash after extracting ref (keeping only #register)
-            window.location.hash = 'register';
-        }
-    }
-    
-    // OLD FORMAT for backward compatibility: #register?ref=CODE
-    else if (hash.includes('?ref=')) {
-        refCode = hash.split('?ref=')[1];
-        if (refCode) {
-            // Clean the ref code from any other parameters
-            refCode = refCode.split('&')[0];
-            document.getElementById('invite-code').value = refCode.toUpperCase();
-            // Clear the hash after extracting ref (keeping only #register)
-            window.location.hash = 'register';
-        }
-    }
-    
-    // Also check session storage for pending invite code (set by app.js)
+    // Extract invite code from session storage (set by app.js)
     const pendingRefCode = sessionStorage.getItem('pending_invite_code');
-    if (pendingRefCode && !refCode) {
+    if (pendingRefCode) {
+        console.log('Found pending invite code:', pendingRefCode);
         document.getElementById('invite-code').value = pendingRefCode.toUpperCase();
+        // Очищаем sessionStorage чтобы не заполнялось при повторном открытии
         sessionStorage.removeItem('pending_invite_code');
     }
     
@@ -282,6 +258,8 @@ export function init() {
         e.preventDefault();
         window.showSection('login');
     });
+    
+    console.log('Register section initialized');
 }
 
 async function createReferralRecords(referrerId, userId) {

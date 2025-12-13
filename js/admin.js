@@ -77,6 +77,11 @@ export default function renderAdmin() {
                         <div class="tab-header" style="margin-bottom: 10px;">
                             <h3 style="color: white; font-size: 16px; margin: 0;">All Withdrawals</h3>
                             <div class="tab-actions" style="gap: 5px;">
+                                <input type="text" 
+                                       id="search-withdrawals" 
+                                       placeholder="Search user/invite code..."
+                                       class="admin-input-small"
+                                       style="padding: 6px 8px; font-size: 12px; width: 120px;">
                                 <button class="admin-btn-small" id="refresh-withdrawals" style="padding: 6px 8px; font-size: 12px;">
                                     <i class="fas fa-sync-alt"></i> Refresh
                                 </button>
@@ -99,9 +104,9 @@ export default function renderAdmin() {
                             <div class="tab-actions" style="gap: 5px;">
                                 <input type="text" 
                                        id="search-users" 
-                                       placeholder="Search..."
+                                       placeholder="Search user/email/invite..."
                                        class="admin-input-small"
-                                       style="padding: 6px 8px; font-size: 12px; width: 100px;">
+                                       style="padding: 6px 8px; font-size: 12px; width: 140px;">
                                 <button class="admin-btn-small" id="refresh-users" style="padding: 6px 8px; font-size: 12px;">
                                     <i class="fas fa-sync-alt"></i>
                                 </button>
@@ -122,6 +127,11 @@ export default function renderAdmin() {
                         <div class="tab-header" style="margin-bottom: 10px;">
                             <h3 style="color: white; font-size: 16px; margin: 0;">Deposits (from deposit_transactions)</h3>
                             <div class="tab-actions" style="gap: 5px;">
+                                <input type="text" 
+                                       id="search-deposits" 
+                                       placeholder="Search user/invite..."
+                                       class="admin-input-small"
+                                       style="padding: 6px 8px; font-size: 12px; width: 120px;">
                                 <select id="deposit-period-filter" class="admin-select-small" style="padding: 6px 8px; font-size: 12px;">
                                     <option value="today">Today</option>
                                     <option value="week">Week</option>
@@ -150,9 +160,9 @@ export default function renderAdmin() {
                             <div class="tab-actions" style="gap: 5px;">
                                 <input type="text" 
                                        id="search-user-referrals" 
-                                       placeholder="User ID"
+                                       placeholder="User ID/Username/Invite"
                                        class="admin-input-small"
-                                       style="padding: 6px 8px; font-size: 12px; width: 100px;">
+                                       style="padding: 6px 8px; font-size: 12px; width: 140px;">
                                 <button class="admin-btn-small" id="search-referrals-btn" style="padding: 6px 8px; font-size: 12px;">
                                     <i class="fas fa-search"></i>
                                 </button>
@@ -161,7 +171,7 @@ export default function renderAdmin() {
                         
                         <div class="referral-tree-container" id="referral-tree-container" style="max-height: 500px; overflow-y: auto;">
                             <div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">
-                                Enter user ID to view referral tree
+                                Enter user ID, username or invite code to view referral tree
                             </div>
                         </div>
                     </div>
@@ -173,6 +183,11 @@ export default function renderAdmin() {
                         <div class="tab-header" style="margin-bottom: 10px;">
                             <h3 style="color: white; font-size: 16px; margin: 0;">Transactions (All types)</h3>
                             <div class="tab-actions" style="gap: 5px;">
+                                <input type="text" 
+                                       id="search-transactions" 
+                                       placeholder="Search user/invite..."
+                                       class="admin-input-small"
+                                       style="padding: 6px 8px; font-size: 12px; width: 120px;">
                                 <select id="transaction-type-filter" class="admin-select-small" style="padding: 6px 8px; font-size: 12px; min-width: 100px;">
                                     <option value="">All</option>
                                     <option value="deposit">Deposits</option>
@@ -414,10 +429,24 @@ function setupEventListeners() {
     
     // Search
     document.getElementById('search-users').addEventListener('input', debounce(loadUsers, 500));
+    document.getElementById('search-withdrawals').addEventListener('input', debounce(loadWithdrawals, 500));
+    document.getElementById('search-deposits').addEventListener('input', debounce(loadDeposits, 500));
+    document.getElementById('search-transactions').addEventListener('input', debounce(loadTransactions, 500));
+    
     document.getElementById('search-referrals-btn').addEventListener('click', () => {
         const searchTerm = document.getElementById('search-user-referrals').value;
         if (searchTerm) {
             loadReferralTree(searchTerm);
+        }
+    });
+    
+    // Enter key for referrals search
+    document.getElementById('search-user-referrals').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const searchTerm = document.getElementById('search-user-referrals').value;
+            if (searchTerm) {
+                loadReferralTree(searchTerm);
+            }
         }
     });
     
@@ -625,15 +654,36 @@ function loadTab(tabName) {
 
 async function loadWithdrawals() {
     try {
-        // Load ALL withdrawals (no status filter)
-        const { data: withdrawals, error } = await window.supabase
+        const searchTerm = document.getElementById('search-withdrawals').value;
+        
+        let query = window.supabase
             .from('transactions')
             .select(`
                 *,
-                user:users(username, email, balance)
+                user:users(username, email, balance, invite_code)
             `)
             .eq('type', 'withdrawal')
             .order('created_at', { ascending: false });
+        
+        if (searchTerm) {
+            // Search by user username, email, or invite code
+            const { data: users } = await window.supabase
+                .from('users')
+                .select('id')
+                .or(`username.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%,invite_code.ilike.%${searchTerm}%`);
+            
+            if (users && users.length > 0) {
+                const userIds = users.map(u => u.id);
+                query = query.in('user_id', userIds);
+            } else {
+                // If no users found with search term, return empty
+                document.getElementById('withdrawals-table').innerHTML = 
+                    '<div style="color: #ccc; text-align: center; padding: 30px; font-size: 12px;">No withdrawals found for this search</div>';
+                return;
+            }
+        }
+        
+        const { data: withdrawals, error } = await query;
         
         if (error) throw error;
         
@@ -660,6 +710,7 @@ async function loadWithdrawals() {
                             <div>
                                 <div style="font-weight: bold; color: white; font-size: 13px;">${tx.user.username}</div>
                                 <div style="color: #ccc; font-size: 10px;">${dateStr} ${timeStr}</div>
+                                <div style="color: #999; font-size: 9px;">Invite: ${tx.user.invite_code || 'N/A'}</div>
                             </div>
                             <div style="text-align: right;">
                                 <div style="color: #ff4d4f; font-weight: bold; font-size: 14px;">${amount.toFixed(2)} USDT</div>
@@ -862,7 +913,8 @@ async function loadUsers() {
             .limit(50);
         
         if (searchTerm) {
-            query = query.or(`username.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%,id.ilike.%${searchTerm}%`);
+            // Search by username, email, id, or invite_code
+            query = query.or(`username.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%,id.ilike.%${searchTerm}%,invite_code.ilike.%${searchTerm}%`);
         }
         
         const { data: users, error } = await query;
@@ -892,6 +944,7 @@ async function loadUsers() {
                                 <div style="font-weight: bold; color: white; font-size: 13px;">${user.username}</div>
                                 <div style="color: #ccc; font-size: 10px; margin-top: 2px;">${user.email || 'No email'}</div>
                                 <div style="color: #999; font-size: 9px; margin-top: 2px;">ID: ${user.id.substring(0, 8)}...</div>
+                                <div style="color: #666; font-size: 9px; margin-top: 2px;">Invite: ${user.invite_code || 'N/A'}</div>
                             </div>
                             <div style="text-align: right;">
                                 <div style="color: #f9ae3d; font-weight: bold; font-size: 14px;">${user.balance.toFixed(2)} USDT</div>
@@ -969,12 +1022,13 @@ async function loadUsers() {
 async function loadDeposits() {
     try {
         const periodFilter = document.getElementById('deposit-period-filter').value;
+        const searchTerm = document.getElementById('search-deposits').value;
         
         let query = window.supabase
             .from('deposit_transactions')
             .select(`
                 *,
-                user:users(username, email)
+                user:users(username, email, invite_code)
             `)
             .order('created_at', { ascending: false })
             .limit(50);
@@ -1005,6 +1059,24 @@ async function loadDeposits() {
             query = query.gte('created_at', startDate.toISOString());
         }
         
+        if (searchTerm) {
+            // Search by user username, email, or invite code
+            const { data: users } = await window.supabase
+                .from('users')
+                .select('id')
+                .or(`username.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%,invite_code.ilike.%${searchTerm}%`);
+            
+            if (users && users.length > 0) {
+                const userIds = users.map(u => u.id);
+                query = query.in('user_id', userIds);
+            } else {
+                // If no users found with search term, return empty
+                document.getElementById('deposits-table').innerHTML = 
+                    '<div style="color: #ccc; text-align: center; padding: 30px; font-size: 12px;">No deposits found for this search</div>';
+                return;
+            }
+        }
+        
         const { data: deposits, error } = await query;
         
         if (error) throw error;
@@ -1032,6 +1104,7 @@ async function loadDeposits() {
                             <div>
                                 <div style="font-weight: bold; color: white; font-size: 13px;">${deposit.user.username}</div>
                                 <div style="color: #ccc; font-size: 10px;">${dateStr} ${timeStr}</div>
+                                <div style="color: #999; font-size: 9px;">Invite: ${deposit.user.invite_code || 'N/A'}</div>
                             </div>
                             <div style="text-align: right;">
                                 <div style="color: #52c41a; font-weight: bold; font-size: 14px;">+${deposit.amount.toFixed(2)} USDT</div>
@@ -1072,18 +1145,37 @@ async function loadDeposits() {
 async function loadTransactions() {
     try {
         const typeFilter = document.getElementById('transaction-type-filter').value;
+        const searchTerm = document.getElementById('search-transactions').value;
         
         let query = window.supabase
             .from('transactions')
             .select(`
                 *,
-                user:users(username)
+                user:users(username, invite_code)
             `)
             .order('created_at', { ascending: false })
             .limit(50);
         
         if (typeFilter) {
             query = query.eq('type', typeFilter);
+        }
+        
+        if (searchTerm) {
+            // Search by user username or invite code
+            const { data: users } = await window.supabase
+                .from('users')
+                .select('id')
+                .or(`username.ilike.%${searchTerm}%,invite_code.ilike.%${searchTerm}%`);
+            
+            if (users && users.length > 0) {
+                const userIds = users.map(u => u.id);
+                query = query.in('user_id', userIds);
+            } else {
+                // If no users found with search term, return empty
+                document.getElementById('transactions-table').innerHTML = 
+                    '<div style="color: #ccc; text-align: center; padding: 30px; font-size: 12px;">No transactions found for this search</div>';
+                return;
+            }
         }
         
         const { data: transactions, error } = await query;
@@ -1124,6 +1216,7 @@ async function loadTransactions() {
                             <div>
                                 <div style="font-weight: bold; color: white; font-size: 13px;">${tx.user.username}</div>
                                 <div style="color: #ccc; font-size: 10px;">${dateStr} ${timeStr}</div>
+                                <div style="color: #999; font-size: 9px;">Invite: ${tx.user.invite_code || 'N/A'}</div>
                             </div>
                             <div style="text-align: right;">
                                 <div style="color: ${amountColor}; font-weight: bold; font-size: 14px;">${isPositive ? '+' : ''}${tx.amount.toFixed(2)} USDT</div>
@@ -1166,16 +1259,16 @@ async function loadReferralTree(userId) {
         if (!userId) {
             userId = document.getElementById('search-user-referrals').value.trim();
             if (!userId) {
-                window.showCustomAlert('Please enter user ID');
+                window.showCustomAlert('Please enter user ID, username or invite code');
                 return;
             }
         }
         
-        // Find user
+        // Find user by ID, username, or invite code
         const { data: user, error: userError } = await window.supabase
             .from('users')
             .select('*')
-            .or(`id.eq.${userId},username.eq.${userId}`)
+            .or(`id.ilike.%${userId}%,username.ilike.%${userId}%,invite_code.ilike.%${userId}%`)
             .maybeSingle();
         
         if (userError || !user) {
@@ -1188,7 +1281,7 @@ async function loadReferralTree(userId) {
             .from('referrals')
             .select(`
                 referred_id,
-                referred:users!referred_id (id, username, balance, vip_level, created_at)
+                referred:users!referred_id (id, username, balance, vip_level, created_at, invite_code)
             `)
             .eq('referrer_id', user.id)
             .eq('level', 1)
@@ -1202,6 +1295,7 @@ async function loadReferralTree(userId) {
                 <div style="text-align: center; margin-bottom: 10px;">
                     <div style="color: white; font-weight: bold; font-size: 16px;">${user.username}</div>
                     <div style="color: #ccc; font-size: 12px;">ID: ${user.id.substring(0, 10)}...</div>
+                    <div style="color: #999; font-size: 11px; margin-top: 5px;">Invite Code: ${user.invite_code || 'N/A'}</div>
                 </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px;">
@@ -1243,6 +1337,7 @@ async function loadReferralTree(userId) {
                             <div>
                                 <div style="font-weight: bold; color: white; font-size: 13px;">${referred.username}</div>
                                 <div style="color: #ccc; font-size: 10px;">Joined: ${joinDate}</div>
+                                <div style="color: #999; font-size: 9px;">Invite: ${referred.invite_code || 'N/A'}</div>
                             </div>
                             <div style="text-align: right;">
                                 <div style="color: #f9ae3d; font-weight: bold; font-size: 12px;">${referred.balance.toFixed(2)} USDT</div>
@@ -1280,8 +1375,23 @@ async function loadReferralTree(userId) {
         container.querySelectorAll('.view-ref-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const userId = this.getAttribute('data-user-id');
-                document.getElementById('search-user-referrals').value = userId;
-                loadReferralTree(userId);
+                // Get user info to prefill search
+                window.supabase
+                    .from('users')
+                    .select('username, invite_code')
+                    .eq('id', userId)
+                    .single()
+                    .then(({ data: user }) => {
+                        if (user) {
+                            // Try username first, then invite code
+                            const searchValue = user.username || user.invite_code || userId;
+                            document.getElementById('search-user-referrals').value = searchValue;
+                            loadReferralTree(searchValue);
+                        } else {
+                            document.getElementById('search-user-referrals').value = userId;
+                            loadReferralTree(userId);
+                        }
+                    });
             });
         });
         
@@ -1584,6 +1694,7 @@ async function showUserDetails(userId) {
                 <div style="margin-bottom: 15px;">
                     <div style="font-weight: bold; font-size: 16px; color: #4e7771;">${user.username}</div>
                     <div style="color: #666; font-size: 12px;">ID: ${user.id}</div>
+                    <div style="color: #666; font-size: 12px;">Invite Code: ${user.invite_code || 'Not set'}</div>
                 </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">

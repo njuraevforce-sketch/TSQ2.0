@@ -83,16 +83,29 @@ class GLYApp {
     }
 
     async handleInviteCodeRedirect() {
-        // Check if there's an invite code in the URL
+        // Check if there's an invite code in the URL (NEW and OLD format)
         const hash = window.location.hash;
+        
+        // NEW FORMAT: #/?i=CODE
+        if (hash.includes('?i=')) {
+            const refCode = hash.split('?i=')[1].split('&')[0];
+            if (refCode && !this.currentUser) {
+                // Save to sessionStorage for register.js to use
+                sessionStorage.setItem('pending_invite_code', refCode);
+                // Redirect to register page WITHOUT the invite code in URL
+                window.location.hash = 'register';
+                return true;
+            }
+        }
+        
+        // OLD FORMAT for backward compatibility: #register?ref=CODE
         if (hash.includes('?ref=')) {
-            // Extract the invite code
             const refCode = hash.split('?ref=')[1].split('&')[0];
             if (refCode && !this.currentUser) {
-                // Redirect to register page with invite code
-                await this.showSection('register');
-                // Сохраняем ref code для использования в register.js
+                // Save to sessionStorage for register.js to use
                 sessionStorage.setItem('pending_invite_code', refCode);
+                // Redirect to register page WITHOUT the invite code in URL
+                window.location.hash = 'register';
                 return true;
             }
         }

@@ -1,4 +1,4 @@
-// Main application module - UPDATED
+// Main application module - UPDATED to v17.0
 import { t, initLanguageSystem, updatePageLanguage } from './translate.js';
 
 class GLYApp {
@@ -50,7 +50,25 @@ class GLYApp {
         window.addEventListener('hashchange', async () => {
             const hash = window.location.hash;
             if (hash) {
-                const section = hash.substring(1).split('?')[0];
+                let section = hash.substring(1).split('?')[0];
+                
+                // Обработка нового формата реферальной ссылки
+                if ((hash.includes('?i=') || hash.includes('/?i=')) && !this.currentUser) {
+                    let refCode = '';
+                    if (hash.includes('#/?i=')) {
+                        refCode = hash.split('#/?i=')[1].split('&')[0];
+                    } else if (hash.includes('?i=')) {
+                        refCode = hash.split('?i=')[1].split('&')[0];
+                    }
+                    
+                    if (refCode) {
+                        sessionStorage.setItem('pending_invite_code', refCode);
+                        section = 'register';
+                        // Обновляем хэш для корректной загрузки
+                        window.location.hash = 'register';
+                    }
+                }
+                
                 if (this.sections.includes(section) && section !== this.currentSection) {
                     await this.showSection(section);
                 }
@@ -61,9 +79,29 @@ class GLYApp {
     async loadInitialSection(inviteHandled = false) {
         const hash = window.location.hash;
         
+        // Если уже обработали invite code через handleInviteCodeRedirect
         if (inviteHandled) {
-            // Если обработали invite code, уже показали register
-            return;
+            return; // Уже показали register через handleInviteCodeRedirect
+        }
+        
+        // Проверяем новый формат ссылки напрямую
+        if (hash && !this.currentUser) {
+            // Проверка нового формата: #/?i=CODE
+            if (hash.includes('?i=')) {
+                let refCode = '';
+                if (hash.includes('#/?i=')) {
+                    refCode = hash.split('#/?i=')[1].split('&')[0];
+                } else if (hash.includes('?i=')) {
+                    refCode = hash.split('?i=')[1].split('&')[0];
+                }
+                
+                if (refCode) {
+                    sessionStorage.setItem('pending_invite_code', refCode);
+                    await this.showSection('register');
+                    window.location.hash = 'register';
+                    return;
+                }
+            }
         }
         
         if (hash) {
@@ -83,31 +121,31 @@ class GLYApp {
     }
 
     async handleInviteCodeRedirect() {
-        // Check if there's an invite code in the URL (NEW and OLD format)
         const hash = window.location.hash;
+        let refCode = '';
         
-        // NEW FORMAT: #/?i=CODE
-        if (hash.includes('?i=')) {
-            const refCode = hash.split('?i=')[1].split('&')[0];
-            if (refCode && !this.currentUser) {
-                // Save to sessionStorage for register.js to use
-                sessionStorage.setItem('pending_invite_code', refCode);
-                // Redirect to register page WITHOUT the invite code in URL
-                window.location.hash = 'register';
-                return true;
+        // Поддерживаем старый формат: #register?ref=CODE
+        if (hash.includes('?ref=')) {
+            refCode = hash.split('?ref=')[1].split('&')[0];
+        }
+        // И новый формат: #/?i=CODE
+        else if (hash.includes('?i=')) {
+            // Извлекаем из разных вариантов нового формата
+            if (hash.includes('#/?i=')) {
+                refCode = hash.split('#/?i=')[1].split('&')[0];
+            } else if (hash.includes('?i=')) {
+                refCode = hash.split('?i=')[1].split('&')[0];
             }
         }
         
-        // OLD FORMAT for backward compatibility: #register?ref=CODE
-        if (hash.includes('?ref=')) {
-            const refCode = hash.split('?ref=')[1].split('&')[0];
-            if (refCode && !this.currentUser) {
-                // Save to sessionStorage for register.js to use
-                sessionStorage.setItem('pending_invite_code', refCode);
-                // Redirect to register page WITHOUT the invite code in URL
-                window.location.hash = 'register';
-                return true;
-            }
+        if (refCode && !this.currentUser) {
+            // Сохраняем ref code для использования в register.js
+            sessionStorage.setItem('pending_invite_code', refCode);
+            // Изменяем хэш на #register чтобы загрузился модуль
+            window.location.hash = 'register';
+            // Показываем секцию регистрации
+            await this.showSection('register');
+            return true;
         }
         return false;
     }
@@ -364,6 +402,22 @@ class GLYApp {
     }
 
     async showSection(sectionId) {
+        // Если пришел новый формат хэша, обрабатываем его
+        if ((sectionId.includes('?i=') || sectionId.includes('/?i=')) && !this.currentUser) {
+            let refCode = '';
+            if (sectionId.includes('#/?i=')) {
+                refCode = sectionId.split('#/?i=')[1].split('&')[0];
+            } else if (sectionId.includes('?i=')) {
+                refCode = sectionId.split('?i=')[1].split('&')[0];
+            }
+            
+            if (refCode) {
+                sessionStorage.setItem('pending_invite_code', refCode);
+                sectionId = 'register';
+                window.location.hash = 'register';
+            }
+        }
+        
         // Clean sectionId from any query parameters
         const cleanSectionId = sectionId.split('?')[0];
         
@@ -453,7 +507,7 @@ class GLYApp {
             // For home, get, assets, mine - show tabbar
             this.showTabbar();
             this.showNavbar();
-            document.body.classList.remove('no-tabbar', 'auth-page'); // УБЕДИТЕСЬ, что удаляем оба класса
+            document.body.classList.remove('no-tabbar', 'auth-page');
             this.setNavbarTitle('', false);
             
             // Hide language button
@@ -730,7 +784,6 @@ class GLYApp {
 
     async updateVipLevelForUser(userId) {
         try {
-            // ПРАВИЛЬНЫЙ ЗАПРОС: получаем всех рефералов уровня 1, затем фильтруем по балансу в коде
             const { data: referrals, error: refError } = await this.supabase
                 .from('referrals')
                 .select(`
@@ -745,14 +798,12 @@ class GLYApp {
                 
             if (refError) throw refError;
             
-            // ФИЛЬТРУЕМ В КОДЕ: только рефералы с балансом ≥ 20 USDT
             const activeReferrals = referrals?.filter(ref => 
                 ref.referred && ref.referred.balance >= 20
             ) || [];
             
             const activeRefs = activeReferrals.length;
             
-            // Получаем данные пользователя
             const { data: user, error: userError } = await this.supabase
                 .from('users')
                 .select('balance, vip_level')
@@ -764,10 +815,8 @@ class GLYApp {
             const userBalance = user.balance;
             const currentVipLevel = user.vip_level;
             
-            // Определяем новый VIP уровень на основе баланса и АКТИВНЫХ рефералов
             let newVipLevel = 1;
             
-            // Проверяем условия ДЛЯ КАЖДОГО уровня отдельно (не каскадно)
             if (userBalance >= 12000 && activeRefs >= 25) {
                 newVipLevel = 6;
             } else if (userBalance >= 6000 && activeRefs >= 15) {
@@ -780,7 +829,6 @@ class GLYApp {
                 newVipLevel = 2;
             }
             
-            // Если уровень изменился
             if (newVipLevel !== currentVipLevel) {
                 const { error } = await this.supabase
                     .from('users')
@@ -790,7 +838,6 @@ class GLYApp {
                 if (!error) {
                     console.log(`VIP level updated for user ${userId}: ${currentVipLevel} -> ${newVipLevel}`);
                     
-                    // Если это текущий пользователь, обновляем локальные данные
                     if (this.currentUser && this.currentUser.id === userId) {
                         this.currentUser.vip_level = newVipLevel;
                         localStorage.setItem('gly_user', JSON.stringify(this.currentUser));
@@ -868,7 +915,6 @@ class GLYApp {
                 
             if (error) throw error;
             
-            // ФИЛЬТРУЕМ В КОДЕ
             const activeReferrals = referrals?.filter(ref => 
                 ref.referred && ref.referred.balance >= 20
             ) || [];
@@ -899,11 +945,8 @@ class GLYApp {
         const today = now.toISOString().split('T')[0];
         const lastUpdate = this.currentUser.last_signal_update?.split('T')[0];
         
-        // Если сегодняшняя дата отличается от даты последнего обновления
-        // И текущее время уже после 18:00 UTC (≥ 18:00)
         if (today !== lastUpdate && (utcHour > 18 || (utcHour === 18 && utcMinute >= 0))) {
             try {
-                // Update signals
                 const { error } = await this.supabase
                     .from('users')
                     .update({ 
@@ -917,10 +960,8 @@ class GLYApp {
                     this.currentUser.last_signal_update = now.toISOString();
                     localStorage.setItem('gly_user', JSON.stringify(this.currentUser));
                     
-                    // Update VIP level
                     await this.updateVipLevel();
                     
-                    // Show notification if user is on get or home page
                     if (this.currentSection === 'get' || this.currentSection === 'home') {
                         window.showCustomAlert(t('signals_reset_alert'));
                     }
@@ -935,7 +976,6 @@ class GLYApp {
         if (!this.currentUser) return;
         
         try {
-            // ПРАВИЛЬНЫЙ ЗАПРОС: получаем всех рефералов уровня 1, затем фильтруем по балансу в коде
             const { data: referrals, error: refError } = await this.supabase
                 .from('referrals')
                 .select(`
@@ -952,23 +992,19 @@ class GLYApp {
                 
             if (refError) throw refError;
             
-            // ФИЛЬТРУЕМ В КОДЕ: только рефералы с балансом ≥ 20 USDT
             const activeReferrals = referrals?.filter(ref => 
                 ref.referred && ref.referred.balance >= 20
             ) || [];
             
             const activeRefs = activeReferrals.length;
             
-            // Логи для отладки
             console.log('All referrals:', referrals);
             console.log('Active referrals (balance ≥ 20):', activeReferrals);
             console.log(`Active referrals (balance ≥ 20): ${activeRefs}`);
             console.log(`User balance: ${this.currentUser.balance}`);
             
-            // Определяем новый VIP уровень на основе баланса и АКТИВНЫХ рефералов
             let newVipLevel = 1;
             
-            // Проверяем условия ДЛЯ КАЖДОГО уровня отдельно (не каскадно)
             if (this.currentUser.balance >= 12000 && activeRefs >= 25) {
                 newVipLevel = 6;
             } else if (this.currentUser.balance >= 6000 && activeRefs >= 15) {
@@ -983,7 +1019,6 @@ class GLYApp {
             
             console.log(`Current VIP: ${this.currentUser.vip_level}, New VIP level determined: ${newVipLevel}`);
             
-            // Если уровень изменился
             if (newVipLevel !== this.currentUser.vip_level) {
                 const { error } = await this.supabase
                     .from('users')
@@ -994,7 +1029,6 @@ class GLYApp {
                     this.currentUser.vip_level = newVipLevel;
                     localStorage.setItem('gly_user', JSON.stringify(this.currentUser));
                     
-                    // Уведомление об изменении уровня
                     if (this.currentSection === 'get' || this.currentSection === 'home') {
                         window.showCustomAlert(t('vip_level_upgraded', null, { level: newVipLevel }));
                     }
@@ -1013,12 +1047,10 @@ class GLYApp {
     }
 
     startDepositCheck() {
-        // Check for new deposits every 30 seconds
         setInterval(async () => {
             await this.checkForNewDeposits();
         }, 30000);
         
-        // Initial check
         setTimeout(() => this.checkForNewDeposits(), 5000);
     }
 
@@ -1027,7 +1059,6 @@ class GLYApp {
         if (!user) return;
         
         try {
-            // Check for pending deposits in deposit_transactions table
             const { data: pendingDeposits, error } = await this.supabase
                 .from('deposit_transactions')
                 .select('*')
@@ -1038,7 +1069,6 @@ class GLYApp {
             
             if (pendingDeposits && pendingDeposits.length > 0) {
                 for (const deposit of pendingDeposits) {
-                    // Process the deposit
                     await this.processAutoDeposit(deposit);
                 }
             }
@@ -1052,7 +1082,6 @@ class GLYApp {
         if (!user) return;
         
         try {
-            // Update user balance
             const newBalance = user.balance + deposit.amount;
             
             const { error: updateError } = await this.supabase
@@ -1065,7 +1094,6 @@ class GLYApp {
                 
             if (updateError) throw updateError;
             
-            // Update deposit status to processed
             const { error: depositError } = await this.supabase
                 .from('deposit_transactions')
                 .update({ status: 'processed' })
@@ -1073,7 +1101,6 @@ class GLYApp {
                 
             if (depositError) throw depositError;
             
-            // Create transaction record
             await this.supabase
                 .from('transactions')
                 .insert([{
@@ -1087,15 +1114,12 @@ class GLYApp {
             
             console.log(`Auto deposit processed: ${deposit.amount} USDT for user ${deposit.user_id}`);
             
-            // Update current user if it's the logged in user
             if (this.currentUser && this.currentUser.id === deposit.user_id) {
                 this.currentUser.balance = newBalance;
                 localStorage.setItem('gly_user', JSON.stringify(this.currentUser));
                 
-                // Обновляем VIP уровень после депозита
                 await this.updateVipLevel();
                 
-                // Show notification
                 if (this.currentSection === 'deposit') {
                     window.showCustomAlert(t('new_deposit_received', null, { amount: deposit.amount.toFixed(2) }));
                 }

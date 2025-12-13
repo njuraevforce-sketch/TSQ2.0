@@ -1,15 +1,15 @@
-const CACHE_NAME = 'gly-platform-v15.2';
+const CACHE_NAME = 'gly-platform-v17.0';
 const urlsToCache = [
     '/',
     '/index.html',
-    '/css/style.css?v=15.2',
-    '/js/app.js?v=15.2',
-    '/js/home.js?v=15.2',
-    '/js/mine.js?v=15.2',
-    '/js/assets.js?v=15.2',
-    '/js/team.js?v=15.2',
-    '/js/deposit.js?v=15.2',
-    '/js/withdraw.js?v=15.2',
+    '/css/style.css?v=17.0',
+    '/js/app.js?v=17.0',
+    '/js/home.js?v=17.0',
+    '/js/mine.js?v=17.0',
+    '/js/assets.js?v=17.0',
+    '/js/team.js?v=17.0',
+    '/js/deposit.js?v=17.0',
+    '/js/withdraw.js?v=17.0',
     '/manifest.json',
     '/assets/logo.png',
     '/assets/favicon.ico',
@@ -86,11 +86,11 @@ self.addEventListener('activate', event => {
         .then(() => {
             // Очищаем старый localStorage
             try {
-                const oldVersions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '6.5', '7.0', '10.0', '11.0', '12.0', '13.0', '15.0', '15.1'];
+                const oldVersions = ['1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '6.5', '7.0', '10.0', '11.0', '12.0', '13.0', '14.0', '15.0', '16.0'];
                 oldVersions.forEach(version => {
                     localStorage.removeItem(`app_version_${version}`);
                 });
-                localStorage.setItem('app_version', '15.2');
+                localStorage.setItem('app_version', '17.0');
                 console.log('LocalStorage cleaned and updated to new version');
             } catch (error) {
                 console.log('Error cleaning localStorage:', error);
@@ -111,68 +111,43 @@ self.addEventListener('fetch', event => {
         return;
     }
     
-    // Skip all API requests - ВСЕ API запросы пропускаем без кэширования
-    if (url.hostname.includes('api.') || 
-        url.hostname.includes('binance.com') ||
-        url.hostname.includes('coingecko.com') ||
-        url.hostname.includes('supabase.co') ||
+    // Skip API requests
+    if (url.hostname.includes('supabase.co') ||
         url.hostname.includes('trongrid.io') ||
-        url.hostname.includes('api.binance.com') ||
-        url.hostname.includes('api.coingecko.com')) {
-        // Просто возвращаем fetch без обработки через кэш
-        return;
-    }
-    
-    // Only cache same-origin requests
-    if (url.origin !== self.location.origin) {
-        return;
+        url.hostname.includes('api.')) {
+        return fetch(event.request);
     }
     
     event.respondWith(
         caches.match(event.request)
             .then(cachedResponse => {
-                // Return cached response if found
                 if (cachedResponse) {
                     return cachedResponse;
                 }
                 
-                // Otherwise fetch from network
-                return fetch(event.request.clone())
+                return fetch(event.request)
                     .then(response => {
-                        // Check if we received a valid response
                         if (!response || response.status !== 200 || response.type !== 'basic') {
                             return response;
                         }
                         
-                        // Clone the response
                         const responseToCache = response.clone();
                         
-                        // Cache the new response
                         caches.open(CACHE_NAME)
                             .then(cache => {
                                 cache.put(event.request, responseToCache);
                             })
-                            .catch(err => {
-                                console.warn('Cache put error:', err);
-                            });
+                            .catch(err => console.warn('Cache put error:', err));
                         
                         return response;
                     })
-                    .catch(error => {
-                        console.log('Fetch failed; returning offline page instead.', error);
-                        
-                        // If this is a navigation request, return the offline page
+                    .catch(() => {
                         if (event.request.mode === 'navigate') {
                             return caches.match('/index.html');
                         }
-                        
-                        // Return offline message for other requests
                         return new Response('Offline', {
                             status: 503,
-                            statusText: 'Service Unavailable',
-                            headers: new Headers({
-                                'Content-Type': 'text/plain'
-                            })
+                            headers: { 'Content-Type': 'text/plain' }
                         });
                     });
             })
@@ -185,26 +160,6 @@ self.addEventListener('message', event => {
         console.log('Received SKIP_WAITING message');
         self.skipWaiting();
     }
-    
-    // Force reload message
-    if (event.data && event.data.type === 'FORCE_RELOAD') {
-        console.log('Received FORCE_RELOAD message');
-        self.skipWaiting().then(() => {
-            self.clients.matchAll().then(clients => {
-                clients.forEach(client => {
-                    client.postMessage({
-                        type: 'FORCE_RELOAD',
-                        version: event.data.version || '15.2'
-                    });
-                });
-            });
-        });
-    }
-});
-
-// Handle controller change
-self.addEventListener('controllerchange', () => {
-    console.log('Controller changed');
 });
 
 // Notifications

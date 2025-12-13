@@ -75,18 +75,31 @@ export function init() {
     const hash = window.location.hash;
     let refCode = '';
     
-    if (hash.includes('?ref=')) {
+    // NEW FORMAT: #/?i=CODE
+    if (hash.includes('?i=')) {
+        refCode = hash.split('?i=')[1];
+        if (refCode) {
+            // Clean the ref code from any other parameters
+            refCode = refCode.split('&')[0];
+            document.getElementById('invite-code').value = refCode.toUpperCase();
+            // Clear the hash after extracting ref (keeping only #register)
+            window.location.hash = 'register';
+        }
+    }
+    
+    // OLD FORMAT for backward compatibility: #register?ref=CODE
+    else if (hash.includes('?ref=')) {
         refCode = hash.split('?ref=')[1];
         if (refCode) {
             // Clean the ref code from any other parameters
             refCode = refCode.split('&')[0];
             document.getElementById('invite-code').value = refCode.toUpperCase();
-            // Clear the hash after extracting ref
+            // Clear the hash after extracting ref (keeping only #register)
             window.location.hash = 'register';
         }
     }
     
-    // Also check session storage for pending invite code
+    // Also check session storage for pending invite code (set by app.js)
     const pendingRefCode = sessionStorage.getItem('pending_invite_code');
     if (pendingRefCode && !refCode) {
         document.getElementById('invite-code').value = pendingRefCode.toUpperCase();

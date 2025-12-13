@@ -401,17 +401,39 @@ class GLYApp {
             return await this.updateVipLevel();
         };
         
-        // Администраторские функции
+        // Администраторские функции - ИСПРАВЛЕННЫЙ КОД (без рекурсии)
         window.checkAdminSession = () => {
-            // Функция реализована в backend.js
-            return window.checkAdminSession ? window.checkAdminSession() : null;
+            // Проверяем существование функции из backend.js
+            const realCheckAdminSession = window._realCheckAdminSession;
+            if (realCheckAdminSession && typeof realCheckAdminSession === 'function') {
+                return realCheckAdminSession();
+            }
+            // Проверяем localStorage напрямую как запасной вариант
+            try {
+                const adminSession = localStorage.getItem('gly_admin_session');
+                if (adminSession) {
+                    const session = JSON.parse(adminSession);
+                    const sessionAge = Date.now() - session.timestamp;
+                    if (sessionAge < 12 * 60 * 60 * 1000) {
+                        return session.user;
+                    }
+                }
+                return null;
+            } catch (error) {
+                return null;
+            }
         };
         
         window.adminLogout = () => {
-            // Функция реализована в backend.js
-            if (window.adminLogout) {
-                window.adminLogout();
+            // Вызываем реальную функцию из backend.js если существует
+            const realAdminLogout = window._realAdminLogout;
+            if (realAdminLogout && typeof realAdminLogout === 'function') {
+                realAdminLogout();
+                return;
             }
+            // Запасной вариант
+            localStorage.removeItem('gly_admin_session');
+            window.showSection('backend');
         };
     }
 

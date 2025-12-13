@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" href="assets/logo.png">
     
     <!-- Cache busting version for CSS -->
-    <link rel="stylesheet" href="css/style.css?v=18.0">
+    <link rel="stylesheet" href="css/style.css?v=18.0"> <!-- ОБНОВЛЕНО до 14.0 -->
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -28,35 +28,26 @@
     <!-- QRCode Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     
-    <!-- Chart.js for statistics -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
     <style>
-        /* ЭКСТРЕННЫЕ ФИКСЫ ДЛЯ СКРОЛЛА v18.0 */
+        /* ЭКСТРЕННЫЕ ФИКСЫ ДЛЯ СКРОЛЛА */
         html, body {
             overflow-x: hidden !important;
             overflow-y: auto !important;
             width: 100%;
             height: 100%;
-            position: fixed; /* Фикс для iOS */
+            position: relative;
             -webkit-overflow-scrolling: touch !important;
-            overscroll-behavior: none;
         }
         
         body {
             touch-action: pan-y;
+            overscroll-behavior: none;
             -webkit-user-select: none;
             user-select: none;
-            position: relative;
-            height: 100%;
-            overflow: hidden;
         }
         
         .uni-tabbar { 
             display: none; 
-            position: fixed;
-            bottom: 0;
-            z-index: 1000;
         }
         
         /* Disable text selection */
@@ -316,15 +307,6 @@
         /* Fix for Safari 100vh */
         .page {
             min-height: -webkit-fill-available;
-            height: 100%;
-            overflow-y: auto !important;
-            -webkit-overflow-scrolling: touch !important;
-        }
-        
-        .conWrap {
-            height: 100%;
-            overflow-y: auto !important;
-            -webkit-overflow-scrolling: touch !important;
         }
         
         /* QR Code canvas optimization */
@@ -378,105 +360,12 @@
         body.rtl .calendar-nav {
             flex-direction: row-reverse;
         }
-        
-        /* Language button in top corner */
-        .language-btn-top {
-            position: fixed;
-            top: 10px;
-            right: 55px;
-            z-index: 1001;
-            width: 30px;
-            height: 30px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            color: #36454f;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            border: 1px solid #36454f;
-        }
-        
-        /* Новые стили для админской системы */
-        .admin-logout-btn {
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        
-        .admin-logout-btn:hover {
-            background: #ff5252;
-            transform: translateY(-2px);
-        }
-        
-        /* Фиксы для iOS скролла */
-        @supports (-webkit-touch-callout: none) {
-            body {
-                position: fixed;
-                width: 100%;
-                height: 100%;
-                overflow: hidden;
-            }
-            
-            .page {
-                height: 100vh;
-                overflow-y: scroll !important;
-                -webkit-overflow-scrolling: touch !important;
-                overscroll-behavior: contain;
-            }
-            
-            .conWrap {
-                height: auto;
-                min-height: 100%;
-            }
-        }
-        
-        /* Гарантия скролла для всех платформ */
-        .scroll-container {
-            overflow-y: auto !important;
-            -webkit-overflow-scrolling: touch !important;
-            scroll-behavior: smooth;
-        }
-        
-        /* Улучшенный скроллбар */
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #36454f;
-            border-radius: 5px;
-        }
-        
-        /* Экстренный фикс для фонов */
-        body {
-            background-attachment: fixed !important;
-            background-size: cover !important;
-        }
     </style>
 </head>
 <body>
     <!-- Install Button -->
     <div class="install-btn" id="install-btn">
         <i class="fas fa-download"></i>
-    </div>
-    
-    <!-- Language Button (Top Right) -->
-    <div class="language-btn-top" id="language-btn-top" onclick="showLanguageModal()">
-        <i class="fas fa-globe"></i>
     </div>
     
     <!-- Custom Loading Overlay -->
@@ -508,9 +397,9 @@
     <div class="page">
         <div class="topNull"></div>
         
-        <div class="conWrap scroll-container">
+        <div class="conWrap">
             <!-- Containers for dynamically loaded content -->
-            <!-- ВАЖНО: все секции изначально скрыты, app.js сам установит активную -->
+            <!-- ВАЖНО: login оставляем как активный по умолчанию, app.js сам переключит при необходимости -->
             <div id="login" class="section"></div>
             <div id="register" class="section"></div>
             <div id="home" class="section"></div>
@@ -523,8 +412,8 @@
             <div id="rules" class="section"></div>
             <div id="withdraw" class="section"></div>
             <div id="deposit" class="section"></div>
+             <div id="backend" class="section"></div>
             <div id="admin" class="section"></div>
-            <div id="backend" class="section"></div> <!-- НОВАЯ СЕКЦИЯ ДЛЯ АДМИН ВХОДА -->
         </div>
     </div>
 
@@ -533,120 +422,101 @@
         <div class="uni-tabbar__bd">
             <div class="uni-tabbar__item" data-section="home">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/home.png?v=18.0" alt="Home" data-translate-alt="home">
+                    <img src="assets/home.png?v=14.0" alt="Home" data-translate-alt="home">
                 </div>
                 <div class="uni-tabbar__label" data-translate="home">Home</div>
             </div>
             <div class="uni-tabbar__item" data-section="get">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/get.png?v=18.0" alt="Get" data-translate-alt="get">
+                    <img src="assets/get.png?v=14.0" alt="Get" data-translate-alt="get">
                 </div>
                 <div class="uni-tabbar__label" data-translate="get">Get</div>
             </div>
             <div class="uni-tabbar__item" data-section="assets">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/assets.png?v=18.0" alt="Assets" data-translate-alt="assets">
+                    <img src="assets/assets.png?v=14.0" alt="Assets" data-translate-alt="assets">
                 </div>
                 <div class="uni-tabbar__label" data-translate="assets">Assets</div>
             </div>
             <div class="uni-tabbar__item" data-section="mine">
                 <div class="uni-tabbar__icon">
-                    <img src="assets/mine.png?v=18.0" alt="Mine" data-translate-alt="mine">
+                    <img src="assets/mine.png?v=14.0" alt="Mine" data-translate-alt="mine">
                 </div>
                 <div class="uni-tabbar__label" data-translate="mine">Mine</div>
             </div>
         </div>
     </div>
 
-    <!-- Load Main Application Script -->
-    <script src="js/app.js?v=18.0" type="module"></script>
+    <!-- Load Scripts with cache busting -->
+    <script src="js/app.js?v=18.0" type="module"></script> <!-- ОБНОВЛЕНО до 14.0 -->
     
     <script>
-        // Service Worker for PWA functionality
+        // Service Worker for better caching control
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
-                    console.log('ServiceWorker v18.0 registration successful with scope: ', registration.scope);
-                    
-                    // Проверяем обновления периодически
-                    setInterval(() => {
-                        registration.update();
-                    }, 60 * 60 * 1000); // Каждый час
-                    
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
                 }, function(err) {
                     console.log('ServiceWorker registration failed: ', err);
                 });
             });
         }
         
-        // Version management for v18.0
-        const currentVersion = '18.0';
+        // Clear cache on new version - ОБНОВЛЕНО до 14.0
+        const currentVersion = '18.0'; // ИЗМЕНЕНО с 13.0 на 14.0
         const lastVersion = localStorage.getItem('app_version');
         
         if (lastVersion !== currentVersion) {
             console.log('New version detected:', currentVersion, 'previous:', lastVersion);
             
-            // Сохраняем критически важные данные
-            const criticalData = {
-                user: localStorage.getItem('gly_user'),
-                adminSession: localStorage.getItem('gly_admin_session'),
-                language: localStorage.getItem('gly_language'),
-                settings: localStorage.getItem('gly_settings')
-            };
+            // Сохраняем данные пользователя и языка
+            const userData = localStorage.getItem('gly_user');
+            const language = localStorage.getItem('gly_language');
             
-            // Clear all caches for clean update
+            // Clear all caches
             if ('caches' in window) {
                 caches.keys().then(function(names) {
-                    console.log('Clearing old caches for v18.0 update:', names);
+                    console.log('Clearing caches:', names);
                     for (let name of names) {
                         caches.delete(name);
                     }
                 });
             }
             
-            // Clear localStorage except critical data
+            // Clear localStorage except user data
             localStorage.clear();
-            
-            // Restore critical data
-            if (criticalData.user) {
-                localStorage.setItem('gly_user', criticalData.user);
+            if (userData) {
+                localStorage.setItem('gly_user', userData);
+                console.log('User data preserved');
             }
-            if (criticalData.adminSession) {
-                localStorage.setItem('gly_admin_session', criticalData.adminSession);
-            }
-            if (criticalData.language) {
-                localStorage.setItem('gly_language', criticalData.language);
-            }
-            if (criticalData.settings) {
-                localStorage.setItem('gly_settings', criticalData.settings);
+            if (language) {
+                localStorage.setItem('gly_language', language);
+                console.log('Language preference preserved');
             }
             
             localStorage.setItem('app_version', currentVersion);
-            console.log('Updated app version to v18.0 with preserved critical data');
+            console.log('Updated app version to:', currentVersion);
             
-            // Force reload for clean update
+            // Force reload after 1 second to allow logs to appear
             setTimeout(function() {
-                console.log('Forcing reload for v18.0 update...');
-                window.location.reload(true);
-            }, 1500);
-        } else {
-            console.log('Running latest version v18.0');
+                window.location.reload();
+            }, 1000);
         }
         
-        // БЛОКИРОВКА НЕЖЕЛАТЕЛЬНЫХ ДЕЙСТВИЙ
+        // БЛОКИРОВКА МАСШТАБИРОВАНИЯ И КОНТЕКСТНОГО МЕНЮ
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             return false;
         });
         
         // Запрет зума (pinch zoom)
-        let lastTouchEnd = 0;
         document.addEventListener('touchstart', function(event) {
             if (event.touches.length > 1) {
                 event.preventDefault();
             }
         }, { passive: false });
         
+        let lastTouchEnd = 0;
         document.addEventListener('touchend', function(event) {
             const now = (new Date()).getTime();
             if (now - lastTouchEnd <= 300) {
@@ -655,50 +525,35 @@
             lastTouchEnd = now;
         }, false);
         
-        // ГАРАНТИЯ ИДЕАЛЬНОГО СКРОЛЛА v18.0
+        // ГАРАНТИЯ ИДЕАЛЬНОГО СКРОЛЛА
         function enablePerfectScroll() {
-            // Основные настройки
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'auto';
             document.body.style.overflowX = 'hidden';
-            document.body.style.width = '100%';
-            document.body.style.height = '100%';
+            document.body.style.webkitOverflowScrolling = 'touch';
             
-            const page = document.querySelector('.page');
-            if (page) {
-                page.style.overflowY = 'auto';
-                page.style.webkitOverflowScrolling = 'touch';
-                page.style.height = '100%';
-            }
-            
-            const conWrap = document.querySelector('.conWrap');
-            if (conWrap) {
-                conWrap.style.overflowY = 'auto';
-                conWrap.style.webkitOverflowScrolling = 'touch';
-                conWrap.style.height = '100%';
-            }
-            
-            // Инициализация скролла
+            // Принудительно включаем скролл
             setTimeout(() => {
+                document.body.style.overflowY = 'auto !important';
+                
+                // Даем возможность проскроллить
                 window.scrollTo(0, 1);
                 setTimeout(() => window.scrollTo(0, 0), 10);
             }, 100);
         }
         
-        // Оптимизация скролла для iOS
+        // Запускаем после загрузки
+        window.addEventListener('load', enablePerfectScroll);
+        window.addEventListener('DOMContentLoaded', enablePerfectScroll);
+        
+        // Фикс для iOS
         if (/(iPad|iPhone|iPod)/g.test(navigator.userAgent)) {
-            document.body.style.position = 'fixed';
+            document.body.style.position = 'relative';
             document.body.style.width = '100%';
-            document.body.style.height = '100%';
-            document.body.style.overflow = 'hidden';
-            
-            document.addEventListener('touchmove', function(e) {
-                if (e.scale !== 1) {
-                    e.preventDefault();
-                }
-            }, { passive: false });
+            document.body.style.overflowY = 'scroll';
+            document.body.style.webkitOverflowScrolling = 'touch';
         }
         
-        // Оптимизация для Android
+        // Фикс для Android
         if (/Android/.test(navigator.userAgent)) {
             document.body.style.overflow = 'auto';
             document.body.style.overflowX = 'hidden';
@@ -713,37 +568,28 @@
         });
         
         // Detect if running as PWA
-        function detectPWA() {
-            if (window.matchMedia('(display-mode: standalone)').matches || 
-                window.navigator.standalone === true) {
-                document.body.classList.add('pwa-mode');
-                console.log('Running in PWA mode');
-            }
+        if (window.matchMedia('(display-mode: standalone)').matches || 
+            window.navigator.standalone === true) {
+            document.body.classList.add('pwa-mode');
         }
         
-        // Network status detection
+        // Add network status detection
         window.addEventListener('online', function() {
             console.log('App is online');
-            if (window.showCustomAlert) {
-                window.showCustomAlert('Connection restored');
-            }
         });
         
         window.addEventListener('offline', function() {
             console.log('App is offline');
-            if (window.showCustomAlert) {
-                window.showCustomAlert('You are offline. Some features may not work.');
-            }
         });
         
         // Prevent form submission on Enter in inputs
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && e.target.tagName === 'INPUT' && !e.target.type.includes('submit')) {
+            if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
                 e.preventDefault();
             }
         });
         
-        // RTL support detection
+        // Add RTL support detection
         function updateDirection() {
             const lang = localStorage.getItem('gly_language') || 'en';
             if (lang === 'ar') {
@@ -762,72 +608,24 @@
         window.addEventListener('languageChanged', updateDirection);
         
         // ФИНАЛЬНАЯ ГАРАНТИЯ СКРОЛЛА
-        window.addEventListener('load', function() {
-            // Задержка для полной загрузки
-            setTimeout(enablePerfectScroll, 500);
-            detectPWA();
-        });
+        setTimeout(enablePerfectScroll, 500);
         
-        window.addEventListener('DOMContentLoaded', function() {
-            enablePerfectScroll();
+        // Добавляем обработку hash при загрузке страницы
+        window.addEventListener('load', function() {
+            // Если есть hash в URL, не делаем ничего - app.js обработает
+            // Если нет hash, app.js покажет логин или home в зависимости от аутентификации
+            console.log('Page loaded, hash:', window.location.hash);
             
-            // Обработка hash при загрузке
-            console.log('Page loaded v18.0, hash:', window.location.hash);
-            
-            // Убираем active class со всех секций - app.js сам установит нужный
+            // ВАЖНО: Убираем active class со всех секций, app.js сам установит нужный
             document.querySelectorAll('.section').forEach(function(section) {
                 section.classList.remove('active');
             });
         });
         
-        // Hash change tracking for debugging
+        // Добавляем логирование для отладки реферальных ссылок
         window.addEventListener('hashchange', function() {
             console.log('Hash changed to:', window.location.hash);
         });
-        
-        // Global function to show language modal
-        window.showLanguageModal = function() {
-            if (typeof window.setLanguage === 'function') {
-                // Импортируем модуль перевода если нужно
-                import('./js/translate.js').then(module => {
-                    if (module.showLanguageModal) {
-                        module.showLanguageModal();
-                    }
-                });
-            }
-        };
-        
-        // Performance optimization
-        window.addEventListener('beforeunload', function() {
-            // Сохраняем состояние скролла
-            const scrollPos = window.scrollY || document.documentElement.scrollTop;
-            sessionStorage.setItem('scroll_position', scrollPos);
-        });
-        
-        // Восстановление позиции скролла
-        window.addEventListener('load', function() {
-            const savedScrollPos = sessionStorage.getItem('scroll_position');
-            if (savedScrollPos) {
-                setTimeout(() => {
-                    window.scrollTo(0, parseInt(savedScrollPos));
-                    sessionStorage.removeItem('scroll_position');
-                }, 100);
-            }
-        });
-        
-        // Debug info
-        console.log('GLY Platform v18.0 initialized');
-        console.log('User Agent:', navigator.userAgent);
-        console.log('Screen:', screen.width + 'x' + screen.height);
-        console.log('Viewport:', window.innerWidth + 'x' + window.innerHeight);
-        
-        // Send app version to analytics if needed
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'app_version', {
-                'app_version': '18.0',
-                'user_id': localStorage.getItem('gly_user_id')
-            });
-        }
     </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"372e2855022844e48873bd7a26355bf2","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>

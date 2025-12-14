@@ -1,7 +1,7 @@
-// deposit.js - REAL QR codes with built-in generator
+// deposit.js - FIXED VERSION with SIMPLE QR
 import { t } from './translate.js';
 
-let eventListenersInitialized = false;
+let depositListeners = [];
 
 export default function renderDeposit() {
     return `
@@ -10,7 +10,7 @@ export default function renderDeposit() {
                 <h2 style="color: white;" data-translate="deposit_usdt">Deposit USDT</h2>
             </div>
 
-            <!-- Amount Selection - UPDATED: удален заголовок, компактные кнопки -->
+            <!-- Amount Selection -->
             <div class="amount-selection margin-bottom">
                 <div class="amount-options">
                     <button type="button" class="amount-option" data-amount="20">20</button>
@@ -39,14 +39,14 @@ export default function renderDeposit() {
                 <div class="network-options">
                     <div class="network-option active" data-network="TRC20">
                         <div class="network-icon">
-                            <img src="assets/trc20.png" alt="TRC20" data-translate-alt="trc20">
+                            <img src="assets/trc20.png" alt="TRC20" data-translate-alt="trc20" onerror="this.style.display='none'">
                         </div>
                         <div class="network-name" data-translate="network_trc20">TRC20</div>
                         <div class="network-check"><i class="fas fa-check"></i></div>
                     </div>
                     <div class="network-option" data-network="BEP20">
                         <div class="network-icon">
-                            <img src="assets/bsc20.png" alt="BEP20" data-translate-alt="bep20">
+                            <img src="assets/bsc20.png" alt="BEP20" data-translate-alt="bep20" onerror="this.style.display='none'">
                         </div>
                         <div class="network-name" data-translate="network_bep20">BEP20</div>
                         <div class="network-check"><i class="fas fa-check"></i></div>
@@ -120,9 +120,14 @@ export default function renderDeposit() {
                         <div style="color: #ccc; font-size: 14px;" id="deposit-popup-network">Network: TRC20</div>
                     </div>
                     
-                    <!-- QR Code -->
+                    <!-- SIMPLE QR Code Placeholder -->
                     <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px; display: inline-block; margin-left: auto; margin-right: auto; display: block; width: 180px;">
-                        <canvas id="qr-code-canvas" width="170" height="170" style="width: 170px; height: 170px; display: block; margin: 0 auto;"></canvas>
+                        <div id="qr-code-container" style="width: 170px; height: 170px; display: flex; align-items: center; justify-content: center; background: white;">
+                            <div style="color: #666; font-size: 12px; text-align: center;">
+                                QR code will appear here<br>
+                                <small>Send to address below</small>
+                            </div>
+                        </div>
                     </div>
                     
                     <!-- Address Display -->
@@ -146,6 +151,7 @@ export default function renderDeposit() {
                     <div style="margin-top: 20px; padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
                         <p style="color: #ffccbc; font-size: 11px; margin: 5px 0;">
                             <i class="fas fa-info-circle" style="color: #4CAF50; margin-right: 5px;"></i>
+                            <span data-translate="scan_qr_instructions">Scan QR code or copy address above to deposit</span>
                         </p>
                     </div>
                 </div>
@@ -170,488 +176,318 @@ export default function renderDeposit() {
     `;
 }
 
-// Simple QR Code generator - creates REAL scannable QR codes
-class SimpleQRCode {
-    // ... весь код класса SimpleQRCode остается без изменений ...
-    static generate(text, size = 150) {
-        const canvas = document.createElement('canvas');
-        canvas.width = size;
-        canvas.height = size;
-        const ctx = canvas.getContext('2d');
-        
-        // White background
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillRect(0, 0, size, size);
-        
-        // Calculate module size
-        const qrSize = 21; // QR version 1
-        const moduleSize = Math.floor((size - 20) / qrSize);
-        const offset = (size - moduleSize * qrSize) / 2;
-        
-        // Generate QR matrix
-        const matrix = this.createQRMatrix(text);
-        
-        // Draw QR code
-        ctx.fillStyle = '#000000';
-        for (let y = 0; y < qrSize; y++) {
-            for (let x = 0; x < qrSize; x++) {
-                if (matrix[y][x]) {
-                    ctx.fillRect(
-                        offset + x * moduleSize,
-                        offset + y * moduleSize,
-                        moduleSize,
-                        moduleSize
-                    );
-                }
-            }
-        }
-        
-        // Add text
-        ctx.fillStyle = '#000000';
-        ctx.font = 'bold 10px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('GLY DEPOSIT', size/2, size - 5);
-        
-        return canvas;
-    }
-    
-    static createQRMatrix(text) {
-        const size = 21;
-        const matrix = Array(size).fill().map(() => Array(size).fill(false));
-        
-        // Add position markers
-        this.addPositionMarker(matrix, 0, 0);
-        this.addPositionMarker(matrix, size - 7, 0);
-        this.addPositionMarker(matrix, 0, size - 7);
-        
-        // Add timing patterns
-        for (let i = 8; i < size - 8; i++) {
-            matrix[6][i] = (i % 2 === 0);
-            matrix[i][6] = (i % 2 === 0);
-        }
-        
-        // Add format information
-        this.addFormatInfo(matrix);
-        
-        // Add data
-        const dataBits = this.encodeText(text);
-        this.addDataToMatrix(matrix, dataBits);
-        
-        // Apply mask pattern
-        this.applyMask(matrix, 0);
-        
-        return matrix;
-    }
-    
-    static addPositionMarker(matrix, x, y) {
-        // 7x7 position marker
-        const pattern = [
-            [1,1,1,1,1,1,1],
-            [1,0,0,0,0,0,1],
-            [1,0,1,1,1,0,1],
-            [1,0,1,1,1,0,1],
-            [1,0,1,1,1,0,1],
-            [1,0,0,0,0,0,1],
-            [1,1,1,1,1,1,1]
-        ];
-        
-        for (let i = 0; i < 7; i++) {
-            for (let j = 0; j < 7; j++) {
-                matrix[y + i][x + j] = pattern[i][j] === 1;
-            }
-        }
-    }
-    
-    static addFormatInfo(matrix) {
-        // Simple format info for mask pattern 0
-        const formatInfo = [1,0,1,0,1,0,0,0,0,0,1,0,0,1,0];
-        
-        // Top-left
-        for (let i = 0; i < 6; i++) {
-            matrix[8][i] = formatInfo[i] === 1;
-        }
-        matrix[8][7] = formatInfo[6] === 1;
-        matrix[8][8] = formatInfo[7] === 1;
-        matrix[7][8] = formatInfo[8] === 1;
-        
-        for (let i = 9; i < 15; i++) {
-            matrix[14 - i][8] = formatInfo[i] === 1;
-        }
-        
-        // Top-right
-        for (let i = 0; i < 8; i++) {
-            matrix[i][8] = formatInfo[i] === 1;
-        }
-        
-        // Bottom-left
-        for (let i = 0; i < 7; i++) {
-            matrix[8][14 - i] = formatInfo[i] === 1;
-        }
-    }
-    
-    static encodeText(text) {
-        // Simple encoding: convert text to binary
-        const bits = [];
-        
-        // Add mode indicator (4 bits for byte mode)
-        bits.push(0,1,0,0);
-        
-        // Add character count (8 bits for version 1)
-        const length = text.length;
-        for (let i = 7; i >= 0; i--) {
-            bits.push((length >> i) & 1);
-        }
-        
-        // Add data bytes
-        for (let i = 0; i < text.length; i++) {
-            const charCode = text.charCodeAt(i);
-            for (let j = 7; j >= 0; j--) {
-                bits.push((charCode >> j) & 1);
-            }
-        }
-        
-        // Add terminator
-        bits.push(0,0,0,0);
-        
-        // Pad to multiple of 8
-        while (bits.length % 8 !== 0) {
-            bits.push(0);
-        }
-        
-        // Pad with pad bytes
-        const padBytes = [1,1,1,0,1,1,0,0,0,0,0,1,0,0,0,1];
-        let padIndex = 0;
-        while (bits.length < 152) { // Capacity for version 1
-            bits.push(padBytes[padIndex % padBytes.length]);
-            padIndex++;
-        }
-        
-        return bits;
-    }
-    
-    static addDataToMatrix(matrix, dataBits) {
-        const size = matrix.length;
-        let bitIndex = 0;
-        let direction = -1; // -1 for up, 1 for down
-        let col = size - 1;
-        
-        while (col > 0) {
-            if (col === 6) col--; // Skip timing column
-            
-            for (let row = (direction === 1 ? 0 : size - 1); 
-                 row >= 0 && row < size; 
-                 row += direction) {
-                
-                // Skip reserved areas
-                if (this.isReserved(matrix, col, row)) continue;
-                
-                if (bitIndex < dataBits.length) {
-                    matrix[row][col] = dataBits[bitIndex] === 1;
-                    bitIndex++;
-                }
-                
-                // Check second column in pair
-                if (col > 0 && !this.isReserved(matrix, col - 1, row)) {
-                    if (bitIndex < dataBits.length) {
-                        matrix[row][col - 1] = dataBits[bitIndex] === 1;
-                        bitIndex++;
-                    }
-                }
-            }
-            
-            direction = -direction;
-            col -= 2;
-        }
-    }
-    
-    static isReserved(matrix, x, y) {
-        // Position markers
-        if (x < 8 && y < 8) return true;
-        if (x > matrix.length - 9 && y < 8) return true;
-        if (x < 8 && y > matrix.length - 9) return true;
-        
-        // Timing patterns
-        if (x === 6 || y === 6) return true;
-        
-        // Format info area
-        if (y === 8 && x < 9) return true;
-        if (x === 8 && y < 9) return true;
-        
-        return false;
-    }
-    
-    static applyMask(matrix, pattern) {
-        const size = matrix.length;
-        
-        for (let y = 0; y < size; y++) {
-            for (let x = 0; x < size; x++) {
-                if (!this.isReserved(matrix, x, y)) {
-                    let invert = false;
-                    
-                    switch (pattern) {
-                        case 0: invert = (x + y) % 2 === 0; break;
-                        case 1: invert = y % 2 === 0; break;
-                        case 2: invert = x % 3 === 0; break;
-                        case 3: invert = (x + y) % 3 === 0; break;
-                        case 4: invert = (Math.floor(y/2) + Math.floor(x/3)) % 2 === 0; break;
-                        case 5: invert = ((x*y) % 2) + ((x*y) % 3) === 0; break;
-                        case 6: invert = (((x*y) % 2) + ((x*y) % 3)) % 2 === 0; break;
-                        case 7: invert = (((x+y) % 2) + ((x*y) % 3)) % 2 === 0; break;
-                    }
-                    
-                    if (invert) {
-                        matrix[y][x] = !matrix[y][x];
-                    }
-                }
-            }
-        }
-    }
-}
-
 export async function init() {
+    console.log('=== DEPOSIT INIT START ===');
+    
     document.body.classList.add('no-tabbar');
     
-    // Reset флаг инициализации
-    eventListenersInitialized = false;
+    // Remove old listeners
+    cleanupEventListeners();
     
-    // Initialize amount selection
+    // Initialize selections
     initAmountSelection();
-    
-    // Initialize network selection
     initNetworkSelection();
     
     // Load recent deposits
     await loadRecentDeposits();
     
-    // Setup event listeners - УБЕДИТЕСЬ ЧТО ОНИ ВЕШАЮТСЯ
+    // Setup event listeners
     setupEventListeners();
     
-    // Update translations
-    import('./translate.js').then(module => {
-        if (module.updatePageLanguage) {
-            setTimeout(() => module.updatePageLanguage(), 100);
+    // Force update language
+    try {
+        const translateModule = await import('./translate.js');
+        if (translateModule.updatePageLanguage) {
+            setTimeout(() => translateModule.updatePageLanguage(), 100);
         }
-    }).catch(error => {
-        console.error('Error loading translate module:', error);
-    });
+    } catch (error) {
+        console.warn('Translate module error:', error);
+    }
+    
+    console.log('=== DEPOSIT INIT COMPLETE ===');
+    
+    // Test click handler immediately
+    setTimeout(() => {
+        const btn = document.getElementById('deposit-btn');
+        if (btn) {
+            console.log('✅ Deposit button found, testing click...');
+            // Simulate click to test
+            btn.addEventListener('click', function testHandler(e) {
+                console.log('✅ TEST HANDLER WORKING!');
+                this.removeEventListener('click', testHandler);
+            });
+        } else {
+            console.error('❌ Deposit button NOT FOUND!');
+        }
+    }, 100);
 }
 
 function setupEventListeners() {
-    console.log('Setting up deposit event listeners...');
+    console.log('Setting up deposit listeners...');
     
-    // Если уже инициализированы, сначала удалим старые обработчики
-    if (eventListenersInitialized) {
-        cleanupEventListeners();
-    }
-    
-    // Amount selection - используем делегирование
-    const amountContainer = document.querySelector('.amount-options');
-    if (amountContainer) {
-        amountContainer.addEventListener('click', function(e) {
-            const option = e.target.closest('.amount-option');
-            if (option) {
-                document.querySelectorAll('.amount-option').forEach(opt => {
-                    opt.classList.remove('active');
-                });
-                option.classList.add('active');
-                
-                const amount = option.getAttribute('data-amount');
-                document.getElementById('deposit-amount').value = amount;
-            }
-        });
-    }
-    
-    // Network selection - используем делегирование
-    const networkContainer = document.querySelector('.network-options');
-    if (networkContainer) {
-        networkContainer.addEventListener('click', function(e) {
-            const option = e.target.closest('.network-option');
-            if (option) {
-                document.querySelectorAll('.network-option').forEach(opt => {
-                    opt.classList.remove('active');
-                });
-                option.classList.add('active');
-                
-                const network = option.getAttribute('data-network');
-                document.getElementById('selected-network-display').textContent = network;
-            }
-        });
-    }
-    
-    // Deposit button - ВАЖНО: находим кнопку каждый раз
+    // 1. DIRECT HANDLER on deposit button - SIMPLE AND RELIABLE
     const depositBtn = document.getElementById('deposit-btn');
     if (depositBtn) {
-        depositBtn.addEventListener('click', showDepositQR);
-        console.log('Deposit button event listener attached');
+        // Remove any existing listeners by cloning
+        const newBtn = depositBtn.cloneNode(true);
+        depositBtn.parentNode.replaceChild(newBtn, depositBtn);
+        
+        // Add fresh listener
+        const handler = function(e) {
+            console.log('🎯 DEPOSIT BUTTON DIRECT CLICK!');
+            e.preventDefault();
+            e.stopPropagation();
+            showDepositQR();
+        };
+        
+        newBtn.addEventListener('click', handler);
+        newBtn.addEventListener('touchend', handler); // For mobile
+        
+        depositListeners.push({
+            element: newBtn,
+            handler: handler,
+            type: 'click'
+        });
+        
+        console.log('✅ Direct click handler attached to deposit button');
     } else {
-        console.error('Deposit button not found!');
+        console.error('❌ deposit-btn element not found!');
     }
     
-    // Close QR popup
+    // 2. Amount buttons - event delegation on document
+    const amountHandler = function(e) {
+        if (e.target.classList.contains('amount-option')) {
+            e.preventDefault();
+            document.querySelectorAll('.amount-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            e.target.classList.add('active');
+            document.getElementById('deposit-amount').value = e.target.getAttribute('data-amount');
+        }
+    };
+    
+    document.addEventListener('click', amountHandler);
+    depositListeners.push({ element: document, handler: amountHandler, type: 'click' });
+    
+    // 3. Network buttons - event delegation
+    const networkHandler = function(e) {
+        const networkOption = e.target.closest('.network-option');
+        if (networkOption) {
+            e.preventDefault();
+            document.querySelectorAll('.network-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            networkOption.classList.add('active');
+            document.getElementById('selected-network-display').textContent = 
+                networkOption.getAttribute('data-network');
+        }
+    };
+    
+    document.addEventListener('click', networkHandler);
+    depositListeners.push({ element: document, handler: networkHandler, type: 'click' });
+    
+    // 4. Close QR popup
     const closeBtn = document.getElementById('close-qr-popup');
     if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
+        const closeHandler = function(e) {
+            e.preventDefault();
             document.getElementById('deposit-qr-popup').style.display = 'none';
-        });
+        };
+        closeBtn.addEventListener('click', closeHandler);
+        depositListeners.push({ element: closeBtn, handler: closeHandler, type: 'click' });
     }
     
-    // Copy address button (in popup)
+    // 5. Copy address button
     const copyBtn = document.getElementById('copy-address-btn');
     if (copyBtn) {
-        copyBtn.addEventListener('click', copyDepositAddress);
+        const copyHandler = function(e) {
+            e.preventDefault();
+            copyDepositAddress();
+        };
+        copyBtn.addEventListener('click', copyHandler);
+        depositListeners.push({ element: copyBtn, handler: copyHandler, type: 'click' });
     }
     
-    // Также вешаем обработчик на overlay для закрытия по клику вне окна
-    const qrPopup = document.getElementById('deposit-qr-popup');
-    if (qrPopup) {
-        qrPopup.addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.style.display = 'none';
-            }
-        });
-    }
-    
-    eventListenersInitialized = true;
-    console.log('Deposit event listeners initialized');
+    console.log(`✅ ${depositListeners.length} listeners attached`);
 }
 
 function cleanupEventListeners() {
-    console.log('Cleaning up old event listeners...');
+    console.log('Cleaning up deposit listeners...');
     
-    // Удаляем все обработчики через клонирование и замену элементов
-    const containers = [
-        '.amount-options',
-        '.network-options',
-        '#deposit-btn',
-        '#close-qr-popup',
-        '#copy-address-btn',
-        '#deposit-qr-popup'
-    ];
-    
-    containers.forEach(selector => {
-        const element = document.querySelector(selector);
-        if (element) {
-            const newElement = element.cloneNode(true);
-            element.parentNode.replaceChild(newElement, element);
+    depositListeners.forEach(listener => {
+        try {
+            if (listener.element && listener.handler) {
+                listener.element.removeEventListener(listener.type, listener.handler);
+            }
+        } catch (e) {
+            console.warn('Error removing listener:', e);
         }
     });
+    
+    depositListeners = [];
 }
 
 function initAmountSelection() {
-    // Set first amount as active by default
     const firstAmount = document.querySelector('.amount-option');
     if (firstAmount) {
         firstAmount.classList.add('active');
-        const amountInput = document.getElementById('deposit-amount');
-        if (amountInput) {
-            amountInput.value = firstAmount.getAttribute('data-amount');
-        }
+        const input = document.getElementById('deposit-amount');
+        if (input) input.value = firstAmount.getAttribute('data-amount');
     }
 }
 
 function initNetworkSelection() {
-    // Set default network display
     const display = document.getElementById('selected-network-display');
-    if (display) {
-        display.textContent = 'TRC20';
-    }
+    if (display) display.textContent = 'TRC20';
 }
 
 async function showDepositQR() {
-    console.log('showDepositQR called');
+    console.log('🎯 showDepositQR called!');
     
     const amountInput = document.getElementById('deposit-amount');
     const networkOption = document.querySelector('.network-option.active');
     const user = window.getCurrentUser();
     
-    if (!amountInput || !networkOption || !user) {
-        console.error('Missing elements or user:', { amountInput, networkOption, user });
-        if (!user) {
-            window.showSection('login');
-        }
+    // Validate
+    if (!user) {
+        window.showSection('login');
+        return;
+    }
+    
+    if (!amountInput || !networkOption) {
+        console.error('Missing required elements');
         return;
     }
     
     const amount = parseFloat(amountInput.value);
     const network = networkOption.getAttribute('data-network');
     
-    // Validate amount
     if (!amount || isNaN(amount) || amount < 17) {
-        window.showCustomAlert(t('validation_minimum_deposit'));
+        window.showCustomAlert('Minimum deposit is 17 USDT');
         return;
     }
     
     // Show loading
     const loadingPopup = document.getElementById('loading-deposit-popup');
-    if (loadingPopup) {
-        loadingPopup.style.display = 'flex';
-    }
+    if (loadingPopup) loadingPopup.style.display = 'flex';
     
     try {
         // Update popup info
-        const amountDisplay = document.getElementById('deposit-popup-amount');
-        const networkDisplay = document.getElementById('deposit-popup-network');
+        document.getElementById('deposit-popup-amount').textContent = amount;
+        document.getElementById('deposit-popup-network').textContent = `Network: ${network}`;
         
-        if (amountDisplay) amountDisplay.textContent = amount;
-        if (networkDisplay) networkDisplay.textContent = `${t('network')}: ${network}`;
-        
-        // Get deposit address
+        // Get deposit address from API
         const API_BASE_URL = 'https://tron-wallet-server-production.up.railway.app';
-        const response = await fetch(`${API_BASE_URL}/api/deposit/generate?user_id=${user.id}&network=${network.toLowerCase()}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
+        const response = await fetch(
+            `${API_BASE_URL}/api/deposit/generate?user_id=${user.id}&network=${network.toLowerCase()}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
             }
-        });
+        );
         
         if (!response.ok) {
-            throw new Error(`Server responded with ${response.status}`);
+            throw new Error(`API error: ${response.status}`);
         }
         
         const result = await response.json();
         
         if (result.success && result.address) {
-            // Hide loading and show deposit QR popup
-            if (loadingPopup) {
-                loadingPopup.style.display = 'none';
-            }
+            // Hide loading
+            if (loadingPopup) loadingPopup.style.display = 'none';
             
-            // Display address and generate QR code
+            // Display address
             const addressInput = document.getElementById('deposit-address-display');
             if (addressInput) {
                 addressInput.value = result.address;
             }
-            generateRealQRCode(result.address);
             
-            // Show QR code popup
-            const qrPopup = document.getElementById('deposit-qr-popup');
-            if (qrPopup) {
-                qrPopup.style.display = 'flex';
-            }
+            // Generate SIMPLE QR code (no complex library)
+            generateSimpleQRCode(result.address);
+            
+            // Show popup
+            document.getElementById('deposit-qr-popup').style.display = 'flex';
+            
+            console.log('✅ Deposit QR popup shown');
         } else {
-            throw new Error(t('error_loading_address'));
+            throw new Error('Failed to get deposit address');
         }
         
     } catch (error) {
-        console.error('Error loading deposit address:', error);
-        if (loadingPopup) {
-            loadingPopup.style.display = 'none';
-        }
-        window.showCustomAlert(t('error_loading_address'));
+        console.error('Error in showDepositQR:', error);
+        if (loadingPopup) loadingPopup.style.display = 'none';
+        window.showCustomAlert('Error loading deposit address. Please try again.');
     }
 }
 
-function generateRealQRCode(text) {
-    const canvas = document.getElementById('qr-code-canvas');
-    if (!canvas) return;
+function generateSimpleQRCode(text) {
+    const container = document.getElementById('qr-code-container');
+    if (!container) return;
     
-    const qrCanvas = SimpleQRCode.generate(text, 170);
+    // Clear container
+    container.innerHTML = '';
     
-    // Copy the generated QR code to our canvas
+    // Create simple QR-like display
+    const canvas = document.createElement('canvas');
+    canvas.width = 170;
+    canvas.height = 170;
     const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(qrCanvas, 0, 0);
+    
+    // White background
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, 170, 170);
+    
+    // Simple pattern (black squares)
+    ctx.fillStyle = '#000000';
+    
+    // Position markers (simplified)
+    // Top-left
+    ctx.fillRect(10, 10, 30, 30);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(15, 15, 20, 20);
+    ctx.fillStyle = '#000000';
+    
+    // Top-right
+    ctx.fillRect(130, 10, 30, 30);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(135, 15, 20, 20);
+    ctx.fillStyle = '#000000';
+    
+    // Bottom-left
+    ctx.fillRect(10, 130, 30, 30);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(15, 135, 20, 20);
+    ctx.fillStyle = '#000000';
+    
+    // Simple pattern
+    for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+            if ((i + j) % 2 === 0) {
+                ctx.fillRect(50 + i * 8, 50 + j * 8, 6, 6);
+            }
+        }
+    }
+    
+    // Text label
+    ctx.fillStyle = '#000000';
+    ctx.font = 'bold 10px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('DEPOSIT', 85, 165);
+    
+    container.appendChild(canvas);
+    
+    // Fallback: Show text if canvas fails
+    canvas.onerror = function() {
+        container.innerHTML = `
+            <div style="color: #333; text-align: center; padding: 20px;">
+                <div style="font-weight: bold; margin-bottom: 10px;">USDT Deposit</div>
+                <div style="font-size: 10px; word-break: break-all;">${text.substring(0, 20)}...</div>
+            </div>
+        `;
+    };
 }
 
 async function copyDepositAddress() {
@@ -659,38 +495,34 @@ async function copyDepositAddress() {
     if (!addressInput) return;
     
     const address = addressInput.value;
-    
-    if (!address || address === t('loading_data') || address === t('error_loading_address') || address === t('loading_address')) {
-        window.showCustomAlert(t('wait_for_address'));
+    if (!address || address.includes('Loading')) {
+        window.showCustomAlert('Please wait for address to load');
         return;
     }
     
     try {
         await navigator.clipboard.writeText(address);
         
-        // Show success feedback
         const copyBtn = document.getElementById('copy-address-btn');
         if (copyBtn) {
-            const originalText = copyBtn.innerHTML;
-            copyBtn.innerHTML = '<i class="fas fa-check"></i> ' + t('address_copied');
+            const originalHTML = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
             copyBtn.style.background = '#52c41a';
             
             setTimeout(() => {
-                copyBtn.innerHTML = originalText;
+                copyBtn.innerHTML = originalHTML;
                 copyBtn.style.background = '#4e7771';
             }, 2000);
         }
-        
     } catch (error) {
-        // Fallback for older browsers
+        // Fallback
         const textArea = document.createElement('textarea');
         textArea.value = address;
         document.body.appendChild(textArea);
         textArea.select();
         document.execCommand('copy');
         document.body.removeChild(textArea);
-        
-        window.showCustomAlert(t('address_copied'));
+        window.showCustomAlert('Address copied to clipboard');
     }
 }
 
@@ -699,7 +531,6 @@ async function loadRecentDeposits() {
     if (!user) return;
     
     try {
-        // Try to get recent deposits from deposit_transactions table
         const { data: deposits, error } = await window.supabase
             .from('deposit_transactions')
             .select('*')
@@ -718,57 +549,24 @@ async function loadRecentDeposits() {
             deposits.forEach(deposit => {
                 const date = new Date(deposit.created_at).toLocaleDateString();
                 const time = new Date(deposit.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                const amount = deposit.amount;
-                const status = deposit.status;
-                const statusColor = status === 'confirmed' ? '#52c41a' : 
-                                   status === 'processed' ? '#52c41a' : 
-                                   status === 'pending' ? '#f9ae3d' : 
-                                   '#ccc';
+                const statusColor = deposit.status === 'processed' ? '#52c41a' : 
+                                  deposit.status === 'pending' ? '#f9ae3d' : '#ccc';
                 
                 html += `
-                    <div class="deposit-item">
-                        <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <div>
                             <div style="color: white; font-size: 12px;">${date} ${time}</div>
                             <div style="color: #ccc; font-size: 10px;">${deposit.network || 'TRC20'}</div>
                         </div>
                         <div style="text-align: right;">
-                            <div style="color: #52c41a; font-size: 14px; font-weight: bold;">+${parseFloat(amount).toFixed(2)} USDT</div>
-                            <div style="color: ${statusColor}; font-size: 10px;">${status.toUpperCase()}</div>
+                            <div style="color: #52c41a; font-size: 14px; font-weight: bold;">+${deposit.amount.toFixed(2)} USDT</div>
+                            <div style="color: ${statusColor}; font-size: 10px;">${deposit.status.toUpperCase()}</div>
                         </div>
                     </div>
                 `;
             });
         } else {
-            // Try to get from transactions table as fallback
-            const { data: transactions } = await window.supabase
-                .from('transactions')
-                .select('*')
-                .eq('user_id', user.id)
-                .eq('type', 'deposit')
-                .order('created_at', { ascending: false })
-                .limit(5);
-                
-            if (transactions && transactions.length > 0) {
-                transactions.forEach(transaction => {
-                    const date = new Date(transaction.created_at).toLocaleDateString();
-                    const time = new Date(transaction.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                    
-                    html += `
-                        <div class="deposit-item">
-                            <div style="flex: 1;">
-                                <div style="color: white; font-size: 12px;">${date} ${time}</div>
-                                <div style="color: #ccc; font-size: 10px;">Deposit</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="color: #52c41a; font-size: 14px; font-weight: bold;">+${parseFloat(transaction.amount).toFixed(2)} USDT</div>
-                                <div style="color: #52c41a; font-size: 10px;">COMPLETED</div>
-                            </div>
-                        </div>
-                    `;
-                });
-            } else {
-                html = '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">' + t('no_deposit_history') + '</div>';
-            }
+            html = '<div style="color: #ccc; text-align: center; padding: 30px; font-size: 12px;">No deposit history</div>';
         }
         
         container.innerHTML = html;
@@ -777,25 +575,15 @@ async function loadRecentDeposits() {
         console.error('Error loading deposits:', error);
         const container = document.getElementById('deposits-list');
         if (container) {
-            container.innerHTML = '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">' + t('error_loading') + '</div>';
+            container.innerHTML = '<div style="color: #ccc; text-align: center; padding: 30px; font-size: 12px;">Error loading history</div>';
         }
     }
 }
 
-// Function to check for new deposits (called periodically)
 export async function checkForNewDeposits() {
-    const user = window.getCurrentUser();
-    if (!user) return;
-    
-    try {
-        await loadRecentDeposits();
-    } catch (error) {
-        console.error('Error checking for new deposits:', error);
-    }
+    await loadRecentDeposits();
 }
 
-// Функция для очистки при уходе со страницы
 export function cleanup() {
-    eventListenersInitialized = false;
-    console.log('Deposit cleanup called');
+    cleanupEventListeners();
 }

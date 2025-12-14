@@ -10,6 +10,7 @@ export default function renderDeposit() {
 
             <!-- Amount Selection - UPDATED: удален заголовок, компактные кнопки -->
             <div class="amount-selection margin-bottom">
+                <!-- Заголовок УДАЛЕН -->
                 <div class="amount-options">
                     <button type="button" class="amount-option" data-amount="20">20</button>
                     <button type="button" class="amount-option" data-amount="50">50</button>
@@ -405,7 +406,7 @@ class SimpleQRCode {
     }
 }
 
-let isProcessingDeposit = false; // Добавлена переменная для предотвращения множественных кликов
+let isProcessingDeposit = false; // Добавлено
 
 export async function init() {
     document.body.classList.add('no-tabbar');
@@ -433,6 +434,11 @@ export async function init() {
 }
 
 function setupEventListeners() {
+    // Удаляем старые обработчики
+    const depositBtn = document.getElementById('deposit-btn');
+    const newDepositBtn = depositBtn.cloneNode(true);
+    depositBtn.parentNode.replaceChild(newDepositBtn, depositBtn);
+    
     // Amount selection
     document.querySelectorAll('.amount-option').forEach(option => {
         option.addEventListener('click', function() {
@@ -459,18 +465,16 @@ function setupEventListeners() {
         });
     });
     
-    // Deposit button - исправлено: добавлена проверка isProcessingDeposit
-    const depositBtn = document.getElementById('deposit-btn');
-    if (depositBtn) {
-        // Удаляем старый обработчик перед добавлением нового
-        depositBtn.removeEventListener('click', showDepositQR);
-        depositBtn.addEventListener('click', function() {
-            if (isProcessingDeposit) return; // Предотвращаем множественные клики
-            
-            isProcessingDeposit = true;
-            showDepositQR();
-        });
-    }
+    // Deposit button - исправлено
+    document.getElementById('deposit-btn').addEventListener('click', function() {
+        if (isProcessingDeposit) {
+            console.log('Deposit уже обрабатывается');
+            return;
+        }
+        
+        isProcessingDeposit = true;
+        showDepositQR();
+    });
     
     // Close QR popup
     document.getElementById('close-qr-popup').addEventListener('click', () => {
@@ -502,14 +506,14 @@ async function showDepositQR() {
     
     if (!user) {
         window.showSection('login');
-        isProcessingDeposit = false; // Сбрасываем флаг
+        isProcessingDeposit = false; // Сброс флага
         return;
     }
     
     // Validate amount
     if (!amount || isNaN(amount) || amount < 17) {
         window.showCustomAlert(t('validation_minimum_deposit'));
-        isProcessingDeposit = false; // Сбрасываем флаг
+        isProcessingDeposit = false; // Сброс флага
         return;
     }
     
@@ -557,7 +561,8 @@ async function showDepositQR() {
         document.getElementById('loading-deposit-popup').style.display = 'none';
         window.showCustomAlert(t('error_loading_address'));
     } finally {
-        isProcessingDeposit = false; // Всегда сбрасываем флаг в конце
+        // ВСЕГДА сбрасываем флаг
+        isProcessingDeposit = false;
     }
 }
 
@@ -701,3 +706,9 @@ export async function checkForNewDeposits() {
         console.error('Error checking for new deposits:', error);
     }
 }
+
+// Добавлено для отладки
+window.resetDeposit = function() {
+    isProcessingDeposit = false;
+    console.log('Deposit reset');
+};

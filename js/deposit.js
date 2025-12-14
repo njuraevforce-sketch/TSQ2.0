@@ -10,7 +10,6 @@ export default function renderDeposit() {
 
             <!-- Amount Selection - UPDATED: удален заголовок, компактные кнопки -->
             <div class="amount-selection margin-bottom">
-                <!-- Заголовок УДАЛЕН -->
                 <div class="amount-options">
                     <button type="button" class="amount-option" data-amount="20">20</button>
                     <button type="button" class="amount-option" data-amount="50">50</button>
@@ -406,6 +405,8 @@ class SimpleQRCode {
     }
 }
 
+let isProcessingDeposit = false; // Добавлена переменная для предотвращения множественных кликов
+
 export async function init() {
     document.body.classList.add('no-tabbar');
     
@@ -458,8 +459,18 @@ function setupEventListeners() {
         });
     });
     
-    // Deposit button
-    document.getElementById('deposit-btn').addEventListener('click', showDepositQR);
+    // Deposit button - исправлено: добавлена проверка isProcessingDeposit
+    const depositBtn = document.getElementById('deposit-btn');
+    if (depositBtn) {
+        // Удаляем старый обработчик перед добавлением нового
+        depositBtn.removeEventListener('click', showDepositQR);
+        depositBtn.addEventListener('click', function() {
+            if (isProcessingDeposit) return; // Предотвращаем множественные клики
+            
+            isProcessingDeposit = true;
+            showDepositQR();
+        });
+    }
     
     // Close QR popup
     document.getElementById('close-qr-popup').addEventListener('click', () => {
@@ -491,12 +502,14 @@ async function showDepositQR() {
     
     if (!user) {
         window.showSection('login');
+        isProcessingDeposit = false; // Сбрасываем флаг
         return;
     }
     
     // Validate amount
     if (!amount || isNaN(amount) || amount < 17) {
         window.showCustomAlert(t('validation_minimum_deposit'));
+        isProcessingDeposit = false; // Сбрасываем флаг
         return;
     }
     
@@ -543,6 +556,8 @@ async function showDepositQR() {
         console.error('Error loading deposit address:', error);
         document.getElementById('loading-deposit-popup').style.display = 'none';
         window.showCustomAlert(t('error_loading_address'));
+    } finally {
+        isProcessingDeposit = false; // Всегда сбрасываем флаг в конце
     }
 }
 

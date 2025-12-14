@@ -406,10 +406,54 @@ class SimpleQRCode {
     }
 }
 
-let isProcessingDeposit = false; // Добавлено
+// Глобальные переменные для управления состоянием
+let isProcessingDeposit = false;
+let eventListenersAttached = false;
+
+// Функция очистки обработчиков
+function removeEventListeners() {
+    // Удаляем обработчики с amount-option
+    document.querySelectorAll('.amount-option').forEach(option => {
+        const newOption = option.cloneNode(true);
+        option.parentNode.replaceChild(newOption, option);
+    });
+    
+    // Удаляем обработчики с network-option
+    document.querySelectorAll('.network-option').forEach(option => {
+        const newOption = option.cloneNode(true);
+        option.parentNode.replaceChild(newOption, option);
+    });
+    
+    // Удаляем обработчики с кнопок
+    const depositBtn = document.getElementById('deposit-btn');
+    if (depositBtn) {
+        const newBtn = depositBtn.cloneNode(true);
+        depositBtn.parentNode.replaceChild(newBtn, depositBtn);
+    }
+    
+    const closeBtn = document.getElementById('close-qr-popup');
+    if (closeBtn) {
+        const newCloseBtn = closeBtn.cloneNode(true);
+        closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+    }
+    
+    const copyBtn = document.getElementById('copy-address-btn');
+    if (copyBtn) {
+        const newCopyBtn = copyBtn.cloneNode(true);
+        copyBtn.parentNode.replaceChild(newCopyBtn, copyBtn);
+    }
+    
+    eventListenersAttached = false;
+    isProcessingDeposit = false;
+}
 
 export async function init() {
     document.body.classList.add('no-tabbar');
+    
+    // Очищаем старые обработчики ПЕРЕД инициализацией
+    if (eventListenersAttached) {
+        removeEventListeners();
+    }
     
     // Initialize amount selection
     initAmountSelection();
@@ -431,14 +475,11 @@ export async function init() {
     }).catch(error => {
         console.error('Error loading translate module:', error);
     });
+    
+    eventListenersAttached = true;
 }
 
 function setupEventListeners() {
-    // Удаляем старые обработчики
-    const depositBtn = document.getElementById('deposit-btn');
-    const newDepositBtn = depositBtn.cloneNode(true);
-    depositBtn.parentNode.replaceChild(newDepositBtn, depositBtn);
-    
     // Amount selection
     document.querySelectorAll('.amount-option').forEach(option => {
         option.addEventListener('click', function() {
@@ -465,15 +506,20 @@ function setupEventListeners() {
         });
     });
     
-    // Deposit button - исправлено
-    document.getElementById('deposit-btn').addEventListener('click', function() {
-        if (isProcessingDeposit) {
-            console.log('Deposit уже обрабатывается');
-            return;
-        }
+    // Deposit button - СИЛЬНО УПРОЩЕННЫЙ КОД
+    document.getElementById('deposit-btn').addEventListener('click', async function() {
+        if (isProcessingDeposit) return;
         
         isProcessingDeposit = true;
-        showDepositQR();
+        
+        try {
+            await showDepositQR();
+        } finally {
+            // Задержка для сброса состояния
+            setTimeout(() => {
+                isProcessingDeposit = false;
+            }, 100);
+        }
     });
     
     // Close QR popup
@@ -506,14 +552,14 @@ async function showDepositQR() {
     
     if (!user) {
         window.showSection('login');
-        isProcessingDeposit = false; // Сброс флага
+        isProcessingDeposit = false;
         return;
     }
     
     // Validate amount
     if (!amount || isNaN(amount) || amount < 17) {
         window.showCustomAlert(t('validation_minimum_deposit'));
-        isProcessingDeposit = false; // Сброс флага
+        isProcessingDeposit = false;
         return;
     }
     
@@ -560,9 +606,6 @@ async function showDepositQR() {
         console.error('Error loading deposit address:', error);
         document.getElementById('loading-deposit-popup').style.display = 'none';
         window.showCustomAlert(t('error_loading_address'));
-    } finally {
-        // ВСЕГДА сбрасываем флаг
-        isProcessingDeposit = false;
     }
 }
 
@@ -707,8 +750,13 @@ export async function checkForNewDeposits() {
     }
 }
 
-// Добавлено для отладки
-window.resetDeposit = function() {
+// Экспортируем функцию для ручного сброса состояния
+export function resetDepositState() {
     isProcessingDeposit = false;
-    console.log('Deposit reset');
+}
+
+// Глобальная функция для отладки
+window.resetDepositButton = function() {
+    isProcessingDeposit = false;
+    console.log('Кнопка депозита сброшена');
 };

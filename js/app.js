@@ -1,9 +1,6 @@
 // Main application module - UPDATED to v17.1 with backend support
 import { t, initLanguageSystem, updatePageLanguage } from './translate.js';
 
-// Импортируем Supabase правильно
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
 class GLYApp {
     constructor() {
         this.currentSection = null;
@@ -154,24 +151,9 @@ class GLYApp {
         return false;
     }
 
-    // НОВЫЙ МЕТОД: Генерация хэша для приложения
-    generateAppHash() {
-        // Генерируем хэш на основе даты (меняется раз в день)
-        const today = new Date().toISOString().split('T')[0];
-        // Простой пример: base64 от сегодняшней даты + секретная соль
-        return btoa(today + '_gly_app_secret_2024').substring(0, 10);
-    }
-
     async initSupabase() {
-        // Получаем пользователя из localStorage (если есть)
-        const storedUser = localStorage.getItem('gly_user');
-        const user = storedUser ? JSON.parse(storedUser) : null;
-        
-        // Генерируем хэш для приложения
-        const appHash = this.generateAppHash();
-
         // Create Supabase client with correct headers
-        this.supabase = createClient(
+        this.supabase = supabase.createClient(
             'https://jxyazsguwkbklavamzyj.supabase.co',
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI',
             {
@@ -179,11 +161,10 @@ class GLYApp {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI',
-                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI`,
-                    
-                    // НОВЫЕ ЗАЩИТНЫЕ ЗАГОЛОВКИ
-                    'x-app-secret': 'gly_web_app_' + appHash,
-                    'x-user-id': user ? user.id : ''
+                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI`
+                           
+                        'x-app-secret': 'gly_web_app_' + appHash,
+                        'x-user-id': user ? user.id : '' 
                 },
                 db: {
                     schema: 'public'
@@ -318,12 +299,6 @@ class GLYApp {
             try {
                 this.currentUser = JSON.parse(storedUser);
                 
-                // Обновляем заголовки в Supabase клиенте с ID текущего пользователя
-                if (this.supabase) {
-                    // Нужно пересоздать клиент с обновленными заголовками
-                    await this.updateSupabaseHeaders(this.currentUser.id);
-                }
-                
                 // Try to update user data from database
                 try {
                     const { data, error } = await this.supabase
@@ -355,38 +330,6 @@ class GLYApp {
                 this.currentUser = null;
             }
         }
-    }
-
-    // НОВЫЙ МЕТОД: Обновление заголовков в Supabase клиенте
-    async updateSupabaseHeaders(userId) {
-        const appHash = this.generateAppHash();
-        
-        // Пересоздаем клиент с новыми заголовками
-        this.supabase = createClient(
-            'https://jxyazsguwkbklavamzyj.supabase.co',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI',
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI',
-                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI`,
-                    
-                    // НОВЫЕ ЗАЩИТНЫЕ ЗАГОЛОВКИ с актуальным user_id
-                    'x-app-secret': 'gly_web_app_' + appHash,
-                    'x-user-id': userId || ''
-                },
-                db: {
-                    schema: 'public'
-                },
-                auth: {
-                    persistSession: true,
-                    autoRefreshToken: true
-                }
-            }
-        );
-        
-        window.supabase = this.supabase;
     }
 
     setupEventListeners() {
@@ -552,9 +495,6 @@ class GLYApp {
                 document.body.classList.add('auth-page');
                 return;
             }
-            
-            // Обновляем заголовки с ID пользователя
-            await this.updateSupabaseHeaders(user.id);
         }
 
         // Hide current section
@@ -1158,10 +1098,6 @@ class GLYApp {
         localStorage.removeItem('gly_user');
         localStorage.removeItem('gly_admin_session');
         this.currentUser = null;
-        
-        // Обновляем заголовки Supabase с пустым user_id
-        this.updateSupabaseHeaders('');
-        
         window.showSection('login');
         window.location.hash = 'login';
     }

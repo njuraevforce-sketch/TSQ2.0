@@ -409,6 +409,20 @@ class SimpleQRCode {
 export async function init() {
     document.body.classList.add('no-tabbar');
     
+    // Удаляем старые обработчики если есть
+    const oldContainer = document.getElementById('deposit-container');
+    if (oldContainer) {
+        oldContainer.remove();
+    }
+    
+    // Пересоздаем контейнер для обработчиков
+    const depositSection = document.getElementById('deposit');
+    if (depositSection) {
+        const newContainer = document.createElement('div');
+        newContainer.id = 'deposit-container';
+        depositSection.appendChild(newContainer);
+    }
+    
     // Initialize amount selection
     initAmountSelection();
     
@@ -418,8 +432,15 @@ export async function init() {
     // Load recent deposits
     await loadRecentDeposits();
     
-    // Setup event listeners
-    setupEventListeners();
+    // Setup event listeners - ГАРАНТИРОВАННО
+    setTimeout(() => {
+        setupEventListeners();
+    }, 100);
+    
+    // Дублирующий вызов для надежности
+    setTimeout(() => {
+        setupEventListeners();
+    }, 500);
     
     // Update translations
     import('./translate.js').then(module => {
@@ -432,42 +453,83 @@ export async function init() {
 }
 
 function setupEventListeners() {
-    // Amount selection
-    document.querySelectorAll('.amount-option').forEach(option => {
-        option.addEventListener('click', function() {
+    // Используем делегирование событий для всех динамических элементов
+    document.addEventListener('click', function(e) {
+        // Обработка выбора суммы
+        if (e.target.closest('.amount-option')) {
+            const option = e.target.closest('.amount-option');
             document.querySelectorAll('.amount-option').forEach(opt => {
                 opt.classList.remove('active');
             });
-            this.classList.add('active');
+            option.classList.add('active');
             
-            const amount = this.getAttribute('data-amount');
-            document.getElementById('deposit-amount').value = amount;
-        });
-    });
-    
-    // Network selection
-    document.querySelectorAll('.network-option').forEach(option => {
-        option.addEventListener('click', function() {
+            const amount = option.getAttribute('data-amount');
+            const amountInput = document.getElementById('deposit-amount');
+            if (amountInput) {
+                amountInput.value = amount;
+            }
+        }
+        
+        // Обработка выбора сети
+        if (e.target.closest('.network-option')) {
+            const option = e.target.closest('.network-option');
             document.querySelectorAll('.network-option').forEach(opt => {
                 opt.classList.remove('active');
             });
-            this.classList.add('active');
+            option.classList.add('active');
             
-            const network = this.getAttribute('data-network');
-            document.getElementById('selected-network-display').textContent = network;
+            const network = option.getAttribute('data-network');
+            const networkDisplay = document.getElementById('selected-network-display');
+            if (networkDisplay) {
+                networkDisplay.textContent = network;
+            }
+        }
+        
+        // Обработка кнопки депозита
+        if (e.target.closest('#deposit-btn')) {
+            console.log('Deposit button clicked (delegated)');
+            showDepositQR();
+        }
+        
+        // Обработка кнопки закрытия попапа
+        if (e.target.closest('#close-qr-popup')) {
+            const popup = document.getElementById('deposit-qr-popup');
+            if (popup) {
+                popup.style.display = 'none';
+            }
+        }
+        
+        // Обработка кнопки копирования адреса
+        if (e.target.closest('#copy-address-btn')) {
+            copyDepositAddress();
+        }
+    });
+    
+    // Также добавим прямой обработчик для кнопки депозита для надежности
+    const depositBtn = document.getElementById('deposit-btn');
+    if (depositBtn) {
+        // Удаляем старые обработчики
+        const newDepositBtn = depositBtn.cloneNode(true);
+        depositBtn.parentNode.replaceChild(newDepositBtn, depositBtn);
+        
+        // Добавляем новый обработчик
+        newDepositBtn.addEventListener('click', function(e) {
+            console.log('Deposit button clicked (direct)');
+            e.stopPropagation();
+            showDepositQR();
         });
-    });
+    }
     
-    // Deposit button
-    document.getElementById('deposit-btn').addEventListener('click', showDepositQR);
-    
-    // Close QR popup
-    document.getElementById('close-qr-popup').addEventListener('click', () => {
-        document.getElementById('deposit-qr-popup').style.display = 'none';
-    });
-    
-    // Copy address button (in popup)
-    document.getElementById('copy-address-btn').addEventListener('click', copyDepositAddress);
+    // Обработка ввода пользовательской суммы
+    const amountInput = document.getElementById('deposit-amount');
+    if (amountInput) {
+        amountInput.addEventListener('input', function() {
+            // Снимаем выделение с предустановленных сумм при вводе своей
+            document.querySelectorAll('.amount-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+        });
+    }
 }
 
 function initAmountSelection() {
@@ -475,19 +537,47 @@ function initAmountSelection() {
     const firstAmount = document.querySelector('.amount-option');
     if (firstAmount) {
         firstAmount.classList.add('active');
-        document.getElementById('deposit-amount').value = firstAmount.getAttribute('data-amount');
+        const amountInput = document.getElementById('deposit-amount');
+        if (amountInput) {
+            amountInput.value = firstAmount.getAttribute('data-amount');
+        }
     }
 }
 
 function initNetworkSelection() {
     // Set default network display
-    document.getElementById('selected-network-display').textContent = 'TRC20';
+    const networkDisplay = document.getElementById('selected-network-display');
+    if (networkDisplay) {
+        networkDisplay.textContent = 'TRC20';
+    }
 }
 
-async function showDepositQR() {
-    const amount = parseFloat(document.getElementById('deposit-amount').value);
-    const network = document.querySelector('.network-option.active').getAttribute('data-network');
+// Улучшенная функция showDepositQR с защитой от повторных вызовов
+function showDepositQR() {
+    console.log('showDepositQR called');
+    
+    // Проверяем, открыт ли уже попап
+    const popup = document.getElementById('deposit-qr-popup');
+    if (popup && popup.style.display === 'flex') {
+        return; // Уже открыт
+    }
+    
+    // Находим элементы каждый раз заново
+    const amountInput = document.getElementById('deposit-amount');
+    const networkOptions = document.querySelector('.network-option.active');
     const user = window.getCurrentUser();
+    
+    if (!amountInput || !networkOptions) {
+        console.error('Required elements not found, retrying...');
+        // Попробуем найти элементы заново
+        setTimeout(() => {
+            showDepositQR();
+        }, 100);
+        return;
+    }
+    
+    const amount = parseFloat(amountInput.value);
+    const network = networkOptions.getAttribute('data-network');
     
     if (!user) {
         window.showSection('login');
@@ -500,17 +590,38 @@ async function showDepositQR() {
         return;
     }
     
-    // Show loading
-    document.getElementById('loading-deposit-popup').style.display = 'flex';
+    // Показываем попап сразу, даже если адрес еще не загружен
+    const depositPopup = document.getElementById('deposit-qr-popup');
+    if (depositPopup) {
+        depositPopup.style.display = 'flex';
+    }
     
+    // Обновляем информацию в попапе
+    const popupAmount = document.getElementById('deposit-popup-amount');
+    const popupNetwork = document.getElementById('deposit-popup-network');
+    
+    if (popupAmount) popupAmount.textContent = amount;
+    if (popupNetwork) popupNetwork.textContent = `${t('network')}: ${network}`;
+    
+    // Устанавливаем заглушку для адреса
+    const addressInput = document.getElementById('deposit-address-display');
+    if (addressInput) {
+        addressInput.value = t('loading_address');
+        addressInput.placeholder = t('loading_address');
+    }
+    
+    // Создаем QR код с заглушкой
+    generateRealQRCode(`GLY Deposit: ${amount} USDT (${network})`);
+    
+    // Загружаем реальный адрес в фоне
+    loadDepositAddress(user.id, network, amount);
+}
+
+// Новая функция для загрузки адреса
+async function loadDepositAddress(userId, network, amount) {
     try {
-        // Update popup info
-        document.getElementById('deposit-popup-amount').textContent = amount;
-        document.getElementById('deposit-popup-network').textContent = `${t('network')}: ${network}`;
-        
-        // Get deposit address
         const API_BASE_URL = 'https://tron-wallet-server-production.up.railway.app';
-        const response = await fetch(`${API_BASE_URL}/api/deposit/generate?user_id=${user.id}&network=${network.toLowerCase()}`, {
+        const response = await fetch(`${API_BASE_URL}/api/deposit/generate?user_id=${userId}&network=${network.toLowerCase()}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -525,29 +636,37 @@ async function showDepositQR() {
         const result = await response.json();
         
         if (result.success && result.address) {
-            // Hide loading and show deposit QR popup
-            document.getElementById('loading-deposit-popup').style.display = 'none';
-            
-            // Display address and generate QR code
+            // Обновляем адрес и QR код
             const addressInput = document.getElementById('deposit-address-display');
-            addressInput.value = result.address;
-            generateRealQRCode(result.address);
+            if (addressInput) {
+                addressInput.value = result.address;
+                generateRealQRCode(result.address);
+            }
             
-            // Show QR code popup
-            document.getElementById('deposit-qr-popup').style.display = 'flex';
+            // Скрываем loading если он есть
+            const loadingPopup = document.getElementById('loading-deposit-popup');
+            if (loadingPopup) {
+                loadingPopup.style.display = 'none';
+            }
         } else {
             throw new Error(t('error_loading_address'));
         }
         
     } catch (error) {
         console.error('Error loading deposit address:', error);
-        document.getElementById('loading-deposit-popup').style.display = 'none';
-        window.showCustomAlert(t('error_loading_address'));
+        // Оставляем заглушку, но попап остается открытым
+        const addressInput = document.getElementById('deposit-address-display');
+        if (addressInput) {
+            addressInput.value = t('error_loading_address');
+            addressInput.placeholder = t('error_loading_address');
+        }
     }
 }
 
 function generateRealQRCode(text) {
     const canvas = document.getElementById('qr-code-canvas');
+    if (!canvas) return;
+    
     const qrCanvas = SimpleQRCode.generate(text, 170);
     
     // Copy the generated QR code to our canvas
@@ -557,7 +676,10 @@ function generateRealQRCode(text) {
 }
 
 async function copyDepositAddress() {
-    const address = document.getElementById('deposit-address-display').value;
+    const addressInput = document.getElementById('deposit-address-display');
+    if (!addressInput) return;
+    
+    const address = addressInput.value;
     
     if (!address || address === t('loading_data') || address === t('error_loading_address') || address === t('loading_address')) {
         window.showCustomAlert(t('wait_for_address'));
@@ -569,14 +691,16 @@ async function copyDepositAddress() {
         
         // Show success feedback
         const copyBtn = document.getElementById('copy-address-btn');
-        const originalText = copyBtn.innerHTML;
-        copyBtn.innerHTML = '<i class="fas fa-check"></i> ' + t('address_copied');
-        copyBtn.style.background = '#52c41a';
-        
-        setTimeout(() => {
-            copyBtn.innerHTML = originalText;
-            copyBtn.style.background = '#4e7771';
-        }, 2000);
+        if (copyBtn) {
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<i class="fas fa-check"></i> ' + t('address_copied');
+            copyBtn.style.background = '#52c41a';
+            
+            setTimeout(() => {
+                copyBtn.innerHTML = originalText;
+                copyBtn.style.background = '#4e7771';
+            }, 2000);
+        }
         
     } catch (error) {
         // Fallback for older browsers
@@ -607,6 +731,8 @@ async function loadRecentDeposits() {
         if (error) throw error;
         
         const container = document.getElementById('deposits-list');
+        if (!container) return;
+        
         let html = '';
         
         if (deposits && deposits.length > 0) {
@@ -671,7 +797,9 @@ async function loadRecentDeposits() {
     } catch (error) {
         console.error('Error loading deposits:', error);
         const container = document.getElementById('deposits-list');
-        container.innerHTML = '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">' + t('error_loading') + '</div>';
+        if (container) {
+            container.innerHTML = '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">' + t('error_loading') + '</div>';
+        }
     }
 }
 

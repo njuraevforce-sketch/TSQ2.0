@@ -1,6 +1,9 @@
 // Main application module - UPDATED to v17.1 with backend support
 import { t, initLanguageSystem, updatePageLanguage } from './translate.js';
 
+// Импортируем Supabase правильно
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
 class GLYApp {
     constructor() {
         this.currentSection = null;
@@ -168,7 +171,7 @@ class GLYApp {
         const appHash = this.generateAppHash();
 
         // Create Supabase client with correct headers
-        this.supabase = supabase.createClient(
+        this.supabase = createClient(
             'https://jxyazsguwkbklavamzyj.supabase.co',
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI',
             {
@@ -359,7 +362,7 @@ class GLYApp {
         const appHash = this.generateAppHash();
         
         // Пересоздаем клиент с новыми заголовками
-        this.supabase = supabase.createClient(
+        this.supabase = createClient(
             'https://jxyazsguwkbklavamzyj.supabase.co',
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4eWF6c2d1d2tia2xhdmFtenlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NTI4MzMsImV4cCI6MjA4MDEyODgzM30.0udmTyDCvUrhhVDfQy4enClH7Cxif7gaX_V6RTZysAI',
             {

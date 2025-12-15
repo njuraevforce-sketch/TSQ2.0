@@ -218,8 +218,14 @@ export default function renderWithdraw() {
     `;
 }
 
+// Глобальная переменная для отслеживания процесса вывода
+let isWithdrawProcessing = false;
+
 export async function init() {
     document.body.classList.add('no-tabbar');
+    
+    // Сбрасываем флаг обработки при инициализации
+    isWithdrawProcessing = false;
     
     // Load user data
     await loadUserData();
@@ -247,43 +253,79 @@ export async function init() {
 }
 
 function setupEventListeners() {
-    // Network selection - using green classes
-    document.querySelectorAll('.network-option-green').forEach(option => {
-        option.addEventListener('click', function() {
+    // Используем делегирование событий для всех кнопок
+    document.addEventListener('click', function(e) {
+        // Network selection - using green classes
+        if (e.target.closest('.network-option-green')) {
+            const option = e.target.closest('.network-option-green');
             document.querySelectorAll('.network-option-green').forEach(opt => {
                 opt.classList.remove('active');
             });
-            this.classList.add('active');
+            option.classList.add('active');
             checkSavedAddress();
+        }
+        
+        // Set address button
+        if (e.target.closest('#set-address-btn')) {
+            showSetAddressPopup();
+        }
+        
+        // Transaction password toggle
+        if (e.target.closest('#toggle-transaction-password')) {
+            const passwordInput = document.getElementById('transaction-password');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            const toggleBtn = document.getElementById('toggle-transaction-password');
+            toggleBtn.classList.toggle('fa-eye-slash');
+        }
+        
+        // Submit withdrawal
+        if (e.target.closest('#submit-withdraw')) {
+            submitWithdrawal();
+        }
+        
+        // Withdrawal confirmation cancel
+        if (e.target.closest('#cancel-withdraw-confirm')) {
+            document.getElementById('withdraw-confirm-popup').style.display = 'none';
+        }
+        
+        // Set address modal close
+        if (e.target.closest('#close-set-address')) {
+            hideSetAddressPopup();
+        }
+    });
+    
+    // Обработчик для подтверждения вывода (используем отдельный для лучшего контроля)
+    const confirmBtn = document.getElementById('confirm-withdraw-final');
+    if (confirmBtn) {
+        // Удаляем старый обработчик и создаем новый
+        const newConfirmBtn = confirmBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+        
+        newConfirmBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            processWithdrawal();
         });
-    });
+    }
     
-    // Set address button
-    document.getElementById('set-address-btn').addEventListener('click', showSetAddressPopup);
+    // Обработчик для сохранения адреса
+    const saveAddressBtn = document.getElementById('save-new-address');
+    if (saveAddressBtn) {
+        saveAddressBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            saveNewAddress();
+        });
+    }
     
-    // Transaction password toggle
-    document.getElementById('toggle-transaction-password').addEventListener('click', function() {
-        const passwordInput = document.getElementById('transaction-password');
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        this.classList.toggle('fa-eye-slash');
-    });
-    
-    // Submit withdrawal
-    document.getElementById('submit-withdraw').addEventListener('click', submitWithdrawal);
-    
-    // Withdrawal confirmation
-    document.getElementById('confirm-withdraw-final').addEventListener('click', processWithdrawal);
-    document.getElementById('cancel-withdraw-confirm').addEventListener('click', () => {
-        document.getElementById('withdraw-confirm-popup').style.display = 'none';
-    });
-    
-    // Set address modal
-    document.getElementById('close-set-address').addEventListener('click', hideSetAddressPopup);
-    document.getElementById('save-new-address').addEventListener('click', (e) => {
-        e.preventDefault();
-        saveNewAddress();
-    });
+    // Также добавим прямой обработчик для кнопки подтверждения вывода
+    setTimeout(() => {
+        const confirmBtnDirect = document.getElementById('confirm-withdraw-final');
+        if (confirmBtnDirect) {
+            // Удаляем все старые обработчики и добавляем новый
+            confirmBtnDirect.onclick = null;
+            confirmBtnDirect.addEventListener('click', processWithdrawal);
+        }
+    }, 500);
 }
 
 async function loadUserData() {
@@ -307,10 +349,12 @@ function checkSavedAddress() {
     const user = window.getCurrentUser();
     if (!user) return;
     
-    const selectedNetwork = document.querySelector('.network-option-green.active').getAttribute('data-network');
+    const selectedNetwork = document.querySelector('.network-option-green.active')?.getAttribute('data-network') || 'TRC20';
     const addressField = document.getElementById('withdrawal-address');
     const savedMessage = document.getElementById('saved-address-message');
     const noAddressMessage = document.getElementById('no-address-message');
+    
+    if (!addressField || !savedMessage || !noAddressMessage) return;
     
     // Check if user has saved address for this network
     if (selectedNetwork === 'TRC20' && user.withdrawal_address_trc20) {
@@ -330,7 +374,7 @@ function checkSavedAddress() {
 
 function showSetAddressPopup() {
     // Set active network in modal to match current selection
-    const currentNetwork = document.querySelector('.network-option-green.active').getAttribute('data-network');
+    const currentNetwork = document.querySelector('.network-option-green.active')?.getAttribute('data-network') || 'TRC20';
     document.querySelectorAll('#set-address-popup .network-option-green').forEach(opt => {
         opt.classList.remove('active');
         if (opt.getAttribute('data-network') === currentNetwork) {
@@ -353,7 +397,7 @@ async function saveNewAddress() {
     const user = window.getCurrentUser();
     if (!user) return;
     
-    const selectedNetwork = document.querySelector('#set-address-popup .network-option-green.active').getAttribute('data-network');
+    const selectedNetwork = document.querySelector('#set-address-popup .network-option-green.active')?.getAttribute('data-network') || 'TRC20';
     const address = document.getElementById('new-withdrawal-address').value.trim();
     
     if (!address) {
@@ -401,14 +445,14 @@ function initNetworkSelection() {
     const trc20Option = document.querySelector('[data-network="TRC20"]');
     const bep20Option = document.querySelector('[data-network="BEP20"]');
     
-    if (user.withdrawal_address_trc20) {
+    if (user.withdrawal_address_trc20 && trc20Option) {
         const networkName = trc20Option.querySelector('.network-name-green');
         if (networkName) {
             networkName.innerHTML += ' <span style="font-size: 10px; color: #52c41a;">(' + t('saved') + ')</span>';
         }
     }
     
-    if (user.withdrawal_address_bep20) {
+    if (user.withdrawal_address_bep20 && bep20Option) {
         const networkName = bep20Option.querySelector('.network-name-green');
         if (networkName) {
             networkName.innerHTML += ' <span style="font-size: 10px; color: #52c41a;">(' + t('saved') + ')</span>';
@@ -420,13 +464,21 @@ function updateFeeCalculation() {
     const user = window.getCurrentUser();
     if (!user) return;
     
-    const amount = parseFloat(document.getElementById('withdraw-amount').value) || 0;
+    const amountInput = document.getElementById('withdraw-amount');
+    if (!amountInput) return;
+    
+    const amount = parseFloat(amountInput.value) || 0;
     const feePercent = getWithdrawalFee(user.vip_level);
     const fee = (amount * feePercent) / 100;
     const netAmount = amount - fee;
     
-    document.getElementById('withdrawal-fee').textContent = `${fee.toFixed(2)} USDT (${feePercent}%)`;
-    document.getElementById('net-amount').textContent = `${netAmount.toFixed(2)} USDT`;
+    const feeElement = document.getElementById('withdrawal-fee');
+    const netElement = document.getElementById('net-amount');
+    
+    if (feeElement && netElement) {
+        feeElement.textContent = `${fee.toFixed(2)} USDT (${feePercent}%)`;
+        netElement.textContent = `${netAmount.toFixed(2)} USDT`;
+    }
 }
 
 function getWithdrawalFee(vipLevel) {
@@ -441,11 +493,11 @@ function getWithdrawalFee(vipLevel) {
     return fees[vipLevel] || 7;
 }
 
-async function submitWithdrawal() {
+function submitWithdrawal() {
     const user = window.getCurrentUser();
     if (!user) return;
     
-    const selectedNetwork = document.querySelector('.network-option-green.active').getAttribute('data-network');
+    const selectedNetwork = document.querySelector('.network-option-green.active')?.getAttribute('data-network') || 'TRC20';
     const address = document.getElementById('withdrawal-address').value.trim();
     const amount = parseFloat(document.getElementById('withdraw-amount').value);
     const password = document.getElementById('transaction-password').value;
@@ -494,20 +546,60 @@ async function submitWithdrawal() {
 }
 
 async function processWithdrawal() {
-    const user = window.getCurrentUser();
-    if (!user) return;
+    // Проверяем, не идет ли уже обработка
+    if (isWithdrawProcessing) {
+        console.log('Withdrawal already processing, ignoring duplicate click');
+        return;
+    }
     
-    const selectedNetwork = document.querySelector('.network-option-green.active').getAttribute('data-network');
+    // Устанавливаем флаг, что началась обработка
+    isWithdrawProcessing = true;
+    
+    const confirmBtn = document.getElementById('confirm-withdraw-final');
+    if (confirmBtn) {
+        // Блокируем кнопку на время обработки
+        confirmBtn.disabled = true;
+        confirmBtn.style.opacity = '0.7';
+        confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + t('processing');
+    }
+    
+    const user = window.getCurrentUser();
+    if (!user) {
+        // Сбрасываем флаг
+        isWithdrawProcessing = false;
+        if (confirmBtn) {
+            confirmBtn.disabled = false;
+            confirmBtn.style.opacity = '1';
+            confirmBtn.textContent = t('confirm');
+        }
+        window.showSection('login');
+        return;
+    }
+    
+    const selectedNetwork = document.querySelector('.network-option-green.active')?.getAttribute('data-network') || 'TRC20';
     const address = document.getElementById('withdrawal-address').value.trim();
     const amount = parseFloat(document.getElementById('withdraw-amount').value);
+    
+    // Дополнительная проверка суммы
+    if (amount > user.balance) {
+        window.showCustomAlert(t('insufficient_balance'));
+        isWithdrawProcessing = false;
+        if (confirmBtn) {
+            confirmBtn.disabled = false;
+            confirmBtn.style.opacity = '1';
+            confirmBtn.textContent = t('confirm');
+        }
+        document.getElementById('withdraw-confirm-popup').style.display = 'none';
+        return;
+    }
     
     // Calculate fee
     const feePercent = getWithdrawalFee(user.vip_level);
     const fee = (amount * feePercent) / 100;
     
     try {
-        // Create withdrawal transaction
-        const { error: txError } = await window.supabase
+        // Создаем транзакцию вывода
+        const { data, error: txError } = await window.supabase
             .from('transactions')
             .insert([{
                 user_id: user.id,
@@ -516,41 +608,55 @@ async function processWithdrawal() {
                 status: 'pending',
                 description: `Withdrawal ${amount} USDT (${selectedNetwork}) - Fee: ${fee.toFixed(2)} USDT`,
                 network: selectedNetwork,
-                withdrawal_address: address
-            }]);
+                withdrawal_address: address,
+                created_at: new Date().toISOString()
+            }])
+            .select('id') // Получаем ID созданной транзакции
+            .single();
             
-        if (txError) throw txError;
+        if (txError) {
+            console.error('Error creating withdrawal transaction:', txError);
+            throw txError;
+        }
         
-        // Update user balance
+        console.log('Withdrawal transaction created with ID:', data.id);
+        
+        // Обновляем баланс пользователя
         const newBalance = user.balance - amount;
         const { error: balanceError } = await window.supabase
             .from('users')
-            .update({ balance: newBalance })
+            .update({ 
+                balance: newBalance,
+                updated_at: new Date().toISOString()
+            })
             .eq('id', user.id);
             
-        if (balanceError) throw balanceError;
+        if (balanceError) {
+            console.error('Error updating user balance:', balanceError);
+            throw balanceError;
+        }
         
-        // Update user in localStorage
+        // Обновляем пользователя в localStorage
         user.balance = newBalance;
         localStorage.setItem('gly_user', JSON.stringify(user));
         
-        // Hide confirmation popup
+        // Скрываем попап подтверждения
         document.getElementById('withdraw-confirm-popup').style.display = 'none';
         
-        // Show success message
+        // Показываем сообщение об успехе
         window.showCustomAlert(t('withdrawal_submitted', null, { 
             amount: (amount - fee).toFixed(2), 
             fee: fee.toFixed(2) 
         }));
         
-        // Reset form
+        // Сбрасываем форму
         document.getElementById('withdraw-amount').value = '';
         document.getElementById('transaction-password').value = '';
         
-        // Update balance display
+        // Обновляем отображение баланса
         document.getElementById('available-balance').textContent = `${newBalance.toFixed(2)} USDT`;
         
-        // Reload recent withdrawals
+        // Обновляем список выводов
         setTimeout(() => {
             loadRecentWithdrawals();
         }, 1000);
@@ -558,6 +664,16 @@ async function processWithdrawal() {
     } catch (error) {
         console.error('Error processing withdrawal:', error);
         window.showCustomAlert(t('error') + ': ' + error.message);
+    } finally {
+        // Всегда сбрасываем флаг обработки
+        isWithdrawProcessing = false;
+        
+        // Восстанавливаем кнопку
+        if (confirmBtn) {
+            confirmBtn.disabled = false;
+            confirmBtn.style.opacity = '1';
+            confirmBtn.textContent = t('confirm');
+        }
     }
 }
 
@@ -577,6 +693,8 @@ async function loadRecentWithdrawals() {
         if (error) throw error;
         
         const container = document.getElementById('withdrawals-list');
+        if (!container) return;
+        
         let html = '';
         
         if (withdrawals && withdrawals.length > 0) {
@@ -611,6 +729,8 @@ async function loadRecentWithdrawals() {
     } catch (error) {
         console.error('Error loading withdrawals:', error);
         const container = document.getElementById('withdrawals-list');
-        container.innerHTML = '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">' + t('error_loading') + '</div>';
+        if (container) {
+            container.innerHTML = '<div style="color: #ccc; text-align: center; padding: 20px; font-size: 12px;">' + t('error_loading') + '</div>';
+        }
     }
 }

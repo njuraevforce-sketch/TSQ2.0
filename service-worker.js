@@ -1,23 +1,23 @@
-const CACHE_NAME = 'gly-platform-v18.0';
+const CACHE_NAME = 'gly-platform-v19.0';
 const urlsToCache = [
     '/',
     '/index.html',
-    '/css/style.css?v=18.0',
-    '/js/app.js?v=18.0',
-    '/js/mine.js?v=18.0',
-    '/js/assets.js?v=18.0',
-    '/js/team.js?v=18.0',
-    '/js/deposit.js?v=18.0',
-    '/js/withdraw.js?v=18.0',
-    '/js/admin.js?v=18.0',
-    '/js/backend.js?v=18.0',
-    '/js/translate.js?v=18.0',
-    '/js/home.js?v=18.0',
-    '/js/get.js?v=18.0',
-    '/js/register.js?v=18.0',
-    '/js/company.js?v=18.0',
-    '/js/invite.js?v=18.0',
-    '/js/rules.js?v=18.0',
+    '/css/style.css?v=19.0',
+    '/js/app.js?v=19.0',
+    '/js/mine.js?v=19.0',
+    '/js/assets.js?v=19.0',
+    '/js/team.js?v=19.0',
+    '/js/deposit.js?v=19.0',
+    '/js/withdraw.js?v=19.0',
+    '/js/admin.js?v=19.0',
+    '/js/backend.js?v=19.0',
+    '/js/translate.js?v=19.0',
+    '/js/home.js?v=19.0',
+    '/js/get.js?v=19.0',
+    '/js/register.js?v=19.0',
+    '/js/company.js?v=19.0',
+    '/js/invite.js?v=19.0',
+    '/js/rules.js?v=19.0',
     '/manifest.json',
     '/assets/logo.png',
     '/assets/favicon.ico',
@@ -63,7 +63,7 @@ self.addEventListener('install', event => {
                 return cache.addAll(urlsToCache);
             })
             .then(() => {
-                console.log('All files cached successfully for v18.0');
+                console.log('All files cached successfully for v19.0');
                 return self.skipWaiting();
             })
             .catch(error => {
@@ -74,7 +74,7 @@ self.addEventListener('install', event => {
 
 // Activate
 self.addEventListener('activate', event => {
-    console.log('Activating Service Worker v18.0');
+    console.log('Activating Service Worker v19.0');
     event.waitUntil(
         Promise.all([
             // Clean old caches
@@ -103,7 +103,7 @@ self.addEventListener('activate', event => {
                 const oldVersions = [
                     '1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9',
                     '2.0', '3.0', '6.0', '6.1', '6.3', '6.4', '6.5', '7.0', '10.0', '11.0',
-                    '12.0', '13.0', '14.0', '17.0', '17.1', '17.2'
+                    '12.0', '13.0', '14.0', '17.0', '17.1', '17.2', '18.0'
                 ];
                 
                 oldVersions.forEach(version => {
@@ -116,15 +116,15 @@ self.addEventListener('activate', event => {
                 if (language) localStorage.setItem('gly_language', language);
                 
                 // Устанавливаем новую версию
-                localStorage.setItem('app_version', '18.0');
-                console.log('LocalStorage updated to version 18.0');
+                localStorage.setItem('app_version', '19.0');
+                console.log('LocalStorage updated to version 19.0');
                 
                 // Отправляем сообщение всем клиентам о перезагрузке
                 self.clients.matchAll().then(clients => {
                     clients.forEach(client => {
                         client.postMessage({
                             type: 'FORCE_RELOAD',
-                            version: '18.0',
+                            version: '19.0',
                             message: 'New version available. Reloading...'
                         });
                     });
